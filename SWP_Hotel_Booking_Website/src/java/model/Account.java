@@ -9,12 +9,12 @@ package model;
  * @author Ngo Hong Hai - CE171752
  */
 public class Account {
-    String username, password; 
-    boolean is_owner, is_manager, is_admin, ban_status;
-    int report_count;
-    String email, name;
-    int age;
-    String phone, id_number;
+    private String username, password; 
+    private boolean is_owner, is_manager, is_admin, ban_status;
+    private int report_count;
+    private String email, name;
+    private int age;
+    private String phone, id_number;
 
     public Account() {
     }

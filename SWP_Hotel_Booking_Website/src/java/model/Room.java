@@ -9,13 +9,13 @@ package model;
  * @author Ngo Hong Hai - CE171752
  */
 public class Room {
-    int room_id;
-    String room_name;
-    int room_price;
-    String room_img;
-    boolean room_status;
-    RoomType room_type; 
-    Hotel hotel; 
+    private int room_id;
+    private String room_name;
+    private int room_price;
+    private String room_img;
+    private boolean room_status;
+    private RoomType room_type; 
+    private Hotel hotel; 
 
     public Room() {
     }

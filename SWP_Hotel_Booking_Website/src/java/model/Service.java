@@ -9,10 +9,11 @@ package model;
  * @author Ngo Hong Hai - CE171752
  */
 public class Service {
-    int service_id;
-    String service_description;
-    int service_price;
-    Hotel hotel; 
+
+    private int service_id;
+    private String service_description;
+    private int service_price;
+    private Hotel hotel;
 
     public Service() {
     }
@@ -55,5 +56,5 @@ public class Service {
     public void setHotel(Hotel hotel) {
         this.hotel = hotel;
     }
-    
+
 }

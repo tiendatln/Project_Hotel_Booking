@@ -1,6 +1,6 @@
 <%-- 
-    Document   : index
-    Created on : Jun 14, 2024, 8:44:07 PM
+    Document   : room
+    Created on : Jun 20, 2024, 8:40:24 PM
     Author     : Ngo Hong Hai - CE171752
 --%>
 
@@ -12,8 +12,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Home Page</title>       
-
+        <title>Room Page</title>
         <!-- Google Font -->
         <link href="https://fonts.googleapis.com/css?family=Lora:400,700&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Cabin:400,500,600,700&display=swap" rel="stylesheet">
@@ -25,36 +24,7 @@
     </head>
     <body>
         <%@include file="layout/menu.jsp" %>
-
-        <div class="container mt-5">
-            <div id="myCarousel" class="carousel slide" data-ride="carousel">
-
-                <!-- Indicators/dots -->
-                <ol class="carousel-indicators">
-                    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-                    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-                </ol>
-
-                <!-- The slideshow/carousel -->
-                <div class="carousel-inner container-fluid">
-                    <div class="carousel-item active">
-                        <img src="img/slide3.jpg" class="d-block w-100" alt="Slide 1" style="height: 500px;">
-                    </div>
-                    <div class="carousel-item">
-                        <img src="img/silde2.jpg" class="d-block w-100" alt="Slide 2" style="height: 500px;">
-                    </div>
-                </div>
-
-                <!-- Left and right controls/icons -->
-                <a class="carousel-control-prev" href="#myCarousel" data-slide="prev">
-                    <span class="carousel-control-prev-icon"></span>
-                </a>
-                <a class="carousel-control-next" href="#myCarousel" data-slide="next">
-                    <span class="carousel-control-next-icon"></span>
-                </a>
-            </div>
-        </div>
-
+        
         <div class="container" style="background-color: brown; margin-top: 20px;">
             <div class="card custom-bg p-4 d-flex">
                 <form id="hotel-form" onsubmit="return validateForm()">
@@ -111,11 +81,60 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-auto w-100" style="margin-top: 20px">
+            <div class="col-auto w-100" style="">
 
             </div>
         </div>
 
+        <section class="rooms-section spad">
+            <div class="container">
+                <div class="row">
+                    <c:forEach items="${RoomData}" var="room">                        
+
+                        <div class="col-lg-4 col-md-6">
+                            <div class="room-item">                            
+                                <a href="room?action=roomdetail&room_id=${room.room_id}"><img src="${room.room_img}" alt=""></a>
+                                <div class="ri-text">                                
+                                    <h4><a href="room?action=roomdetail&room_id=${room.room_id}" style="color: black">${room.room_type.name_type}</a></h4>
+                                    <h3>${room.room_price}$<span>/Pernight</span></h3>
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td class="r-o">No.Room:</td>
+                                                <td>${room.room_name}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="r-o">Capacity:</td>
+                                                <td>Max persion ${room.room_type.room_capacity}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="r-o">Hotel:</td>
+                                                <td>${room.hotel.hotel_name}</td>
+                                            </tr>                                        
+                                        </tbody>
+                                    </table>                                
+                                    <a href="room?action=roomdetail&room_id=${room.room_id}" class="primary-btn" title="quick_view">More Details</a>
+                                </div>
+                            </div>                            
+                        </div>                           
+                    </c:forEach>    
+
+
+                    <c:set var="page" value="${page}"/>
+                    <div class="col-lg-12">
+                        <div class="room-pagination" >
+                            <ul>
+                                <c:forEach begin="${1}" end="${num}" var="i">
+                                    <li class="${i==page?"current":""}"><a href="room?page=${i}">${i}</a></li>
+                                    </c:forEach>
+
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
 
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>

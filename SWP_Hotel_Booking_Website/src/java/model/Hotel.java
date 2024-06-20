@@ -11,9 +11,9 @@ import java.util.ArrayList;
  * @author Ngo Hong Hai - CE171752
  */
 public class Hotel {
-    int hotel_id;
-    String hotel_name, hotel_address, hotel_img, hotel_detail;
-    Account account;    
+    private int hotel_id;
+    private String hotel_name, hotel_address, hotel_img, hotel_detail;
+    private Account account;    
 
     public Hotel() {
     }

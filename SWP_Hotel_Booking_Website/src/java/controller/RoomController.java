@@ -66,7 +66,7 @@ public class RoomController extends HttpServlet {
             request.setAttribute("page", page);
             request.setAttribute("num", num);
             request.setAttribute("RoomData", room);            
-            request.getRequestDispatcher("index.jsp").forward(request, response);
+            request.getRequestDispatcher("list-room.jsp").forward(request, response);
         } else {
              if (action.equalsIgnoreCase("roomdetail")) {
                  String room_id_raw = request.getParameter("room_id"); 

@@ -9,10 +9,10 @@ package model;
  * @author Ngo Hong Hai - CE171752
  */
 public class RoomType {
-    int room_type_id;
-    String name_type; 
-    String room_description;
-    int room_capacity; 
+    private int room_type_id;
+    private String name_type; 
+    private String room_description;
+    private int room_capacity; 
 
     public RoomType() {
     }
