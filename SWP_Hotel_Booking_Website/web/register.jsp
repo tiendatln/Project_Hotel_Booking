@@ -98,6 +98,19 @@
                 </div>
             </div>
         </div>
+        
+        <%
+            String checkMessage = (String) request.getSession().getAttribute("checkMessage");
+            if (checkMessage != null) {
+        %>
+        <div class="text-center">
+            <p class="text-danger"><%= checkMessage%></p>
+        </div>
+
+        <%
+                    request.getSession().removeAttribute("checkMessage");
+                }%>
+
 
         <!-- Bootstrap JS and dependencies (Optional) -->
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

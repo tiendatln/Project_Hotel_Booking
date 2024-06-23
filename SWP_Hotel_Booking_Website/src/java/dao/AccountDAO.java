@@ -128,4 +128,52 @@ public class AccountDAO extends DBContext{
         }
         return (count == 0) ? null : newAccount;
     }
+    
+     public Account updateAccount(Account updateAcc) {
+        int count = 0;
+        try {
+            ps = connection.prepareStatement("Update Account Set [name] = ?, email = ?, age = ?, phone = ?, id_number = ? where username = ?");
+            ps.setString(1, updateAcc.getName());
+            ps.setString(2, updateAcc.getEmail());
+            ps.setInt(3, updateAcc.getAge());
+            ps.setString(4, updateAcc.getPhone());
+            ps.setString(5, updateAcc.getId_number());
+            ps.setString(6, updateAcc.getUsername());
+            count = ps.executeUpdate();
+        } catch (SQLException e) {
+            Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return (count == 0) ? null : updateAcc;
+    }
+     
+     public Account changePassword(Account newPass) {
+        int count = 0;
+        try {
+            ps = connection.prepareStatement("Update Account Set password = ? where username = ?");
+            ps.setString(1, newPass.getPassword());
+            ps.setString(2, newPass.getUsername());
+            ps.setString(2, newPass.getUsername());
+            count = ps.executeUpdate();
+        } catch (SQLException e) {
+            Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return (count == 0) ? null : newPass;
+    }
+     
+      public String checkAccount(String username){        
+        try {
+            ps = connection.prepareStatement("select * from Account where username = ?");
+            ps.setString(1, username);
+            rs = ps.executeQuery();
+            if(rs.next()){
+                if(rs.getBoolean("is_owner")){
+                    return "owner";
+                }else if (rs.getBoolean("is_admin")){
+                    return "admin";
+                }
+            }
+        } catch (Exception e) {
+        }
+        return "customer";
+    }
 }

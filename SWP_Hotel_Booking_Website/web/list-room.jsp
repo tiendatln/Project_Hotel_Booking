@@ -93,7 +93,7 @@
 
                         <div class="col-lg-4 col-md-6">
                             <div class="room-item">                            
-                                <a href="room?action=roomdetail&room_id=${room.room_id}"><img src="${room.room_img}" alt=""></a>
+                                <a href="room?action=roomdetail&room_id=${room.room_id}"><img src="img/room/room-details.jpg" alt=""></a>
                                 <div class="ri-text">                                
                                     <h4><a href="room?action=roomdetail&room_id=${room.room_id}" style="color: black">${room.room_type.name_type}</a></h4>
                                     <h3>${room.room_price}$<span>/Pernight</span></h3>

@@ -28,7 +28,7 @@
                     <div class="col-lg-8">                       
                                                 
                         <div class="room-details-item">
-                            <img src=${Data.room_img} alt="">
+                            <img src="img/room/room-details.jpg" alt="">
                             <div class="rd-text">
                                 <div class="rd-title">
                                     <h3>${Data.room_type.name_type}</h3>

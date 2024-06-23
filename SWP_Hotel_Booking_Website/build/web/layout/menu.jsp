@@ -55,7 +55,7 @@
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">                            
                         <div class="dropdown-divider"></div>
                         <%if (flagCustomer) { %>
-                        <a class="dropdown-item" href="profile">Your Profile</a>
+                        <a class="dropdown-item" href="profile?action=updateprofile">Your Profile</a>
                         <a class="dropdown-item" href="logout">Sign Out</a>
                         <% } else {%>
                         <a class="dropdown-item" href="login">Login</a>
