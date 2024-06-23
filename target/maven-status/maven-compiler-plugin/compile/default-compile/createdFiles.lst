@@ -1,0 +1,6 @@
+Model\hotel.class
+Model\reservation.class
+Model\account.class
+Model\feedback.class
+DB\DBConnection.class
+Model\room.class
