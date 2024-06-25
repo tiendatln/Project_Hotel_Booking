@@ -16,10 +16,16 @@
         Cookie[] cList = null;
         String value = "";
         boolean flagCustomer = false;
+        boolean flagOwner = false; 
         cList = request.getCookies(); //Lay tat ca cookie cua website nay tren may nguoi dung
         if (cList != null) {
             for (int i = 0; i < cList.length; i++) {//Duyet qua het tat ca cookie
                 if (cList[i].getName().equals("customer")) {//nguoi dung da dang nhap
+                    value = cList[i].getValue();
+                    flagCustomer = true;
+                    break; //thoat khoi vong lap
+                }
+                if (cList[i].getName().equals("owner")) {//nguoi dung da dang nhap
                     value = cList[i].getValue();
                     flagCustomer = true;
                     break; //thoat khoi vong lap
@@ -46,7 +52,7 @@
                             <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
                             <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
                         </svg>
-                        <%if (flagCustomer) {%>
+                        <%if (flagCustomer || flagOwner) {%>
                         <%= ac.getName()%>
                         <% } else {%>
                         Account
@@ -54,7 +60,7 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">                            
                         <div class="dropdown-divider"></div>
-                        <%if (flagCustomer) { %>
+                        <%if (flagCustomer || flagOwner) { %>
                         <a class="dropdown-item" href="profile?action=updateprofile">Your Profile</a>
                         <a class="dropdown-item" href="logout">Sign Out</a>
                         <% } else {%>
@@ -66,5 +72,5 @@
             </ul>
         </div>
     </nav>
-    
+
 </header>

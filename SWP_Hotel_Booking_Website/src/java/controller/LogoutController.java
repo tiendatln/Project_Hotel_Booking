@@ -65,6 +65,12 @@ public class LogoutController extends HttpServlet {
                     response.addCookie(cList1);
                     break; //thoat khoi vong lap
                 }
+                if (cList1.getName().equals("owner")) { //nguoi dung da dang nhap
+                    cList1.setMaxAge(0);
+                    cList1.setPath("/");
+                    response.addCookie(cList1);
+                    break; //thoat khoi vong lap
+                }
             }
             response.sendRedirect("home");
     } 

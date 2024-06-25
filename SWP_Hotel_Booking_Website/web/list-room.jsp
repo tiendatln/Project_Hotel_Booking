@@ -110,7 +110,11 @@
                                             <tr>
                                                 <td class="r-o">Hotel:</td>
                                                 <td>${room.hotel.hotel_name}</td>
-                                            </tr>                                        
+                                            </tr>          
+                                            <tr>
+                                                <td class="r-o">Location:</td>
+                                                <td>${room.hotel.hotel_address}</td>
+                                            </tr> 
                                         </tbody>
                                     </table>                                
                                     <a href="room?action=roomdetail&room_id=${room.room_id}" class="primary-btn" title="quick_view">More Details</a>

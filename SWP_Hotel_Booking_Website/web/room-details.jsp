@@ -10,7 +10,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Room Details Page</title>
         <!-- Google Font -->
         <link href="https://fonts.googleapis.com/css?family=Lora:400,700&display=swap" rel="stylesheet">        
         <link href="https://fonts.googleapis.com/css?family=Cabin:400,500,600,700&display=swap" rel="stylesheet">
@@ -62,7 +62,11 @@
                                             <tr>
                                                 <td class="r-o">Hotel:</td>
                                                 <td>${Data.hotel.hotel_name}</td>
-                                            </tr>                                        
+                                            </tr>             
+                                            <tr>
+                                                <td class="r-o">Location:</td>
+                                                <td>${Data.hotel.hotel_address}</td>
+                                            </tr> 
                                     </tbody>
                                 </table>
                                 <p class="f-para">${Data.room_type.room_description}</p>                                
