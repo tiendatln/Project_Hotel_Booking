@@ -105,7 +105,7 @@
 
                                     <div class="e-table">
                                         <div class="table-responsive table-lg mt-3">
-                                            <table class="table table-bordered table-hover" style="table-layout: auto">
+                                            <table class="table table-bordered table-hover" style='word-wrap:break-word'>
                                                 <thead>
                                                     <tr>
                                                         <th>ID</th>
@@ -133,7 +133,8 @@
                                                             <td class="text-nowrap align-middle">${room.room_price}$</td>
                                                             <td class="text-nowrap align-middle" ><span>${room.room_type.name_type}</span></td>
                                                             <td class="text-nowrap align-middle" ><span>${room.room_type.room_capacity}</span></td>
-                                                            <td class="text-nowrap align-middle"><span>${room.room_type.room_description}</span></td>
+                                                            <td class="text-nowrap align-middle" style='max-width: 200px; 
+    overflow-x: hidden;'><span>${room.room_description}</span></td>
                                                             <td class="text-nowrap align-middle"><span>${room.hotel.hotel_name}</span></td>
                                                             <td class="text-center align-middle" ><i class="fa fa-fw text-secondary cursor-pointer offcanvas-body ${room.room_status ? "fa-toggle-on" : "fa-toggle-off"}"></i></td>
                                                             <td class="text-center align-middle">
@@ -329,7 +330,7 @@
                                                         <div class="col mb-3">
                                                             <div class="form-group">
                                                                 <label>Description</label>
-                                                                <textarea class="form-control" rows="5" placeholder="Write a description for the room" name="description"></textarea>
+                                                                <textarea class="form-control" rows="5" placeholder="Write a description for the room" name="description">${room.room_description}</textarea>
                                                             </div>
                                                         </div>
                                                     </div>

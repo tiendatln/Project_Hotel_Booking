@@ -23,7 +23,7 @@ public class RoomDAO extends DBContext {
 
     public List<Room> getRoom() {
         List<Room> list = new ArrayList<>();
-        String sql = "select h.hotel_id, rt.room_type_id, r.room_id, r.room_name, r.room_price, r.room_img, r.room_status\n"
+        String sql = "select h.hotel_id, rt.room_type_id, r.room_id, r.room_name, r.room_price, r.room_img, r.room_status, r.room_description\n"
                 + "from Room r \n"
                 + "join Hotel h on r.hotel_id = h.hotel_id \n"
                 + "join RoomType rt on r.room_type_id = rt.room_type_id";
@@ -33,7 +33,7 @@ public class RoomDAO extends DBContext {
             while (rs.next()) {
                 Hotel h = new Hotel(rs.getInt(1));
                 RoomType rt = new RoomType(rs.getInt(2));
-                list.add(new Room(rs.getInt(3), rs.getString(4), rs.getInt(5), rs.getString(6), rs.getBoolean(7), rt, h));
+                list.add(new Room(rs.getInt(3), rs.getString(4), rs.getInt(5), rs.getString(6), rs.getBoolean(7), rs.getString(8), rt, h));
             }
         } catch (Exception e) {
             System.out.println(e);
@@ -43,13 +43,13 @@ public class RoomDAO extends DBContext {
 
     public List<RoomType> getRoomType() {
         List<RoomType> list = new ArrayList<>();
-        String sql = "select room_type_id, name_type, room_description, room_capacity\n"
+        String sql = "select room_type_id, name_type, room_capacity\n"
                 + "from RoomType";
         try {
             ps = connection.prepareStatement(sql);
             rs = ps.executeQuery();
             while (rs.next()) {
-                list.add(new RoomType(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4)));
+                list.add(new RoomType(rs.getInt(1), rs.getString(2), rs.getInt(3)));
             }
         } catch (Exception e) {
             System.out.println(e);
@@ -66,7 +66,7 @@ public class RoomDAO extends DBContext {
     }
 
     public Room getRoomByID(int room_id) {
-        String sql = "select h.hotel_id, rt.room_type_id, r.room_id, r.room_name, r.room_price, r.room_img, r.room_status\n"
+        String sql = "select h.hotel_id, rt.room_type_id, r.room_id, r.room_name, r.room_price, r.room_img, r.room_status, r.room_description\n"
                 + "from Room r \n"
                 + "join Hotel h on r.hotel_id = h.hotel_id\n"
                 + "join RoomType rt on r.room_type_id = rt.room_type_id\n"
@@ -78,7 +78,7 @@ public class RoomDAO extends DBContext {
             while (rs.next()) {
                 Hotel h = new Hotel(rs.getInt(1));
                 RoomType rt = new RoomType(rs.getInt(2));
-                Room r = new Room(rs.getInt(3), rs.getString(4), rs.getInt(5), rs.getString(6), rs.getBoolean(7), rt, h);
+                Room r = new Room(rs.getInt(3), rs.getString(4), rs.getInt(5), rs.getString(6), rs.getBoolean(7), rs.getString(8), rt, h);
                 return r;
             }
         } catch (Exception e) {
@@ -89,7 +89,7 @@ public class RoomDAO extends DBContext {
 
     public List<Room> getRoomByUsername(String username) {
         List<Room> list = new ArrayList<>();
-        String sql = "select h.hotel_id, r.room_type_id, r.room_id, r.room_name, r.room_price, r.room_img, r.room_status\n"
+        String sql = "select h.hotel_id, r.room_type_id, r.room_id, r.room_name, r.room_price, r.room_img, r.room_status, r.room_description\n"
                 + "from Room r\n"
                 + "join Hotel h on r.hotel_id = h.hotel_id\n"
                 + "where h.username = ?";
@@ -100,7 +100,7 @@ public class RoomDAO extends DBContext {
             while (rs.next()) {
                 Hotel h = new Hotel(rs.getInt(1));
                 RoomType rt = new RoomType(rs.getInt(2));
-                list.add(new Room(rs.getInt(3), rs.getString(4), rs.getInt(5), rs.getString(6), rs.getBoolean(7), rt, h));
+                list.add(new Room(rs.getInt(3), rs.getString(4), rs.getInt(5), rs.getString(6), rs.getBoolean(7), rs.getString(8), rt, h));
             }
         } catch (Exception e) {
             System.out.println(e);
@@ -109,7 +109,7 @@ public class RoomDAO extends DBContext {
     }
 
     public RoomType getRoomTypeByID(int room_type_id) {
-        String sql = "select rt.room_type_id, name_type, room_description, room_capacity\n"
+        String sql = "select rt.room_type_id, name_type, room_capacity\n"
                 + "from RoomType rt \n"
                 + "join Room r on rt.room_type_id = r.room_type_id\n"
                 + "where r.room_type_id = ?";
@@ -118,7 +118,7 @@ public class RoomDAO extends DBContext {
             ps.setInt(1, room_type_id);
             rs = ps.executeQuery();
             while (rs.next()) {
-                return new RoomType(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4));
+                return new RoomType(rs.getInt(1), rs.getString(2), rs.getInt(3));
             }
         } catch (Exception e) {
             System.out.println(e);
@@ -128,7 +128,7 @@ public class RoomDAO extends DBContext {
 
     public void insertRoom(Room room) {
         String sql = "INSERT INTO [dbo].[Room]\n"
-                + "([room_name],[room_price],[room_img],[room_status],[room_type_id],[hotel_id])\n"
+                + "([room_name],[room_price],[room_img],[room_status],[room_description],[room_type_id],[hotel_id])\n"
                 + "VALUES(?,?,?,?,?,?)";
         try {
             ps = connection.prepareStatement(sql);
@@ -136,8 +136,9 @@ public class RoomDAO extends DBContext {
             ps.setInt(2, room.getRoom_price());
             ps.setString(3, room.getRoom_img());
             ps.setBoolean(4, room.isRoom_status());
-            ps.setInt(5, room.getRoom_type().getRoom_type_id());
-            ps.setInt(6, room.getHotel().getHotel_id());
+            ps.setString(5, room.getRoom_description()); 
+            ps.setInt(6, room.getRoom_type().getRoom_type_id());
+            ps.setInt(7, room.getHotel().getHotel_id());
             ps.executeUpdate();
         } catch (Exception e) {
         }
@@ -160,6 +161,7 @@ public class RoomDAO extends DBContext {
                 + "      ,[room_price] = ?\n"
                 + "      ,[room_img] = ?\n"
                 + "      ,[room_status] = ?\n"
+                + "      ,[room_description] = ?\n"
                 + "      ,[room_type_id] = ?\n"
                 + "      ,[hotel_id] = ?\n"
                 + " WHERE room_id = ?";
@@ -169,9 +171,10 @@ public class RoomDAO extends DBContext {
             ps.setInt(2, room.getRoom_price());
             ps.setString(3, room.getRoom_img());
             ps.setBoolean(4, room.isRoom_status());
-            ps.setInt(5, room.getRoom_type().getRoom_type_id());
-            ps.setInt(6, room.getHotel().getHotel_id());
-            ps.setInt(7, room.getRoom_id());
+            ps.setString(5, room.getRoom_description());
+            ps.setInt(6, room.getRoom_type().getRoom_type_id());
+            ps.setInt(7, room.getHotel().getHotel_id());
+            ps.setInt(8, room.getRoom_id());
             ps.executeUpdate();
         } catch (Exception e) {
         }

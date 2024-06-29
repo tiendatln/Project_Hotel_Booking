@@ -107,6 +107,7 @@ public class RoomManager extends HttpServlet {
                 room.setRoom_price(room_price);
                 room.setRoom_img(room_img);
                 room.setRoom_status(room_status);
+                room.setRoom_description(room_description);
                 room.setRoom_type(roomType);
                 room.setHotel(hotel);
 
@@ -147,6 +148,7 @@ public class RoomManager extends HttpServlet {
                 room.setRoom_price(room_price);
                 room.setRoom_img(room_img);
                 room.setRoom_status(room_status);
+                room.setRoom_description(room_description);
                 room.setRoom_type(roomType);
                 room.setHotel(hotel);
 

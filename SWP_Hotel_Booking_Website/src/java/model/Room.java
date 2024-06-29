@@ -9,23 +9,26 @@ package model;
  * @author Ngo Hong Hai - CE171752
  */
 public class Room {
+
     private int room_id;
     private String room_name;
     private int room_price;
     private String room_img;
     private boolean room_status;
-    private RoomType room_type; 
-    private Hotel hotel; 
+    private String room_description;
+    private RoomType room_type;
+    private Hotel hotel;
 
     public Room() {
     }
 
-    public Room(int room_id, String room_name, int room_price, String room_img, boolean room_status, RoomType room_type, Hotel hotel) {
+    public Room(int room_id, String room_name, int room_price, String room_img, boolean room_status, String room_description, RoomType room_type, Hotel hotel) {
         this.room_id = room_id;
         this.room_name = room_name;
         this.room_price = room_price;
         this.room_img = room_img;
         this.room_status = room_status;
+        this.room_description = room_description;
         this.room_type = room_type;
         this.hotel = hotel;
     }
@@ -86,7 +89,12 @@ public class Room {
         this.hotel = hotel;
     }
 
-    
-    
-    
+    public String getRoom_description() {
+        return room_description;
+    }
+
+    public void setRoom_description(String room_description) {
+        this.room_description = room_description;
+    }
+
 }
