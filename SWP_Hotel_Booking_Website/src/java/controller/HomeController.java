@@ -4,13 +4,20 @@
  */
 package controller;
 
+import dao.HotelDAO;
+import dao.RoomDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
+import model.Hotel;
+import model.Room;
+import model.RoomType;
 
 /**
  *
@@ -65,7 +72,7 @@ public class HomeController extends HttpServlet {
                 request.getRequestDispatcher("index.jsp").forward(request, response);
             }
             if (role.equalsIgnoreCase("owner")) {
-                request.getRequestDispatcher("owner/list-room.jsp").forward(request, response);
+                response.sendRedirect("roommanager");
             }
         }
         

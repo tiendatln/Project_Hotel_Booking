@@ -17,14 +17,64 @@
         <link href="https://fonts.googleapis.com/css?family=Lora:400,700&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Cabin:400,500,600,700&display=swap" rel="stylesheet">
 
-        <!-- Css Styles -->
+        <!-- Css Styles -->           
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">           
         <link rel="stylesheet" href="css/style.css" type="text/css">
+        <style>
+            .room_toolbar {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: 1px solid #EFD4B9;
+                padding: 8px 10px;
+                margin: 0 0 40px;                
+            }
+            .room_toolbar.t_bottom {
+                justify-content: center;
+                margin-bottom: 0;
+            }
+            .pagination {
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                padding-left: 0;
+                list-style: none
+            }
+
+            .pagination ul li {
+                display: inline-block;
+                width: 40px;
+                height: 50px;
+                line-height: 50px;
+                text-align: center;
+                background: #f1f1f1;
+                color: #707079;
+                border-radius: 3px;
+                margin-left: 3px;
+            }
+            .pagination ul li:first-child {
+                margin-left: 0;
+            }
+            .pagination ul li a {                
+                display: block;
+                border-radius: 2px;  
+                color: grey;
+            }
+            .pagination ul li a:hover {
+                background: #dfa974;
+                color: #ffffff;
+            }
+            .pagination ul li.current a{
+                background: #dfa974;
+                color: #ffffff;
+            }            
+           
+        </style>
     </head>
     <body>
         <%@include file="layout/menu.jsp" %>
-        
+
         <div class="container" style="background-color: brown; margin-top: 20px;">
             <div class="card custom-bg p-4 d-flex">
                 <form id="hotel-form" onsubmit="return validateForm()">
@@ -105,7 +155,7 @@
                                             </tr>
                                             <tr>
                                                 <td class="r-o">Capacity:</td>
-                                                <td>Max persion ${room.room_type.room_capacity}</td>
+                                                <td>Max person ${room.room_type.room_capacity}</td>
                                             </tr>
                                             <tr>
                                                 <td class="r-o">Hotel:</td>
@@ -125,11 +175,11 @@
 
 
                     <c:set var="page" value="${page}"/>
-                    <div class="col-lg-12">
-                        <div class="room-pagination" >
+                    <div class="col-lg-12 shop_toolbar t_bottom d-flex justify-content-center">
+                        <div class="pagination">
                             <ul>
                                 <c:forEach begin="${1}" end="${num}" var="i">
-                                    <li class="${i==page?"current":""}"><a href="room?page=${i}">${i}</a></li>
+                                    <li class="${i==page?"current":""}"><a href="room?page=${i}">${i}</a></li>                                    
                                     </c:forEach>
 
                             </ul>

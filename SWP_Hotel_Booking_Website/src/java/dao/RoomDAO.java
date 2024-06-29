@@ -43,9 +43,8 @@ public class RoomDAO extends DBContext {
 
     public List<RoomType> getRoomType() {
         List<RoomType> list = new ArrayList<>();
-        String sql = "select rt.room_type_id, name_type, room_description, room_capacity\n"
-                + "from RoomType rt \n"
-                + "join Room r on rt.room_type_id = r.room_type_id";
+        String sql = "select room_type_id, name_type, room_description, room_capacity\n"
+                + "from RoomType";
         try {
             ps = connection.prepareStatement(sql);
             rs = ps.executeQuery();
@@ -86,6 +85,27 @@ public class RoomDAO extends DBContext {
             System.out.println(e);
         }
         return null;
+    }
+
+    public List<Room> getRoomByUsername(String username) {
+        List<Room> list = new ArrayList<>();
+        String sql = "select h.hotel_id, r.room_type_id, r.room_id, r.room_name, r.room_price, r.room_img, r.room_status\n"
+                + "from Room r\n"
+                + "join Hotel h on r.hotel_id = h.hotel_id\n"
+                + "where h.username = ?";
+        try {
+            ps = connection.prepareStatement(sql);
+            ps.setString(1, username);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Hotel h = new Hotel(rs.getInt(1));
+                RoomType rt = new RoomType(rs.getInt(2));
+                list.add(new Room(rs.getInt(3), rs.getString(4), rs.getInt(5), rs.getString(6), rs.getBoolean(7), rt, h));
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return list;
     }
 
     public RoomType getRoomTypeByID(int room_type_id) {
