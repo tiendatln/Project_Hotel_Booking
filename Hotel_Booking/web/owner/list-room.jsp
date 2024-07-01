@@ -177,7 +177,7 @@
                             </div>
                             <div class="modal-body">
                                 <div class="py-1">
-                                    <form class="form" novalidate="" action="/roomManagerController?action=insertroom" method="POST">
+                                    <form class="form" novalidate="" action="/roomManagerController?action=insertroom" method="POST" enctype="multipart/form-data">
                                         <div class="row">
                                             <div class="col">
                                                 <div class="row">

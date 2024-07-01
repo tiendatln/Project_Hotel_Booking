@@ -9,6 +9,7 @@
 <%@page import="DAOs.roomDAOs"%>
 <%@page import="Model.hotel"%>
 <%@page import="DAOs.hotelDAOs"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -56,8 +57,7 @@
         <%@include file="layout.jsp"%>
         <%
             hotelDAOs hDAO = new hotelDAOs();
-            String ID = (String) request.getSession().getAttribute("hotelID");
-            int hotelID = Integer.valueOf(ID);
+            int hotelID = (int) request.getSession().getAttribute("hotelID");
             hotel h = hDAO.getHotelDetailById(hotelID);
         %>
         <div class="container mt-4" >
@@ -66,45 +66,45 @@
                     location - show map</a></p>
 
             <div class="row">
-                <div class="col-md-8">
-                    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-                        <ol class="carousel-indicators">
-                            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-                            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-                            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-                        </ol>
-                        <div class="carousel-inner">
-                            <div class="carousel-item active">
-                                <img src="https://via.placeholder.com/800x400" class="d-block w-100" alt="...">
+
+                <div class="row">
+                    <div class="col-md-8">
+                        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                            <ol class="carousel-indicators">
+                                <c:forEach items="${roomImg}" varStatus="status">
+                                    <li data-target="#carouselExampleIndicators" data-slide-to="${status.index}" class="${status.first ? 'active' : ''}"></li>
+                                    </c:forEach>
+                            </ol>
+                            <div class="carousel-inner" style="width: 700px">
+                                <c:forEach items="${roomImg}" var="room" varStatus="status">
+                                    <div class="carousel-item ${status.first ? 'active' : ''}">
+                                        <img src="<%= request.getContextPath()%>/imgs/room/${room.room_img}" class="d-block w-100" alt="...">
+                                    </div>
+                                </c:forEach>
                             </div>
-                            <div class="carousel-item">
-                                <img src="https://via.placeholder.com/800x400" class="d-block w-100" alt="...">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="https://via.placeholder.com/800x400" class="d-block w-100" alt="...">
-                            </div>
-                        </div>
-                        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="sr-only">Previous</span>
-                        </a>
-                        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="sr-only">Next</span>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Very Good <span class="badge badge-primary">8.2</span></h5>
-                            <p class="card-text"><i>"too cheap of a price for an amazing 4 stars experience"</i></p>
-                            <p class="card-text"><i class="fas fa-user"></i> Tin – Vietnam</p>
-                            <hr>
-                            <h6>Staff <span class="badge badge-success">8.8</span></h6>
+                            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Next</span>
+                            </a>
                         </div>
                     </div>
-                    <div id="map" style="height: 200px;"></div>
+
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Very Good <span class="badge badge-primary">8.2</span></h5>
+                                <p class="card-text"><i>"too cheap of a price for an amazing 4 stars experience"</i></p>
+                                <p class="card-text"><i class="fas fa-user"></i> Tin – Vietnam</p>
+                                <hr>
+                                <h6>Staff <span class="badge badge-success">8.8</span></h6>
+                            </div>
+                        </div>
+                        <div id="map" style="height: 200px;"></div>
+                    </div>
                 </div>
             </div>
 
@@ -161,16 +161,16 @@
                                         <h5>Room Type</h5>
                                     </div>
                                     <div class="col-md-2 text-center">
-                                        
+
                                     </div>
                                     <div class="col-md-2 text-center ">
                                         <h5>Price</h5>
                                     </div>
                                     <div class="col-md-3 text-center ">
-                                        
+
                                     </div>
                                     <div class="col-md-2 text-center">
-                                        
+
                                     </div>
                                 </div>
                             </div>
@@ -219,7 +219,7 @@
                         </div>
                     </div>
                     <% }
-                        }%>
+                    }%>
                     <!-- End Repeat -->
                 </div>
             </div>

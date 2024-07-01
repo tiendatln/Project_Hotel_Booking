@@ -4,6 +4,8 @@
  */
 package Controllers;
 
+import DAOs.roomDAOs;
+import Model.room;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -11,6 +13,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.Date;
+import java.util.List;
 
 /**
  *
@@ -61,7 +64,11 @@ public class searchController extends HttpServlet {
             request.getRequestDispatcher("/listHotel.jsp").forward(request, response);
         }else if(path.startsWith("/searchController/HotelDetail")){
             String[] s = path.split("/");
-            request.getSession().setAttribute("hotelID", s[s.length - 1]);
+            roomDAOs rDAO = new roomDAOs();
+            int hotel_id = Integer.valueOf(s[s.length - 1]);
+            List<room> room = rDAO.getRoomImgByHotelId(hotel_id);
+            request.getSession().setAttribute("hotelID", hotel_id);
+            request.setAttribute("roomImg", room);
             request.getRequestDispatcher("/hotelDetail.jsp").forward(request, response);
         }
     }
