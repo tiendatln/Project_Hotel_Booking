@@ -48,4 +48,12 @@ public class reservationDAOs {
         }
         return rs;
     }
+    public reservation insertRoomIntoReserve(int room_id){
+        reservation rs = null;
+        try {
+            
+        } catch (Exception e) {
+        }
+        return rs;
+    }
 }

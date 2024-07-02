@@ -19,6 +19,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -147,8 +148,8 @@ public class roomManagerController extends HttpServlet {
             String room_price_raw = request.getParameter("price");
             String hotel_id_raw = request.getParameter("hotel_id");
             String room_description = request.getParameter("description");
-            Part part = request.getPart("room_img");
             String room_status_raw = request.getParameter("status");
+            Part part = request.getPart("room_img");
             String realPath = "D:\\JAVA\\Project\\Ky5\\Group\\Hotel_Booking\\web\\imgs\\room";
             Path fileName = Paths.get(part.getSubmittedFileName());
             if (!Files.exists(Paths.get(realPath))) {
@@ -184,8 +185,14 @@ public class roomManagerController extends HttpServlet {
             String room_price_raw = request.getParameter("price");
             String hotel_id_raw = request.getParameter("hotel_id");
             String room_description = request.getParameter("description");
-            String room_img = "imgs/room" + request.getParameter("room_img");
             String room_status_raw = request.getParameter("status");
+            Part part = request.getPart("room_img");
+            String realPath = "D:\\JAVA\\Project\\Ky5\\Group\\Hotel_Booking\\web\\imgs\\room";
+            Path fileName = Paths.get(part.getSubmittedFileName());
+            if (!Files.exists(Paths.get(realPath))) {
+                Files.createDirectories(Paths.get(realPath));
+            }
+            String picture = fileName.getFileName().toString();
 
             int room_id = Integer.parseInt(room_id_raw);
             int room_type_id = Integer.parseInt(roomtype_id_raw);
@@ -199,15 +206,27 @@ public class roomManagerController extends HttpServlet {
             room.setRoom_id(room_id);
             room.setRoom_name(room_name);
             room.setRoom_price(room_price);
-            room.setRoom_img(room_img);
+            room.setRoom_img(picture);
             room.setRoom_status(room_status);
             room.setRoom_description(room_description);
             room.setRoom_type(roomType);
             room.setHotel(hotel);
 
-            rdb.updateRoom(room);
-            System.out.println("updated");
-            response.sendRedirect("/roomManagerController");
+            if (picture.equals("")) {
+                rdb.updateRoom(room);
+                System.out.println("updated");
+                response.sendRedirect("/roomManagerController");
+            } else {
+
+                part.write(realPath + "/" + fileName);
+
+                File filePic = new File("D:\\JAVA\\Ki4\\PRJ\\HandmadeStore\\src\\main\\webapp\\imgs" + rdb.getRoomImgByRoomID(room_id));
+                filePic.delete();
+                rdb.updateRoom(room);
+                System.out.println("updated");
+                response.sendRedirect("/roomManagerController");
+            }
+
         }
     }
 

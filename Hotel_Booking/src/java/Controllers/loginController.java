@@ -79,18 +79,9 @@ public class loginController extends HttpServlet {
             cList = request.getCookies();
             if (cList != null) {
                 for (Cookie cList1 : cList) { //Duyet qua het tat ca cookie
-                    if (cList1.getName().equals("customer")) { //nguoi dung da dang nhap
-                        cList1.setMaxAge(0);
-                        cList1.setPath("/");
-                        response.addCookie(cList1);
-                        break; //thoat khoi vong lap
-                    }
-                    if (cList1.getName().equals("owner")) { //nguoi dung da dang nhap
-                        cList1.setMaxAge(0);
-                        cList1.setPath("/");
-                        response.addCookie(cList1);
-                        break; //thoat khoi vong lap
-                    }
+                    cList1.setMaxAge(0);
+                    cList1.setPath("/");
+                    response.addCookie(cList1);
                 }
             }
             accountDAOs aDAO = new accountDAOs();

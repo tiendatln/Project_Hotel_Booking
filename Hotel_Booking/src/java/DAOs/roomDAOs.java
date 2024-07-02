@@ -228,7 +228,7 @@ public class roomDAOs {
         } catch (Exception e) {
         }
     }
-    public List<room> getRoomImgByHotelId(int hotel_id){
+    public List<room> getAllRoomImgByHotelId(int hotel_id){
         List<room> list = new ArrayList<>();
         ResultSet rs = null;
         try {
@@ -243,5 +243,19 @@ public class roomDAOs {
             System.out.println(e);
         }
         return list;
+    }
+    public String getRoomImgByRoomID(int room_id){
+        ResultSet rs = null;
+        String img = "";
+        try {
+            PreparedStatement ps = conn.prepareStatement("select * from Room where room_id = ?");
+            ps.setInt(1, room_id);
+            rs = ps.executeQuery();
+            if(rs.next()){
+                img = rs.getString("room_img");
+            }
+        } catch (Exception e) {
+        }
+        return img;
     }
 }

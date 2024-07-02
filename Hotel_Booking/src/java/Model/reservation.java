@@ -18,8 +18,24 @@ public class reservation {
     private Date check_in_date;
     private Date check_out_date;
     private long list_price;
+    private room room_id;
+    private hotel hotel_id;
+    private account username;
 
     public reservation() {
+    }
+
+    public reservation(int id, byte status, Date re_date, int quantity, Date check_in_date, Date check_out_date, long list_price, room room_id, hotel hotel_id, account username) {
+        this.id = id;
+        this.status = status;
+        this.re_date = re_date;
+        this.quantity = quantity;
+        this.check_in_date = check_in_date;
+        this.check_out_date = check_out_date;
+        this.list_price = list_price;
+        this.room_id = room_id;
+        this.hotel_id = hotel_id;
+        this.username = username;
     }
 
     public reservation(int id, byte status, Date re_date, int quantity, Date check_in_date, Date check_out_date, long list_price) {

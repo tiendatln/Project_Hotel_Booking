@@ -41,7 +41,7 @@
             }
         %>
 
-        <div class="container">
+        <div class="m-5">
             <div class="row flex-lg-nowrap">
                 <div class="col-12 col-lg-auto mb-3" style="width: 200px;">
                     <div class="card p-3">
@@ -105,7 +105,7 @@
 
                                     <div class="e-table">
                                         <div class="table-responsive table-lg mt-3">
-                                            <table class="table table-bordered table-hover" style='word-wrap:break-word'>
+                                            <table class="table table-bordered table-hover" >
                                                 <thead>
                                                     <tr>
                                                         <th>ID</th>
@@ -114,7 +114,7 @@
                                                         <th>Price</th>
                                                         <th class="sortable">Room Type</th>
                                                         <th>Capacity</th>
-                                                        <th class="max-width">Description</th>
+                                                        <th class="max-width" style="max-width: 400px;">Description</th>
                                                         <th>Hotel</th>
                                                         <th>Active</th>
                                                         <th>Actions</th>
@@ -127,14 +127,14 @@
                                                                 ${room.room_id}
                                                             </td>
                                                             <td class="align-middle text-center" style="width: 100px">
-                                                                <div class="bg-light d-inline-flex justify-content-center align-items-center align-top" style="width: 70px; height: 35px; border-radius: 3px;"><img src="imgs/room/room-details.jpg" alt="" width="75px;"></div>
+                                                                <div class="bg-light d-inline-flex justify-content-center align-items-center align-top" style="width: 70px; height: 35px; border-radius: 3px;"><img src="<%= request.getContextPath() %>/imgs/room/${room.room_img }" alt="" width="75px;" height="40px;"></div>
                                                             </td>
                                                             <td class="text-nowrap align-middle">${room.room_name}</td>
                                                             <td class="text-nowrap align-middle">${room.room_price}$</td>
                                                             <td class="text-nowrap align-middle" ><span>${room.room_type.name_type}</span></td>
                                                             <td class="text-nowrap align-middle" ><span>${room.room_type.room_capacity}</span></td>
-                                                            <td class="text-nowrap align-middle" style='max-width: 200px;
-                                                                overflow-x: hidden;'><span>${room.room_description}</span></td>
+                                                            <td class="text-nowrap align-middle" style='max-width: 400px;
+                                                                overflow-x: auto;'><span>${room.room_description}</span></td>
                                                             <td class="text-nowrap align-middle"><span>${room.hotel.hotel_name}</span></td>
                                                             <td class="text-center align-middle" ><i class="fa fa-fw text-secondary cursor-pointer offcanvas-body ${room.room_status ? "fa-toggle-on" : "fa-toggle-off"}"></i></td>
                                                             <td class="text-center align-middle">
@@ -277,7 +277,7 @@
                                 </div>
                                 <div class="modal-body">
                                     <div class="py-1">
-                                        <form class="form" novalidate="" action="/roomManagerController?action=updateroom" method="POST">
+                                        <form class="form" novalidate="" action="/roomManagerController?action=updateroom" method="POST" enctype="multipart/form-data">
                                             <div class="row">
                                                 <div class="col mb-3">
                                                     <div class="form-group">

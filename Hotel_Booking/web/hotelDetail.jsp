@@ -4,6 +4,7 @@
     Author     : tiend
 --%>
 
+<%@page import="java.sql.Date"%>
 <%@page import="DAOs.serviceDAOs"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="DAOs.roomDAOs"%>
@@ -65,46 +66,28 @@
             <p class="lead"><i class="fas fa-map-marker-alt"></i> <%= h.getHotel_address()%> – <a href="#">Great
                     location - show map</a></p>
 
-            <div class="row">
-
-                <div class="row">
-                    <div class="col-md-8">
-                        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-                            <ol class="carousel-indicators">
-                                <c:forEach items="${roomImg}" varStatus="status">
-                                    <li data-target="#carouselExampleIndicators" data-slide-to="${status.index}" class="${status.first ? 'active' : ''}"></li>
-                                    </c:forEach>
-                            </ol>
-                            <div class="carousel-inner" style="width: 700px">
-                                <c:forEach items="${roomImg}" var="room" varStatus="status">
-                                    <div class="carousel-item ${status.first ? 'active' : ''}">
-                                        <img src="<%= request.getContextPath()%>/imgs/room/${room.room_img}" class="d-block w-100" alt="...">
-                                    </div>
-                                </c:forEach>
+            <div class="container" style="width: 700px">
+                <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                    <ol class="carousel-indicators" >
+                        <c:forEach items="${roomImg}" varStatus="status">
+                            <li data-target="#carouselExampleIndicators" data-slide-to="${status.index}" class="${status.first ? 'active' : ''}"></li>
+                            </c:forEach>
+                    </ol>
+                    <div class="carousel-inner" >
+                        <c:forEach items="${roomImg}" var="room" varStatus="status">
+                            <div class="carousel-item ${status.first ? 'active' : ''}" >
+                                <img src="<%= request.getContextPath()%>/imgs/room/${room.room_img}" class="d-block w-100" alt="...">
                             </div>
-                            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                <span class="sr-only">Previous</span>
-                            </a>
-                            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                <span class="sr-only">Next</span>
-                            </a>
-                        </div>
+                        </c:forEach>
                     </div>
-
-                    <div class="col-md-4">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">Very Good <span class="badge badge-primary">8.2</span></h5>
-                                <p class="card-text"><i>"too cheap of a price for an amazing 4 stars experience"</i></p>
-                                <p class="card-text"><i class="fas fa-user"></i> Tin – Vietnam</p>
-                                <hr>
-                                <h6>Staff <span class="badge badge-success">8.8</span></h6>
-                            </div>
-                        </div>
-                        <div id="map" style="height: 200px;"></div>
-                    </div>
+                    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
                 </div>
             </div>
 
@@ -133,21 +116,26 @@
             <div class="container availability-container">
                 <div class="header-section" >
                     <h3>Availability</h3>
-                    <div class="d-flex justify-content-center">
-                        <div style="display: flex inline; box-sizing: border-box; border: 4px solid yellow; background-color: yellow; border-radius: 10px">
-                            <input type="date" class="form-control" value="2024-07-03">
-                            <h4>-</h4>
-                            <input type="date" class="form-control" value="2024-07-19">
+                    <form method="post" action="/reservationController" onsubmit="return validateForm()">
+                        <div class="d-flex justify-content-center">
+                            <%
+                               
+                            %>
+                            <div style="display: flex inline; box-sizing: border-box; border: 4px solid yellow; background-color: yellow; border-radius: 10px">
+                                <input type="date" class="form-control" name="checkInDate" >
+                                <h4>-</h4>
+                                <input type="date" class="form-control" name="checkOutDate" >
+                            </div>
+                            <div style="box-sizing: border-box; border: 4px solid yellow; border-radius: 10px">
+                                <select class="form-control">
+                                    <option>2 adults · 0 children · 1 room</option>
+                                </select>
+                            </div>
+                            <div style="box-sizing: border-box; border: 4px solid yellow; border-radius: 10px">
+                                <a class="btn btn-primary" >Change search</a>
+                            </div>
                         </div>
-                        <div style="box-sizing: border-box; border: 4px solid yellow; border-radius: 10px">
-                            <select class="form-control">
-                                <option>2 adults · 0 children · 1 room</option>
-                            </select>
-                        </div>
-                        <div style="box-sizing: border-box; border: 4px solid yellow; border-radius: 10px">
-                            <a class="btn btn-primary" >Change search</a>
-                        </div>
-                    </div>
+                    </form>
                 </div>
 
                 <!-- Room List -->
@@ -160,17 +148,14 @@
                                     <div class="col-md-3 text-center">
                                         <h5>Room Type</h5>
                                     </div>
-                                    <div class="col-md-2 text-center">
+                                    <div class="col-md-4 text-center">
 
-                                    </div>
-                                    <div class="col-md-2 text-center ">
-                                        <h5>Price</h5>
                                     </div>
                                     <div class="col-md-3 text-center ">
-
+                                        <h5>Price</h5>
                                     </div>
-                                    <div class="col-md-2 text-center">
-
+                                    <div class="col-md-2 text-center ">
+                                        <a class="btn btn-primary" id="reserve-link" href="/reservationController/" >I'll reserve</a>
                                     </div>
                                 </div>
                             </div>
@@ -197,29 +182,25 @@
                                             <% }%>
                                         </div>
                                     </div>
-                                    <div class="col-md-2 text-center">
+                                    <div class="col-md-4 text-center">
                                         <span class="badge badge-dark">Entire apartment · 105 m²</span>
                                         <div class="features">
                                             <span></span>
                                         </div>
                                     </div>
-                                    <div class="col-md-2 text-center">
+                                    <div class="col-md-3 text-center">
                                         <span class="price">$<%= rsRoom.getLong("room_price")%> </span><br>
                                         <span class="discount">40% off</span>
                                     </div>
-                                    <div class="col-md-3 text-center">
-                                        <span class="badge badge-success">Free cancellation before July 2, 2024</span><br>
-                                        <span>No prepayment needed - pay at the property</span>
-                                    </div>
-                                    <div class="col-md-2 text-center">
-                                        <a class="btn btn-primary mt-2" href="/reservationController/Reserve">I'll reserve</a>
+                                    <div class="col-md-2 " >
+                                        <a class="btn btn-primary" id="reserve-link" href="/reservationController/AddReserve/<%= rsRoom.getInt("room_id")%>/<%= value%>" >Add</a>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <% }
-                    }%>
+                        }%>
                     <!-- End Repeat -->
                 </div>
             </div>
@@ -229,18 +210,43 @@
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
         <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-        <script>
-            function initMap() {
-                var location = {lat: 10.345, lng: 107.084};
-                var map = new google.maps.Map(document.getElementById('map'), {
-                    zoom: 15,
-                    center: location
-                });
-                var marker = new google.maps.Marker({
-                    position: location,
-                    map: map
-                });
-            }
+        <script type="text/javascript">
+                        function updateHref() {
+                            var quantity = document.getElementById("quantity-" + roomId).value;
+                            var reserveLink = document.getElementById("reserve-link");
+                            reserveLink.href = "/reservationController/Reserve?room_id=" + roomId + "&quantity=" + quantity;
+                        }
+                        function validateForm() {
+                            var destination = document.getElementById('destination').value;
+                            if (destination.trim() === "") {
+                                alert("Enter a destination to start searching.");
+                                return false;
+                            }
+                            var checkin = document.getElementById('checkin-date').value;
+                            var checkout = document.getElementById('checkout-date').value;
+
+                            if (!checkin) {
+                                var today = new Date().toISOString().split('T')[0];
+                                document.getElementById('checkin-date').value = today;
+                                checkin = today;
+                            }
+
+                            if (!checkout) {
+                                var today = new Date().toISOString().split('T')[0];
+                                document.getElementById('checkout-date').value = today;
+                                checkout = today;
+                            }
+
+                            var checkinDate = new Date(checkin);
+                            var checkoutDate = new Date(checkout);
+                            if (checkoutDate < checkinDate) {
+                                alert('Check-out date must be after check-in date.');
+                                return false;
+                            }
+
+                            return true;
+                        }
+
         </script>
         <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"></script>
     </body>

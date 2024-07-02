@@ -27,11 +27,6 @@
                         flagCustomer = true;
                         break;
                     }
-                    if (cList[i].getName().equals("owner")) {//nguoi dung da dang nhap
-                        value = cList[i].getValue();
-                        flagOwner = true;
-                        break; //thoat khoi vong lap
-                    }
                 }
             }
         %>
@@ -66,9 +61,10 @@
                             <% } %>
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="/profileController/ProfileUser">Your Profile</a>
-                            <div class="dropdown-divider"></div>
                             <% if (flagCustomer) { %>
+
+                            <a class="dropdown-item" href="/profileController/ProfileUser">Your Profile</a>
+
                             <a class="dropdown-item" href="/logoutController/SignOut">Sign Out</a>
                             <% } else { %>
                             <a class="dropdown-item" href="/loginController/login">Login</a>

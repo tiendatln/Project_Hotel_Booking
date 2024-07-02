@@ -74,7 +74,8 @@
     <body>
         <%@include file="layout.jsp" %>
         <%
-            String local = (String) request.getSession().getAttribute("listRoom");
+            String destination = (String) request.getSession().getAttribute("destination");
+            String roomType = (String) request.getSession().getAttribute("roomType");
             long checkin = (long) request.getSession().getAttribute("checkin");
             long checkout = (long) request.getSession().getAttribute("checkout");
             Date checkinDate = new Date(checkin);
@@ -88,7 +89,7 @@
                         <form method="post" action="/searchController" onsubmit="return validateForm()">
                             <div class="form-group">
                                 <label for="destination">Destination/property name:</label>
-                                <input type="text" class="form-control" id="destination" name="destination" value="<%= local%>">
+                                <input type="text" class="form-control" id="destination" name="destination" value="<%= destination%>">
                             </div>
                             <div class="form-group">
                                 <label for="checkin">Check-in date</label>
@@ -113,19 +114,6 @@
                                     <option value="9">9</option>
                                 </select>
                             </div>
-                            <div class="form-group">
-                                <label for="guests">Room Type</label>
-
-                                <select class="form-control" id="guests" onchange="javascript: dynamicDropdown(this.options[this.selectedIndex].value);">
-                                    <%
-                                        roomDAOs roomDAO = new roomDAOs();
-                                        ResultSet rsrt = roomDAO.showRoomType();
-                                        while (rsrt.next()) {
-                                    %>
-                                    <option><%= rsrt.getString("name_type")%></option>
-                                    <% } %>
-                                </select>
-                            </div>
                             
                             <button type="submit" class="btn btn-primary btn-block" name="btnSearchHotel">Search</button>
                         </form>
@@ -133,8 +121,9 @@
                 </div>
                 <div class="col-md-9">
                     <%
+                        roomDAOs roomDAO = new roomDAOs();
                         hotelDAOs hDAO = new hotelDAOs();
-                        ResultSet rs = hDAO.searchHotelByLocal(local);
+                        ResultSet rs = hDAO.searchHotelByLocal(destination);
                         while (rs.next()) {
                     %>
                     <div class="property-card card">
@@ -177,7 +166,7 @@
                                     </p>
 
                                     <p>Includes taxes and fees</p>
-                                    <a class="btn btn-primary" href="/searchController/HotelDetail/<%= rs.getInt("hotel_id")%>" >See availability</a>
+                                    <a class="btn btn-primary" href="/searchController/HotelDetail/<%= rs.getInt("hotel_id")%>/<%= checkin %>/<%= checkout %>" >See availability</a>
                                 </div>
                             </div>
                         </div>

@@ -4,6 +4,8 @@
  */
 package Controllers;
 
+import DAOs.reservationDAOs;
+import Model.reservation;
 import jakarta.servlet.http.Cookie;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -79,6 +81,12 @@ public class reservationController extends HttpServlet {
             }
         }else if(path.startsWith("/reservationController/Reserve")){
             request.getRequestDispatcher("/reserve.jsp").forward(request, response);
+        }else if (path.startsWith("/reservationController/AddReserve")){
+            String[] s = path.split("/");
+            String username = s[s.length -1];
+            int room_id = Integer.valueOf(s[s.length - 2]);
+            reservationDAOs rsDAO = new reservationDAOs();
+            
         }
     }
 
