@@ -530,7 +530,7 @@
             // Set the minimum check-in date to today
             var today = new Date().toISOString().split('T')[0];
             document.getElementById("checkin-date").setAttribute("min", today);
-
+            
             // Function to update the minimum check-out date based on check-in date
             function updateCheckoutDate() {
                 var checkinDate = document.getElementById('checkin-date').value;
@@ -559,7 +559,7 @@
                 var checkinDate = new Date(checkin);
                 var checkoutDate = new Date(checkout);
 
-                if (checkoutDate <= checkinDate) {
+                if (checkoutDate < checkinDate) {
                     alert('Check-out date must be after check-in date.');
                     return false;
                 }
