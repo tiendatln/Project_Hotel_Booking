@@ -114,7 +114,7 @@
                                     <option value="9">9</option>
                                 </select>
                             </div>
-                            
+
                             <button type="submit" class="btn btn-primary btn-block" name="btnSearchHotel">Search</button>
                         </form>
                     </div>
@@ -178,6 +178,19 @@
         </div>
 
         <script>
+            // Set the minimum check-in date to today
+            var today = new Date().toISOString().split('T')[0];
+            document.getElementById("checkin-date").setAttribute("min", today);
+
+            // Function to update the minimum check-out date based on check-in date
+            function updateCheckoutDate() {
+                var checkinDate = document.getElementById('checkin-date').value;
+                document.getElementById('checkout-date').setAttribute("min", checkinDate);
+            }
+
+            // Set the minimum check-out date when the check-in date changes
+            document.getElementById('checkin-date').addEventListener('change', updateCheckoutDate);
+
             function validateForm() {
                 var destination = document.getElementById('destination').value;
                 if (destination.trim() === "") {
@@ -201,6 +214,7 @@
 
                 var checkinDate = new Date(checkin);
                 var checkoutDate = new Date(checkout);
+
                 if (checkoutDate < checkinDate) {
                     alert('Check-out date must be after check-in date.');
                     return false;
