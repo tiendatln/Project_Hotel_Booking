@@ -25,6 +25,12 @@ public class reservation {
     public reservation() {
     }
 
+    public reservation(room room_id, hotel hotel_id, account username) {
+        this.room_id = room_id;
+        this.hotel_id = hotel_id;
+        this.username = username;
+    }
+
     public reservation(int id, byte status, Date re_date, int quantity, Date check_in_date, Date check_out_date, long list_price, room room_id, hotel hotel_id, account username) {
         this.id = id;
         this.status = status;
@@ -46,6 +52,30 @@ public class reservation {
         this.check_in_date = check_in_date;
         this.check_out_date = check_out_date;
         this.list_price = list_price;
+    }
+
+    public room getRoom_id() {
+        return room_id;
+    }
+
+    public void setRoom_id(room room_id) {
+        this.room_id = room_id;
+    }
+
+    public hotel getHotel_id() {
+        return hotel_id;
+    }
+
+    public void setHotel_id(hotel hotel_id) {
+        this.hotel_id = hotel_id;
+    }
+
+    public account getUsername() {
+        return username;
+    }
+
+    public void setUsername(account username) {
+        this.username = username;
     }
 
     public int getId() {

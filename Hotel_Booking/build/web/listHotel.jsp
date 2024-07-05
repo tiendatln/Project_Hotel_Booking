@@ -166,7 +166,7 @@
                                     </p>
 
                                     <p>Includes taxes and fees</p>
-                                    <a class="btn btn-primary" href="/searchController/HotelDetail/<%= rs.getInt("hotel_id")%>/<%= checkin %>/<%= checkout %>" >See availability</a>
+                                    <a class="btn btn-primary" href="/searchController/HotelDetail/<%= rs.getInt("hotel_id")%>" >See availability</a>
                                 </div>
                             </div>
                         </div>

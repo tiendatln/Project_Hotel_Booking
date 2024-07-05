@@ -527,6 +527,19 @@
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
         <script>
+            // Set the minimum check-in date to today
+            var today = new Date().toISOString().split('T')[0];
+            document.getElementById("checkin-date").setAttribute("min", today);
+
+            // Function to update the minimum check-out date based on check-in date
+            function updateCheckoutDate() {
+                var checkinDate = document.getElementById('checkin-date').value;
+                document.getElementById('checkout-date').setAttribute("min", checkinDate);
+            }
+
+            // Set the minimum check-out date when the check-in date changes
+            document.getElementById('checkin-date').addEventListener('change', updateCheckoutDate);
+
             function validateForm() {
                 var checkin = document.getElementById('checkin-date').value;
                 var checkout = document.getElementById('checkout-date').value;
@@ -545,7 +558,8 @@
 
                 var checkinDate = new Date(checkin);
                 var checkoutDate = new Date(checkout);
-                if (checkoutDate < checkinDate) {
+
+                if (checkoutDate <= checkinDate) {
                     alert('Check-out date must be after check-in date.');
                     return false;
                 }

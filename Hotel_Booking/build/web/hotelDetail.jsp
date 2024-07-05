@@ -84,7 +84,7 @@
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                         <span class="sr-only">Previous</span>
                     </a>
-                    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                    <a class="carousel-control-next " href="#carouselExampleIndicators" role="button" data-slide="next">
                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
                         <span class="sr-only">Next</span>
                     </a>
@@ -119,7 +119,7 @@
                     <form method="post" action="/reservationController" onsubmit="return validateForm()">
                         <div class="d-flex justify-content-center">
                             <%
-                               
+
                             %>
                             <div style="display: flex inline; box-sizing: border-box; border: 4px solid yellow; background-color: yellow; border-radius: 10px">
                                 <input type="date" class="form-control" name="checkInDate" >
@@ -155,7 +155,7 @@
                                         <h5>Price</h5>
                                     </div>
                                     <div class="col-md-2 text-center ">
-                                        <a class="btn btn-primary" id="reserve-link" href="/reservationController/" >I'll reserve</a>
+                                        <a class="btn btn-primary" id="reserve-link" href="/reservationController/Reserve/<%= h.getHotel_id()%>" >I'll reserve</a>
                                     </div>
                                 </div>
                             </div>
@@ -183,17 +183,17 @@
                                         </div>
                                     </div>
                                     <div class="col-md-4 text-center">
-                                        <span class="badge badge-dark">Entire apartment · 105 m²</span>
+                                        <span class="badge badge-dark"></span>
                                         <div class="features">
                                             <span></span>
                                         </div>
                                     </div>
                                     <div class="col-md-3 text-center">
                                         <span class="price">$<%= rsRoom.getLong("room_price")%> </span><br>
-                                        <span class="discount">40% off</span>
+                                        <!--                                        <span class="discount">40% off</span>-->
                                     </div>
                                     <div class="col-md-2 " >
-                                        <a class="btn btn-primary" id="reserve-link" href="/reservationController/AddReserve/<%= rsRoom.getInt("room_id")%>/<%= value%>" >Add</a>
+                                        <a class="btn btn-primary" id="reserve-link" href="/reservationController/AddReserve/<%= h.getHotel_id()%>/<%= rsRoom.getInt("room_id")%>/<%= value%>" >Add to reserve</a>
                                     </div>
                                 </div>
                             </div>
@@ -210,42 +210,47 @@
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
         <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+        <c:if test="${not empty loginToReserve}">
+            <script>
+                        alert(${loginToReserve});
+            </script>
+        </c:if>
         <script type="text/javascript">
-                        function updateHref() {
-                            var quantity = document.getElementById("quantity-" + roomId).value;
-                            var reserveLink = document.getElementById("reserve-link");
-                            reserveLink.href = "/reservationController/Reserve?room_id=" + roomId + "&quantity=" + quantity;
-                        }
-                        function validateForm() {
-                            var destination = document.getElementById('destination').value;
-                            if (destination.trim() === "") {
-                                alert("Enter a destination to start searching.");
-                                return false;
-                            }
-                            var checkin = document.getElementById('checkin-date').value;
-                            var checkout = document.getElementById('checkout-date').value;
+            function updateHref() {
+                var quantity = document.getElementById("quantity-" + roomId).value;
+                var reserveLink = document.getElementById("reserve-link");
+                reserveLink.href = "/reservationController/Reserve?room_id=" + roomId + "&quantity=" + quantity;
+            }
+            function validateForm() {
+                var destination = document.getElementById('destination').value;
+                if (destination.trim() === "") {
+                    alert("Enter a destination to start searching.");
+                    return false;
+                }
+                var checkin = document.getElementById('checkin-date').value;
+                var checkout = document.getElementById('checkout-date').value;
 
-                            if (!checkin) {
-                                var today = new Date().toISOString().split('T')[0];
-                                document.getElementById('checkin-date').value = today;
-                                checkin = today;
-                            }
+                if (!checkin) {
+                    var today = new Date().toISOString().split('T')[0];
+                    document.getElementById('checkin-date').value = today;
+                    checkin = today;
+                }
 
-                            if (!checkout) {
-                                var today = new Date().toISOString().split('T')[0];
-                                document.getElementById('checkout-date').value = today;
-                                checkout = today;
-                            }
+                if (!checkout) {
+                    var today = new Date().toISOString().split('T')[0];
+                    document.getElementById('checkout-date').value = today;
+                    checkout = today;
+                }
 
-                            var checkinDate = new Date(checkin);
-                            var checkoutDate = new Date(checkout);
-                            if (checkoutDate < checkinDate) {
-                                alert('Check-out date must be after check-in date.');
-                                return false;
-                            }
+                var checkinDate = new Date(checkin);
+                var checkoutDate = new Date(checkout);
+                if (checkoutDate < checkinDate) {
+                    alert('Check-out date must be after check-in date.');
+                    return false;
+                }
 
-                            return true;
-                        }
+                return true;
+            }
 
         </script>
         <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"></script>

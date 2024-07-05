@@ -14,7 +14,7 @@ public class hotel {
     private String hotel_address;
     private String hotel_img;
     private String hotel_description;
-    private account account;
+    private account username;
     public hotel() {
     }
 
@@ -26,13 +26,21 @@ public class hotel {
         this.hotel_description = hotel_description;
     }
 
-    public hotel(int hotel_id, String hotel_name, String hotel_address, String hotel_img, String hotel_description, account account) {
+    public hotel(int hotel_id, String hotel_name, String hotel_address, String hotel_img, String hotel_description, account username) {
         this.hotel_id = hotel_id;
         this.hotel_name = hotel_name;
         this.hotel_address = hotel_address;
         this.hotel_img = hotel_img;
         this.hotel_description = hotel_description;
-        this.account = account;
+        this.username = username;
+    }
+
+    public account getUsername() {
+        return username;
+    }
+
+    public void setUsername(account username) {
+        this.username = username;
     }
 
     public int getHotel_id() {

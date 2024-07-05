@@ -13,6 +13,9 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -37,7 +40,7 @@ public class reservationController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet reservationController</title>");            
+            out.println("<title>Servlet reservationController</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet reservationController at " + request.getContextPath() + "</h1>");
@@ -79,14 +82,23 @@ public class reservationController extends HttpServlet {
             } else {
                 response.sendRedirect("/homeController/HomeCustomer");
             }
-        }else if(path.startsWith("/reservationController/Reserve")){
-            request.getRequestDispatcher("/reserve.jsp").forward(request, response);
-        }else if (path.startsWith("/reservationController/AddReserve")){
+        } else if (path.startsWith("/reservationController/AddReserve")) {
             String[] s = path.split("/");
-            String username = s[s.length -1];
+            String username = s[s.length - 1];
             int room_id = Integer.valueOf(s[s.length - 2]);
+            int hotel_id = Integer.valueOf(s[s.length - 3]);
             reservationDAOs rsDAO = new reservationDAOs();
+            HttpSession mySession = request.getSession();
             
+            
+        } else if (path.startsWith("/reservationController/Reserve")) {
+            String[] s = path.split("/");
+            if (flagCustomer) {
+                request.getRequestDispatcher("/reserve.jsp").forward(request, response);
+            } else {
+                request.setAttribute("loginToReserve", "You must be login to reserve!");
+                response.sendRedirect("/searchController/HotelDetail/" + s[s.length - 1]);
+            }
         }
     }
 
