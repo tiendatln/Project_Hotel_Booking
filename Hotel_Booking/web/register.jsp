@@ -1,9 +1,3 @@
-<%-- 
-    Document   : register
-    Created on : Jun 15, 2024, 12:23:42 AM
-    Author     : tiend
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -53,6 +47,11 @@
             .container {
                 margin-top: 5%;
             }
+            .error-message {
+                color: red;
+                font-size: 0.9rem;
+                margin-top: 0.5rem;
+            }
         </style>
     </head>
     <body>
@@ -66,32 +65,38 @@
                             <form action="/registerController/Register" method="post" id="registrationForm">
                                 <div class="form-group">
                                     <label for="username">Username</label>
-                                    <input type="text" class="form-control" id="username" name="txtUs" placeholder="Enter username" required>
+                                    <input type="text" class="form-control" id="username" name="txtUs" placeholder="Enter username" >
+                                    <span class="error-message" id="usernameError"></span>
                                 </div>
                                 <div class="form-group position-relative">
                                     <label for="password">Password</label>
-                                    <input type="password" class="form-control" id="password" name="txtPwd" placeholder="Enter password" required>
-                                    <i class="fa fa-eye-slash" id="togglePassword"></i>
+                                    <input type="password" class="form-control" id="password" name="txtPwd" placeholder="Enter password" >
+                                    <span class="error-message" id="passwordError"></span>
                                 </div>
                                 <div class="form-group">
                                     <label for="email">Email</label>
-                                    <input type="email" class="form-control" id="email" name="txtEmail" placeholder="Enter email" required>
+                                    <input type="text" class="form-control" id="email" name="txtEmail" placeholder="Enter email" >
+                                    <span class="error-message" id="emailError"></span>
                                 </div>
                                 <div class="form-group">
                                     <label for="name">Name</label>
-                                    <input type="text" class="form-control" id="name" name="txtName" placeholder="Enter your name" required>
+                                    <input type="text" class="form-control" id="name" name="txtName" placeholder="Enter your name" >
+                                    <span class="error-message" id="nameError"></span>
                                 </div>
                                 <div class="form-group">
                                     <label for="age">Age</label>
-                                    <input type="number" class="form-control" id="age" name="txtAge" placeholder="Enter your age" required>
+                                    <input type="number" class="form-control" id="age" name="txtAge" placeholder="Enter your age" >
+                                    <span class="error-message" id="ageError"></span>
                                 </div>
                                 <div class="form-group">
                                     <label for="phone">Phone</label>
-                                    <input type="text" class="form-control" id="phone" name="txtPhone" placeholder="Enter your phone number" required>
+                                    <input type="text" class="form-control" id="phone" name="txtPhone" placeholder="Enter your phone number" >
+                                    <span class="error-message" id="phoneError"></span>
                                 </div>
                                 <div class="form-group">
                                     <label for="id_number">ID Number</label>
-                                    <input type="text" class="form-control" id="id_number" name="txtIdNumber" placeholder="Enter your ID number" required>
+                                    <input type="text" class="form-control" id="id_number" name="txtIdNumber" placeholder="Enter your ID number" >
+                                    <span class="error-message" id="idNumberError"></span>
                                 </div>
                                 <%
                                     String checkMessage = (String) request.getSession().getAttribute("checkMessage");
@@ -133,16 +138,60 @@
 
                 // Form validation
                 document.getElementById('registrationForm').addEventListener('submit', function (event) {
+                    let isValid = true;
+
+                    const username = document.getElementById('username').value;
+                    const password = document.getElementById('password').value;
                     const email = document.getElementById('email').value;
+                    const name = document.getElementById('name').value;
+                    const age = document.getElementById('age').value;
                     const phone = document.getElementById('phone').value;
+                    const idNumber = document.getElementById('id_number').value;
+
+                    // Regular expressions
                     const emailPattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
                     const phonePattern = /^(0|84)(2(0[3-9]|1[0-6|8|9]|2[0-2|5-9]|3[2-9]|4[0-9]|5[1|2|4-9]|6[0-3|9]|7[0-7]|8[0-9]|9[0-4|6|7|9])|3[2-9]|5[5|6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])([0-9]{7})$/;
 
-                    if (!emailPattern.test(email)) {
-                        alert('Please enter a valid email address.');
-                        event.preventDefault();
+                    // Clear previous error messages
+                    document.querySelectorAll('.error-message').forEach((element) => element.innerHTML = '');
+
+                    // Check for empty fields
+                    if (!username) {
+                        document.getElementById('usernameError').innerHTML = 'Username is required.';
+                        isValid = false;
+                    }
+                    if (!password) {
+                        document.getElementById('passwordError').innerHTML = 'Password is required.';
+                        isValid = false;
+                    }
+                    if (!email) {
+                        document.getElementById('emailError').innerHTML = 'Email is required.';
+                        isValid = false;
+                    } else if (!emailPattern.test(email)) {
+                        document.getElementById('emailError').innerHTML = 'Please enter a valid email address.';
+                        isValid = false;
+                    }
+                    if (!name) {
+                        document.getElementById('nameError').innerHTML = 'Name is required.';
+                        isValid = false;
+                    }
+                    if (!age) {
+                        document.getElementById('ageError').innerHTML = 'Age is required.';
+                        isValid = false;
+                    }
+                    if (!phone) {
+                        document.getElementById('phoneError').innerHTML = 'Phone number is required.';
+                        isValid = false;
                     } else if (!phonePattern.test(phone)) {
-                        alert('Please enter a valid Vietnamese phone number.');
+                        document.getElementById('phoneError').innerHTML = 'Please enter a valid Vietnamese phone number.';
+                        isValid = false;
+                    }
+                    if (!idNumber) {
+                        document.getElementById('idNumberError').innerHTML = 'ID number is required.';
+                        isValid = false;
+                    }
+
+                    if (!isValid) {
                         event.preventDefault();
                     }
                 });
