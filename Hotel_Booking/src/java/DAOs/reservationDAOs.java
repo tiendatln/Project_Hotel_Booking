@@ -7,9 +7,12 @@ package DAOs;
 import DB.DBConnection;
 import Model.reservation;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -48,12 +51,21 @@ public class reservationDAOs {
         }
         return rs;
     }
-    public reservation insertRoomIntoReserve(int room_id){
-        reservation rs = null;
+    public int getHotelIDbyRomID(int room_id){
+        int hotel_id = 0;
+        ResultSet rs = null; 
         try {
+            long millis = System.currentTimeMillis();
+            Date re_date = new Date(millis);
+            PreparedStatement ps = conn.prepareStatement("select hotel_id from Room where room_id = ?");
+            ps.setInt(1, room_id);
+            rs = ps.executeQuery();
+            if(rs.next()){
+               
+            }
+        } catch (SQLException e) {
             
-        } catch (Exception e) {
         }
-        return rs;
+        return hotel_id;
     }
 }

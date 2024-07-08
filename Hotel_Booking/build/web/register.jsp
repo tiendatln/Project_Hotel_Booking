@@ -55,7 +55,6 @@
         </style>
     </head>
     <body>
-
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-6">
@@ -98,18 +97,16 @@
                                     <input type="text" class="form-control" id="id_number" name="txtIdNumber" placeholder="Enter your ID number" >
                                     <span class="error-message" id="idNumberError"></span>
                                 </div>
-                                <%
-                                    String checkMessage = (String) request.getSession().getAttribute("checkMessage");
-                                    if (checkMessage != null) {
-                                %>
-                                <div class="text-center">
-                                    <p class="text-danger"><%= checkMessage%></p>
-                                </div>
-
-                                <%
-                                        request.getSession().removeAttribute("checkMessage");
-                                    }%>
+                                <% String checkMessage = (String) request.getSession().getAttribute("checkMessage");
+                                    if (checkMessage != null) { %>
+                                    <div class="text-center">
+                                        <p class="text-danger"><%= checkMessage %></p>
+                                    </div>
+                                <% request.getSession().removeAttribute("checkMessage"); } %>
                                 <button type="submit" class="btn btn-primary btn-block" name="btnRegister">Register</button>
+                                <div class="text-center m-2">
+                                    <a href="/loginController/login">Back to Login</a>
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -117,84 +114,77 @@
             </div>
         </div>
 
-        <!-- Bootstrap JS and dependencies (Optional) -->
+        <!-- Bootstrap JS and dependencies -->
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-        <!-- Custom JavaScript to toggle password visibility and validate form -->
+        <!-- Custom JavaScript to validate form -->
         <script>
-            document.addEventListener('DOMContentLoaded', (event) => {
-                const togglePassword = document.querySelector('#togglePassword');
-                const password = document.querySelector('#password');
+            // Form validation
+            document.getElementById('registrationForm').addEventListener('submit', function (event) {
+                let isValid = true;
 
-                togglePassword.addEventListener('click', function (e) {
-                    // Toggle the type attribute
-                    const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-                    password.setAttribute('type', type);
-                    // Toggle the eye slash icon
-                    this.classList.toggle('fa-eye');
-                    this.classList.toggle('fa-eye-slash');
-                });
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                const email = document.getElementById('email').value;
+                const name = document.getElementById('name').value;
+                const age = document.getElementById('age').value;
+                const phone = document.getElementById('phone').value;
+                const idNumber = document.getElementById('id_number').value;
 
-                // Form validation
-                document.getElementById('registrationForm').addEventListener('submit', function (event) {
-                    let isValid = true;
+                // Regular expressions
+                const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                const phonePattern = /^(0|84)(2(0[3-9]|1[0-6|8|9]|2[0-2|5-9]|3[2-9]|4[0-9]|5[1|2|4-9]|6[0-3|9]|7[0-7]|8[0-9]|9[0-4|6|7|9])|3[2-9]|5[5|6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])([0-9]{7})$/;
+                const idPattern = /^([0-9]{10})$|^([0-9]{12})$/;
 
-                    const username = document.getElementById('username').value;
-                    const password = document.getElementById('password').value;
-                    const email = document.getElementById('email').value;
-                    const name = document.getElementById('name').value;
-                    const age = document.getElementById('age').value;
-                    const phone = document.getElementById('phone').value;
-                    const idNumber = document.getElementById('id_number').value;
+                // Clear previous error messages
+                document.querySelectorAll('.error-message').forEach((element) => element.innerHTML = '');
 
-                    // Regular expressions
-                    const emailPattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-                    const phonePattern = /^(0|84)(2(0[3-9]|1[0-6|8|9]|2[0-2|5-9]|3[2-9]|4[0-9]|5[1|2|4-9]|6[0-3|9]|7[0-7]|8[0-9]|9[0-4|6|7|9])|3[2-9]|5[5|6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])([0-9]{7})$/;
+                // Check for empty fields
+                if (!username) {
+                    document.getElementById('usernameError').innerHTML = 'Username is required.';
+                    isValid = false;
+                }
+                if (!password) {
+                    document.getElementById('passwordError').innerHTML = 'Password is required.';
+                    isValid = false;
+                }
+                if (!email) {
+                    document.getElementById('emailError').innerHTML = 'Email is required.';
+                    isValid = false;
+                } else if (!emailPattern.test(email)) {
+                    document.getElementById('emailError').innerHTML = 'Please enter a valid email address.';
+                    isValid = false;
+                }
+                if (!name) {
+                    document.getElementById('nameError').innerHTML = 'Name is required.';
+                    isValid = false;
+                }
+                if (!age) {
+                    document.getElementById('ageError').innerHTML = 'Age is required.';
+                    isValid = false;
+                }else if (age<=0) {
+                    document.getElementById('ageError').innerHTML = 'Age must be greater than 0.';
+                    isValid = false;
+                }
+                if (!phone) {
+                    document.getElementById('phoneError').innerHTML = 'Phone number is required.';
+                    isValid = false;
+                } else if (!phonePattern.test(phone)) {
+                    document.getElementById('phoneError').innerHTML = 'Please enter a valid Vietnamese phone number.';
+                    isValid = false;
+                }
+                if (!idNumber) {
+                    document.getElementById('idNumberError').innerHTML = 'ID number is required.';
+                    isValid = false;
+                } else if (!idPattern.test(idNumber)){
+                    document.getElementById('idNumberError').innerHTML = 'ID number must be a 10 or 12 digits number.';
+                    isValid = false;
+                }                
 
-                    // Clear previous error messages
-                    document.querySelectorAll('.error-message').forEach((element) => element.innerHTML = '');
-
-                    // Check for empty fields
-                    if (!username) {
-                        document.getElementById('usernameError').innerHTML = 'Username is required.';
-                        isValid = false;
-                    }
-                    if (!password) {
-                        document.getElementById('passwordError').innerHTML = 'Password is required.';
-                        isValid = false;
-                    }
-                    if (!email) {
-                        document.getElementById('emailError').innerHTML = 'Email is required.';
-                        isValid = false;
-                    } else if (!emailPattern.test(email)) {
-                        document.getElementById('emailError').innerHTML = 'Please enter a valid email address.';
-                        isValid = false;
-                    }
-                    if (!name) {
-                        document.getElementById('nameError').innerHTML = 'Name is required.';
-                        isValid = false;
-                    }
-                    if (!age) {
-                        document.getElementById('ageError').innerHTML = 'Age is required.';
-                        isValid = false;
-                    }
-                    if (!phone) {
-                        document.getElementById('phoneError').innerHTML = 'Phone number is required.';
-                        isValid = false;
-                    } else if (!phonePattern.test(phone)) {
-                        document.getElementById('phoneError').innerHTML = 'Please enter a valid Vietnamese phone number.';
-                        isValid = false;
-                    }
-                    if (!idNumber) {
-                        document.getElementById('idNumberError').innerHTML = 'ID number is required.';
-                        isValid = false;
-                    }
-
-                    if (!isValid) {
-                        event.preventDefault();
-                    }
-                });
+                if (!isValid) {
+                    event.preventDefault();
+                }
             });
         </script>
     </body>

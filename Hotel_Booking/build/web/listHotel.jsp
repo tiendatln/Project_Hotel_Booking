@@ -114,7 +114,7 @@
                                     <option value="9">9</option>
                                 </select>
                             </div>
-
+                            <span id="error" class="text-danger"></span>
                             <button type="submit" class="btn btn-primary btn-block" name="btnSearchHotel">Search</button>
                         </form>
                     </div>
@@ -181,22 +181,10 @@
             // Set the minimum check-in date to today
             var today = new Date().toISOString().split('T')[0];
             document.getElementById("checkin-date").setAttribute("min", today);
-
+            document.getElementById("checkout-date").setAttribute("min", today);
+            
             // Function to update the minimum check-out date based on check-in date
-            function updateCheckoutDate() {
-                var checkinDate = document.getElementById('checkin-date').value;
-                document.getElementById('checkout-date').setAttribute("min", checkinDate);
-            }
-
-            // Set the minimum check-out date when the check-in date changes
-            document.getElementById('checkin-date').addEventListener('change', updateCheckoutDate);
-
             function validateForm() {
-                var destination = document.getElementById('destination').value;
-                if (destination.trim() === "") {
-                    alert("Enter a destination to start searching.");
-                    return false;
-                }
                 var checkin = document.getElementById('checkin-date').value;
                 var checkout = document.getElementById('checkout-date').value;
 
@@ -216,7 +204,7 @@
                 var checkoutDate = new Date(checkout);
 
                 if (checkoutDate < checkinDate) {
-                    alert('Check-out date must be after check-in date.');
+                    document.getElementById("error").innerHTML = "Check-out date must be after check-in date.";
                     return false;
                 }
 

@@ -91,7 +91,7 @@
                 </div>
             </div>
 
-            <div class="my-4">
+                    <div class="my-4"">
                 <div>
                     <h5 style="color: #0c63e4">Sevice</h5>
                 </div>
@@ -119,7 +119,7 @@
                     <form method="post" action="/reservationController" onsubmit="return validateForm()">
                         <div class="d-flex justify-content-center">
                             <%
-
+                                
                             %>
                             <div style="display: flex inline; box-sizing: border-box; border: 4px solid yellow; background-color: yellow; border-radius: 10px">
                                 <input type="date" class="form-control" name="checkInDate" >
@@ -132,7 +132,7 @@
                                 </select>
                             </div>
                             <div style="box-sizing: border-box; border: 4px solid yellow; border-radius: 10px">
-                                <a class="btn btn-primary" >Change search</a>
+                                <a class="btn btn-primary" name="btnChangesearch">Change search</a>
                             </div>
                         </div>
                     </form>
@@ -149,58 +149,60 @@
                                         <h5>Room Type</h5>
                                     </div>
                                     <div class="col-md-4 text-center">
-
+                                        <h5>Room Description</h5>
                                     </div>
                                     <div class="col-md-3 text-center ">
                                         <h5>Price</h5>
                                     </div>
                                     <div class="col-md-2 text-center ">
-                                        <a class="btn btn-primary" id="reserve-link" href="/reservationController/Reserve/<%= h.getHotel_id()%>" >I'll reserve</a>
+                                        <a class="btn btn-primary" id="reserve-link" href="/reservationController/Reserve/<%= h.getHotel_id()%>/<%= value %> " >I'll reserve</a>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <%
-                        roomDAOs rDAO = new roomDAOs();
-                        ResultSet rsRoom = rDAO.getRoomByHotelID(h.getHotel_id());
-                        while (rsRoom.next()) {
-                            if (rsRoom.getBoolean("room_status")) {
-                    %>
-                    <div class="col-12 mb-3">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-3 apartment-type">
-                                        <%= rsRoom.getString("room_name")%>
-                                        <%
-                                            ResultSet rsRType = rDAO.showRoomTypeByRoomID(rsRoom.getInt("room_id"));
-                                        %>
-                                        <div class="features">
-                                            <% while (rsRType.next()) {%>
-                                            <span><%= rsRType.getString("name_type")%></span>
-                                            <% }%>
+                    
+                        <%
+                            roomDAOs rDAO = new roomDAOs();
+                            ResultSet rsRoom = rDAO.getRoomByHotelID(h.getHotel_id());
+                            while (rsRoom.next()) {
+                                if (rsRoom.getBoolean("room_status")) {
+                        %>
+                        <div class="col-12 mb-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-3 apartment-type">
+                                            <%= rsRoom.getString("room_name")%>
+                                            <%
+                                                ResultSet rsRType = rDAO.showRoomTypeByRoomID(rsRoom.getInt("room_id"));
+                                            %>
+                                            <div class="features">
+                                                <% while (rsRType.next()) {%>
+                                                <span name="roomType" ><%= rsRType.getString("name_type")%></span>
+                                                <% }%>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-4 text-center">
-                                        <span class="badge badge-dark"></span>
-                                        <div class="features">
-                                            <span></span>
+                                        <div class="col-md-4 text-center">
+                                            <span class="badge badge-dark"></span>
+                                            <div class="features">
+                                                <span class="text-monospace" name="room_description"><%= rsRoom.getString("room_description")%></span>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-3 text-center">
-                                        <span class="price">$<%= rsRoom.getLong("room_price")%> </span><br>
-                                        <!--                                        <span class="discount">40% off</span>-->
-                                    </div>
-                                    <div class="col-md-2 " >
-                                        <a class="btn btn-primary" id="reserve-link" href="/reservationController/AddReserve/<%= h.getHotel_id()%>/<%= rsRoom.getInt("room_id")%>/<%= value%>" >Add to reserve</a>
+                                        <div class="col-md-3 text-center">
+                                            <span class="price" name="room_price">$<%= rsRoom.getLong("room_price")%> </span><br>
+                                            <!--                                        <span class="discount">40% off</span>-->
+                                        </div>
+                                        <div class="col-md-2 " >
+                                            <a class="btn btn-primary" id="reserve-link" href="/reservationController/AddReserve/<%= h.getHotel_id()%>/<%= rsRoom.getInt("room_id")%>" >Add to reserve</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <% }
-                        }%>
+                        <% }
+                            }%>
+                            
                     <!-- End Repeat -->
                 </div>
             </div>

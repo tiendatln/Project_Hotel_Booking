@@ -7,15 +7,17 @@ package Controllers;
 import DAOs.reservationDAOs;
 import Model.reservation;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.jasper.tagplugins.jstl.core.ForEach;
 
 /**
  *
@@ -75,8 +77,8 @@ public class reservationController extends HttpServlet {
                 }
             }
         }
-        if (path.endsWith("/reservationController/showAll")) {
-
+        List<Integer> roomID = new ArrayList<>();
+        if (path.endsWith("/YourReservation")) {
             if (flagCustomer) {
                 request.getRequestDispatcher("/reservation.jsp").forward(request, response);
             } else {
@@ -84,21 +86,24 @@ public class reservationController extends HttpServlet {
             }
         } else if (path.startsWith("/reservationController/AddReserve")) {
             String[] s = path.split("/");
-            String username = s[s.length - 1];
-            int room_id = Integer.valueOf(s[s.length - 2]);
-            int hotel_id = Integer.valueOf(s[s.length - 3]);
-            reservationDAOs rsDAO = new reservationDAOs();
-            HttpSession mySession = request.getSession();
-            
-            
+            int room_id = Integer.valueOf(s[s.length - 1]);
+            int hotel_id = Integer.valueOf(s[s.length - 2]);
+            roomID.add(room_id);
+            response.sendRedirect("/searchController/HotelDetail/" + hotel_id);
         } else if (path.startsWith("/reservationController/Reserve")) {
             String[] s = path.split("/");
+            String username = s[s.length - 1];
+            int hotel_id = Integer.valueOf(s[s.length - 2]);
             if (flagCustomer) {
+                request.getSession().setAttribute("RoomID", roomID);
+                
                 request.getRequestDispatcher("/reserve.jsp").forward(request, response);
             } else {
-                request.setAttribute("loginToReserve", "You must be login to reserve!");
+                request.getSession().setAttribute("loginToReserve", "You must be login to reserve!");
                 response.sendRedirect("/searchController/HotelDetail/" + s[s.length - 1]);
             }
+        } else if (path.endsWith("/InfoReserve")) {
+            request.getRequestDispatcher("/infoForReserve.jsp").forward(request, response);
         }
     }
 
@@ -113,7 +118,18 @@ public class reservationController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        if(request.getParameter("btnChangesearch") != null){
+            long millis = System.currentTimeMillis();
+            Date checkinDate = new Date(millis);
+            Date checkoutDate = new Date(millis);
+            checkinDate = Date.valueOf(request.getParameter("checkInDate"));
+            checkoutDate = Date.valueOf(request.getParameter("checkOutDate"));
+            HttpSession mySession = request.getSession();
+            mySession.setAttribute("checkInDate", checkinDate);
+            mySession.setAttribute("checkOutDate", checkoutDate);
+            reservationDAOs rsDAO = new reservationDAOs();
+            
+        }
     }
 
     /**

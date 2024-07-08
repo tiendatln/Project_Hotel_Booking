@@ -7,6 +7,7 @@
 <%@page import="Model.account"%>
 <%@page import="DAOs.accountDAOs"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -37,7 +38,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item"><a class="nav-link" href="/reservationController/showAll">Your Reservation</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/reservationController/YourReservation">Your Reservation</a></li>
                     <li class="nav-item nav-item dropdown">
                         <%
                             accountDAOs aDAO = new accountDAOs();
