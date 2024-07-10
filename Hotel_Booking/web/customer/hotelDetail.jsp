@@ -57,7 +57,7 @@
 
     <body>
         <%@include file="layout.jsp"%>
-        <%            
+        <%
             hotelDAOs hDAO = new hotelDAOs();
             int hotelID = (int) request.getSession().getAttribute("hotelID");
             hotel h = hDAO.getHotelDetailById(hotelID);
@@ -141,7 +141,7 @@
 
                 <!-- Room List -->
                 <div class="row mt-3">
-                    <form action="/reserveController" method="get" class="container" >
+                    <form action="/reserveController" method="get" class="container" id="reservationForm" onsubmit="return checkCheckboxes()">
                         <!-- Repeat for each room type -->
                         <div class="col-12">
                             <div class="card" style="background-color: #007bff">
@@ -157,13 +157,13 @@
                                             <h5>Price</h5>
                                         </div>
                                         <div class="col-md-2 text-center ">
-                                            <button class="btn btn-primary" type="submit" id="reserve-link" name="btnReserve" >I'll reserve</button>
+                                            <button class="btn btn-primary" type="submit" id="reserve-link" name="btnReserve">I'll reserve</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <%                            roomDAOs rDAO = new roomDAOs();
+                        <%        roomDAOs rDAO = new roomDAOs();
                             ResultSet rsRoom = rDAO.getRoomByHotelID(h.getHotel_id());
                             while (rsRoom.next()) {
                                 if (rsRoom.getBoolean("room_status")) {
@@ -179,7 +179,7 @@
                                             %>
                                             <div class="features">
                                                 <% while (rsRType.next()) {%>
-                                                <span name="roomType" ><%= rsRType.getString("name_type")%></span>
+                                                <span name="roomType"><%= rsRType.getString("name_type")%></span>
                                                 <% }%>
                                             </div>
                                         </div>
@@ -191,30 +191,20 @@
                                         </div>
                                         <div class="col-md-3 text-center">
                                             <span class="price" name="room_price">$<%= rsRoom.getLong("room_price")%> </span><br>
-                                            <!--                                        <span class="discount">40% off</span>-->
+                                            <!-- <span class="discount">40% off</span> -->
                                         </div>
-                                        <div class="col-md-2 " >
-<!--                                            <select class="form-control" id="quantitysSelector" name="quantity" onchange="submitForm()" >
-                                                <option>0</option>
-                                                <option value="1,<%= rsRoom.getString("room_id")%>" >1</option>
-                                                <option value="2,<%= rsRoom.getString("room_id")%>" >2</option>
-                                                <option value="3,<%= rsRoom.getString("room_id")%>" >3</option>
-                                                <option value="4,<%= rsRoom.getString("room_id")%>" >4</option>
-                                                <option value="5,<%= rsRoom.getString("room_id")%>" >5</option>
-                                                <option value="6,<%= rsRoom.getString("room_id")%>" >6</option>
-                                                <option value="7,<%= rsRoom.getString("room_id")%>" >7</option>
-                                                <option value="8,<%= rsRoom.getString("room_id")%>" >8</option>
-                                                <option value="9,<%= rsRoom.getString("room_id")%>" >9</option>
-                                                <option value="10,<%= rsRoom.getString("room_id")%>" >10</option>
-                                            </select>-->
+                                        <div class="col-md-2 text-center">
                                             <input type="checkbox" id="quantity" name="quantity" value="<%= rsRoom.getString("room_id")%>">
+                                            <input hidden="" id="HotelID" name="HotelID" value="<%= h.getHotel_id() %>">
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <% }
-                            }%>
+                        <%
+                                }
+                            }
+                        %>
                     </form>
                     <!-- End Repeat -->
                 </div>
@@ -225,29 +215,27 @@
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
         <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-        <c:if test="${not empty loginToReserve}">
+        <c:if test="${loginToReserve != null}">
             <script>
-                alert(${loginToReserve});
+                        alert("You must be login to reserve!");
             </script>
         </c:if>
         <script >
-            function submitForm() {
-                var quantityAndRoomID = document.getElementById('quantitysSelector').value; // Get the selected value
-                var parts = quantityAndRoomID.split(','); // Split into quantity and room_id
-                var quantity = parts[0];
-                var room_id = parts[1];
-                
-                var url = '/reserveController?quantity=' + quantity + '&room_id=' + room_id; // Construct the URL with query parameters
-                
-                window.location = url; // Redirect to the constructed URL
+
+
+            function checkCheckboxes() {
+                // Get all checkboxes with the name 'quantity'
+                var checkboxes = document.querySelectorAll('input[name="quantity"]');
+                // Check if any of the checkboxes are checked
+                var anyChecked = Array.prototype.slice.call(checkboxes).some(x => x.checked);
+                // If none are checked, prevent form submission and alert the user
+                if (!anyChecked) {
+                    alert("Please select at least one room to reserve.");
+                    return false; // Prevent form submission
+                }
+                return true; // Allow form submission
             }
             
-            
-            function updateHref() {
-                var quantity = document.getElementById("quantity-" + roomId).value;
-                var reserveLink = document.getElementById("reserve-link");
-                reserveLink.href = "/reservationController/Reserve?room_id=" + roomId + "&quantity=" + quantity;
-            }
             function validateForm() {
                 var destination = document.getElementById('destination').value;
                 if (destination.trim() === "") {
@@ -256,29 +244,29 @@
                 }
                 var checkin = document.getElementById('checkin-date').value;
                 var checkout = document.getElementById('checkout-date').value;
-                
+
                 if (!checkin) {
                     var today = new Date().toISOString().split('T')[0];
                     document.getElementById('checkin-date').value = today;
                     checkin = today;
                 }
-                
+
                 if (!checkout) {
                     var today = new Date().toISOString().split('T')[0];
                     document.getElementById('checkout-date').value = today;
                     checkout = today;
                 }
-                
+
                 var checkinDate = new Date(checkin);
                 var checkoutDate = new Date(checkout);
                 if (checkoutDate < checkinDate) {
                     alert('Check-out date must be after check-in date.');
                     return false;
                 }
-                
+
                 return true;
             }
-            
+
         </script>
         <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"></script>
     </body>

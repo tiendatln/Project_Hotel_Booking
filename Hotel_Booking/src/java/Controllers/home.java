@@ -55,7 +55,7 @@ public class home extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("/customer/index.jsp").forward(request, response);
+        request.getRequestDispatcher("/customer/home.jsp").forward(request, response);
     }
 
     /**

@@ -57,7 +57,7 @@ public class homeController extends HttpServlet {
             throws ServletException, IOException {
         String path = request.getRequestURI();
         if (path.endsWith("/HomeCustomer")) {
-            request.getRequestDispatcher("/customer/index.jsp").forward(request, response);
+            request.getRequestDispatcher("/customer/home.jsp").forward(request, response);
         } else if (path.endsWith("/HomeAdmin")) {
             request.getRequestDispatcher("/customer/adnimHomePage.jsp").forward(request, response);
         } else if (path.endsWith("/HomeOwner")) {            

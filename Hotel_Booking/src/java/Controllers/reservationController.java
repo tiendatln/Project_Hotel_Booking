@@ -17,7 +17,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.jasper.tagplugins.jstl.core.ForEach;
 
 /**
  *
@@ -83,24 +82,6 @@ public class reservationController extends HttpServlet {
                 request.getRequestDispatcher("/customer/reservation.jsp").forward(request, response);
             } else {
                 response.sendRedirect("/homeController/HomeCustomer");
-            }
-        } else if (path.startsWith("/reservationController/AddReserve")) {
-            String[] s = path.split("/");
-            int room_id = Integer.valueOf(s[s.length - 1]);
-            int hotel_id = Integer.valueOf(s[s.length - 2]);
-            roomID.add(room_id);
-            response.sendRedirect("/searchController/HotelDetail/" + hotel_id);
-        } else if (path.startsWith("/reservationController/Reserve")) {
-            String[] s = path.split("/");
-            String username = s[s.length - 1];
-            int hotel_id = Integer.valueOf(s[s.length - 2]);
-            if (flagCustomer) {
-                request.setAttribute("RoomID", roomID);
-                
-                request.getRequestDispatcher("/customer/reserve.jsp").forward(request, response);
-            } else {
-                request.getSession().setAttribute("loginToReserve", "You must be login to reserve!");
-                response.sendRedirect("/searchController/HotelDetail/" + s[s.length - 1]);
             }
         } else if (path.endsWith("/InfoReserve")) {
             request.getRequestDispatcher("/customer/infoForReserve.jsp").forward(request, response);

@@ -4,15 +4,17 @@
  */
 package Controllers;
 
+import DAOs.roomDAOs;
+import Model.room;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import javax.print.attribute.IntegerSyntax;
 
 /**
  *
@@ -58,11 +60,27 @@ public class reserveController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
         String[] RoomId = request.getParameterValues("quantity");
         // Check if quantityAndRoomId is not null and contains a comma
+        int hotelID = Integer.valueOf(request.getParameter("HotelID"));
+        boolean flagCustomer = false;
+        String value = "";
+        Cookie[] cList = null;
+        cList = request.getCookies(); //Lay tat ca cookie cua website nay tren may nguoi dung
+        if (cList != null) {
+            for (int i = 0; i < cList.length; i++) {//Duyet qua het tat ca cookie
+                if (cList[i].getName().equals("customer")) {//nguoi dung da dang nhap
+                    value = cList[i].getValue();
+                    flagCustomer = true;
+                    break; //thoat khoi vong lap
+                }
+            }
+        }
+        if (flagCustomer) {
             try {
                 List<Integer> roomID = new ArrayList<>();
-                for (int i = 0; i < RoomId.length; i++){
+                for (int i = 0; i < RoomId.length; i++) {
                     roomID.add(Integer.valueOf(RoomId[i]));
                 }
                 request.setAttribute("roomID", roomID);
@@ -75,7 +93,14 @@ public class reserveController extends HttpServlet {
                 // Handle the error or redirect to an error page
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid quantityAndRoomId format");
             }
-        
+        } else {
+            roomDAOs rDAO = new roomDAOs();
+            List<room> room = rDAO.getAllRoomImgByHotelId(hotelID);
+            request.setAttribute("loginToReserve", "You must be login to reserve!");
+            request.getSession().setAttribute("hotelID", hotelID);
+            request.setAttribute("roomImg", room);
+            request.getRequestDispatcher("/customer/hotelDetail.jsp").forward(request, response);
+        }
     }
 
     /**
