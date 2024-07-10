@@ -11,6 +11,7 @@
 <%@page import="Model.hotel"%>
 <%@page import="DAOs.hotelDAOs"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -56,7 +57,7 @@
 
     <body>
         <%@include file="layout.jsp"%>
-        <%
+        <%            
             hotelDAOs hDAO = new hotelDAOs();
             int hotelID = (int) request.getSession().getAttribute("hotelID");
             hotel h = hDAO.getHotelDetailById(hotelID);
@@ -91,7 +92,7 @@
                 </div>
             </div>
 
-                    <div class="my-4"">
+            <div class="my-4"">
                 <div>
                     <h5 style="color: #0c63e4">Sevice</h5>
                 </div>
@@ -116,59 +117,58 @@
             <div class="container availability-container">
                 <div class="header-section" >
                     <h3>Availability</h3>
-                    <form method="post" action="/reservationController" onsubmit="return validateForm()">
-                        <div class="d-flex justify-content-center">
-                            <%
-                                
-                            %>
-                            <div style="display: flex inline; box-sizing: border-box; border: 4px solid yellow; background-color: yellow; border-radius: 10px">
-                                <input type="date" class="form-control" name="checkInDate" >
-                                <h4>-</h4>
-                                <input type="date" class="form-control" name="checkOutDate" >
-                            </div>
-                            <div style="box-sizing: border-box; border: 4px solid yellow; border-radius: 10px">
-                                <select class="form-control">
-                                    <option>2 adults · 0 children · 1 room</option>
-                                </select>
-                            </div>
-                            <div style="box-sizing: border-box; border: 4px solid yellow; border-radius: 10px">
-                                <a class="btn btn-primary" name="btnChangesearch">Change search</a>
-                            </div>
+                    <!--                    <form method="post" action="/reservationController" onsubmit="return validateForm()">-->
+                    <div class="d-flex justify-content-center">
+                        <%
+
+                        %>
+                        <div style="display: flex inline; box-sizing: border-box; border: 4px solid yellow; background-color: yellow; border-radius: 10px">
+                            <input type="date" class="form-control" name="checkInDate" >
+                            <h4>-</h4>
+                            <input type="date" class="form-control" name="checkOutDate" >
                         </div>
-                    </form>
+                        <div style="box-sizing: border-box; border: 4px solid yellow; border-radius: 10px">
+                            <select class="form-control">
+                                <option>2 adults · 0 children · 1 room</option>
+                            </select>
+                        </div>
+                        <div style="box-sizing: border-box; border: 4px solid yellow; border-radius: 10px">
+                            <a class="btn btn-primary" name="btnChangesearch">Change search</a>
+                        </div>
+                    </div>
+                    <!--                    </form>-->
                 </div>
 
                 <!-- Room List -->
                 <div class="row mt-3">
-                    <!-- Repeat for each room type -->
-                    <div class="col-12">
-                        <div class="card" style="background-color: #007bff">
-                            <div class="card-body" style="background-color: #ddd">
-                                <div class="row">
-                                    <div class="col-md-3 text-center">
-                                        <h5>Room Type</h5>
-                                    </div>
-                                    <div class="col-md-4 text-center">
-                                        <h5>Room Description</h5>
-                                    </div>
-                                    <div class="col-md-3 text-center ">
-                                        <h5>Price</h5>
-                                    </div>
-                                    <div class="col-md-2 text-center ">
-                                        <a class="btn btn-primary" id="reserve-link" href="/reservationController/Reserve/<%= h.getHotel_id()%>/<%= value %> " >I'll reserve</a>
+                    <form action="/reserveController" method="get" class="container" >
+                        <!-- Repeat for each room type -->
+                        <div class="col-12">
+                            <div class="card" style="background-color: #007bff">
+                                <div class="card-body" style="background-color: #ddd">
+                                    <div class="row">
+                                        <div class="col-md-3 text-center">
+                                            <h5>Room Type</h5>
+                                        </div>
+                                        <div class="col-md-4 text-center">
+                                            <h5>Room Description</h5>
+                                        </div>
+                                        <div class="col-md-3 text-center ">
+                                            <h5>Price</h5>
+                                        </div>
+                                        <div class="col-md-2 text-center ">
+                                            <button class="btn btn-primary" type="submit" id="reserve-link" name="btnReserve" >I'll reserve</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    
-                        <%
-                            roomDAOs rDAO = new roomDAOs();
+                        <%                            roomDAOs rDAO = new roomDAOs();
                             ResultSet rsRoom = rDAO.getRoomByHotelID(h.getHotel_id());
                             while (rsRoom.next()) {
                                 if (rsRoom.getBoolean("room_status")) {
                         %>
-                        <div class="col-12 mb-3">
+                        <div class="col-12 mb-3" id="room_id">
                             <div class="card">
                                 <div class="card-body">
                                     <div class="row">
@@ -194,7 +194,20 @@
                                             <!--                                        <span class="discount">40% off</span>-->
                                         </div>
                                         <div class="col-md-2 " >
-                                            <a class="btn btn-primary" id="reserve-link" href="/reservationController/AddReserve/<%= h.getHotel_id()%>/<%= rsRoom.getInt("room_id")%>" >Add to reserve</a>
+<!--                                            <select class="form-control" id="quantitysSelector" name="quantity" onchange="submitForm()" >
+                                                <option>0</option>
+                                                <option value="1,<%= rsRoom.getString("room_id")%>" >1</option>
+                                                <option value="2,<%= rsRoom.getString("room_id")%>" >2</option>
+                                                <option value="3,<%= rsRoom.getString("room_id")%>" >3</option>
+                                                <option value="4,<%= rsRoom.getString("room_id")%>" >4</option>
+                                                <option value="5,<%= rsRoom.getString("room_id")%>" >5</option>
+                                                <option value="6,<%= rsRoom.getString("room_id")%>" >6</option>
+                                                <option value="7,<%= rsRoom.getString("room_id")%>" >7</option>
+                                                <option value="8,<%= rsRoom.getString("room_id")%>" >8</option>
+                                                <option value="9,<%= rsRoom.getString("room_id")%>" >9</option>
+                                                <option value="10,<%= rsRoom.getString("room_id")%>" >10</option>
+                                            </select>-->
+                                            <input type="checkbox" id="quantity" name="quantity" value="<%= rsRoom.getString("room_id")%>">
                                         </div>
                                     </div>
                                 </div>
@@ -202,7 +215,7 @@
                         </div>
                         <% }
                             }%>
-                            
+                    </form>
                     <!-- End Repeat -->
                 </div>
             </div>
@@ -214,10 +227,22 @@
         <script src="https://kit.fontawesome.com/a076d05399.js"></script>
         <c:if test="${not empty loginToReserve}">
             <script>
-                        alert(${loginToReserve});
+                alert(${loginToReserve});
             </script>
         </c:if>
-        <script type="text/javascript">
+        <script >
+            function submitForm() {
+                var quantityAndRoomID = document.getElementById('quantitysSelector').value; // Get the selected value
+                var parts = quantityAndRoomID.split(','); // Split into quantity and room_id
+                var quantity = parts[0];
+                var room_id = parts[1];
+                
+                var url = '/reserveController?quantity=' + quantity + '&room_id=' + room_id; // Construct the URL with query parameters
+                
+                window.location = url; // Redirect to the constructed URL
+            }
+            
+            
             function updateHref() {
                 var quantity = document.getElementById("quantity-" + roomId).value;
                 var reserveLink = document.getElementById("reserve-link");
@@ -231,29 +256,29 @@
                 }
                 var checkin = document.getElementById('checkin-date').value;
                 var checkout = document.getElementById('checkout-date').value;
-
+                
                 if (!checkin) {
                     var today = new Date().toISOString().split('T')[0];
                     document.getElementById('checkin-date').value = today;
                     checkin = today;
                 }
-
+                
                 if (!checkout) {
                     var today = new Date().toISOString().split('T')[0];
                     document.getElementById('checkout-date').value = today;
                     checkout = today;
                 }
-
+                
                 var checkinDate = new Date(checkin);
                 var checkoutDate = new Date(checkout);
                 if (checkoutDate < checkinDate) {
                     alert('Check-out date must be after check-in date.');
                     return false;
                 }
-
+                
                 return true;
             }
-
+            
         </script>
         <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"></script>
     </body>

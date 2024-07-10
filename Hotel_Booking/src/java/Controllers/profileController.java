@@ -75,12 +75,12 @@ public class profileController extends HttpServlet {
             String path = request.getRequestURI();
             if (path.endsWith("/ProfileUser")) {
                 if (flagCustomer || flagOwner) {
-                    request.getRequestDispatcher("/profileUser.jsp").forward(request, response);
+                    request.getRequestDispatcher("/customer/profileUser.jsp").forward(request, response);
                 } else {
                     response.sendRedirect("/homeController/HomeCustomer");
                 }
             } else if (path.endsWith("/ChangePassword")) {
-                request.getRequestDispatcher("/changePassword.jsp").forward(request, response);
+                request.getRequestDispatcher("/customer/changePassword.jsp").forward(request, response);
             }
         } else {
             response.sendRedirect("/homeController/HomeCustomer");

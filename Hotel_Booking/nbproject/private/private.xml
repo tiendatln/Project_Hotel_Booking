@@ -4,25 +4,30 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/D:/JAVA/Project/Ky5/Group/Hotel_Booking/src/java/DAOs/reservationDAOs.java</file>
+            <file>file:/D:/JAVA/Project/Ky5/Group/Hotel_Booking/web/customer/listHotel.jsp</file>
             <file>file:/D:/JAVA/Project/Ky5/Group/Hotel_Booking/web/owner/list-room.jsp</file>
-            <file>file:/D:/JAVA/Project/Ky5/Group/Hotel_Booking/web/hotelDetail.jsp</file>
-            <file>file:/D:/JAVA/Project/Ky5/Group/Hotel_Booking/web/login.jsp</file>
-            <file>file:/D:/JAVA/Project/Ky5/Group/Hotel_Booking/web/layout.jsp</file>
-            <file>file:/D:/JAVA/Project/Ky5/Group/Hotel_Booking/web/index.jsp</file>
-            <file>file:/D:/JAVA/Project/Ky5/Group/Hotel_Booking/web/reservation.jsp</file>
-            <file>file:/D:/JAVA/Project/Ky5/Group/Hotel_Booking/web/reserve.jsp</file>
-            <file>file:/D:/JAVA/Project/Ky5/Group/Hotel_Booking/web/WEB-INF/web.xml</file>
-            <file>file:/D:/JAVA/Project/Ky5/Group/Hotel_Booking/src/java/Controllers/reservationController.java</file>
-            <file>file:/D:/JAVA/Project/Ky5/Group/Hotel_Booking/web/recover.jsp</file>
-            <file>file:/D:/JAVA/Project/Ky5/Group/Hotel_Booking/web/listHotel.jsp</file>
+            <file>file:/D:/JAVA/Project/Ky5/Group/Hotel_Booking/web/customer/layout.jsp</file>
+            <file>file:/D:/JAVA/Project/Ky5/Group/Hotel_Booking/src/java/Controllers/homeController.java</file>
+            <file>file:/D:/JAVA/Project/Ky5/Group/Hotel_Booking/src/java/Controllers/logoutController.java</file>
+            <file>file:/D:/JAVA/Project/Ky5/Group/Hotel_Booking/web/customer/reserve.jsp</file>
+            <file>file:/D:/JAVA/Project/Ky5/Group/Hotel_Booking/src/java/DAOs/roomDAOs.java</file>
+            <file>file:/D:/JAVA/Project/Ky5/Group/Hotel_Booking/web/customer/recover.jsp</file>
+            <file>file:/D:/JAVA/Project/Ky5/Group/Hotel_Booking/web/admin/homeAdmin.jsp</file>
+            <file>file:/D:/JAVA/Project/Ky5/Group/Hotel_Booking/web/customer/hotelDetail.jsp</file>
+            <file>file:/D:/JAVA/Project/Ky5/Group/Hotel_Booking/web/customer/changePassword.jsp</file>
             <file>file:/D:/JAVA/Project/Ky5/Group/Hotel_Booking/src/java/Model/hotel.java</file>
             <file>file:/D:/JAVA/Project/Ky5/Group/Hotel_Booking/src/java/Model/reservation.java</file>
-            <file>file:/D:/JAVA/Project/Ky5/Group/Hotel_Booking/web/changePassword.jsp</file>
-            <file>file:/D:/JAVA/Project/Ky5/Group/Hotel_Booking/web/register.jsp</file>
-            <file>file:/D:/JAVA/Project/Ky5/Group/Hotel_Booking/src/java/Controllers/roomManagerController.java</file>
             <file>file:/D:/JAVA/Project/Ky5/Group/Hotel_Booking/src/java/Controllers/registerController.java</file>
             <file>file:/D:/JAVA/Project/Ky5/Group/Hotel_Booking/src/java/Controllers/loginController.java</file>
-            <file>file:/D:/JAVA/Project/Ky5/Group/Hotel_Booking/web/infoForReserve.jsp</file>
+            <file>file:/D:/JAVA/Project/Ky5/Group/Hotel_Booking/web/customer/reservation.jsp</file>
+            <file>file:/D:/JAVA/Project/Ky5/Group/Hotel_Booking/web/customer/register.jsp</file>
+            <file>file:/D:/JAVA/Project/Ky5/Group/Hotel_Booking/web/customer/login.jsp</file>
+            <file>file:/D:/JAVA/Project/Ky5/Group/Hotel_Booking/src/java/Controllers/profileController.java</file>
+            <file>file:/D:/JAVA/Project/Ky5/Group/Hotel_Booking/web/customer/index.jsp</file>
+            <file>file:/D:/JAVA/Project/Ky5/Group/Hotel_Booking/src/java/Controllers/reservationController.java</file>
+            <file>file:/D:/JAVA/Project/Ky5/Group/Hotel_Booking/src/java/Controllers/roomManagerController.java</file>
+            <file>file:/D:/JAVA/Project/Ky5/Group/Hotel_Booking/web/customer/infoForReserve.jsp</file>
+            <file>file:/D:/JAVA/Project/Ky5/Group/Hotel_Booking/src/java/Controllers/reserveController.java</file>
             <file>file:/D:/JAVA/Project/Ky5/Group/Hotel_Booking/src/java/Controllers/searchController.java</file>
         </group>
     </open-files>

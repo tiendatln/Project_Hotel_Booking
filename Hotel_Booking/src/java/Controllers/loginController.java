@@ -59,7 +59,7 @@ public class loginController extends HttpServlet {
             throws ServletException, IOException {
         String path = request.getRequestURI();
         if (path.endsWith("/login")) {
-            request.getRequestDispatcher("/login.jsp").forward(request, response);
+            request.getRequestDispatcher("/customer/login.jsp").forward(request, response);
         }
     }
 
@@ -94,12 +94,12 @@ public class loginController extends HttpServlet {
                 if (pwd.equals("")) {
                     request.getSession().setAttribute("massagePassNull", "Please Enter Password!");
                 }
-                 request.getRequestDispatcher("/login.jsp").forward(request, response);
+                 request.getRequestDispatcher("/customer/login.jsp").forward(request, response);
             }
             if (!pwd.equals("") && !us.equals("")) {
                 if (!aDAO.checkPassword(us, pwd) || !aDAO.checkUser(us)) {
                     request.getSession().setAttribute("massageAllError", "Username or Password are incorrect!");
-                     request.getRequestDispatcher("/login.jsp").forward(request, response);
+                     request.getRequestDispatcher("/customer/login.jsp").forward(request, response);
                 } else {
                     String setRole = aDAO.checkAccount(us);
                     Cookie c = new Cookie(setRole, us);

@@ -61,7 +61,7 @@ public class searchController extends HttpServlet {
             throws ServletException, IOException {
         String path = request.getRequestURI();
         if (path.endsWith("/ListHotel")) {
-            request.getRequestDispatcher("/listHotel.jsp").forward(request, response);
+            request.getRequestDispatcher("/customer/listHotel.jsp").forward(request, response);
         } else if (path.startsWith("/searchController/HotelDetail")) {
             String[] s = path.split("/");
             roomDAOs rDAO = new roomDAOs();
@@ -73,7 +73,7 @@ public class searchController extends HttpServlet {
             request.setAttribute("roomImg", room);
 //            request.getSession().setAttribute("checkIn", checkIn);
 //            request.getSession().setAttribute("checkOut", checkOut);
-            request.getRequestDispatcher("/hotelDetail.jsp").forward(request, response);
+            request.getRequestDispatcher("/customer/hotelDetail.jsp").forward(request, response);
         }
     }
 
@@ -116,7 +116,7 @@ public class searchController extends HttpServlet {
                 }
             } else {
                 request.setAttribute("search", true);
-                request.getRequestDispatcher("/index.jsp").forward(request, response);
+                request.getRequestDispatcher("/customer/index.jsp").forward(request, response);
             }
         }
     }

@@ -140,6 +140,7 @@ public class roomManagerController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
+        String[] arr = request.getParameterValues("roomID");
         if (action.equalsIgnoreCase("insertroom")) {
             hotelDAOs hdb = new hotelDAOs();
             roomDAOs rdb = new roomDAOs();
@@ -150,7 +151,7 @@ public class roomManagerController extends HttpServlet {
             String room_description = request.getParameter("description");
             String room_status_raw = request.getParameter("status");
             Part part = request.getPart("room_img");
-            String realPath = "D:\\JAVA\\Project\\Ky5\\Group\\Hotel_Booking\\web\\imgs\\room";
+            String realPath = getServletContext().getRealPath("/imgs/room/");
             Path fileName = Paths.get(part.getSubmittedFileName());
             if (!Files.exists(Paths.get(realPath))) {
                 Files.createDirectories(Paths.get(realPath));
@@ -187,7 +188,7 @@ public class roomManagerController extends HttpServlet {
             String room_description = request.getParameter("description");
             String room_status_raw = request.getParameter("status");
             Part part = request.getPart("room_img");
-            String realPath = "D:\\JAVA\\Project\\Ky5\\Group\\Hotel_Booking\\web\\imgs\\room";
+            String realPath = getServletContext().getRealPath("/imgs/room/");
             Path fileName = Paths.get(part.getSubmittedFileName());
             if (!Files.exists(Paths.get(realPath))) {
                 Files.createDirectories(Paths.get(realPath));
@@ -220,8 +221,8 @@ public class roomManagerController extends HttpServlet {
 
                 part.write(realPath + "/" + fileName);
 
-                File filePic = new File("D:\\JAVA\\Ki4\\PRJ\\HandmadeStore\\src\\main\\webapp\\imgs" + rdb.getRoomImgByRoomID(room_id));
-                filePic.delete();
+                File filePic = new File(getServletContext().getRealPath("/imgs/room/") + rdb.getRoomImgByRoomID(room_id));
+                filePic.deleteOnExit();
                 rdb.updateRoom(room);
                 System.out.println("updated");
                 response.sendRedirect("/roomManagerController");

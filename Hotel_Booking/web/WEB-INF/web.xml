@@ -4,6 +4,9 @@
         <servlet-name>homeController</servlet-name>
         <servlet-class>Controllers.homeController</servlet-class>
     </servlet>
+    <welcome-file-list>
+        <welcome-file>home</welcome-file>
+    </welcome-file-list>
     <servlet>
         <servlet-name>loginController</servlet-name>
         <servlet-class>Controllers.loginController</servlet-class>
@@ -31,6 +34,14 @@
     <servlet>
         <servlet-name>reservationController</servlet-name>
         <servlet-class>Controllers.reservationController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>reserveController</servlet-name>
+        <servlet-class>Controllers.reserveController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>home</servlet-name>
+        <servlet-class>Controllers.home</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>homeController</servlet-name>
@@ -63,6 +74,14 @@
     <servlet-mapping>
         <servlet-name>reservationController</servlet-name>
         <url-pattern>/reservationController/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>reserveController</servlet-name>
+        <url-pattern>/reserveController/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>home</servlet-name>
+        <url-pattern>/home</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

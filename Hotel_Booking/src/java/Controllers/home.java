@@ -15,7 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author tiend
  */
-public class homeController extends HttpServlet {
+public class home extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,10 +34,10 @@ public class homeController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet homeController</title>");
+            out.println("<title>Servlet home</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet homeController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet home at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -55,14 +55,7 @@ public class homeController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String path = request.getRequestURI();
-        if (path.endsWith("/HomeCustomer")) {
-            request.getRequestDispatcher("/customer/index.jsp").forward(request, response);
-        } else if (path.endsWith("/HomeAdmin")) {
-            request.getRequestDispatcher("/customer/adnimHomePage.jsp").forward(request, response);
-        } else if (path.endsWith("/HomeOwner")) {            
-            response.sendRedirect("/roomManagerController");
-        }
+        request.getRequestDispatcher("/customer/index.jsp").forward(request, response);
     }
 
     /**

@@ -80,7 +80,7 @@ public class reservationController extends HttpServlet {
         List<Integer> roomID = new ArrayList<>();
         if (path.endsWith("/YourReservation")) {
             if (flagCustomer) {
-                request.getRequestDispatcher("/reservation.jsp").forward(request, response);
+                request.getRequestDispatcher("/customer/reservation.jsp").forward(request, response);
             } else {
                 response.sendRedirect("/homeController/HomeCustomer");
             }
@@ -95,15 +95,15 @@ public class reservationController extends HttpServlet {
             String username = s[s.length - 1];
             int hotel_id = Integer.valueOf(s[s.length - 2]);
             if (flagCustomer) {
-                request.getSession().setAttribute("RoomID", roomID);
+                request.setAttribute("RoomID", roomID);
                 
-                request.getRequestDispatcher("/reserve.jsp").forward(request, response);
+                request.getRequestDispatcher("/customer/reserve.jsp").forward(request, response);
             } else {
                 request.getSession().setAttribute("loginToReserve", "You must be login to reserve!");
                 response.sendRedirect("/searchController/HotelDetail/" + s[s.length - 1]);
             }
         } else if (path.endsWith("/InfoReserve")) {
-            request.getRequestDispatcher("/infoForReserve.jsp").forward(request, response);
+            request.getRequestDispatcher("/customer/infoForReserve.jsp").forward(request, response);
         }
     }
 
