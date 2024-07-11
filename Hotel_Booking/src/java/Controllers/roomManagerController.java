@@ -12,17 +12,25 @@ import Model.roomType;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 /**
  *
  * @author tiend
  */
+@WebServlet("/Relay")
+@MultipartConfig
 public class roomManagerController extends HttpServlet {
 
     /**
@@ -132,6 +140,7 @@ public class roomManagerController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
+        String[] arr = request.getParameterValues("roomID");
         if (action.equalsIgnoreCase("insertroom")) {
             hotelDAOs hdb = new hotelDAOs();
             roomDAOs rdb = new roomDAOs();
@@ -140,20 +149,26 @@ public class roomManagerController extends HttpServlet {
             String room_price_raw = request.getParameter("price");
             String hotel_id_raw = request.getParameter("hotel_id");
             String room_description = request.getParameter("description");
-            String room_img = "imgs/room" + request.getParameter("room_img");
             String room_status_raw = request.getParameter("status");
+            Part part = request.getPart("room_img");
+            String realPath = getServletContext().getRealPath("/imgs/room/");
+            Path fileName = Paths.get(part.getSubmittedFileName());
+            if (!Files.exists(Paths.get(realPath))) {
+                Files.createDirectories(Paths.get(realPath));
+            }
+            String picture = fileName.getFileName().toString();
 
             int room_type_id = Integer.parseInt(roomtype_id_raw);
             int hotel_id = Integer.parseInt(hotel_id_raw);
             int room_price = Integer.parseInt(room_price_raw);
             boolean room_status = (room_status_raw.equals("1")) ? true : false;
-
+            part.write(realPath + "/" + fileName);
             roomType roomType = rdb.getRoomTypeByID(room_type_id);
             hotel hotel = hdb.getHotelDetailById(hotel_id);
             room room = new room();
             room.setRoom_name(room_name);
             room.setRoom_price(room_price);
-            room.setRoom_img(room_img);
+            room.setRoom_img(picture);
             room.setRoom_status(room_status);
             room.setRoom_description(room_description);
             room.setRoom_type(roomType);
@@ -171,8 +186,14 @@ public class roomManagerController extends HttpServlet {
             String room_price_raw = request.getParameter("price");
             String hotel_id_raw = request.getParameter("hotel_id");
             String room_description = request.getParameter("description");
-            String room_img = "imgs/room" + request.getParameter("room_img");
             String room_status_raw = request.getParameter("status");
+            Part part = request.getPart("room_img");
+            String realPath = getServletContext().getRealPath("/imgs/room/");
+            Path fileName = Paths.get(part.getSubmittedFileName());
+            if (!Files.exists(Paths.get(realPath))) {
+                Files.createDirectories(Paths.get(realPath));
+            }
+            String picture = fileName.getFileName().toString();
 
             int room_id = Integer.parseInt(room_id_raw);
             int room_type_id = Integer.parseInt(roomtype_id_raw);
@@ -186,15 +207,27 @@ public class roomManagerController extends HttpServlet {
             room.setRoom_id(room_id);
             room.setRoom_name(room_name);
             room.setRoom_price(room_price);
-            room.setRoom_img(room_img);
+            room.setRoom_img(picture);
             room.setRoom_status(room_status);
             room.setRoom_description(room_description);
             room.setRoom_type(roomType);
             room.setHotel(hotel);
 
-            rdb.updateRoom(room);
-            System.out.println("updated");
-            response.sendRedirect("/roomManagerController");
+            if (picture.equals("")) {
+                rdb.updateRoom(room);
+                System.out.println("updated");
+                response.sendRedirect("/roomManagerController");
+            } else {
+
+                part.write(realPath + "/" + fileName);
+
+                File filePic = new File(getServletContext().getRealPath("/imgs/room/") + rdb.getRoomImgByRoomID(room_id));
+                filePic.deleteOnExit();
+                rdb.updateRoom(room);
+                System.out.println("updated");
+                response.sendRedirect("/roomManagerController");
+            }
+
         }
     }
 

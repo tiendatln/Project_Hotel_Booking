@@ -91,4 +91,14 @@ public class hotelDAOs {
 
         return list;
     }
+        
+        public List<hotel> getListByPage(List<hotel> list, int start, int end) {
+        ArrayList<hotel> arr = new ArrayList<>();
+        for (int i = start; i < end; i++) {
+            arr.add(list.get(i));
+        }
+        return arr;
+    }
+
+                
 }

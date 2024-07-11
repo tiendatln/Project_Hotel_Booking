@@ -4,13 +4,19 @@
  */
 package Controllers;
 
+import DAOs.reservationDAOs;
+import Model.reservation;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -35,7 +41,7 @@ public class reservationController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet reservationController</title>");            
+            out.println("<title>Servlet reservationController</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet reservationController at " + request.getContextPath() + "</h1>");
@@ -70,15 +76,15 @@ public class reservationController extends HttpServlet {
                 }
             }
         }
-        if (path.endsWith("/reservationController/showAll")) {
-
+        List<Integer> roomID = new ArrayList<>();
+        if (path.endsWith("/YourReservation")) {
             if (flagCustomer) {
-                request.getRequestDispatcher("/reservation.jsp").forward(request, response);
+                request.getRequestDispatcher("/customer/reservation.jsp").forward(request, response);
             } else {
                 response.sendRedirect("/homeController/HomeCustomer");
             }
-        }else if(path.startsWith("/reservationController/Reserve")){
-            request.getRequestDispatcher("/reserve.jsp").forward(request, response);
+        } else if (path.endsWith("/InfoReserve")) {
+            request.getRequestDispatcher("/customer/infoForReserve.jsp").forward(request, response);
         }
     }
 
@@ -93,7 +99,18 @@ public class reservationController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        if(request.getParameter("btnChangesearch") != null){
+            long millis = System.currentTimeMillis();
+            Date checkinDate = new Date(millis);
+            Date checkoutDate = new Date(millis);
+            checkinDate = Date.valueOf(request.getParameter("checkInDate"));
+            checkoutDate = Date.valueOf(request.getParameter("checkOutDate"));
+            HttpSession mySession = request.getSession();
+            mySession.setAttribute("checkInDate", checkinDate);
+            mySession.setAttribute("checkOutDate", checkoutDate);
+            reservationDAOs rsDAO = new reservationDAOs();
+            
+        }
     }
 
     /**

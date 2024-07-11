@@ -4,6 +4,8 @@
  */
 package Controllers;
 
+import DAOs.roomDAOs;
+import Model.room;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -11,6 +13,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.Date;
+import java.util.List;
 
 /**
  *
@@ -35,7 +38,7 @@ public class searchController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet searchController</title>");            
+            out.println("<title>Servlet searchController</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet searchController at " + request.getContextPath() + "</h1>");
@@ -58,11 +61,19 @@ public class searchController extends HttpServlet {
             throws ServletException, IOException {
         String path = request.getRequestURI();
         if (path.endsWith("/ListHotel")) {
-            request.getRequestDispatcher("/listHotel.jsp").forward(request, response);
-        }else if(path.startsWith("/searchController/HotelDetail")){
+            request.getRequestDispatcher("/customer/listHotel.jsp").forward(request, response);
+        } else if (path.startsWith("/searchController/HotelDetail")) {
             String[] s = path.split("/");
-            request.getSession().setAttribute("hotelID", s[s.length - 1]);
-            request.getRequestDispatcher("/hotelDetail.jsp").forward(request, response);
+            roomDAOs rDAO = new roomDAOs();
+//            long checkOut = Long.valueOf(s[s.length - 1]);
+//            long checkIn = Long.valueOf(s[s.length - 2]);
+            int hotel_id = Integer.valueOf(s[s.length - 1]);
+            List<room> room = rDAO.getAllRoomImgByHotelId(hotel_id);
+            request.getSession().setAttribute("hotelID", hotel_id);
+            request.setAttribute("roomImg", room);
+//            request.getSession().setAttribute("checkIn", checkIn);
+//            request.getSession().setAttribute("checkOut", checkOut);
+            request.getRequestDispatcher("/customer/hotelDetail.jsp").forward(request, response);
         }
     }
 
@@ -78,29 +89,36 @@ public class searchController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         if (request.getParameter("btnSearchHotel") != null) {
-            try {
-                long millis = System.currentTimeMillis();
-                long tenDaysInMillis = 10L * 24 * 60 * 60 * 1000;
-                long checkoutMillis = millis + tenDaysInMillis;
-                Date checkinDate = new Date(millis);
-                Date checkoutDate = new Date(millis);
-                String searchLocal = request.getParameter("destination");
-                checkinDate = Date.valueOf(request.getParameter("checkin-date"));
-                checkoutDate = Date.valueOf(request.getParameter("checkout-date"));
-                long checkin = checkinDate.getTime();
-                long checkout = checkoutDate.getTime();
-                if(checkin == checkout){
-                    checkoutDate = new Date(checkoutMillis);
-                    checkout = checkoutDate.getTime();
-                }
-                request.getSession().setAttribute("listRoom", searchLocal);
-                request.getSession().setAttribute("checkin", checkin);
-                request.getSession().setAttribute("checkout", checkout);
-                response.sendRedirect("/searchController/ListHotel");
-            } catch (IOException e) {
+            String destination = request.getParameter("destination");
+            if (!destination.equals("")) {
+                try {
+                    long millis = System.currentTimeMillis();
+                    long tenDaysInMillis = 10L * 24 * 60 * 60 * 1000;
+                    long checkoutMillis = millis + tenDaysInMillis;
+                    Date checkinDate = new Date(millis);
+                    Date checkoutDate = new Date(millis);
+                    String roomType = request.getParameter("roomType");
+                    checkinDate = Date.valueOf(request.getParameter("checkin-date"));
+                    checkoutDate = Date.valueOf(request.getParameter("checkout-date"));
+                    long checkin = checkinDate.getTime();
+                    long checkout = checkoutDate.getTime();
+                    if (checkin == checkout) {
+                        checkoutDate = new Date(checkoutMillis);
+                        checkout = checkoutDate.getTime();
+                    }
+                    request.getSession().setAttribute("destination", destination);
+                    request.getSession().setAttribute("checkin", checkin);
+                    request.getSession().setAttribute("checkout", checkout);
+                    request.getSession().setAttribute("roomType", roomType);
+                    response.sendRedirect("/searchController/ListHotel");
+                } catch (IOException e) {
 
+                }
+            } else {
+                request.setAttribute("search", true);
+                request.getRequestDispatcher("/customer/index.jsp").forward(request, response);
             }
-        } 
+        }
     }
 
     /**

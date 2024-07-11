@@ -228,4 +228,51 @@ public class roomDAOs {
         } catch (Exception e) {
         }
     }
+
+    public List<room> getAllRoomImgByHotelId(int hotel_id) {
+        List<room> list = new ArrayList<>();
+        ResultSet rs = null;
+        try {
+            PreparedStatement ps = conn.prepareStatement("select * from Room r join Hotel h on r.hotel_id = h.hotel_id where h.hotel_id = ?");
+            ps.setInt(1, hotel_id);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+
+                list.add(new room(rs.getString("room_img")));
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return list;
+    }
+
+    public String getRoomImgByRoomID(int room_id) {
+        ResultSet rs = null;
+        String img = "";
+        try {
+            PreparedStatement ps = conn.prepareStatement("select * from Room where room_id = ?");
+            ps.setInt(1, room_id);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                img = rs.getString("room_img");
+            }
+        } catch (SQLException e) {
+        }
+        return img;
+    }
+
+    public int getNumberOfRoom(int hotel_id) {
+        int count = 0;
+        ResultSet rs = null;
+        try {
+            PreparedStatement ps = conn.prepareStatement("select room_id from Room where hotel_id = ?");
+            ps.setInt(1, hotel_id);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                count++;
+            }
+        } catch (Exception e) {
+        }
+        return count;
+    }
 }

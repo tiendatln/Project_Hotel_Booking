@@ -69,9 +69,9 @@ public class registerController extends HttpServlet {
             throws ServletException, IOException {
         String path = request.getRequestURI();
         if (path.endsWith("/Register")) {
-            request.getRequestDispatcher("/register.jsp").forward(request, response);
+            request.getRequestDispatcher("/customer/register.jsp").forward(request, response);
         } else if (path.endsWith("/EnterOTP")) {
-            request.getRequestDispatcher("/enterOTP.jsp").forward(request, response);
+            request.getRequestDispatcher("/customer/enterOTP.jsp").forward(request, response);
         }
     }
 

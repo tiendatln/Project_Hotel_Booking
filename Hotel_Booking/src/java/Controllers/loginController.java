@@ -59,7 +59,7 @@ public class loginController extends HttpServlet {
             throws ServletException, IOException {
         String path = request.getRequestURI();
         if (path.endsWith("/login")) {
-            request.getRequestDispatcher("/login.jsp").forward(request, response);
+            request.getRequestDispatcher("/customer/login.jsp").forward(request, response);
         }
     }
 
@@ -79,18 +79,9 @@ public class loginController extends HttpServlet {
             cList = request.getCookies();
             if (cList != null) {
                 for (Cookie cList1 : cList) { //Duyet qua het tat ca cookie
-                    if (cList1.getName().equals("customer")) { //nguoi dung da dang nhap
-                        cList1.setMaxAge(0);
-                        cList1.setPath("/");
-                        response.addCookie(cList1);
-                        break; //thoat khoi vong lap
-                    }
-                    if (cList1.getName().equals("owner")) { //nguoi dung da dang nhap
-                        cList1.setMaxAge(0);
-                        cList1.setPath("/");
-                        response.addCookie(cList1);
-                        break; //thoat khoi vong lap
-                    }
+                    cList1.setMaxAge(0);
+                    cList1.setPath("/");
+                    response.addCookie(cList1);
                 }
             }
             accountDAOs aDAO = new accountDAOs();
@@ -103,12 +94,12 @@ public class loginController extends HttpServlet {
                 if (pwd.equals("")) {
                     request.getSession().setAttribute("massagePassNull", "Please Enter Password!");
                 }
-                response.sendRedirect("/loginController/login");
+                 request.getRequestDispatcher("/customer/login.jsp").forward(request, response);
             }
             if (!pwd.equals("") && !us.equals("")) {
                 if (!aDAO.checkPassword(us, pwd) || !aDAO.checkUser(us)) {
                     request.getSession().setAttribute("massageAllError", "Username or Password are incorrect!");
-                    response.sendRedirect("/loginController/login");
+                     request.getRequestDispatcher("/customer/login.jsp").forward(request, response);
                 } else {
                     String setRole = aDAO.checkAccount(us);
                     Cookie c = new Cookie(setRole, us);

@@ -21,6 +21,10 @@ public class room {
     public room() {
     }
 
+    public room(String room_img) {
+        this.room_img = room_img;
+    }
+
     public room(int room_id, String room_name, int room_price, String room_img, boolean room_status, String room_description, roomType room_type, hotel hotel) {
         this.room_id = room_id;
         this.room_name = room_name;
