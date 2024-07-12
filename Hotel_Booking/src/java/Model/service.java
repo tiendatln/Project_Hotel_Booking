@@ -38,7 +38,7 @@ public class service {
         this.service_id = service_id;
     }
      
-    public long getService_price() {
+    public int getService_price() {
         return service_price;
     }
 

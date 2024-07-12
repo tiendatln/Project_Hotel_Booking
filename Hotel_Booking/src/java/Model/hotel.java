@@ -4,6 +4,9 @@
  */
 package Model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author tiend
@@ -14,7 +17,7 @@ public class hotel {
     private String hotel_address;
     private String hotel_img;
     private String hotel_description;
-    private account username;
+    private account username;    
     public hotel() {
     }
 

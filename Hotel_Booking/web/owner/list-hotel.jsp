@@ -78,8 +78,9 @@
                             <div class="e-panel card">
                                 <div class="card-body">
                                     <div class="text-left px-xl-3">                                        
-                                        <button class="btn btn-success btn-block" type="button" data-bs-toggle="modal" data-bs-target="#add-form-modal"> <i class="fa fa-fw  fa-plus"></i> Add hotel</button>                                              
-                                    </div>
+                                        <button class="btn btn-success btn-block" type="button" data-bs-toggle="modal" data-bs-target="#add-form-modal"> <i class="fa fa-fw  fa-plus"></i> Add hotel</button>     
+                                        <button class="btn btn-primary btn-block" type="button" data-bs-toggle="modal" data-bs-target="#add-service-form-modal" style="margin-left: 20px;"> <i class="fa fa-fw  fa-plus-circle"></i> Add services</button> 
+                                    </div>                                    
                                     <div class="col-12 col-lg-3 ms-auto" >
                                         <div class="card">
                                             <div class="card-body">                                   
@@ -89,7 +90,7 @@
                                                         <div class="input-group">
                                                             <span class="input-group-addon"><i
                                                                     class="glyphicon glyphicon-envelope color-blue"></i></span> <input
-                                                                placeholder="Room ID"
+                                                                placeholder="Hotel ID"
                                                                 class="form-control" type="text" required="required">
                                                         </div>
                                                         <div class="text-center px-xl-3" style="margin-top: 5px;"><button type="submit" class="btn btn-primary" name="btnSearch">Search</button></div>
@@ -132,20 +133,24 @@
                                                             <td class="text-nowrap align-middle" style='max-width: 200px;
                                                                 overflow-x: auto;''><span>${hotel.hotel_description}</span></td>
                                                             <td class="text-nowrap align-middle"style='max-width: 200px;
-                                                                overflow-x: auto;' ><span>
-                                                                    <c:if test="${empty ServiceData}">
+                                                                overflow-x: auto;' ><span>                                                                    
+                                                                    <c:set var="c" value="0"/>                                                                                                                                        
+                                                                    <c:forEach items="${ServiceData}" var="s">
+
+                                                                        <c:if test="${hotel.hotel_id==s.hotel.hotel_id}">
+                                                                            <c:set var="c" value="1"/>        
+                                                                            ${s.service_name} -                                                                            
+                                                                        </c:if>
+
+                                                                    </c:forEach>
+                                                                    <c:if test="${c!=1}">
                                                                         N/A
                                                                     </c:if>
-                                                                    <c:forEach items="${ServiceData}" var="s">
-                                                                        <c:if test="${hotel.hotel_id==s.hotel.hotel_id}">
-                                                                            ${s.service_name} -   
-                                                                        </c:if>
-                                                                    </c:forEach>
                                                                 </span></td>                                                           
                                                             <td class="text-center align-middle">
                                                                 <div class="btn-group align-top">
-                                                                    <button class="btn btn-outline-secondary badge" type="button" data-bs-toggle="modal" data-bs-target="#update-form-modal${room.room_id}" style="color: black;" >Edit</button>
-                                                                    <button class="btn btn-sm btn-outline-secondary badge trash" type="button" style="color: black" onclick="doDelete('${room.room_id}')"><i class="fa fa-trash"></i></button>
+                                                                    <button class="btn btn-outline-secondary badge" type="button" data-bs-toggle="modal" data-bs-target="#update-form-modal${hotel.hotel_id}" style="color: black;" >Edit</button>
+                                                                    <button class="btn btn-sm btn-outline-secondary badge trash" type="button" style="color: black" onclick="doDelete('${hotel.hotel_id}')"><i class="fa fa-trash"></i></button>
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -173,7 +178,7 @@
                     </div>
                 </div>
 
-                <!-- Add Form Modal -->
+                <!-- Add Hotel Form Modal -->
                 <div class="modal fade" role="dialog" tabindex="-1" id="add-form-modal" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
                     <div class="modal-dialog modal-lg" role="document">
                         <div class="modal-content">
@@ -182,7 +187,7 @@
                             </div>
                             <div class="modal-body">
                                 <div class="py-1">
-                                    <form class="form" novalidate="" action="/hotelManagerController?action=insertroom" method="POST" enctype="multipart/form-data">
+                                    <form class="form" novalidate="" action="/hotelManagerController?action=inserthotel" method="post">
                                         <div class="row">
                                             <div class="col">
                                                 <div class="row">
@@ -196,14 +201,8 @@
                                                         <label>Hotel Address</label>
                                                         <input class="form-control" name="hotel_address" type="text" required placeholder="Hotel Address">
                                                     </div>                                                    
-                                                </div>
-                                                <div class="row">
-                                                    <div class="form-group">
-                                                        <label>Services</label>
-                                                        <input class="form-control" name="hotel_services" type="text" required placeholder="Ex: Wifi, Spa,...">
-                                                    </div>                                                    
-                                                </div>
-                                                
+                                                </div>                                                
+
                                                 <div class="row">
                                                     <div class="col mb-3">
                                                         <div class="form-group">
@@ -227,7 +226,7 @@
                                                 </div>
 
                                             </div>
-                                            
+
                                         </div>
                                 </div>
                                 <div class="row">
@@ -243,70 +242,98 @@
                     </div>
                 </div>
 
-                <c:forEach items="${RoomData}" var="room">
+                <!-- Add Service Form Modal -->
+                <div class="modal fade" role="dialog" tabindex="-1" id="add-service-form-modal" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Add Service</h5>                                
+                            </div>
+                            <div class="modal-body">
+                                <div class="py-1">
+                                    <form class="form" novalidate="" action="/hotelManagerController?action=insertservice" method="POST">
+                                        <div class="row">
+                                            <div class="col">
+                                                <div class="row">
+                                                    <div class="form-group">
+                                                        <label>Service Name</label>
+                                                        <input class="form-control" type="text" name="service_name" placeholder="Name of service" value="">
+                                                    </div>                                                    
+                                                </div>
+                                                <div class="row">
+                                                    <div class="form-group">
+                                                        <label>Service Price</label>
+                                                        <input class="form-control" name="service_price" type="number" required min="0" placeholder="Service price">
+                                                    </div>                                                    
+                                                </div>
+                                                <div class="row">
+                                                    <div class="form-group">
+                                                        <label>Hotel</label>
+                                                        <select name="hotel_id" class="form-control" id="exampleSelect1">
+                                                            <option>-- Select Hotel --</option>
+                                                            <c:forEach items="${HotelData}" var="hotel">
+                                                                <option value="${hotel.hotel_id}">${hotel.hotel_name}</option>
+                                                            </c:forEach>
+                                                        </select>
+                                                    </div>                                                    
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                </div>
+                                <div class="row" style='margin-top: 20px;'>
+                                    <div class="col d-flex justify-content-end">
+                                        <button class="btn btn-primary" type="submit" name="btnAdd">Add</button>                                                
+                                        <a class="btn btn-cancel" data-bs-dismiss="modal" href="#" style="background-color: crimson; margin-left: 15px; color: white;">Cancle</a>
+                                    </div>
+                                </div>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <c:forEach items="${HotelData}" var="hotel">
                     <!-- Update Form Modal -->
-                    <div class="modal fade" role="dialog" tabindex="-1" id="update-form-modal${room.room_id}" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                    <div class="modal fade" role="dialog" tabindex="-1" id="update-form-modal${hotel.hotel_id}" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
                         <div class="modal-dialog modal-lg" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title">Update Room</h5>                                
+                                    <h5 class="modal-title">Update Hotel</h5>                                
                                 </div>
                                 <div class="modal-body">
                                     <div class="py-1">
-                                        <form class="form" novalidate="" action="/roomManagerController?action=updateroom" method="POST" enctype="multipart/form-data">
+                                        <form class="form" novalidate="" action="/hotelManagerController?action=updatehotel" method="POST">
                                             <div class="row">
                                                 <div class="col mb-3">
                                                     <div class="form-group">
-                                                        <label>Room ID</label>
-                                                        <input class="form-control" type="text" name="room_id" value="${room.room_id}" readonly style="background: #f1f1f1">
+                                                        <label>Hotel ID</label>
+                                                        <input class="form-control" type="text" name="hotel_id" value="${hotel.hotel_id}" readonly style="background: #f1f1f1">
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col">
                                                     <div class="row">
-                                                        <div class="col">
-                                                            <div class="form-group">
-                                                                <label>Room Name</label>
-                                                                <input class="form-control" type="text" name="name" placeholder="Name of room" value="${room.room_name}">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col">
-                                                            <div class="form-group">
-                                                                <label>Room Type</label>
-                                                                <select name="roomType_id" class="form-control" id="exampleSelect1">
-                                                                    <option>-- Select Room Type --</option>
-                                                                    <c:forEach items="${RoomTypeData}" var="roomType">
-                                                                        <option value="${roomType.room_type_id}" ${(room.room_type.room_type_id == roomType.room_type_id) ? "selected" : ""}>${roomType.name_type}</option>
-                                                                    </c:forEach>
-                                                                </select>
-                                                            </div>
-                                                        </div>
+                                                         <div class="form-group">
+                                                                <label>Hotel Name</label>
+                                                                <input class="form-control" type="text" name="hotel_name" placeholder="Name of hotel" value="${hotel.hotel_name}">
+                                                            </div>                                                                                                                
                                                     </div>
                                                     <div class="row">
-                                                        <div class="col">
-                                                            <div class="form-group">
-                                                                <label>Price</label>
-                                                                <input class="form-control" name="price" type="number" required min="0" placeholder="Price per night" value="${room.room_price}">
+                                                        <div class="form-group">
+                                                                <label>Hotel Address</label>                                                                
+                                                                <input class="form-control" name="hotel_address" type="text" required placeholder="Hotel Address" value="${hotel.hotel_address}">
                                                             </div>
-                                                        </div>
-                                                        <div class="col">
-                                                            <div class="form-group">
-                                                                <label>Hotel</label>
-                                                                <select name="hotel_id" class="form-control" id="exampleSelect1">
-                                                                    <option>-- Select Hotel --</option>
-                                                                    <c:forEach items="${HotelData}" var="hotel">
-                                                                        <option value="${hotel.hotel_id}" ${(room.hotel.hotel_id == hotel.hotel_id) ? "selected" : ""}>${hotel.hotel_name}</option>
-                                                                    </c:forEach>
-                                                                </select>
-                                                            </div>
-                                                        </div>
+                                                                                                                
                                                     </div>
                                                     <div class="row">
                                                         <div class="col mb-3">
                                                             <div class="form-group">
                                                                 <label>Description</label>
-                                                                <textarea class="form-control" rows="5" placeholder="Write a description for the room" name="description">${room.room_description}</textarea>
+                                                                <textarea class="form-control" rows="5" placeholder="Write a description for the hotel" name="hotel_description">${hotel.hotel_description}</textarea>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -315,27 +342,16 @@
 
                                             <div class="row">
                                                 <div class="col-12 col-sm-6 mb-3">
-                                                    <div class="mb-2"><b>Set Room Image</b></div>
+                                                    <div class="mb-2"><b>Set Hotel Image</b></div>
                                                     <div class="row">
                                                         <div class="col">
                                                             <div id="myfileupload">
-                                                                <input type="file" name="room_img" value="${room.room_img}"/>                                                     
+                                                                <input type="file" name="hotel_img" value="${hotel.hotel_img}"/>                                                     
                                                             </div>  
                                                         </div>
                                                     </div>
 
-                                                </div>
-                                                <div class="col-12 col-sm-6 mb-3">
-                                                    <div class="mb-2"><b>Set Room Status</b></div>
-                                                    <div class="row">
-                                                        <div class="col">
-                                                            <select name="status" class="form-control" id="exampleSelect1">                                                            
-                                                                <option value="1" ${(room.room_status == true) ? "selected" : ""}>Active</option>                                               
-                                                                <option value="0" ${(room.room_status == false) ? "selected" : ""}>Inactive</option>                                               
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                </div>                                                
                                             </div>
                                     </div>
                                     <div class="row">
@@ -363,8 +379,8 @@
         <!-- Custom JS -->  
         <script>
                                                                         function doDelete(id) {
-                                                                            if (confirm("Are you sure to delete room with ID = " + id)) {
-                                                                                window.location = "/roomManagerController?action=deleteroom&id=" + id;
+                                                                            if (confirm("Are you sure to delete hotel with ID = " + id)) {
+                                                                                window.location = "/hotelManagerController?action=deletehotel&id=" + id;
                                                                             }
                                                                         }
         </script>

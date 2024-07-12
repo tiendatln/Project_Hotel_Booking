@@ -31,7 +31,8 @@ public class serviceDAOs {
             Logger.getLogger(reservationDAOs.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    public ResultSet getSevice(int service_id){
+
+    public ResultSet getSevice(int service_id) {
         ResultSet rs = null;
         try {
             PreparedStatement ps = conn.prepareStatement("select * from Service where service_id = ?");
@@ -42,7 +43,8 @@ public class serviceDAOs {
         }
         return rs;
     }
-    public ResultSet getServiceByHotelID(int hotel_id){
+
+    public ResultSet getServiceByHotelID(int hotel_id) {
         ResultSet rs = null;
         try {
             PreparedStatement ps = conn.prepareStatement("select * from Service s join Hotel h on h.hotel_id = s.hotel_id where h.hotel_id = ?");
@@ -51,21 +53,37 @@ public class serviceDAOs {
         } catch (SQLException e) {
             Logger.getLogger(serviceDAOs.class.getName()).log(Level.SEVERE, null, e);
         }
-        return  rs;
+        return rs;
     }
+
     public List<service> getAllService() {
-        List<service> list = new ArrayList<>(); 
-        ResultSet rs = null; 
+        List<service> list = new ArrayList<>();
+        ResultSet rs = null;
         try {
-            PreparedStatement ps = conn.prepareStatement("select hotel_id, service_id, [service_name], service_price from [Service]"); 
+            PreparedStatement ps = conn.prepareStatement("select hotel_id, service_id, [service_name], service_price from [Service]");
             rs = ps.executeQuery();
             while (rs.next()) {
                 hotel h = new hotel(rs.getInt(1));
-                list.add(new service(rs.getInt(2), rs.getString(3), rs.getInt(4), h)); 
+                list.add(new service(rs.getInt(2), rs.getString(3), rs.getInt(4), h));
             }
         } catch (Exception e) {
             System.out.println(e);
         }
-        return list; 
+        return list;
+    }
+
+    public void insertService(service service) {
+        try {
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO [dbo].[Service]\n"
+                    + "           ([service_name]\n"
+                    + "           ,[service_price]\n"
+                    + "           ,[hotel_id])\n"
+                    + "     VALUES(?,?,?)");
+            ps.setString(1, service.getService_name());
+            ps.setInt(2, service.getService_price());
+            ps.setInt(3, service.getHotel().getHotel_id());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+        }
     }
 }

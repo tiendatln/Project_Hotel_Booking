@@ -202,6 +202,15 @@ public class roomDAOs {
         } catch (Exception e) {
             System.out.println(e);
         }
+
+        try {
+            PreparedStatement ps = conn.prepareStatement("DELETE FROM [dbo].[Reservation] WHERE room_id = ?");
+            ps.setInt(1, room_id);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
     }
 
     public void updateRoom(room room) {
@@ -239,6 +248,23 @@ public class roomDAOs {
             while (rs.next()) {
 
                 list.add(new room(rs.getString("room_img")));
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return list;
+    }
+
+    public List<room> getAllRoomIDByHotelId(int hotel_id) {
+        List<room> list = new ArrayList<>();
+        ResultSet rs = null;
+        try {
+            PreparedStatement ps = conn.prepareStatement("select * from Room r join Hotel h on r.hotel_id = h.hotel_id where h.hotel_id = ?");
+            ps.setInt(1, hotel_id);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+
+                list.add(new room(rs.getInt("room_id")));
             }
         } catch (SQLException e) {
             System.out.println(e);
