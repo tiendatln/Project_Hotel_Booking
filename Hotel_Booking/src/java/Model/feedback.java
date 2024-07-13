@@ -11,6 +11,9 @@ package Model;
 public class feedback {
     private int id;
     private String comment;
+    private account account;
+    private hotel hotel;
+    
 
     /**
      *
@@ -18,14 +21,39 @@ public class feedback {
     public feedback() {
     }
 
+    public feedback(int id, String comment, account account, hotel hotel) {
+        this.id = id;
+        this.comment = comment;
+        this.account = account;
+        this.hotel = hotel;
+    }
+
+
+
     /**
      *
      * @param id
      * @param comment
      */
-    public feedback(int id, String comment) {
-        this.id = id;
+    public feedback( String comment) {
+        
         this.comment = comment;
+    }
+
+    public account getAccount() {
+        return account;
+    }
+
+    public void setAccount(account account) {
+        this.account = account;
+    }
+
+    public hotel getHotel() {
+        return hotel;
+    }
+
+    public void setHotel(hotel hotel) {
+        this.hotel = hotel;
     }
 
     /**

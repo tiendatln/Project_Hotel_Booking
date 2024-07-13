@@ -5,10 +5,12 @@
 package Controllers;
 
 import DAOs.accountDAOs;
+import DAOs.feedbackDAOs;
 import DAOs.hotelDAOs;
 import DAOs.roomDAOs;
 import DAOs.serviceDAOs;
 import Model.account;
+import Model.feedback;
 import Model.hotel;
 import Model.room;
 import Model.roomType;
@@ -133,6 +135,9 @@ public class reserveController extends HttpServlet {
         } else {
             List<room> roomImg = rDAO.getAllRoomImgByHotelId(hotelID);
             request.setAttribute("loginToReserve", "You must be login to reserve!");
+            feedbackDAOs fDAO = new feedbackDAOs();
+            List<feedback> feedback = fDAO.getFeedbackByHotelID(hotelID);
+            request.setAttribute("feedback", feedback);
             request.getSession().setAttribute("hotelID", hotelID);
             request.setAttribute("roomImg", roomImg);
             request.setAttribute("room", room);
@@ -142,7 +147,9 @@ public class reserveController extends HttpServlet {
             roomDAOs rDAO = new roomDAOs();
             
             List<room> roomImg = rDAO.getAllRoomImgByHotelId(hotelID);
-            
+            feedbackDAOs fDAO = new feedbackDAOs();
+            List<feedback> feedback = fDAO.getFeedbackByHotelID(hotelID);
+            request.setAttribute("feedback", feedback);
             request.getSession().setAttribute("hotelID", hotelID);
             request.setAttribute("roomImg", roomImg);
             request.setAttribute("room", room);

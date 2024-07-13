@@ -4,7 +4,10 @@
  */
 package Controllers;
 
+import DAOs.feedbackDAOs;
+import DAOs.hotelDAOs;
 import DAOs.roomDAOs;
+import Model.feedback;
 import Model.hotel;
 import Model.room;
 import Model.roomType;
@@ -16,8 +19,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.Date;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -83,9 +89,13 @@ public class searchController extends HttpServlet {
 
             }
             List<room> roomImg = rDAO.getAllRoomImgByHotelId(hotel_id);
+
             request.setAttribute("roomImg", roomImg);
             request.getSession().setAttribute("hotelID", hotel_id);
             request.setAttribute("room", room);
+            feedbackDAOs fDAO = new feedbackDAOs();
+            List<feedback> feedback = fDAO.getFeedbackByHotelID(hotel_id);
+            request.setAttribute("feedback", feedback);
             request.getRequestDispatcher("/customer/hotelDetail.jsp").forward(request, response);
         } else if (path.startsWith("/searchController/Change")) {
             try {
@@ -145,11 +155,26 @@ public class searchController extends HttpServlet {
                         checkoutDate = new Date(checkoutMillis);
                         checkout = checkoutDate.getTime();
                     }
-                    request.getSession().setAttribute("destination", destination);
-                    request.getSession().setAttribute("checkin", checkin);
-                    request.getSession().setAttribute("checkout", checkout);
-                    request.getSession().setAttribute("roomType", roomType);
-                    response.sendRedirect("/searchController/ListHotel");
+                    hotelDAOs hDAO = new hotelDAOs();
+                    ResultSet rs = hDAO.searchHotelByLocal(destination, checkinDate, checkoutDate);
+                    int count = 0;
+                    try {
+                        if (rs.next()) {
+                            count++;
+                        }
+                    } catch (SQLException ex) {
+                        Logger.getLogger(searchController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    if (count > 0) {
+                        request.getSession().setAttribute("destination", destination);
+                        request.getSession().setAttribute("checkin", checkin);
+                        request.getSession().setAttribute("checkout", checkout);
+                        request.getSession().setAttribute("roomType", roomType);
+                        response.sendRedirect("/searchController/ListHotel");
+                    } else {
+                        request.setAttribute("searchError", true);
+                        request.getRequestDispatcher("/customer/home.jsp").forward(request, response);
+                    }
                 } catch (IOException e) {
 
                 }
