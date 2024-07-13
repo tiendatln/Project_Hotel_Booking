@@ -4,7 +4,12 @@
  */
 package Controllers;
 
+import DAOs.accountDAOs;
+import DAOs.hotelDAOs;
 import DAOs.roomDAOs;
+import DAOs.serviceDAOs;
+import Model.account;
+import Model.hotel;
 import Model.room;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -15,6 +20,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.sql.Date;
 
 /**
  *
@@ -60,10 +66,11 @@ public class reserveController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        String[] RoomId = request.getParameterValues("quantity");
+        String[] RoomId = request.getParameterValues("roomID");
         // Check if quantityAndRoomId is not null and contains a comma
         int hotelID = Integer.valueOf(request.getParameter("HotelID"));
+        Date CheckInDate = Date.valueOf(request.getParameter("checkInDate"));
+        Date CheckOutDate = Date.valueOf(request.getParameter("checkOutDate"));
         boolean flagCustomer = false;
         String value = "";
         Cookie[] cList = null;
@@ -83,8 +90,15 @@ public class reserveController extends HttpServlet {
                 for (int i = 0; i < RoomId.length; i++) {
                     roomID.add(Integer.valueOf(RoomId[i]));
                 }
+                accountDAOs aDAO = new accountDAOs();
+                hotelDAOs hDAO = new hotelDAOs();
+                serviceDAOs sDAO = new serviceDAOs();
+                account ac = aDAO.getAccount(value);
+                 
+                hotel ht = hDAO.getHotelDetailById(hotelID);
                 request.setAttribute("roomID", roomID);
-
+                request.setAttribute("nameUser", ac);
+                request.setAttribute("hotel", ht);
                 // Forward the request to hotelDetail.jsp
                 request.getRequestDispatcher("/customer/reserve.jsp").forward(request, response);
             } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {

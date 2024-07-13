@@ -8,6 +8,7 @@ import DB.DBConnection;
 import Model.account;
 import Model.hotel;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -24,6 +25,9 @@ public class hotelDAOs {
 
     Connection conn;
 
+    /**
+     *
+     */
     public hotelDAOs() {
         try {
             conn = DBConnection.connect();
@@ -32,11 +36,95 @@ public class hotelDAOs {
         }
     }
 
-    public ResultSet searchHotelByLocal(String local) {
+    public void deleteHotel(int hotel_id) {
+
+        try {
+            PreparedStatement ps = conn.prepareStatement("DELETE FROM [dbo].[Hotel] WHERE hotel_id = ?");
+            ps.setInt(1, hotel_id);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        try {
+            PreparedStatement ps = conn.prepareStatement("DELETE FROM [dbo].[Service] WHERE hotel_id = ?");
+            ps.setInt(1, hotel_id);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+    }
+
+    public void insertHotel(hotel hotel) {
+        try {
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO [dbo].[Hotel]\n"
+                    + "           ([hotel_name]\n"
+                    + "           ,[hotel_address]\n"
+                    + "           ,[hotel_img]\n"
+                    + "           ,[hotel_description]\n"
+                    + "           ,[username])\n"
+                    + "     VALUES(?,?,?,?,?)");
+            ps.setString(1, hotel.getHotel_name());
+            ps.setString(2, hotel.getHotel_address());
+            ps.setString(3, hotel.getHotel_img());
+            ps.setString(4, hotel.getHotel_description());
+            ps.setString(5, hotel.getUsername().getUsername());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+        }
+    }
+
+    public void updateHotel(hotel hotel) {
+
+        try {
+            PreparedStatement ps = conn.prepareStatement("UPDATE [dbo].[Hotel]\n"
+                    + "   SET [hotel_name] = ?\n"
+                    + "      ,[hotel_address] = ?\n"
+                    + "      ,[hotel_img] = ?\n"
+                    + "      ,[hotel_description] = ?\n"
+                    + "      ,[username] = ?\n"
+                    + " WHERE [hotel_id] = ?");
+            ps.setString(1, hotel.getHotel_name());
+            ps.setString(2, hotel.getHotel_address());
+            ps.setString(3, hotel.getHotel_img());
+            ps.setString(4, hotel.getHotel_description());
+            ps.setString(5, hotel.getUsername().getUsername());
+            ps.setInt(6, hotel.getHotel_id());
+            ps.executeUpdate();
+        } catch (Exception e) {
+        }
+    }
+
+    public List<hotel> getListByPage(List<hotel> list, int start, int end) {
+        ArrayList<hotel> arr = new ArrayList<>();
+        for (int i = start; i < end; i++) {
+            arr.add(list.get(i));
+        }
+        return arr;
+    }
+
+    /**
+     *
+     * @param local
+     * @return
+     */
+    public ResultSet searchHotelByLocal(String local, Date CheckInDate, Date CheckOutDate) {
         ResultSet rs = null;
         try {
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM Hotel where hotel_address LIKE ?");
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM Hotel h \n"
+                    + "join Room r \n"
+                    + "on r.hotel_id = h.hotel_id \n"
+                    + "join Reservation rs \n"
+                    + "on rs.room_id = r.room_id \n"
+                    + "where hotel_address LIKE ? \n"
+                    + "and (check_in_date not BETWEEN ? AND ? \n"
+                    + "or check_out_date not BETWEEN ? AND ?)");
             ps.setString(1, "%" + local + "%");
+            ps.setDate(2, CheckInDate);
+            ps.setDate(3, CheckOutDate);
+            ps.setDate(4, CheckInDate);
+            ps.setDate(5, CheckOutDate);
             rs = ps.executeQuery();
         } catch (SQLException e) {
             Logger.getLogger(roomDAOs.class.getName()).log(Level.SEVERE, null, e);
@@ -44,6 +132,11 @@ public class hotelDAOs {
         return rs;
     }
 
+    /**
+     *
+     * @param hotel_id
+     * @return
+     */
     public hotel getHotelDetailById(int hotel_id) {
         ResultSet rs = null;
         hotel htl = null;
@@ -59,8 +152,12 @@ public class hotelDAOs {
         }
         return htl;
     }
-    
-        public ResultSet getAllHotel() {
+
+    /**
+     *
+     * @return
+     */
+    public ResultSet getAllHotel() {
         ResultSet rs = null;
         try {
             PreparedStatement ps = conn.prepareStatement("select * from Hotel");
@@ -70,15 +167,20 @@ public class hotelDAOs {
         }
         return rs;
     }
-        
-        public List<hotel> getHotelByUser(String username) {
+
+    /**
+     *
+     * @param username
+     * @return
+     */
+    public List<hotel> getHotelByUser(String username) {
         List<hotel> list = new ArrayList<>();
         ResultSet rs = null;
         try {
             PreparedStatement ps = conn.prepareStatement("select a.username, hotel_id, hotel_name, hotel_address, hotel_img, hotel_description\n"
-                + "from Hotel h\n"
-                + "join Account a on h.username = a.username\n"
-                + "where h.username = ?");
+                    + "from Hotel h\n"
+                    + "join Account a on h.username = a.username\n"
+                    + "where h.username = ?");
             ps.setString(1, username);
             rs = ps.executeQuery();
             while (rs.next()) {

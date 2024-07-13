@@ -5,7 +5,9 @@
 package Controllers;
 
 import DAOs.roomDAOs;
+import Model.hotel;
 import Model.room;
+import Model.roomType;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,6 +15,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.Date;
+import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -65,15 +69,41 @@ public class searchController extends HttpServlet {
         } else if (path.startsWith("/searchController/HotelDetail")) {
             String[] s = path.split("/");
             roomDAOs rDAO = new roomDAOs();
-//            long checkOut = Long.valueOf(s[s.length - 1]);
-//            long checkIn = Long.valueOf(s[s.length - 2]);
             int hotel_id = Integer.valueOf(s[s.length - 1]);
-            List<room> room = rDAO.getAllRoomImgByHotelId(hotel_id);
+            List<room> room = rDAO.getAllRoomByHotelID(hotel_id);
+            List<room> roomImg = rDAO.getAllRoomImgByHotelId(hotel_id);
+            request.setAttribute("roomImg", roomImg);
+            request.setAttribute("room", room);
             request.getSession().setAttribute("hotelID", hotel_id);
             request.setAttribute("roomImg", room);
-//            request.getSession().setAttribute("checkIn", checkIn);
-//            request.getSession().setAttribute("checkOut", checkOut);
             request.getRequestDispatcher("/customer/hotelDetail.jsp").forward(request, response);
+        } else if (path.startsWith("/searchController/Change")) {
+            try {
+                String[] s = path.split("/");
+                roomDAOs rDAO = new roomDAOs();
+                Date checkInDate = Date.valueOf(s[s.length - 3]);
+                Date checkOutDate = Date.valueOf(s[s.length - 2]);
+                int hotel_id = Integer.valueOf(s[s.length - 1]);
+                List<Integer> roomOnDate = rDAO.getRoomIfCheckInAndCheckOutDateNotExistOnReservation(checkInDate, checkOutDate, hotel_id);
+                List<room> room = new ArrayList<>();
+                ResultSet rs = rDAO.getRoomByHotelID(hotel_id);
+                int i = 0;
+                while (rs.next()) {
+                    if (rs.getInt("room_id") != roomOnDate.get(i)) {
+                        hotel hotel = new hotel(hotel_id);
+                        roomType rt = new roomType(rs.getInt("room_type_id"));
+                        room.add(new room(rs.getInt("room_id"), rs.getString("room_name"), rs.getInt("room_price"),
+                                rs.getString("room_img"), rs.getBoolean("room_status"), rs.getString("room_description"), rt, hotel));
+                    }
+                    i++;
+                }
+                List<room> roomImg = rDAO.getAllRoomImgByHotelId(hotel_id);
+                request.setAttribute("roomImg", roomImg);
+                request.setAttribute("room", room);
+                request.getSession().setAttribute("hotelID", hotel_id);
+                request.getRequestDispatcher("/customer/hotelDetail.jsp").forward(request, response);
+            } catch (Exception e) {
+            }
         }
     }
 
@@ -116,7 +146,7 @@ public class searchController extends HttpServlet {
                 }
             } else {
                 request.setAttribute("search", true);
-                request.getRequestDispatcher("/customer/index.jsp").forward(request, response);
+                request.getRequestDispatcher("/customer/home.jsp").forward(request, response);
             }
         }
     }

@@ -4,6 +4,8 @@
     Author     : tiend
 --%>
 
+<%@page import="Model.room"%>
+<%@page import="java.util.List"%>
 <%@page import="java.sql.Date"%>
 <%@page import="DAOs.serviceDAOs"%>
 <%@page import="java.sql.ResultSet"%>
@@ -115,34 +117,44 @@
             </div>
 
             <div class="container availability-container">
-                <div class="header-section" >
-                    <h3>Availability</h3>
-                    <!--                    <form method="post" action="/reservationController" onsubmit="return validateForm()">-->
-                    <div class="d-flex justify-content-center">
-                        <%
+                <!--                <div class="header-section" >
+                                    <h3>Availability</h3>
+                                                        <form method="post" action="/reservationController" onsubmit="return validateForm()">
+                                    <div class="d-flex justify-content-center">
+                <%
 
-                        %>
-                        <div style="display: flex inline; box-sizing: border-box; border: 4px solid yellow; background-color: yellow; border-radius: 10px">
-                            <input type="date" class="form-control" name="checkInDate" >
-                            <h4>-</h4>
-                            <input type="date" class="form-control" name="checkOutDate" >
-                        </div>
-                        <div style="box-sizing: border-box; border: 4px solid yellow; border-radius: 10px">
-                            <select class="form-control">
-                                <option>2 adults · 0 children · 1 room</option>
-                            </select>
-                        </div>
-                        <div style="box-sizing: border-box; border: 4px solid yellow; border-radius: 10px">
-                            <a class="btn btn-primary" name="btnChangesearch">Change search</a>
-                        </div>
-                    </div>
-                    <!--                    </form>-->
+                %>
+                <div style="display: flex inline; box-sizing: border-box; border: 4px solid yellow; background-color: yellow; border-radius: 10px">
+                    <input type="date" class="form-control" name="checkInDate" >
+                    <h4>-</h4>
+                    <input type="date" class="form-control" name="checkOutDate" >
                 </div>
+                <div style="box-sizing: border-box; border: 4px solid yellow; border-radius: 10px">
+                    <select class="form-control">
+                        <option>2 adults · 0 children · 1 room</option>
+                    </select>
+                </div>
+                <div style="box-sizing: border-box; border: 4px solid yellow; border-radius: 10px">
+                    <a class="btn btn-primary" name="btnChangesearch">Change search</a>
+                </div>
+            </div>
+                                </form>
+        </div>-->
 
                 <!-- Room List -->
                 <div class="row mt-3">
-                    <form action="/reserveController" method="get" class="container" id="reservationForm" onsubmit="return checkCheckboxes()">
-                        <!-- Repeat for each room type -->
+                    <form action="/reserveController" method="get" class="container" id="reservationForm" onsubmit="return checkForm()">
+                        <div class="header-section">
+                            <h3>Availability</h3>
+                            <div class="d-flex justify-content-center">
+                                <div style="display: flex inline; box-sizing: border-box; border: 4px solid yellow; background-color: yellow; border-radius: 10px">
+                                    <input type="date" class="form-control" id="checkInDate" name="checkInDate" onchange="submitForm('change')">
+                                    <h4>-</h4>
+                                    <input type="date" class="form-control" id="checkOutDate" name="checkOutDate" onchange="submitForm('change')">
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="col-12">
                             <div class="card" style="background-color: #007bff">
                                 <div class="card-body" style="background-color: #ddd">
@@ -153,56 +165,57 @@
                                         <div class="col-md-4 text-center">
                                             <h5>Room Description</h5>
                                         </div>
-                                        <div class="col-md-3 text-center ">
-                                            <h5>Price</h5>
+                                        <div class="col-md-3 text-center">
+                                            <h5>Price per day</h5>
                                         </div>
-                                        <div class="col-md-2 text-center ">
-                                            <button class="btn btn-primary" type="submit" id="reserve-link" name="btnReserve">I'll reserve</button>
+                                        <div class="col-md-2 text-center">
+                                            <button class="btn btn-primary" type="submit" id="reserve-link" name="btnReserve" onclick="setFormAction('submit')">I'll reserve</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <%        roomDAOs rDAO = new roomDAOs();
-                            ResultSet rsRoom = rDAO.getRoomByHotelID(h.getHotel_id());
-                            while (rsRoom.next()) {
-                                if (rsRoom.getBoolean("room_status")) {
+
+                        <%                            List<room> room = (List<room>) request.getAttribute("room");
+                            int i = 0;
+                            while (i < room.size()) {
+                                room r = room.get(i);
+                                i++;
                         %>
                         <div class="col-12 mb-3" id="room_id">
                             <div class="card">
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-3 apartment-type">
-                                            <%= rsRoom.getString("room_name")%>
+                                            <%= r.getRoom_name()%>
                                             <%
-                                                ResultSet rsRType = rDAO.showRoomTypeByRoomID(rsRoom.getInt("room_id"));
+                                                roomDAOs rDAO = new roomDAOs();
+                                                ResultSet rsRType = rDAO.showRoomTypeByRoomID(r.getRoom_id());
                                             %>
                                             <div class="features">
                                                 <% while (rsRType.next()) {%>
                                                 <span name="roomType"><%= rsRType.getString("name_type")%></span>
                                                 <% }%>
                                             </div>
-                                        </div>
+                                        </div>  
                                         <div class="col-md-4 text-center">
                                             <span class="badge badge-dark"></span>
                                             <div class="features">
-                                                <span class="text-monospace" name="room_description"><%= rsRoom.getString("room_description")%></span>
+                                                <span class="text-monospace" name="room_description"><%= r.getRoom_description()%></span>
                                             </div>
                                         </div>
                                         <div class="col-md-3 text-center">
-                                            <span class="price" name="room_price">$<%= rsRoom.getLong("room_price")%> </span><br>
-                                            <!-- <span class="discount">40% off</span> -->
+                                            <span class="price" name="room_price">$ <%= r.getRoom_price()%></span><br>
                                         </div>
                                         <div class="col-md-2 text-center">
-                                            <input type="checkbox" id="quantity" name="quantity" value="<%= rsRoom.getString("room_id")%>">
-                                            <input hidden="" id="HotelID" name="HotelID" value="<%= h.getHotel_id() %>">
+                                            <input type="checkbox" id="roomID" name="roomID" value="<%= r.getRoom_id()%>">
+                                            <input hidden="" id="HotelID" name="HotelID" value="<%= h.getHotel_id()%>">
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <%
-                                }
                             }
                         %>
                     </form>
@@ -217,15 +230,60 @@
         <script src="https://kit.fontawesome.com/a076d05399.js"></script>
         <c:if test="${loginToReserve != null}">
             <script>
-                        alert("You must be login to reserve!");
+                                                alert("You must be login to reserve!");
             </script>
         </c:if>
         <script >
+            var today = new Date().toISOString().split('T')[0];
+            document.getElementById("checkInDate").setAttribute("min", today);
+            document.getElementById("checkOutDate").setAttribute("min", today);
+            function submitForm(actionType) {
+                if (checkDates()) {
+                    setFormAction(actionType);
+                    document.getElementById('reservationForm').submit();
+                }
+            }
 
+            function setFormAction(actionType) {
+                var checkInDate = document.getElementById('checkInDate').value;
+                var checkOutDate = document.getElementById('checkOutDate').value;
+                var form = document.getElementById('reservationForm');
+                if (actionType === 'change') {
+                    form.action = '/searchController/Change/' + checkInDate + checkOutDate +<%= h.getHotel_id()%>;
+                } else {
+                    form.action = '/reserveController';
+                }
+            }
+
+            function checkDates() {
+                var checkInDate = document.getElementById('checkInDate').value;
+                var checkOutDate = document.getElementById('checkOutDate').value;
+
+                if (new Date(checkInDate) >= new Date(checkOutDate)) {
+                    alert("Check-out date must be after check-in date.");
+                    return false;
+                }
+                return true;
+            }
+
+            function checkCheckboxes() {
+                var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+                var isChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
+
+                if (!isChecked) {
+                    alert("Please select at least one room.");
+                    return false;
+                }
+                return true;
+            }
+
+            function checkForm() {
+                return checkDates() && checkCheckboxes();
+            }
 
             function checkCheckboxes() {
                 // Get all checkboxes with the name 'quantity'
-                var checkboxes = document.querySelectorAll('input[name="quantity"]');
+                var checkboxes = document.querySelectorAll('input[name="roomID"]');
                 // Check if any of the checkboxes are checked
                 var anyChecked = Array.prototype.slice.call(checkboxes).some(x => x.checked);
                 // If none are checked, prevent form submission and alert the user
@@ -233,27 +291,24 @@
                     alert("Please select at least one room to reserve.");
                     return false; // Prevent form submission
                 }
+                validateForm();
                 return true; // Allow form submission
             }
-            
+
             function validateForm() {
-                var destination = document.getElementById('destination').value;
-                if (destination.trim() === "") {
-                    alert("Enter a destination to start searching.");
-                    return false;
-                }
-                var checkin = document.getElementById('checkin-date').value;
-                var checkout = document.getElementById('checkout-date').value;
+
+                var checkin = document.getElementById('checkInDate').value;
+                var checkout = document.getElementById('checkOuDdate').value;
 
                 if (!checkin) {
                     var today = new Date().toISOString().split('T')[0];
-                    document.getElementById('checkin-date').value = today;
+                    document.getElementById('checkInDate').value = today;
                     checkin = today;
                 }
 
                 if (!checkout) {
                     var today = new Date().toISOString().split('T')[0];
-                    document.getElementById('checkout-date').value = today;
+                    document.getElementById('checkOuDdate').value = today;
                     checkout = today;
                 }
 

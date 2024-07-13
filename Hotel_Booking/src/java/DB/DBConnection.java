@@ -14,6 +14,12 @@ import java.sql.SQLException;
  */
 public class DBConnection {
 
+    /**
+     *
+     * @return
+     * @throws ClassNotFoundException
+     * @throws SQLException
+     */
     public static Connection connect() throws ClassNotFoundException, SQLException {
         //Khai bao driver
         Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");

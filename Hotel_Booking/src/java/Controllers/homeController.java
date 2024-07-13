@@ -59,7 +59,7 @@ public class homeController extends HttpServlet {
         if (path.endsWith("/HomeCustomer")) {
             request.getRequestDispatcher("/customer/home.jsp").forward(request, response);
         } else if (path.endsWith("/HomeAdmin")) {
-            request.getRequestDispatcher("/customer/adnimHomePage.jsp").forward(request, response);
+            request.getRequestDispatcher("/admin/dashboard.jsp").forward(request, response);
         } else if (path.endsWith("/HomeOwner")) {            
             response.sendRedirect("/roomManagerController");
         }

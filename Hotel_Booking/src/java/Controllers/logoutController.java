@@ -60,7 +60,7 @@ public class logoutController extends HttpServlet {
         if (path.endsWith("/SignOut")) {
             Cookie[] cList;
             cList = request.getCookies();
-            for (Cookie cList1 : cList) { //Duyet qua het tat ca cookie
+            for (Cookie cList1 : cList) { //Duyet qcua het tat ca cookie
                 cList1.setMaxAge(0);
                 cList1.setPath("/");
                 response.addCookie(cList1);

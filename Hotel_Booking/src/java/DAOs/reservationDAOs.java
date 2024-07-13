@@ -24,6 +24,9 @@ public class reservationDAOs {
 
     Connection conn;
 
+    /**
+     *
+     */
     public reservationDAOs() {
         try {
             conn = DBConnection.connect();
@@ -32,6 +35,11 @@ public class reservationDAOs {
         }
     }
 
+    /**
+     *
+     * @param username
+     * @return
+     */
     public ResultSet getAllInfo(String username) {
         ResultSet rs = null;
         try {
@@ -51,6 +59,12 @@ public class reservationDAOs {
         }
         return rs;
     }
+
+    /**
+     *
+     * @param room_id
+     * @return
+     */
     public int getHotelIDbyRomID(int room_id){
         int hotel_id = 0;
         ResultSet rs = null; 
