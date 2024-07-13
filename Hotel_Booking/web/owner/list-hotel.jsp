@@ -164,7 +164,7 @@
                                         <div class="d-flex justify-content-center">
                                             <ul class="pagination mt-3 mb-0">
                                                 <c:forEach begin="${1}" end="${num}" var="i">                                                    
-                                                    <li class="${i==page?"active page-item":"page-item"}"><a href="/roomManagerController?page=${i}" class="page-link">${i}</a></li>                                                    
+                                                    <li class="${i==page?"active page-item":"page-item"}"><a href="/hotelManagerController?page=${i}" class="page-link">${i}</a></li>                                                    
                                                     </c:forEach>
                                             </ul>
                                         </div>

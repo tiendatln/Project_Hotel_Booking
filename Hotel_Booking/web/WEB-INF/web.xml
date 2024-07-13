@@ -43,6 +43,10 @@
         <servlet-name>home</servlet-name>
         <servlet-class>Controllers.home</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>hotelManagerController</servlet-name>
+        <servlet-class>Controllers.hotelManagerController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>homeController</servlet-name>
         <url-pattern>/homeController/*</url-pattern>
@@ -82,6 +86,10 @@
     <servlet-mapping>
         <servlet-name>home</servlet-name>
         <url-pattern>/home</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>hotelManagerController</servlet-name>
+        <url-pattern>/hotelManagerController/*</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

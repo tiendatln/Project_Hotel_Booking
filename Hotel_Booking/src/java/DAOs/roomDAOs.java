@@ -281,6 +281,14 @@ public class roomDAOs {
         } catch (Exception e) {
             System.out.println(e);
         }
+
+        try {
+            PreparedStatement ps = conn.prepareStatement("DELETE FROM [dbo].[Reservation] WHERE room_id = ?");
+            ps.setInt(1, room_id);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
     /**
@@ -403,16 +411,17 @@ public class roomDAOs {
         List<room> r = null;
         ResultSet rs = null;
         try {
-            PreparedStatement ps = conn.prepareStatement("select * from Room where hotel_id = ?");
+            PreparedStatement ps = conn.prepareStatement("select * from Room r join Hotel h on r.hotel_id = h.hotel_id where h.hotel_id = ?");
             ps.setInt(1, hotel_id);
             rs = ps.executeQuery();
             while (rs.next()) {
-                hotel h = new hotel(rs.getInt("hotel_id"), "", "", "", "");
-                roomType rt = new roomType(rs.getInt("room_type_id"), "", "", 0);
+                hotel h = new hotel(rs.getInt("hotel_id"));
+                roomType rt = new roomType(rs.getInt("room_type_id"));
                 r.add(new room(rs.getInt("room_id"), rs.getString("room_name"), rs.getInt("room_price"), rs.getString("room_img"),
                         rs.getBoolean("room_status"), rs.getString("room_description"), rt, h));
             }
         } catch (Exception e) {
+            Logger.getLogger(roomDAOs.class.getName()).log(Level.SEVERE, null, e);
         }
         return r;
     }

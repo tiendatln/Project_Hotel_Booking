@@ -70,20 +70,29 @@ public class searchController extends HttpServlet {
             String[] s = path.split("/");
             roomDAOs rDAO = new roomDAOs();
             int hotel_id = Integer.valueOf(s[s.length - 1]);
-            List<room> room = rDAO.getAllRoomByHotelID(hotel_id);
+            List<room> room = new ArrayList<>();
+            try {
+                ResultSet rs = rDAO.getRoomByHotelID(hotel_id);
+                while (rs.next()) {
+                    hotel h = new hotel(rs.getInt("hotel_id"));
+                    roomType rt = new roomType(rs.getInt("room_type_id"));
+                    room.add(new room(rs.getInt("room_id"), rs.getString("room_name"), rs.getInt("room_price"), rs.getString("room_img"),
+                            rs.getBoolean("room_status"), rs.getString("room_description"), rt, h));
+                }
+            } catch (Exception e) {
+
+            }
             List<room> roomImg = rDAO.getAllRoomImgByHotelId(hotel_id);
             request.setAttribute("roomImg", roomImg);
-            request.setAttribute("room", room);
             request.getSession().setAttribute("hotelID", hotel_id);
-            request.setAttribute("roomImg", room);
+            request.setAttribute("room", room);
             request.getRequestDispatcher("/customer/hotelDetail.jsp").forward(request, response);
         } else if (path.startsWith("/searchController/Change")) {
             try {
-                String[] s = path.split("/");
                 roomDAOs rDAO = new roomDAOs();
-                Date checkInDate = Date.valueOf(s[s.length - 3]);
-                Date checkOutDate = Date.valueOf(s[s.length - 2]);
-                int hotel_id = Integer.valueOf(s[s.length - 1]);
+                Date checkInDate = Date.valueOf(request.getParameter("checkInDate"));
+                Date checkOutDate = Date.valueOf(request.getParameter("checkOutDate"));
+                int hotel_id = Integer.valueOf("HotelID");
                 List<Integer> roomOnDate = rDAO.getRoomIfCheckInAndCheckOutDateNotExistOnReservation(checkInDate, checkOutDate, hotel_id);
                 List<room> room = new ArrayList<>();
                 ResultSet rs = rDAO.getRoomByHotelID(hotel_id);
@@ -99,7 +108,7 @@ public class searchController extends HttpServlet {
                 }
                 List<room> roomImg = rDAO.getAllRoomImgByHotelId(hotel_id);
                 request.setAttribute("roomImg", roomImg);
-                request.setAttribute("room", room);
+                request.getSession().setAttribute("room", room);
                 request.getSession().setAttribute("hotelID", hotel_id);
                 request.getRequestDispatcher("/customer/hotelDetail.jsp").forward(request, response);
             } catch (Exception e) {

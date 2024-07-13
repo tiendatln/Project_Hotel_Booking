@@ -104,6 +104,7 @@
                             serviceDAOs sDAO = new serviceDAOs();
                             ResultSet rsService = sDAO.getServiceByHotelID(h.getHotel_id());
                             while (rsService.next()) {
+
                         %>
                         <span class="badge badge-info"><%= rsService.getString("service_name")%></span>
                         <% }%>
@@ -176,21 +177,25 @@
                             </div>
                         </div>
 
-                        <%                            List<room> room = (List<room>) request.getAttribute("room");
+                        <%        roomDAOs rDAO = new roomDAOs();
+                            ResultSet rsRoom = rDAO.getRoomByHotelID(h.getHotel_id());
+                            List<room> r = (List<room>) request.getAttribute("room");
                             int i = 0;
-                            while (i < room.size()) {
-                                room r = room.get(i);
+                            while (rsRoom.next()) {
+                                room room = r.get(i);
                                 i++;
+                                if (rsRoom.getBoolean("room_status")) {
+                                    if (room.getRoom_id() == rsRoom.getInt("room_id") ) {
                         %>
+
                         <div class="col-12 mb-3" id="room_id">
                             <div class="card">
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-3 apartment-type">
-                                            <%= r.getRoom_name()%>
+                                            <%= rsRoom.getString("room_name")%>
                                             <%
-                                                roomDAOs rDAO = new roomDAOs();
-                                                ResultSet rsRType = rDAO.showRoomTypeByRoomID(r.getRoom_id());
+                                                ResultSet rsRType = rDAO.showRoomTypeByRoomID(rsRoom.getInt("room_id"));
                                             %>
                                             <div class="features">
                                                 <% while (rsRType.next()) {%>
@@ -201,14 +206,14 @@
                                         <div class="col-md-4 text-center">
                                             <span class="badge badge-dark"></span>
                                             <div class="features">
-                                                <span class="text-monospace" name="room_description"><%= r.getRoom_description()%></span>
+                                                <span class="text-monospace" name="room_description"><%= rsRoom.getString("room_description")%></span>
                                             </div>
                                         </div>
                                         <div class="col-md-3 text-center">
-                                            <span class="price" name="room_price">$ <%= r.getRoom_price()%></span><br>
+                                            <span class="price" name="room_price">$<%= rsRoom.getLong("room_price")%></span><br>
                                         </div>
                                         <div class="col-md-2 text-center">
-                                            <input type="checkbox" id="roomID" name="roomID" value="<%= r.getRoom_id()%>">
+                                            <input type="checkbox" id="roomID" name="roomID" value="<%= rsRoom.getString("room_id")%>">
                                             <input hidden="" id="HotelID" name="HotelID" value="<%= h.getHotel_id()%>">
                                         </div>
                                     </div>
@@ -216,6 +221,8 @@
                             </div>
                         </div>
                         <%
+                                    }
+                                }
                             }
                         %>
                     </form>
@@ -249,7 +256,7 @@
                 var checkOutDate = document.getElementById('checkOutDate').value;
                 var form = document.getElementById('reservationForm');
                 if (actionType === 'change') {
-                    form.action = '/searchController/Change/' + checkInDate + checkOutDate +<%= h.getHotel_id()%>;
+                    form.action = '/searchController/Change';
                 } else {
                     form.action = '/reserveController';
                 }
