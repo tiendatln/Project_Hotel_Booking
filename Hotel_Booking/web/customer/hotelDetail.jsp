@@ -4,6 +4,8 @@
     Author     : tiend
 --%>
 
+<%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
+<%@page import="Model.feedback"%>
 <%@page import="Model.room"%>
 <%@page import="java.util.List"%>
 <%@page import="java.sql.Date"%>
@@ -183,6 +185,7 @@
                                         </div>
                                         <div class="col-md-2 text-center">
                                             <button class="btn btn-primary" type="submit" id="reserve-link" name="btnReserve" onclick="setFormAction('submit')">I'll reserve</button>
+                                            <input hidden="" id="HotelID" name="HotelID" value="<%= h.getHotel_id()%>">
                                         </div>
                                     </div>
                                 </div>
@@ -226,7 +229,6 @@
                                         </div>
                                         <div class="col-md-2 text-center">
                                             <input type="checkbox" id="roomID" name="roomID" value="<%= rsRoom.getString("room_id")%>">
-                                            <input hidden="" id="HotelID" name="HotelID" value="<%= h.getHotel_id()%>">
                                         </div>
                                     </div>
                                 </div>
@@ -266,7 +268,7 @@
                             <div class="card">
                                 <div class="d-flex card-header justify-content-between">
                                     <h5 class="me-3 mb-0">Feedback</h5>
-                                    <a class="btn" style="color: #0d6efd" href="/feedbackController/ViewAll/<%= h.getHotel_id() %>">View All</a>
+                                    <a class="btn" style="color: #0d6efd" href="/feedbackController/ViewAll/<%= h.getHotel_id()%>">View All</a>
                                 </div>
                                 <div class="card-body">
                                     <ul class="list-group list-group-flush">
@@ -274,7 +276,7 @@
                                         <%
                                             int counter = 0;
                                         %>
-                                        <c:forEach items="${feedback}" var="feedback">
+                                        <c:forEach items="${feedback}" var="feedbackItem">
                                             <%
                                                 if (counter < 5) {
                                             %>
@@ -287,11 +289,8 @@
                                                         </svg>
                                                     </div>
                                                     <div class="m-3">
-                                                        <%
-                                                            account a = aDAO.getAccount(value);
-                                                        %>
-                                                        <h5 style="color: #0d6efd"><%= a.getName()%></h5>
-                                                        <p class="mb-0">${feedback.comment}</p>
+                                                        <h5 style="color: #0d6efd">${feedbackItem.account.name}</h5>
+                                                        <p class="mb-0">${feedbackItem.comment}</p>
                                                     </div>
                                                 </div>
                                             </li>
@@ -313,110 +312,118 @@
             </div>
 
         </div>
-
+        <c:if test="${loginToReserve}">
+            <script>
+                alert("You must be login to reserve!");
+            </script>
+        </c:if>
+        <c:if test="${errorFeedback}">
+            <script>
+                alert("Feedback can not send!");
+            </script>
+        </c:if>
 
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
         <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-        <c:if test="${loginToReserve != null}">
-            <script>
-                                                alert("You must be login to reserve!");
-            </script>
-        </c:if>
-        <c:if test="${erroFeedback}">
-            <script>
-                alert("Feedback can not send!");
-            </script>
-        </c:if>
         <script >
-            var today = new Date().toISOString().split('T')[0];
-            document.getElementById("checkInDate").setAttribute("min", today);
-            document.getElementById("checkOutDate").setAttribute("min", today);
-            function submitForm(actionType) {
-                if (checkDates()) {
-                    setFormAction(actionType);
-                    document.getElementById('reservationForm').submit();
-                }
-            }
-
-            function setFormAction(actionType) {
-                var checkInDate = document.getElementById('checkInDate').value;
-                var checkOutDate = document.getElementById('checkOutDate').value;
-                var form = document.getElementById('reservationForm');
-                if (actionType === 'change') {
-                    form.action = '/searchController/Change';
-                } else {
-                    form.action = '/reserveController';
-                }
-            }
-
-            function checkDates() {
-                var checkInDate = document.getElementById('checkInDate').value;
-                var checkOutDate = document.getElementById('checkOutDate').value;
-
-                if (new Date(checkInDate) >= new Date(checkOutDate)) {
-                    alert("Check-out date must be after check-in date.");
-                    return false;
-                }
-                return true;
-            }
-
-            function checkCheckboxes() {
-                var checkboxes = document.querySelectorAll('input[type="checkbox"]');
-                var isChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
-
-                if (!isChecked) {
-                    alert("Please select at least one room.");
-                    return false;
-                }
-                return true;
-            }
-
-            function checkForm() {
-                return checkDates() && checkCheckboxes();
-            }
-
-            function checkCheckboxes() {
-                // Get all checkboxes with the name 'quantity'
-                var checkboxes = document.querySelectorAll('input[name="roomID"]');
-                // Check if any of the checkboxes are checked
-                var anyChecked = Array.prototype.slice.call(checkboxes).some(x => x.checked);
-                // If none are checked, prevent form submission and alert the user
-                if (!anyChecked) {
-                    alert("Please select at least one room to reserve.");
-                    return false; // Prevent form submission
-                }
-                validateForm();
-                return true; // Allow form submission
-            }
-
-            function validateForm() {
-
-                var checkin = document.getElementById('checkInDate').value;
-                var checkout = document.getElementById('checkOuDdate').value;
-
-                if (!checkin) {
-                    var today = new Date().toISOString().split('T')[0];
-                    document.getElementById('checkInDate').value = today;
-                    checkin = today;
+                var today = new Date().toISOString().split('T')[0];
+                document.getElementById("checkInDate").setAttribute("min", today);
+                document.getElementById("checkOutDate").setAttribute("min", today);
+                function submitForm(actionType) {
+                    if (checkDates()) {
+                        setFormAction(actionType);
+                        document.getElementById('reservationForm').submit();
+                    }
                 }
 
-                if (!checkout) {
-                    var today = new Date().toISOString().split('T')[0];
-                    document.getElementById('checkOuDdate').value = today;
-                    checkout = today;
+                function setFormAction(actionType) {
+                    if (!checkin) {
+                        var today = new Date().toISOString().split('T')[0];
+                        document.getElementById('checkInDate').value = today;
+                        checkin = today;
+                    }
+
+                    if (!checkout) {
+                        var today = new Date().toISOString().split('T')[0];
+                        document.getElementById('checkOuDdate').value = today;
+                        checkout = today;
+                    }
+                    var form = document.getElementById('reservationForm');
+                    if (actionType === 'change') {
+                        form.action = '/reserveController/Change';
+                    } else {
+                        form.action = '/reserveController/submit';
+                    }
                 }
 
-                var checkinDate = new Date(checkin);
-                var checkoutDate = new Date(checkout);
-                if (checkoutDate < checkinDate) {
-                    alert('Check-out date must be after check-in date.');
-                    return false;
+                function checkDates() {
+                    var checkInDate = document.getElementById('checkInDate').value;
+                    var checkOutDate = document.getElementById('checkOutDate').value;
+
+                    if (new Date(checkInDate) >= new Date(checkOutDate)) {
+                        alert("Check-out date must be after check-in date.");
+                        return false;
+                    }
+                    return true;
                 }
 
-                return true;
-            }
+                function checkCheckboxes() {
+                    var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+                    var isChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
+
+                    if (!isChecked) {
+                        alert("Please select at least one room.");
+                        return false;
+                    }
+                    return true;
+                }
+
+                function checkForm() {
+                    return checkDates() && checkCheckboxes();
+                }
+
+                function checkCheckboxes() {
+                    // Get all checkboxes with the name 'quantity'
+                    var checkboxes = document.querySelectorAll('input[name="roomID"]');
+                    // Check if any of the checkboxes are checked
+                    var anyChecked = Array.prototype.slice.call(checkboxes).some(x => x.checked);
+                    // If none are checked, prevent form submission and alert the user
+                    if (!anyChecked) {
+                        alert("Please select at least one room to reserve.");
+                        return false; // Prevent form submission
+                    }
+                    validateForm();
+                    return true; // Allow form submission
+                }
+
+                function validateForm() {
+
+                    var checkin = document.getElementById('checkInDate').value;
+                    var checkout = document.getElementById('checkOuDdate').value;
+
+                    if (!checkin) {
+                        var today = new Date().toISOString().split('T')[0];
+                        document.getElementById('checkInDate').value = today;
+                        checkin = today;
+                    }
+
+                    if (!checkout) {
+                        var today = new Date().toISOString().split('T')[0];
+                        document.getElementById('checkOuDdate').value = today;
+                        checkout = today;
+                    }
+
+                    var checkinDate = new Date(checkin);
+                    var checkoutDate = new Date(checkout);
+                    if (checkoutDate < checkinDate) {
+                        alert('Check-out date must be after check-in date.');
+                        return false;
+                    }
+
+                    return true;
+                }
 
         </script>
         <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"></script>

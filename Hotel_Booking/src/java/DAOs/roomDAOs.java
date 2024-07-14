@@ -425,4 +425,21 @@ public class roomDAOs {
         }
         return r;
     }
+    public room getRoomByRoomID(int room_id){
+        room r = null;
+        ResultSet rs = null;
+        try {
+            PreparedStatement ps = conn.prepareStatement("select * from Room where room_id = ?");
+            ps.setInt(1, room_id);
+            rs = ps.executeQuery();
+            if(rs.next()){
+                hotel h = new hotel(rs.getInt("hotel_id"));
+                roomType rt = new roomType(rs.getInt("room_type_id"));
+                r = new room(rs.getInt("room_id"), rs.getString("room_name"), rs.getInt("room_price"), rs.getString("room_img"),
+                        rs.getBoolean("room_status"), rs.getString("room_description"), rt, h);
+            }
+        } catch (Exception e) {
+        }
+        return r;
+    }
 }

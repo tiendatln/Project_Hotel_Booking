@@ -18,8 +18,8 @@ public class reservation {
     private Date check_in_date;
     private Date check_out_date;
     private long list_price;
-    private room room_id;
-    private hotel hotel_id;
+    private room room;
+    private hotel hotel;
     private account username;
 
     /**
@@ -28,32 +28,24 @@ public class reservation {
     public reservation() {
     }
 
-    /**
-     *
-     * @param room_id
-     * @param hotel_id
-     * @param username
-     */
-    public reservation(room room_id, hotel hotel_id, account username) {
-        this.room_id = room_id;
-        this.hotel_id = hotel_id;
-        this.username = username;
+    public reservation(int quantity, room room) {
+        this.quantity = quantity;
+        this.room = room;
     }
 
     /**
      *
-     * @param id
-     * @param status
-     * @param re_date
-     * @param quantity
-     * @param check_in_date
-     * @param check_out_date
-     * @param list_price
-     * @param room_id
-     * @param hotel_id
+     * @param room
+     * @param hotel
      * @param username
      */
-    public reservation(int id, byte status, Date re_date, int quantity, Date check_in_date, Date check_out_date, long list_price, room room_id, hotel hotel_id, account username) {
+    public reservation(room room, hotel hotel, account username) {
+        this.room= room;
+        this.hotel = hotel;
+        this.username = username;
+    }
+
+    public reservation(int id, byte status, Date re_date, int quantity, Date check_in_date, Date check_out_date, long list_price, room room, hotel hotel, account username) {
         this.id = id;
         this.status = status;
         this.re_date = re_date;
@@ -61,10 +53,12 @@ public class reservation {
         this.check_in_date = check_in_date;
         this.check_out_date = check_out_date;
         this.list_price = list_price;
-        this.room_id = room_id;
-        this.hotel_id = hotel_id;
+        this.room = room;
+        this.hotel = hotel;
         this.username = username;
     }
+
+
 
     /**
      *
@@ -86,37 +80,25 @@ public class reservation {
         this.list_price = list_price;
     }
 
-    /**
-     *
-     * @return
-     */
-    public room getRoom_id() {
-        return room_id;
+    public room getRoom() {
+        return room;
     }
 
-    /**
-     *
-     * @param room_id
-     */
-    public void setRoom_id(room room_id) {
-        this.room_id = room_id;
+    public void setRoom(room room) {
+        this.room = room;
     }
 
-    /**
-     *
-     * @return
-     */
-    public hotel getHotel_id() {
-        return hotel_id;
+    public hotel getHotel() {
+        return hotel;
     }
 
-    /**
-     *
-     * @param hotel_id
-     */
-    public void setHotel_id(hotel hotel_id) {
-        this.hotel_id = hotel_id;
+    public void setHotel(hotel hotel) {
+        this.hotel = hotel;
     }
+
+
+
+
 
     /**
      *

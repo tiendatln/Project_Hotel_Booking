@@ -51,6 +51,10 @@
         <servlet-name>feedbackController</servlet-name>
         <servlet-class>Controllers.feedbackController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>bookingController</servlet-name>
+        <servlet-class>Controllers.bookingController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>homeController</servlet-name>
         <url-pattern>/homeController/*</url-pattern>
@@ -98,6 +102,10 @@
     <servlet-mapping>
         <servlet-name>feedbackController</servlet-name>
         <url-pattern>/feedbackController/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>bookingController</servlet-name>
+        <url-pattern>/bookingController/*</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

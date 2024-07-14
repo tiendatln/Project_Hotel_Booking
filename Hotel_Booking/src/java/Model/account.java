@@ -37,6 +37,10 @@ public class account {
         this.username = username;
     }
 
+    public account(String username, String name) {
+        this.name = name;
+    }
+
     /**
      *
      * @param username

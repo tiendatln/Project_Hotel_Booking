@@ -28,17 +28,16 @@ public class feedback {
         this.hotel = hotel;
     }
 
-
-
-    /**
-     *
-     * @param id
-     * @param comment
-     */
-    public feedback( String comment) {
-        
+    public feedback(String comment) {
         this.comment = comment;
     }
+
+    public feedback(String comment, account account) {
+        this.comment = comment;
+        this.account = account;
+    }
+
+
 
     public account getAccount() {
         return account;

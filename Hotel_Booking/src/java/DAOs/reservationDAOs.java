@@ -5,7 +5,10 @@
 package DAOs;
 
 import DB.DBConnection;
+import Model.account;
+import Model.hotel;
 import Model.reservation;
+import Model.room;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -40,24 +43,25 @@ public class reservationDAOs {
      * @param username
      * @return
      */
-    public ResultSet getAllInfo(String username) {
+    public List<reservation> getReservationByUsername(String username) {
         ResultSet rs = null;
+        List<reservation> list = new ArrayList<>();
         try {
-            PreparedStatement ps = conn.prepareStatement("select * from Reservation re join Account ac \n"
-                    + "on re.username = ac.username\n"
-                    + "join room r\n"
-                    + "on r.room_id = re.room_id\n"
-                    + "join [Service] se\n"
-                    + "on se.service_id = re.service_id\n"
-                    + "join Hotel h\n"
-                    + "on h.username = ac.username\n"
-                    + "where re.username = ?");
+            PreparedStatement ps = conn.prepareStatement("select * from Reservation where username = ? ");
             ps.setString(1, username);
             rs = ps.executeQuery();
+            int i =0;
+            while (rs.next()) {                
+                hotel h = new hotel(rs.getInt("hotel_id"));
+                room r = new room(rs.getInt("room_id"));
+                account a = new account(rs.getString("username"));
+                list.add(i, new reservation(rs.getInt("re_id"), rs.getBoolean("status"), rs.getDate("re_date"), i, check_in_date, check_out_date, i, r, h, a));
+                i++;
+            }
         } catch (SQLException e) {
             Logger.getLogger(reservationDAOs.class.getName()).log(Level.SEVERE, null, e);
         }
-        return rs;
+        return list;
     }
 
     /**
@@ -82,4 +86,5 @@ public class reservationDAOs {
         }
         return hotel_id;
     }
+//    public boolean getBooleanIfHave
 }

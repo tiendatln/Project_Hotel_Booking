@@ -59,7 +59,7 @@
                         <td><%= rs.getDate("check_in_date")%></td>
                         <td><%= rs.getDate("check_out_date")%></td>
                         <td><%= rs.getInt("quantity")%></td>
-                        <td><%= rs.getString("service_description")%></td>
+                        <td><%= rs.getString("service_name")%></td>
                         <td><%= rs.getLong("list_price")%>$</td>
                         <td><%if (rs.getInt("status") == 1) {%>
                             Confirmed

@@ -4,6 +4,7 @@
  */
 package Controllers;
 
+import DAOs.accountDAOs;
 import DAOs.feedbackDAOs;
 import DAOs.roomDAOs;
 import Model.account;
@@ -70,8 +71,13 @@ public class feedbackController extends HttpServlet {
             String[] s = path.split("/");
             int hotel_id = Integer.valueOf(s[s.length - 1]);
             feedbackDAOs fDAO = new feedbackDAOs();
+            accountDAOs aDao = new accountDAOs();
             request.setAttribute("hotel_id", hotel_id);
             List<feedback> fb = fDAO.getFeedbackByHotelID(hotel_id);
+            for (int i = 0; i < fb.size(); i++) {
+                account ac = aDao.getAccount(fb.get(i).getAccount().getUsername());
+                fb.get(i).setAccount(ac);
+            }
             request.setAttribute("feedback", fb);
             request.getRequestDispatcher("/customer/feedbackViewAll.jsp").forward(request, response);
         }
@@ -96,37 +102,34 @@ public class feedbackController extends HttpServlet {
             hotel ht = new hotel(hotel_id);
             account ac = new account(username);
             feedback feedback = new feedback(comment);
-            if (comment == (null)) {
-
-            } else {
-                roomDAOs rDAO = new roomDAOs();
-                feedback = fDAO.addNewFeedback(feedback, ac, ht);
-                if (feedback == null) {
-                    request.setAttribute("errorFeedback", true);
-                }
-
-                List<room> room = new ArrayList<>();
-                try {
-                    ResultSet rs = rDAO.getRoomByHotelID(hotel_id);
-                    while (rs.next()) {
-                        hotel h = new hotel(rs.getInt("hotel_id"));
-                        roomType rt = new roomType(rs.getInt("room_type_id"));
-                        room.add(new room(rs.getInt("room_id"), rs.getString("room_name"), rs.getInt("room_price"), rs.getString("room_img"),
-                                rs.getBoolean("room_status"), rs.getString("room_description"), rt, h));
-                    }
-                } catch (Exception e) {
-
-                }
-                List<room> roomImg = rDAO.getAllRoomImgByHotelId(hotel_id);
-
-                request.setAttribute("roomImg", roomImg);
-                request.getSession().setAttribute("hotelID", hotel_id);
-                request.setAttribute("room", room);
-                List<feedback> fb = fDAO.getFeedbackByHotelID(hotel_id);
-                request.setAttribute("feedback", fb);
-                request.getRequestDispatcher("/customer/hotelDetail.jsp").forward(request, response);
+            roomDAOs rDAO = new roomDAOs();
+            feedback = fDAO.addNewFeedback(feedback, ac, ht);
+            if (feedback == null) {
+                request.setAttribute("errorFeedback", true);
             }
+
+            List<room> room = new ArrayList<>();
+            try {
+                ResultSet rs = rDAO.getRoomByHotelID(hotel_id);
+                while (rs.next()) {
+                    hotel h = new hotel(rs.getInt("hotel_id"));
+                    roomType rt = new roomType(rs.getInt("room_type_id"));
+                    room.add(new room(rs.getInt("room_id"), rs.getString("room_name"), rs.getInt("room_price"), rs.getString("room_img"),
+                            rs.getBoolean("room_status"), rs.getString("room_description"), rt, h));
+                }
+            } catch (Exception e) {
+
+            }
+            List<room> roomImg = rDAO.getAllRoomImgByHotelId(hotel_id);
+
+            request.setAttribute("roomImg", roomImg);
+            request.getSession().setAttribute("hotelID", hotel_id);
+            request.setAttribute("room", room);
+            List<feedback> fb = fDAO.getFeedbackByHotelID(hotel_id);
+            request.setAttribute("feedback", fb);
+            request.getRequestDispatcher("/customer/hotelDetail.jsp").forward(request, response);
         }
+
     }
 
     /**

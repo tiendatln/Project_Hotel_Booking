@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  * @author tiend
  */
 public class serviceDAOs {
-
+    
     Connection conn;
 
     /**
@@ -34,6 +34,7 @@ public class serviceDAOs {
             Logger.getLogger(reservationDAOs.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
     public List<service> getAllService() {
         List<service> list = new ArrayList<>();
         ResultSet rs = null;
@@ -70,7 +71,7 @@ public class serviceDAOs {
      * @param service_id
      * @return
      */
-    public ResultSet getSevice(int service_id){
+    public ResultSet getSevice(int service_id) {
         ResultSet rs = null;
         try {
             PreparedStatement ps = conn.prepareStatement("select * from Service where service_id = ?");
@@ -87,7 +88,7 @@ public class serviceDAOs {
      * @param hotel_id
      * @return
      */
-    public ResultSet getServiceByHotelID(int hotel_id){
+    public ResultSet getServiceByHotelID(int hotel_id) {
         ResultSet rs = null;
         try {
             PreparedStatement ps = conn.prepareStatement("select * from Service s join Hotel h on h.hotel_id = s.hotel_id where h.hotel_id = ?");
@@ -96,6 +97,24 @@ public class serviceDAOs {
         } catch (SQLException e) {
             Logger.getLogger(serviceDAOs.class.getName()).log(Level.SEVERE, null, e);
         }
-        return  rs;
+        return rs;
+    }
+
+    public List<service> getService(int hotel_id) {
+        ResultSet rs = null;
+        List<service> s = new ArrayList<>();
+        try {
+            PreparedStatement ps = conn.prepareStatement("select * from Service s join Hotel h on h.hotel_id = s.hotel_id where h.hotel_id = ?");
+            ps.setInt(1, hotel_id);
+            rs = ps.executeQuery();
+            int j = 0;
+            while (rs.next()) {                
+                hotel h = new hotel(hotel_id);
+                s.add(j, new service(rs.getInt("service_id"), rs.getString("service_name"), rs.getInt("service_price"), h));
+                j++;
+            }
+        } catch (Exception e) {
+        }
+        return s;
     }
 }

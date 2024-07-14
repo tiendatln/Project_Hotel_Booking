@@ -38,14 +38,16 @@ public class feedbackDAOs {
 
     public List<feedback> getFeedbackByHotelID(int hotel_id) {
         List<feedback> feedbackList = new ArrayList<>();
-        try   {
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM Feedback WHERE hotel_id = ?");
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM Feedback f join Account a on a.username = f.username WHERE hotel_id = ?");
             ps.setInt(1, hotel_id);
-            try ( ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    feedback feedback = new feedback(rs.getString("comment"));
-                    feedbackList.add(feedback);
-                }
+            ResultSet rs = ps.executeQuery();
+            int i =0;
+            while (rs.next()) {
+                account a = new account(rs.getString("username"));
+                feedback feedback = new feedback(rs.getString("comment"),a);
+                feedbackList.add(i,feedback);
+                i++;
             }
         } catch (SQLException e) {
             e.printStackTrace(); // Consider proper logging or rethrowing the exception based on your requirement

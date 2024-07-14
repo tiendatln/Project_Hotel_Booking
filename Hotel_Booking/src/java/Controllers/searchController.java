@@ -4,9 +4,11 @@
  */
 package Controllers;
 
+import DAOs.accountDAOs;
 import DAOs.feedbackDAOs;
 import DAOs.hotelDAOs;
 import DAOs.roomDAOs;
+import Model.account;
 import Model.feedback;
 import Model.hotel;
 import Model.room;
@@ -74,8 +76,9 @@ public class searchController extends HttpServlet {
             request.getRequestDispatcher("/customer/listHotel.jsp").forward(request, response);
         } else if (path.startsWith("/searchController/HotelDetail")) {
             String[] s = path.split("/");
-            roomDAOs rDAO = new roomDAOs();
             int hotel_id = Integer.valueOf(s[s.length - 1]);
+            roomDAOs rDAO = new roomDAOs();
+            
             List<room> room = new ArrayList<>();
             try {
                 ResultSet rs = rDAO.getRoomByHotelID(hotel_id);
@@ -94,7 +97,14 @@ public class searchController extends HttpServlet {
             request.getSession().setAttribute("hotelID", hotel_id);
             request.setAttribute("room", room);
             feedbackDAOs fDAO = new feedbackDAOs();
+            
             List<feedback> feedback = fDAO.getFeedbackByHotelID(hotel_id);
+            accountDAOs aDao = new  accountDAOs();
+            for (int i = 0; i < feedback.size(); i++) {
+                account ac = aDao.getAccount(feedback.get(i).getAccount().getUsername());
+                feedback.get(i).setAccount(ac);
+            }
+            
             request.setAttribute("feedback", feedback);
             request.getRequestDispatcher("/customer/hotelDetail.jsp").forward(request, response);
         } else if (path.startsWith("/searchController/Change")) {
@@ -108,7 +118,7 @@ public class searchController extends HttpServlet {
                 ResultSet rs = rDAO.getRoomByHotelID(hotel_id);
                 int i = 0;
                 while (rs.next()) {
-                    if (rs.getInt("room_id") != roomOnDate.get(i)) {
+                    if (rs.getInt("room_id") == roomOnDate.get(i)) {
                         hotel hotel = new hotel(hotel_id);
                         roomType rt = new roomType(rs.getInt("room_type_id"));
                         room.add(new room(rs.getInt("room_id"), rs.getString("room_name"), rs.getInt("room_price"),

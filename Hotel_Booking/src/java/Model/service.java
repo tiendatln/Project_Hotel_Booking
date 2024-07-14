@@ -13,7 +13,7 @@ public class service {
     private int service_id;
     private String service_name;
     private String service_description;
-    private long service_price;
+    private int service_price;
     private hotel hotel;
 
     /**
@@ -35,19 +35,6 @@ public class service {
         this.hotel = hotel;
     }
 
-    /**
-     *
-     * @param service_id
-     * @param service_name
-     * @param service_description
-     * @param service_price
-     */
-    public service(int service_id, String service_name, String service_description, long service_price) {
-        this.service_id = service_id;
-        this.service_name = service_name;
-        this.service_description = service_description;
-        this.service_price = service_price;
-    }
 
     /**
      *
@@ -81,21 +68,17 @@ public class service {
         this.service_description = service_description;
     }
 
-    /**
-     *
-     * @return
-     */
-    public long getService_price() {
+    public int getService_price() {
         return service_price;
     }
 
-    /**
-     *
-     * @param service_price
-     */
-    public void setService_price(long service_price) {
+    public void setService_price(int service_price) {
         this.service_price = service_price;
     }
+
+
+
+
 
     public String getService_name() {
         return service_name;
