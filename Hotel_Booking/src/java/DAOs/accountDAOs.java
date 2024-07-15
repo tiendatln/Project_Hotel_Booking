@@ -237,4 +237,17 @@ public class accountDAOs {
         }
         return "customer";
     }
+    public boolean checkEmailUser(String email){
+        
+        try {
+            PreparedStatement ps = conn.prepareStatement("select * from Account where email = ?");
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                return true;
+            }
+        } catch (Exception e) {
+        }
+        return  false;
+    }
 }

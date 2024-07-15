@@ -59,6 +59,10 @@
         <servlet-name>forgetPassword</servlet-name>
         <servlet-class>Controllers.forgetPassword</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>forgetPasswordOTP</servlet-name>
+        <servlet-class>Controllers.forgetPasswordOTP</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>homeController</servlet-name>
         <url-pattern>/homeController/*</url-pattern>
@@ -114,6 +118,10 @@
     <servlet-mapping>
         <servlet-name>forgetPassword</servlet-name>
         <url-pattern>/forgetPassword/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>forgetPasswordOTP</servlet-name>
+        <url-pattern>/forgetPasswordOTP/*</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

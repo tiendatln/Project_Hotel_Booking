@@ -4,6 +4,8 @@
     Author     : tiend
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -55,10 +57,11 @@
                                     <form method="post" action="">
                                         <div class="form-group">
                                             <label>Email</label>
-                                            <input class="form-control form-control-lg" type="email" name="email" placeholder="Enter your email">
+                                            <input class="form-control form-control-lg" type="email" id="txtEmail" name="txtEmail" placeholder="Enter your email">
+                                            <span id="error"></span>
                                         </div>
                                         <div class="text-center mt-3">
-                                            <a href="index.html" class="btn btn-lg btn-primary">Reset password</a>
+                                            <button type="submit" class="btn btn-lg btn-primary">Send OTP</button>>
                                             <!-- <button type="submit" class="btn btn-lg btn-primary">Reset password</button> -->
                                         </div>
                                     </form>
@@ -70,5 +73,18 @@
                 </div>
             </div>
         </div>
+        <c:if test="${emailError}">
+            <script>
+                alert("Email is Wrong!");
+            </script>
+        </c:if>
+            <script>
+                function submitForm(){
+                    var email = document.getElementById("txtEmail").value;
+                    if(email === ""){
+                        document.getElementById("error").innerHTML "Please enter your Email!";
+                    }
+                }
+            </script>
     </body>
 </html>

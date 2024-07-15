@@ -120,8 +120,8 @@ public class searchController extends HttpServlet {
                 feedback.get(i).setAccount(ac);
             }
             request.setAttribute("feedback", feedback);
-            List<reservation> reserve = rsDAO.getReservationByUsername(ac.getUsername());
-            if (reserve != null) {
+            List<reservation> reserve = rsDAO.getReservationByUsername(value);
+            if (reserve.size() != 0) {
                 int i = 0;
                 boolean reserveExist = true;
                 while (reserveExist) {
