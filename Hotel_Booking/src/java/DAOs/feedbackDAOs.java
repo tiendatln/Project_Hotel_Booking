@@ -82,5 +82,18 @@ public class feedbackDAOs {
         }
         return count;
     }
-    
+    public boolean deleteFeedbackByUsername(String username){
+        int count = 0;
+        try {
+            PreparedStatement ps = conn.prepareStatement("DELETE FROM Feedback WHERE username = ?");
+            ps.setString(1, username);
+            count = ps.executeUpdate();
+            if(count > 0){
+                return  true;
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(accountDAOs.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return false;
+    }
 }

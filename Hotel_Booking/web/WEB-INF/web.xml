@@ -63,6 +63,14 @@
         <servlet-name>forgetPasswordOTP</servlet-name>
         <servlet-class>Controllers.forgetPasswordOTP</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Dashboard</servlet-name>
+        <servlet-class>Controllers.Dashboard</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UserManager</servlet-name>
+        <servlet-class>Controllers.UserManager</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>homeController</servlet-name>
         <url-pattern>/homeController/*</url-pattern>
@@ -122,6 +130,30 @@
     <servlet-mapping>
         <servlet-name>forgetPasswordOTP</servlet-name>
         <url-pattern>/forgetPasswordOTP/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Dashboard</servlet-name>
+        <url-pattern>/Dashboard/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UserManager</servlet-name>
+        <url-pattern>/UserManager/*</url-pattern>
+    </servlet-mapping>
+        <servlet>
+        <servlet-name>dashboardController</servlet-name>
+        <servlet-class>Controllers.dashboardController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>dashboardController</servlet-name>
+        <url-pattern>/dashboardController/*</url-pattern>
+    </servlet-mapping>
+        <servlet>
+        <servlet-name>reserveManagerController</servlet-name>
+        <servlet-class>Controllers.reserveManagerController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>reserveManagerController</servlet-name>
+        <url-pattern>/reserveManagerController/*</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

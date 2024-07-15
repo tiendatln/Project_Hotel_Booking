@@ -345,7 +345,7 @@
                             setFormAction(actionType);
                             document.getElementById('reservationForm').submit();
                         }
-                    }else{
+                    } else {
                         if (checkForm()) {
                             setFormAction(actionType);
                             document.getElementById('reservationForm').submit();
@@ -354,22 +354,11 @@
                 }
 
                 function setFormAction(actionType) {
-                    if (!checkin) {
-                        var today = new Date().toISOString().split('T')[0];
-                        document.getElementById('checkInDate').value = today;
-                        checkin = today;
-                    }
 
-                    if (!checkout) {
-                        var today = new Date().toISOString().split('T')[0];
-                        document.getElementById('checkOuDdate').value = today;
-                        checkout = today;
-                    }
                     var form = document.getElementById('reservationForm');
                     if (actionType === 'change') {
                         form.action = '/reserveController/Change';
                     } else {
-                        checkForm();
                         form.action = '/reserveController/submit';
                     }
                 }
@@ -389,17 +378,20 @@
                         }
                         return false;
                     }
-
+                    
                     if (new Date(checkInDate) >= new Date(checkOutDate)) {
                         alert("Check-out date must be after check-in date.");
                         return false;
                     }
                     return true;
                 }
-                
+
                 function checkDatesChange() {
                     var checkInDate = document.getElementById('checkInDate').value;
                     var checkOutDate = document.getElementById('checkOutDate').value;
+                    if (!checkInDate || !checkOutDate) {
+                        return false;
+                    }
                     if (new Date(checkInDate) >= new Date(checkOutDate)) {
                         alert("Check-out date must be after check-in date.");
                         return false;

@@ -124,6 +124,8 @@ public class searchController extends HttpServlet {
             if (!reserve.isEmpty()) {
                 int i = 0;
                 boolean reserveExist = true;
+                boolean status = false;
+                int countStatus = 0;
                 while (reserveExist) {
                     room r = rDAO.getRoomByRoomID(reserve.get(i).getRoom().getRoom_id());
                     hotel ht = hDAO.getHotelByRoomID(r.getRoom_id());
@@ -131,10 +133,16 @@ public class searchController extends HttpServlet {
                     reserve.get(i).setRoom(r);
                     if (reserve.get(i).getRoom().getHotel().getHotel_id() == hotel_id) {
                         reserveExist = false;
+                        if(reserve.get(i).getStatus() == 1){
+                            countStatus++;
+                        }
+                        if(countStatus == reserve.size() - 1){
+                            status = true;
+                        }
                     }
                     i++;
                 }
-                if (!reserveExist) {
+                if (!reserveExist && status) {
                     int count = fDAO.getFeedbackExistByUsername(value);
                     if (count == 0 && count < 1) {
                         request.setAttribute("canFeedback", true);

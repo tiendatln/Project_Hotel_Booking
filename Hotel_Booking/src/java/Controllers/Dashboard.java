@@ -5,9 +5,10 @@
 package Controllers;
 
 import DAOs.accountDAOs;
-import jakarta.servlet.http.Cookie;
+import Model.account;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,7 +18,7 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author tiend
  */
-public class loginController extends HttpServlet {
+public class Dashboard extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,10 +37,10 @@ public class loginController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet loginController</title>");
+            out.println("<title>Servlet Dashboard</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet loginController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet Dashboard at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -57,9 +58,23 @@ public class loginController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String path = request.getRequestURI();
-        if (path.endsWith("/login")) {
-            request.getRequestDispatcher("/customer/login.jsp").forward(request, response);
+        try {
+            accountDAOs ad = new accountDAOs();
+            List<account> a = ad.getAllAccount();
+            int countUser = 0, countOwner = 0;
+            for (int i = 0; i < a.size(); i++) {
+                if (a.get(i).getIs_owner() == 0 && a.get(i).getIs_adnmin() == 0) {
+                    countUser += 1;
+                }
+                if (a.get(i).getIs_owner() == 1) {
+                     countOwner += 1;       
+                }        
+            }          
+            request.setAttribute("countuser", countUser);
+            request.setAttribute("countowner", countOwner);
+            request.getRequestDispatcher("/admin/dashboard.jsp").forward(request, response);
+        } catch (NumberFormatException e) {
+            System.out.println(e);
         }
     }
 
@@ -74,48 +89,7 @@ public class loginController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (request.getParameter("btnLogin") != null) {
-            Cookie[] cList;
-            cList = request.getCookies();
-            if (cList != null) {
-                for (Cookie cList1 : cList) { //Duyet qua het tat ca cookie
-                    cList1.setMaxAge(0);
-                    cList1.setPath("/");
-                    response.addCookie(cList1);
-                }
-            }
-            accountDAOs aDAO = new accountDAOs();
-            String us = request.getParameter("txtUScus");
-            String pwd = request.getParameter("txtPWDcus");
-            if (us.equals("")) {
-                request.getSession().setAttribute("massageUserNull", "Please Enter Username!");
-            }
-            if (pwd.equals("") || us.equals("")) {
-                if (pwd.equals("")) {
-                    request.getSession().setAttribute("massagePassNull", "Please Enter Password!");
-                }
-                 request.getRequestDispatcher("/customer/login.jsp").forward(request, response);
-            }
-            if (!pwd.equals("") && !us.equals("")) {
-                if (!aDAO.checkPassword(us, pwd) || !aDAO.checkUser(us)) {
-                    request.getSession().setAttribute("massageAllError", "Username or Password are incorrect!");
-                     request.getRequestDispatcher("/customer/login.jsp").forward(request, response);
-                } else {
-                    String setRole = aDAO.checkAccount(us);
-                    Cookie c = new Cookie(setRole, us);
-                    c.setMaxAge(3 * 24 * 60 * 60); //Thiet lap han su dung 3 ngay
-                    c.setPath("/");
-                    response.addCookie(c);
-                    if (setRole.equalsIgnoreCase("admin")) {
-                        response.sendRedirect("/Dashboard");
-                    } else if (setRole.equalsIgnoreCase("owner")) {
-                        response.sendRedirect("/homeController/HomeOwner");
-                    } else {
-                        response.sendRedirect("/homeController/HomeCustomer");
-                    }
-                }
-            }
-        }
+        processRequest(request, response);
     }
 
     /**

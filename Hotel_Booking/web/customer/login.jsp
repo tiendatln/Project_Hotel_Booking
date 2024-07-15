@@ -4,6 +4,7 @@
     Author     : tiend
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -100,7 +101,11 @@
                 </div>
             </div>
         </div>
-
+        <c:if test="${changePassword}">
+            <script>
+                alert("Reset Password Success.");
+            </script>
+        </c:if>
 
 
         <!-- Bootstrap JS and dependencies (Optional) -->

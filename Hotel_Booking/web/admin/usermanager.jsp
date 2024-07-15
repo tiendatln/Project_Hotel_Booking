@@ -53,9 +53,9 @@
             </div>
             <hr>
             <ul class="app-menu">
-                <li><a class="app-menu__item" href="dashboard" style="text-decoration: none;"><i class='app-menu__icon bx bx-tachometer'></i><span
+                <li><a class="app-menu__item" href="/Dashboard" style="text-decoration: none;"><i class='app-menu__icon bx bx-tachometer'></i><span
                             class="app-menu__label">Control</span></a></li>
-                <li><a class="app-menu__item" href="usermanager" style="text-decoration: none;"><i class='app-menu__icon bx bx-user-voice'></i><span
+                <li><a class="app-menu__item" href="/UserManager" style="text-decoration: none;"><i class='app-menu__icon bx bx-user-voice'></i><span
                             class="app-menu__label">Manage User</span></a></li>
                 <li><a class="app-menu__item" href="productmanager" style="text-decoration: none;"><i
                             class='app-menu__icon bx bx-purchase-tag-alt'></i><span class="app-menu__label">Quản lý sản phẩm</span></a>
@@ -94,29 +94,35 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <c:forEach items="${requestScope.user}" var="u">
+                                    <c:forEach items="${user}" var="u">
                                         <tr>
-                                            <td>${u.id_number}</td>
-                                            <td>${u.username}</td>
-                                            <td>${u.email}</td>
-                                            <td>${u.age}</td>
-                                            <td>${u.phone}</td>
-                                            <c:if test="${u.owner==true}"> <td>Owner</td> </c:if>
-                                            <c:if test="${u.owner!=true}"> <td>User</td> </c:if>
-                                            <c:if test="${u.ban_status==true}"><td>Lock</td></c:if>
-                                            <c:if test="${u.ban_status!=true}"> <td>Normal</td> </c:if> 
-                                            <td>
-                                                <button class="btn btn-primary btn-sm edit" type="button" title="Grant of administrative privileges" id="show-emp" data-bs-toggle="modal" data-bs-target="#ModalUP${u.id_number}">
-                                                    <i class="fas fa-edit"></i></button>
-                                                <button class="btn btn-secondary btn-sm edit" type="button" title="Lock Account" id="show-editor" data-bs-toggle="modal" data-bs-target="#ModalEditor${u.id_number}">
-                                                    <i class="fas fa-user-edit"></i>
-                                                </button>
-                                                <button class="btn btn-primary btn-sm trash" type="button" title="Xóa" value="${u.id_number}" style="background-color: red; border:none;"><i
-                                                        class="fas fa-trash-alt"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </c:forEach>
+                                    <censored-style
+                                        censorship-type="visible"
+                                        replace-text="*"
+                                        replace-repeat="true"
+                                        >
+                                        <censored><td id="id_number">${u.id_number}</td></censored> 
+
+                                    </censored-style>
+
+                                    <td>${u.username}</td>
+                                    <td>${u.email}</td>
+                                    <td>${u.age}</td>
+                                    <td>${u.phone}</td>
+                                    <c:if test="${u.is_owner == 1}"> <td>Owner</td> </c:if>
+                                    <c:if test="${u.is_owner!=1}"> <td>User</td> </c:if>
+                                    <c:if test="${u.ban_status==1}"><td>Lock</td></c:if>
+                                    <c:if test="${u.ban_status!=1}"> <td>Normal</td> </c:if> 
+                                        <td>
+                                            <button class="btn btn-primary btn-sm edit" type="button" title="Grant of administrative privileges" id="show-emp" data-bs-toggle="modal" data-bs-target="#ModalUP${u.id_number}">
+                                            <i class="fas fa-edit"></i></button>
+                                        <button class="btn btn-secondary btn-sm edit" type="button" title="Lock Account" id="show-editor" data-bs-toggle="modal" data-bs-target="#ModalEditor${u.id_number}">
+                                            <i class="fas fa-user-edit"></i>
+                                        </button>
+                                    </td>
+                                    </tr>
+
+                                </c:forEach>
                                 </tbody>
                             </table>
                         </div>
@@ -124,20 +130,20 @@
                 </div>
             </div>
         </main>
-        <c:forEach items="${requestScope.user}" var="u">           
+        <c:forEach items="${user}" var="u">           
             <div class="modal fade" id="ModalUP${u.id_number}" tabindex="-1" role="dialog" aria-hidden="true" data-bs-backdrop="static"
                  data-bs-keyboard="false">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">                  
-                        <form method="post" action="usermanager?action=setowner">
+                        <form method="post" action="/UserManager?action=setowner">
                             <div class="modal-body">                      
                                 <div class="row">
                                     <div class="form-group col-md-6">
-                                        <label for="exampleSelect1" class="control-label">Add Manage</label>
+                                        <label for="exampleSelect1" class="control-label">Set Role</label>
                                         <input hidden name="user_id" value="${u.id_number}">
                                         <select name="check" class="form-control" id="exampleSelect1">
-                                            <option value="0">Cancel</option>
-                                            <option value="1">Accept </option>
+                                            <option value="0" ${u.is_owner eq 0 ? 'selected' : ''}>Customer</option>
+                                            <option value="1" ${u.is_owner eq 1 ? 'selected' : ''}>Owner </option>
                                         </select>
                                     </div>
                                 </div>
@@ -153,15 +159,15 @@
             <div class="modal fade" id="ModalEditor${u.id_number}" tabindex="-1" role="dialog" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
-                        <form method="post" action="usermanager?action=ban_status">
+                        <form method="post" action="/UserManager?action=ban_status">
                             <div class="modal-body">
                                 <div class="row">
                                     <div class="form-group col-md-6">
-                                        <label for="editorSelect" class="control-label">Clock Account</label>
+                                        <label for="editorSelect" class="control-label">Ban Account</label>
                                         <input type="hidden" name="user_id" value="${u.id_number}">
                                         <select name="clockaccount" class="form-control" id="editorSelect">
-                                            <option value="False">Cancel</option>
-                                            <option value="True">Accept</option>
+                                            <option value="False" ${u.ban_status eq 0 ? 'selected' : ''}>Unban</option>
+                                            <option value="True" ${u.ban_status eq 1 ? 'selected' : ''}>Ban</option>
                                         </select>
                                     </div>
                                 </div>
@@ -191,22 +197,23 @@
         <script type="text/javascript">$('#sampleTable').DataTable();</script>           
         <script>
 
-            $(document).ready(jQuery(function () {
-                jQuery(".trash").click(function () {
-                    swal({
-                        title: "Cảnh báo",
-                        text: "Bạn có chắc chắn là muốn xóa account này?",
-                        buttons: ["Hủy bỏ", "Đồng ý"],
-                    })
-                            .then((willDelete) => {
-                                if (willDelete) {
-                                    window.location = "usermanager?action=deleteaccount&id_number=" + $(this).attr("value");
-                                    swal("Đã xóa thành công.", {
-                                    });
-                                }
-                            });
-                });
-            }));
+
+//            $(document).ready(jQuery(function () {
+//                jQuery(".trash").click(function () {
+//                    swal({
+//                        title: "Cảnh báo",
+//                        text: "Bạn có chắc chắn là muốn xóa account này?",
+//                        buttons: ["Hủy bỏ", "Đồng ý"],
+//                    })
+//                            .then((willDelete) => {
+//                                if (willDelete) {
+//                                    window.location = "/UserManager?action=deleteaccount&id_number=" + $(this).attr("value");
+//                                    swal("Đã xóa thành công.", {
+//                                    });
+//                                }
+//                            });
+//                });
+//            }));
         </script>    
     </body>
 </html>

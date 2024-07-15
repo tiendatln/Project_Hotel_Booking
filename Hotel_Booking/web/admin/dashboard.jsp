@@ -18,6 +18,12 @@
         <!-- or -->
         <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
         <!-- Font-icon css-->
+<!--        <link rel="stylesheet" href="${pageContext.request.contextPath}/admin/css/font-awesome.min.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/font-awesome.min.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/font-awesome.min.css">-->
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/admin/css/font-awesome.min.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/admin/css/main.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/admin/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
@@ -46,9 +52,9 @@
             </div>
             <hr>
             <ul class="app-menu">
-                <li><a class="app-menu__item" href="dashboard"><i class='app-menu__icon bx bx-tachometer'></i><span
+                <li><a class="app-menu__item" href="/Dashboard"><i class='app-menu__icon bx bx-tachometer'></i><span
                             class="app-menu__label">Control</span></a></li>
-                <li><a class="app-menu__item" href="usermanager"><i class='app-menu__icon bx bx-user-voice'></i><span
+                <li><a class="app-menu__item" href="/UserManager"><i class='app-menu__icon bx bx-user-voice'></i><span
                             class="app-menu__label">Manage User</span></a></li>
                 <li><a class="app-menu__item" href="productmanager"><i
                             class='app-menu__icon bx bx-purchase-tag-alt'></i><span class="app-menu__label">Manage Hotel</span></a>
@@ -171,13 +177,13 @@
                     </b></p>
             </div>
         </main>
-                                    
+
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <!--===============================================================================================-->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.min.js"></script>
         <!--===============================================================================================-->
-        <script src="admin/js/main.js"></script>
+
         <!--===============================================================================================-->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js"></script>
         <!--===============================================================================================-->

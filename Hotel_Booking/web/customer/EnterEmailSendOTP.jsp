@@ -54,14 +54,14 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="m-sm-4">
-                                    <form method="post" action="">
+                                    <form method="post" action="/forgetPasswordOTP">
                                         <div class="form-group">
                                             <label>Email</label>
                                             <input class="form-control form-control-lg" type="email" id="txtEmail" name="txtEmail" placeholder="Enter your email">
                                             <span id="error"></span>
                                         </div>
                                         <div class="text-center mt-3">
-                                            <button type="submit" class="btn btn-lg btn-primary">Send OTP</button>>
+                                            <button type="submit" name="btnSendOTP" class="btn btn-lg btn-primary">Send OTP</button>>
                                             <!-- <button type="submit" class="btn btn-lg btn-primary">Reset password</button> -->
                                         </div>
                                     </form>

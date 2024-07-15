@@ -66,53 +66,7 @@ public class forgetPasswordOTP extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String path = request.getRequestURI();
-        if (path.endsWith("/ForgetPassword")) {
-            String email = request.getParameter("txtEmail");
-            int otpvalue = 0;
-            HttpSession mySession = request.getSession();
-            if (!email.equals("")) {
-                // sending otp
-                Random rand = new Random();
-                otpvalue = rand.nextInt(1255650);
-                String to = email;// change accordingly
-                String host = "smtp.gmail.com";
-                String port = "465";
-                // Get the session object
-                Properties props = new Properties();
-                props.put("mail.smtp.host", host);
-                props.put("mail.smtp.port", port);
-                props.put("mail.smtp.auth", "true");
-                props.put("mail.smtp.ssl.enable", "true");
-                props.put("mail.smtp.starttls.enable", "true");
-                Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator() {
-                    @Override
-                    protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication("datlntce171894@fpt.edu.vn", "ytac vgaa luxu cgdy");// Put your email
-                        // id and
-                        // password here
-                    }
-                });
-                // compose message
-                try {
-                    MimeMessage message = new MimeMessage(session);
-                    message.setFrom(new InternetAddress("datlntce171894@fpt.edu.vn"));// change accordingly
-                    message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
-                    message.setSubject("Hello");
-                    message.setText("your OTP is: " + otpvalue);
-                    // send message
-                    Transport.send(message);
-                    System.out.println("message sent successfully");
-                } catch (MessagingException e) {
-                    throw new RuntimeException(e);
-                }
-                mySession.setAttribute("otp", otpvalue);
 
-            }
-
-            //request.setAttribute("connection", con);
-            response.sendRedirect("/forgetPassword/EnterOTP");
-        }
     }
 
     /**
@@ -169,15 +123,36 @@ public class forgetPasswordOTP extends HttpServlet {
                         throw new RuntimeException(e);
                     }
                     mySession.setAttribute("otp", otpvalue);
-
+                    mySession.setAttribute("email", email);
+                    request.getRequestDispatcher("/customer/recoverOTP.jsp").forward(request, response);
+                } else {
+                    request.getRequestDispatcher("/customer/EnterEmailSendOTP.jsp").forward(request, response);
                 }
-                request.getRequestDispatcher("/customer/enterOTP.jsp").forward(request, response);
+
             }
             request.setAttribute("emailError", true);
             request.getRequestDispatcher("/customer/EnterEmailSendOTP.jsp").forward(request, response);
         } else if (request.getParameter("btnEnterOTP") != null) {
-            int OTP = 1;
             int otpEnter = Integer.valueOf(request.getParameter("otp"));
+            HttpSession session = request.getSession();
+            int otp = (int) session.getAttribute("otp");
+            if (otpEnter == otp) {
+                request.getRequestDispatcher("/customer/recover.jsp").forward(request, response);
+            } else {
+                request.getSession().setAttribute("messageOTP", "Wrong OTP");
+                request.getRequestDispatcher("/customer/recoverOTP.jsp").forward(request, response);
+            }
+        }else if(request.getParameter("btnResetPassword") != null){
+            String newPass = request.getParameter("txtNewPassword");
+            HttpSession session = request.getSession();
+            String email = (String) session.getAttribute("email");
+            accountDAOs aDAO = new accountDAOs();
+            String newHashPass = accountDAOs.getMd5(newPass);
+            if(aDAO.updatePasswordForget(newHashPass, email)){
+                request.setAttribute("changePassword", true);
+                request.getRequestDispatcher("/customer/login.jsp").forward(request, response);
+            }
+            request.getRequestDispatcher("/customer/recover.jsp").forward(request, response);
         }
     }
 
