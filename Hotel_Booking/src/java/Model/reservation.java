@@ -11,27 +11,40 @@ import java.sql.Date;
  * @author tiend
  */
 public class reservation {
+
     private int id;
-    private byte status;
+    private int status;
     private Date re_date;
     private int quantity;
     private Date check_in_date;
     private Date check_out_date;
-    private long list_price;
-    private room room_id;
-    private hotel hotel_id;
-    private account username;
+    private int list_price;
+    private room room;
+    private service service;
+    private account account;
 
+    /**
+     *
+     */
     public reservation() {
     }
 
-    public reservation(room room_id, hotel hotel_id, account username) {
-        this.room_id = room_id;
-        this.hotel_id = hotel_id;
-        this.username = username;
+    public reservation(int quantity, room room) {
+        this.quantity = quantity;
+        this.room = room;
     }
 
-    public reservation(int id, byte status, Date re_date, int quantity, Date check_in_date, Date check_out_date, long list_price, room room_id, hotel hotel_id, account username) {
+    /**
+     *
+     * @param room
+     * @param account
+     */
+    public reservation(room room,  account account) {
+        this.room = room;
+        this.account = account;
+    }
+
+    public reservation(int id, int status, Date re_date, int quantity, Date check_in_date, Date check_out_date, int list_price, room room, service service, account account) {
         this.id = id;
         this.status = status;
         this.re_date = re_date;
@@ -39,12 +52,14 @@ public class reservation {
         this.check_in_date = check_in_date;
         this.check_out_date = check_out_date;
         this.list_price = list_price;
-        this.room_id = room_id;
-        this.hotel_id = hotel_id;
-        this.username = username;
+        this.room = room;
+        this.service = service;
+        this.account = account;
     }
 
-    public reservation(int id, byte status, Date re_date, int quantity, Date check_in_date, Date check_out_date, long list_price) {
+ 
+
+    public reservation(int id, int status, Date re_date, int quantity, Date check_in_date, Date check_out_date, int list_price) {
         this.id = id;
         this.status = status;
         this.re_date = re_date;
@@ -54,84 +69,143 @@ public class reservation {
         this.list_price = list_price;
     }
 
-    public room getRoom_id() {
-        return room_id;
+    public room getRoom() {
+        return room;
     }
 
-    public void setRoom_id(room room_id) {
-        this.room_id = room_id;
+    public void setRoom(room room) {
+        this.room = room;
     }
 
-    public hotel getHotel_id() {
-        return hotel_id;
+    public service getService() {
+        return service;
     }
 
-    public void setHotel_id(hotel hotel_id) {
-        this.hotel_id = hotel_id;
+    public void setService(service service) {
+        this.service = service;
     }
 
+    public account getAccount() {
+        return account;
+    }
+
+    public void setAccount(account account) {
+        this.account = account;
+    }
+
+
+    /**
+     *
+     * @return
+     */
     public account getUsername() {
-        return username;
+        return account;
     }
 
-    public void setUsername(account username) {
-        this.username = username;
+    /**
+     *
+     * @param account
+     * @param username
+     */
+    public void setUsername(account account) {
+        this.account = account;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     *
+     * @param id
+     */
     public void setId(int id) {
         this.id = id;
     }
 
-    public byte getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(byte status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
+    /**
+     *
+     * @return
+     */
     public Date getRe_date() {
         return re_date;
     }
 
+    /**
+     *
+     * @param re_date
+     */
     public void setRe_date(Date re_date) {
         this.re_date = re_date;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getQuantity() {
         return quantity;
     }
 
+    /**
+     *
+     * @param quantity
+     */
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 
+    /**
+     *
+     * @return
+     */
     public Date getCheck_in_date() {
         return check_in_date;
     }
 
+    /**
+     *
+     * @param check_in_date
+     */
     public void setCheck_in_date(Date check_in_date) {
         this.check_in_date = check_in_date;
     }
 
+    /**
+     *
+     * @return
+     */
     public Date getCheck_out_date() {
         return check_out_date;
     }
 
+    /**
+     *
+     * @param check_out_date
+     */
     public void setCheck_out_date(Date check_out_date) {
         this.check_out_date = check_out_date;
     }
 
-    public long getList_price() {
+    public int getList_price() {
         return list_price;
     }
 
-    public void setList_price(long list_price) {
+    public void setList_price(int list_price) {
         this.list_price = list_price;
     }
-    
+
+
 }

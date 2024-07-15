@@ -20,6 +20,7 @@
             String value = "";
             boolean flagCustomer = false;
             boolean flagOwner = false;
+            boolean flagAdmin = false;
             cList = request.getCookies();
             if (cList != null) {
                 for (int i = 0; i < cList.length; i++) {
@@ -27,7 +28,24 @@
                         value = cList[i].getValue();
                         flagCustomer = true;
                         break;
+                    } else if (cList[i].getName().equals("owner")) {
+                        value = cList[i].getValue();
+                        flagOwner = true;
+                        break;
+                    } else if (cList[i].getName().equals("admin")) {
+                        value = cList[i].getValue();
+                        flagAdmin = true;
+                        break;
                     }
+                }
+                if (flagOwner) {
+
+                    response.sendRedirect("/homeController/HomeOwner");
+
+                } else if (flagAdmin) {
+
+                    response.sendRedirect("/homeController/HomeAdmin");
+
                 }
             }
         %>
@@ -43,11 +61,7 @@
                         <%
                             accountDAOs aDAO = new accountDAOs();
                             account ac = aDAO.getAccount(value);
-                            if (flagOwner) {
-                                if (ac.getIs_owner() == 1) {
-                                    response.sendRedirect("/homeController/HomeOwner");
-                                }
-                            }
+
                         %>
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="bi bi-image"></i>

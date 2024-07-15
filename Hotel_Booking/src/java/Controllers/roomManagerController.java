@@ -121,11 +121,7 @@ public class roomManagerController extends HttpServlet {
                 roomDAOs rdb = new roomDAOs();
                 String room_id_raw = request.getParameter("id");
                 int room_id = Integer.parseInt(room_id_raw);
-                int i = 0; 
-                while(i < 2) {
-                    rdb.deleteRoom(room_id);
-                    i++;
-                }                
+                rdb.deleteRoom(room_id);
                 response.sendRedirect("/roomManagerController");
             }
         }

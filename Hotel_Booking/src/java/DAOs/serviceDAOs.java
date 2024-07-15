@@ -21,39 +21,18 @@ import java.util.logging.Logger;
  * @author tiend
  */
 public class serviceDAOs {
-
+    
     Connection conn;
 
+    /**
+     *
+     */
     public serviceDAOs() {
         try {
             conn = DBConnection.connect();
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(reservationDAOs.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-
-    public ResultSet getSevice(int service_id) {
-        ResultSet rs = null;
-        try {
-            PreparedStatement ps = conn.prepareStatement("select * from Service where service_id = ?");
-            ps.setInt(0, service_id);
-            rs = ps.executeQuery();
-        } catch (SQLException e) {
-            Logger.getLogger(serviceDAOs.class.getName()).log(Level.SEVERE, null, e);
-        }
-        return rs;
-    }
-
-    public ResultSet getServiceByHotelID(int hotel_id) {
-        ResultSet rs = null;
-        try {
-            PreparedStatement ps = conn.prepareStatement("select * from Service s join Hotel h on h.hotel_id = s.hotel_id where h.hotel_id = ?");
-            ps.setInt(1, hotel_id);
-            rs = ps.executeQuery();
-        } catch (SQLException e) {
-            Logger.getLogger(serviceDAOs.class.getName()).log(Level.SEVERE, null, e);
-        }
-        return rs;
     }
 
     public List<service> getAllService() {
@@ -71,7 +50,7 @@ public class serviceDAOs {
         }
         return list;
     }
-
+    
     public void insertService(service service) {
         try {
             PreparedStatement ps = conn.prepareStatement("INSERT INTO [dbo].[Service]\n"
@@ -80,10 +59,78 @@ public class serviceDAOs {
                     + "           ,[hotel_id])\n"
                     + "     VALUES(?,?,?)");
             ps.setString(1, service.getService_name());
-            ps.setInt(2, service.getService_price());
+            ps.setLong(2, service.getService_price());
             ps.setInt(3, service.getHotel().getHotel_id());
             ps.executeUpdate();
         } catch (SQLException e) {
         }
+    }
+
+    /**
+     *
+     * @param service_id
+     * @return
+     */
+    public ResultSet getSevice(int service_id) {
+        ResultSet rs = null;
+        try {
+            PreparedStatement ps = conn.prepareStatement("select * from Service where service_id = ?");
+            ps.setInt(0, service_id);
+            rs = ps.executeQuery();
+        } catch (SQLException e) {
+            Logger.getLogger(serviceDAOs.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return rs;
+    }
+
+    /**
+     *
+     * @param hotel_id
+     * @return
+     */
+    public ResultSet getServiceByHotelID(int hotel_id) {
+        ResultSet rs = null;
+        try {
+            PreparedStatement ps = conn.prepareStatement("select * from Service s join Hotel h on h.hotel_id = s.hotel_id where h.hotel_id = ?");
+            ps.setInt(1, hotel_id);
+            rs = ps.executeQuery();
+        } catch (SQLException e) {
+            Logger.getLogger(serviceDAOs.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return rs;
+    }
+
+    public List<service> getService(int hotel_id) {
+        ResultSet rs = null;
+        List<service> s = new ArrayList<>();
+        try {
+            PreparedStatement ps = conn.prepareStatement("select * from Service s join Hotel h on h.hotel_id = s.hotel_id where h.hotel_id = ?");
+            ps.setInt(1, hotel_id);
+            rs = ps.executeQuery();
+            int j = 0;
+            while (rs.next()) {                
+                hotel h = new hotel(hotel_id);
+                s.add(j, new service(rs.getInt("service_id"), rs.getString("service_name"), rs.getInt("service_price"), h));
+                j++;
+            }
+        } catch (Exception e) {
+        }
+        return s;
+    }
+    public service getServiceByServiceID(int service_id){
+        ResultSet rs = null;
+        service s = null;
+        try {
+            PreparedStatement ps = conn.prepareStatement("select * from Service where service_id = ?");
+            ps.setInt(1, service_id);
+            rs = ps.executeQuery();
+            if(rs.next()){
+                hotel h = new hotel(rs.getInt("hotel_id"));
+                s = new service(rs.getInt("service_id"), rs.getString("service_name"), rs.getInt("service_price"), h);
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(serviceDAOs.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return  s ;
     }
 }

@@ -9,6 +9,7 @@ import Model.hotel;
 import Model.room;
 import Model.roomType;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,6 +26,9 @@ public class roomDAOs {
 
     Connection conn;
 
+    /**
+     *
+     */
     public roomDAOs() {
         try {
             conn = DBConnection.connect();
@@ -33,6 +37,28 @@ public class roomDAOs {
         }
     }
 
+    public List<room> getAllRoomIDByHotelId(int hotel_id) {
+        List<room> list = new ArrayList<>();
+        ResultSet rs = null;
+        try {
+            PreparedStatement ps = conn.prepareStatement("select * from Room r join Hotel h on r.hotel_id = h.hotel_id where h.hotel_id = ?");
+            ps.setInt(1, hotel_id);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+
+                list.add(new room(rs.getInt("room_id")));
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return list;
+    }
+
+    /**
+     *
+     * @param hotel_id
+     * @return
+     */
     public ResultSet getRoomByHotelID(int hotel_id) {
         ResultSet rs = null;
         try {
@@ -45,6 +71,11 @@ public class roomDAOs {
         return rs;
     }
 
+    /**
+     *
+     * @param hotel_id
+     * @return
+     */
     public ResultSet showRoomTypeByHotelID(int hotel_id) {
         ResultSet rs = null;
         try {
@@ -57,6 +88,11 @@ public class roomDAOs {
         return rs;
     }
 
+    /**
+     *
+     * @param room_id
+     * @return
+     */
     public ResultSet showRoomTypeByRoomID(int room_id) {
         ResultSet rs = null;
         try {
@@ -69,6 +105,11 @@ public class roomDAOs {
         return rs;
     }
 
+    /**
+     *
+     * @param hotel_id
+     * @return
+     */
     public int getLowPrice(int hotel_id) {
         int lowPrice = 0;
         ResultSet rs = null;
@@ -85,6 +126,11 @@ public class roomDAOs {
         return lowPrice;
     }
 
+    /**
+     *
+     * @param hotel_id
+     * @return
+     */
     public int getHighPrice(int hotel_id) {
         int highPrice = 0;
         ResultSet rs = null;
@@ -101,6 +147,10 @@ public class roomDAOs {
         return highPrice;
     }
 
+    /**
+     *
+     * @return
+     */
     public ResultSet showRoomType() {
         ResultSet rs = null;
         try {
@@ -112,6 +162,10 @@ public class roomDAOs {
         return rs;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<roomType> getRoomType() {
         List<roomType> list = new ArrayList<>();
         ResultSet rs = null;
@@ -128,6 +182,13 @@ public class roomDAOs {
         return list;
     }
 
+    /**
+     *
+     * @param list
+     * @param start
+     * @param end
+     * @return
+     */
     public List<room> getListByPage(List<room> list, int start, int end) {
         ArrayList<room> arr = new ArrayList<>();
         for (int i = start; i < end; i++) {
@@ -136,6 +197,11 @@ public class roomDAOs {
         return arr;
     }
 
+    /**
+     *
+     * @param username
+     * @return
+     */
     public List<room> getRoomByUsername(String username) {
         List<room> list = new ArrayList<>();
         ResultSet rs = null;
@@ -157,6 +223,11 @@ public class roomDAOs {
         return list;
     }
 
+    /**
+     *
+     * @param room_type_id
+     * @return
+     */
     public roomType getRoomTypeByID(int room_type_id) {
         ResultSet rs = null;
         try {
@@ -175,6 +246,10 @@ public class roomDAOs {
         return null;
     }
 
+    /**
+     *
+     * @param room
+     */
     public void insertRoom(room room) {
 
         try {
@@ -193,6 +268,10 @@ public class roomDAOs {
         }
     }
 
+    /**
+     *
+     * @param room_id
+     */
     public void deleteRoom(int room_id) {
 
         try {
@@ -210,9 +289,12 @@ public class roomDAOs {
         } catch (Exception e) {
             System.out.println(e);
         }
-
     }
 
+    /**
+     *
+     * @param room
+     */
     public void updateRoom(room room) {
 
         try {
@@ -238,6 +320,11 @@ public class roomDAOs {
         }
     }
 
+    /**
+     *
+     * @param hotel_id
+     * @return
+     */
     public List<room> getAllRoomImgByHotelId(int hotel_id) {
         List<room> list = new ArrayList<>();
         ResultSet rs = null;
@@ -255,23 +342,11 @@ public class roomDAOs {
         return list;
     }
 
-    public List<room> getAllRoomIDByHotelId(int hotel_id) {
-        List<room> list = new ArrayList<>();
-        ResultSet rs = null;
-        try {
-            PreparedStatement ps = conn.prepareStatement("select * from Room r join Hotel h on r.hotel_id = h.hotel_id where h.hotel_id = ?");
-            ps.setInt(1, hotel_id);
-            rs = ps.executeQuery();
-            while (rs.next()) {
-
-                list.add(new room(rs.getInt("room_id")));
-            }
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
-        return list;
-    }
-
+    /**
+     *
+     * @param room_id
+     * @return
+     */
     public String getRoomImgByRoomID(int room_id) {
         ResultSet rs = null;
         String img = "";
@@ -287,18 +362,65 @@ public class roomDAOs {
         return img;
     }
 
-    public int getNumberOfRoom(int hotel_id) {
-        int count = 0;
+
+    public List<Integer> getRoomIfCheckInAndCheckOutDateNotExistOnReservation(Date CheckInDate, Date CheckOutDate, int hotel_id) {
+        List<Integer> list = null;
         ResultSet rs = null;
         try {
-            PreparedStatement ps = conn.prepareStatement("select room_id from Room where hotel_id = ?");
-            ps.setInt(1, hotel_id);
+            PreparedStatement ps = conn.prepareStatement("SELECT r.room_id\n"
+                    + "FROM Room r\n"
+                    + "JOIN Reservation res ON r.room_id = res.room_id\n"
+                    + "    AND (res.check_in_date  BETWEEN ? AND ?\n"
+                    + "         or res.check_out_date  BETWEEN ? AND ?)\n"
+                    + "		 \n"
+                    + "WHERE r.hotel_id = ?;");
+            ps.setDate(1, CheckInDate);
+            ps.setDate(2, CheckOutDate);
+            ps.setDate(3, CheckInDate);
+            ps.setDate(4, CheckOutDate);
+            ps.setInt(5, hotel_id);
             rs = ps.executeQuery();
             while (rs.next()) {
-                count++;
+                list.add(rs.getInt("room_id"));
             }
         } catch (Exception e) {
         }
-        return count;
+        return list;
+    }
+
+    public List<room> getAllRoomByHotelID(int hotel_id) {
+        List<room> r = null;
+        ResultSet rs = null;
+        try {
+            PreparedStatement ps = conn.prepareStatement("select * from Room r join Hotel h on r.hotel_id = h.hotel_id where h.hotel_id = ?");
+            ps.setInt(1, hotel_id);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                hotel h = new hotel(rs.getInt("hotel_id"));
+                roomType rt = new roomType(rs.getInt("room_type_id"));
+                r.add(new room(rs.getInt("room_id"), rs.getString("room_name"), rs.getInt("room_price"), rs.getString("room_img"),
+                        rs.getBoolean("room_status"), rs.getString("room_description"), rt, h));
+            }
+        } catch (Exception e) {
+            Logger.getLogger(roomDAOs.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return r;
+    }
+    public room getRoomByRoomID(int room_id){
+        room r = null;
+        ResultSet rs = null;
+        try {
+            PreparedStatement ps = conn.prepareStatement("select * from Room where room_id = ?");
+            ps.setInt(1, room_id);
+            rs = ps.executeQuery();
+            if(rs.next()){
+                hotel h = new hotel(rs.getInt("hotel_id"));
+                roomType rt = new roomType(rs.getInt("room_type_id"));
+                r = new room(rs.getInt("room_id"), rs.getString("room_name"), rs.getInt("room_price"), rs.getString("room_img"),
+                        rs.getBoolean("room_status"), rs.getString("room_description"), rt, h);
+            }
+        } catch (Exception e) {
+        }
+        return r;
     }
 }

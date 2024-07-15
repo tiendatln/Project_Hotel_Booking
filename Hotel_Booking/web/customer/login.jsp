@@ -56,8 +56,7 @@
                                 </div>
                                 <div class="text-center mt-3 mb-3">
                                     <a href="/registerController/Register">Register new account</a> |
-                                    <a href="/registerController/Register">Forgot Password?</a> |
-                                    <a href="/registerController/Register">Login with Google</a>
+                                    <a href="/customer/EnterEmailSendOTP.jsp">Forgot Password?</a> 
                                 </div>
                                 <%
                                     String massageUserNull = (String) request.getSession().getAttribute("massageUserNull");

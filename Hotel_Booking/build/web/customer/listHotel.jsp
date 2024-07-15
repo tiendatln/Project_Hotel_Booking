@@ -123,7 +123,7 @@
                     <%
                         roomDAOs roomDAO = new roomDAOs();
                         hotelDAOs hDAO = new hotelDAOs();
-                        ResultSet rs = hDAO.searchHotelByLocal(destination);
+                        ResultSet rs = hDAO.searchHotelByLocal(destination,checkinDate,checkoutDate);
                         while (rs.next()) {
                     %>
                     <div class="property-card card">

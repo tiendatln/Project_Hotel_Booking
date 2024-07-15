@@ -4,8 +4,16 @@
  */
 package Controllers;
 
+import DAOs.accountDAOs;
+import DAOs.hotelDAOs;
 import DAOs.reservationDAOs;
+import DAOs.roomDAOs;
+import DAOs.serviceDAOs;
+import Model.account;
+import Model.hotel;
 import Model.reservation;
+import Model.room;
+import Model.service;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
@@ -76,9 +84,28 @@ public class reservationController extends HttpServlet {
                 }
             }
         }
-        List<Integer> roomID = new ArrayList<>();
+        
         if (path.endsWith("/YourReservation")) {
             if (flagCustomer) {
+                reservationDAOs rsDAO = new reservationDAOs();
+                roomDAOs rDAO = new roomDAOs();
+                accountDAOs aDAO = new accountDAOs();
+                serviceDAOs sDAO = new serviceDAOs();
+                hotelDAOs hDAO = new hotelDAOs();
+                List<reservation> rs = rsDAO.getReservationByUsername(value);
+                int i = 0;
+                while (i < rs.size()) {                    
+                    room r = rDAO.getRoomByRoomID(rs.get(i).getRoom().getRoom_id());
+                    account ac = aDAO.getAccount(value);
+                    service s = sDAO.getServiceByServiceID(rs.get(i).getService().getService_id());
+                    hotel h = hDAO.getHotelDetailById(s.getHotel().getHotel_id());
+                    rs.get(i).setRoom(r);
+                    rs.get(i).setUsername(ac);
+                    rs.get(i).setService(s);
+                    rs.get(i).getService().setHotel(h);
+                    i++;
+                }
+                request.setAttribute("reservation", rs);
                 request.getRequestDispatcher("/customer/reservation.jsp").forward(request, response);
             } else {
                 response.sendRedirect("/homeController/HomeCustomer");
@@ -99,18 +126,7 @@ public class reservationController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if(request.getParameter("btnChangesearch") != null){
-            long millis = System.currentTimeMillis();
-            Date checkinDate = new Date(millis);
-            Date checkoutDate = new Date(millis);
-            checkinDate = Date.valueOf(request.getParameter("checkInDate"));
-            checkoutDate = Date.valueOf(request.getParameter("checkOutDate"));
-            HttpSession mySession = request.getSession();
-            mySession.setAttribute("checkInDate", checkinDate);
-            mySession.setAttribute("checkOutDate", checkoutDate);
-            reservationDAOs rsDAO = new reservationDAOs();
-            
-        }
+        
     }
 
     /**

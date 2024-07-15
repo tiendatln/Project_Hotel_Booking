@@ -24,6 +24,9 @@ public class accountDAOs {
 
     Connection conn;
 
+    /**
+     *
+     */
     public accountDAOs() {
         try {
             conn = DBConnection.connect();
@@ -32,6 +35,11 @@ public class accountDAOs {
         }
     }
 
+    /**
+     *
+     * @param input
+     * @return
+     */
     public static String getMd5(String input) {
         try {
 
@@ -57,6 +65,12 @@ public class accountDAOs {
         }
     }
 
+    /**
+     *
+     * @param username
+     * @param password
+     * @return
+     */
     public ResultSet getAccount(String username, String password) {
         ResultSet rs = null;
         try {
@@ -71,6 +85,11 @@ public class accountDAOs {
         return rs;
     }
 
+    /**
+     *
+     * @param username
+     * @return
+     */
     public boolean checkUser(String username) {
         try {
             PreparedStatement ps = conn.prepareStatement("select * from Account where username = ?");
@@ -85,6 +104,12 @@ public class accountDAOs {
         return false;
     }
 
+    /**
+     *
+     * @param username
+     * @param password
+     * @return
+     */
     public boolean checkPassword(String username, String password) {
         try {
             String pass = getMd5(password);
@@ -101,6 +126,11 @@ public class accountDAOs {
         return false;
     }
 
+    /**
+     *
+     * @param username
+     * @return
+     */
     public account getAccount(String username) {
         account ac = null;
         try {
@@ -116,6 +146,11 @@ public class accountDAOs {
         return ac;
     }
 
+    /**
+     *
+     * @param newAccount
+     * @return
+     */
     public account addNewCusAccount(account newAccount) {
         int count = 0;
         try {
@@ -139,6 +174,11 @@ public class accountDAOs {
         return (count == 0) ? null : newAccount;
     }
 
+    /**
+     *
+     * @param updateAcc
+     * @return
+     */
     public account updateAccount(account updateAcc) {
         int count = 0;
         try {
@@ -156,6 +196,11 @@ public class accountDAOs {
         return (count == 0) ? null : updateAcc;
     }
 
+    /**
+     *
+     * @param newPass
+     * @return
+     */
     public account changePassword(account newPass) {
         int count = 0;
         try {
@@ -169,6 +214,12 @@ public class accountDAOs {
         }
         return (count == 0) ? null : newPass;
     }
+
+    /**
+     *
+     * @param username
+     * @return
+     */
     public String checkAccount(String username){
         ResultSet rs = null;
         try {
@@ -185,5 +236,18 @@ public class accountDAOs {
         } catch (Exception e) {
         }
         return "customer";
+    }
+    public boolean checkEmailUser(String email){
+        
+        try {
+            PreparedStatement ps = conn.prepareStatement("select * from Account where email = ?");
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                return true;
+            }
+        } catch (Exception e) {
+        }
+        return  false;
     }
 }

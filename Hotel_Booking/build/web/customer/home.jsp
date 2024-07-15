@@ -422,7 +422,7 @@
                             <label for="checkout-date" class=" d-inline-flex">Check-out</label>
                             <input type="date" class="form-control" id="checkout-date" name="checkout-date" onkeydown="return false" >
                         </div>
-                        
+
                         <div class="form-group col-md-2 align-items-start flex-column">
                             <label for="guests" class="d-inline-flex ">Guests</label>
                             <select class="form-control" id="guests" onchange="javascript: dynamicDropdown(this.options[this.selectedIndex].value);">
@@ -524,42 +524,52 @@
                 request.getSession().removeAttribute("massageRegister");
             }
         %>
+        <c:if test="${searchError}">
+            <script>
+                alert("Location not found!");
+            </script>
+        </c:if>
+            <c:if test="${searchError}">
+            <script>
+                alert("Location not found!");
+            </script>
+        </c:if>
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
         <script>
-            // Set the minimum check-in date to today
-            var today = new Date().toISOString().split('T')[0];
-            document.getElementById("checkin-date").setAttribute("min", today);
-            document.getElementById("checkout-date").setAttribute("min", today);
-            
-            // Function to update the minimum check-out date based on check-in date
-            function validateForm() {
-                var checkin = document.getElementById('checkin-date').value;
-                var checkout = document.getElementById('checkout-date').value;
+                // Set the minimum check-in date to today
+                var today = new Date().toISOString().split('T')[0];
+                document.getElementById("checkin-date").setAttribute("min", today);
+                document.getElementById("checkout-date").setAttribute("min", today);
 
-                if (!checkin) {
-                    var today = new Date().toISOString().split('T')[0];
-                    document.getElementById('checkin-date').value = today;
-                    checkin = today;
+                // Function to update the minimum check-out date based on check-in date
+                function validateForm() {
+                    var checkin = document.getElementById('checkin-date').value;
+                    var checkout = document.getElementById('checkout-date').value;
+
+                    if (!checkin) {
+                        var today = new Date().toISOString().split('T')[0];
+                        document.getElementById('checkin-date').value = today;
+                        checkin = today;
+                    }
+
+                    if (!checkout) {
+                        var today = new Date().toISOString().split('T')[0];
+                        document.getElementById('checkout-date').value = today;
+                        checkout = today;
+                    }
+
+                    var checkinDate = new Date(checkin);
+                    var checkoutDate = new Date(checkout);
+
+                    if (checkoutDate < checkinDate) {
+                        document.getElementById("error").innerHTML = "Check-out date must be after check-in date.";
+                        return false;
+                    }
+
+                    return true;
                 }
-
-                if (!checkout) {
-                    var today = new Date().toISOString().split('T')[0];
-                    document.getElementById('checkout-date').value = today;
-                    checkout = today;
-                }
-
-                var checkinDate = new Date(checkin);
-                var checkoutDate = new Date(checkout);
-
-                if (checkoutDate < checkinDate) {
-                    document.getElementById("error").innerHTML = "Check-out date must be after check-in date.";
-                    return false;
-                }
-
-                return true;
-            }
         </script>
     </body>
 </html>

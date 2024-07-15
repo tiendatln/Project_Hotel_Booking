@@ -47,6 +47,30 @@
         <servlet-name>hotelManagerController</servlet-name>
         <servlet-class>Controllers.hotelManagerController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>feedbackController</servlet-name>
+        <servlet-class>Controllers.feedbackController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>bookingController</servlet-name>
+        <servlet-class>Controllers.bookingController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>forgetPassword</servlet-name>
+        <servlet-class>Controllers.forgetPassword</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>forgetPasswordOTP</servlet-name>
+        <servlet-class>Controllers.forgetPasswordOTP</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>dashboardController</servlet-name>
+        <servlet-class>Controllers.dashboardController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>reserveManagerController</servlet-name>
+        <servlet-class>Controllers.reserveManagerController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>homeController</servlet-name>
         <url-pattern>/homeController/*</url-pattern>
@@ -90,6 +114,30 @@
     <servlet-mapping>
         <servlet-name>hotelManagerController</servlet-name>
         <url-pattern>/hotelManagerController/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>feedbackController</servlet-name>
+        <url-pattern>/feedbackController/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>bookingController</servlet-name>
+        <url-pattern>/bookingController/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>forgetPassword</servlet-name>
+        <url-pattern>/forgetPassword/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>forgetPasswordOTP</servlet-name>
+        <url-pattern>/forgetPasswordOTP/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>dashboardController</servlet-name>
+        <url-pattern>/dashboardController/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>reserveManagerController</servlet-name>
+        <url-pattern>/reserveManagerController/*</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

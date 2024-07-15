@@ -9,17 +9,26 @@ package Model;
  * @author tiend
  */
 public class service {
+
     private int service_id;
-    private String service_name;    
+    private String service_name;
+    private String service_description;
     private int service_price;
-    private hotel hotel; 
-    
+    private hotel hotel;
+
+    /**
+     *
+     */
     public service() {
     }
 
-    public service(int service_id,String service_name, int service_price) {
+    public service(int service_id) {
         this.service_id = service_id;
-        this.service_name = service_name;        
+    }
+
+    public service(int service_id, String service_name, int service_price) {
+        this.service_id = service_id;
+        this.service_name = service_name;
         this.service_price = service_price;
     }
 
@@ -29,15 +38,40 @@ public class service {
         this.service_price = service_price;
         this.hotel = hotel;
     }
-       
+
+
+    /**
+     *
+     * @return
+     */
     public int getService_id() {
         return service_id;
     }
 
+    /**
+     *
+     * @param service_id
+     */
     public void setService_id(int service_id) {
         this.service_id = service_id;
     }
-     
+
+    /**
+     *
+     * @return
+     */
+    public String getService_description() {
+        return service_description;
+    }
+
+    /**
+     *
+     * @param service_description
+     */
+    public void setService_description(String service_description) {
+        this.service_description = service_description;
+    }
+
     public int getService_price() {
         return service_price;
     }
@@ -45,6 +79,10 @@ public class service {
     public void setService_price(int service_price) {
         this.service_price = service_price;
     }
+
+
+
+
 
     public String getService_name() {
         return service_name;
@@ -61,6 +99,5 @@ public class service {
     public void setHotel(hotel hotel) {
         this.hotel = hotel;
     }
-    
-    
+
 }

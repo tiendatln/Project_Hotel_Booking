@@ -31,7 +31,7 @@ import java.util.List;
 
 /**
  *
- * @author Ngo Hong Hai - CE171752
+ * @author tiend
  */
 public class hotelManagerController extends HttpServlet {
 
@@ -52,7 +52,7 @@ public class hotelManagerController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet hotelManagerController</title>");
+            out.println("<title>Servlet hotelManagerController</title>");            
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet hotelManagerController at " + request.getContextPath() + "</h1>");
@@ -134,7 +134,6 @@ public class hotelManagerController extends HttpServlet {
                 response.sendRedirect("/hotelManagerController");
             }
         }
-
     }
 
     /**

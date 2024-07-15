@@ -43,7 +43,7 @@
 
         <div class="m-5">
             <div class="row flex-lg-nowrap">
-                <div class="col-12 col-lg-auto mb-3" style="width: 200px;">
+                <div class="col-12 col-lg-auto mb-3" style="width: 225px;">
                     <div class="card p-3">
                         <div class="e-navlist e-navlist--active-bg">
                             <%
@@ -52,16 +52,17 @@
                             %>
                             <ul class="nav">                                
                                 <li style="margin-bottom: 15px">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="30" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
                                     <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
                                     <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
                                     </svg> <%= ac.getName()%></li>
-                                <li class="nav-item"><a class="nav-link px-2" href="#"><i class="fa fa-fw fa-th mr-1"></i><span>Update profile</span></a></li>
-                                <li class="nav-item"><a class="nav-link px-2" href="/hotelManagerController"><i class="fa fa-fw fa-laptop mr-1"></i><span>Hotel</span></a></li>
-                                <li class="nav-item"><a class="nav-link px-2" href="/roomManagerController"><i class="fa fa-fw fa-database mr-1"></i><span>Room</span></a></li>
-                                <li class="nav-item"><a class="nav-link px-2" href="#"><i class="fa fa-fw fa-server mr-1"></i><span>Reservation</span></a></li>
-                                <li class="nav-item"><a class="nav-link px-2" href="#"><i class="fa fa-fw fa-send mr-1"></i><span>Feedback</span></a></li>
-                                <li class="nav-item"><a class="nav-link px-2" href="/logoutController/SignOut"><i class="fa fa-fw fa-arrow-left mr-1"></i><span>Logout</span></a></li>                                
+                               <li class="nav-item"><a class="nav-link px-2" href="/dashboardController"><i class="fa fa-fw fa-database mr-1"></i><span>Dashboard</span></a></li>
+                                <li class="nav-item"><a class="nav-link px-2" href="#"><i class="fa fa-fw fa-user mr-1"></i><span>My Profile</span></a></li>
+                                <li class="nav-item"><a class="nav-link px-2" href="/hotelManagerController"><i class="fa fa-fw fa-th-large mr-1"></i><span>Manage Hotel</span></a></li>
+                                <li class="nav-item"><a class="nav-link px-2" href="/roomManagerController"><i class="fa fa-fw fa-th mr-1"></i><span>Manage Room</span></a></li>
+                                <li class="nav-item"><a class="nav-link px-2" href="/reserveManagerController"><i class="fa fa-fw fa-server mr-1"></i><span>Manage Booking</span></a></li>
+                                <li class="nav-item"><a class="nav-link px-2" href="#"><i class="fa fa-fw fa-send mr-1"></i><span>Manage Feedback</span></a></li>
+                                <li class="nav-item"><a class="nav-link px-2" href="/logoutController/SignOut"><i class="fa fa-fw fa-arrow-left mr-1"></i><span>Logout</span></a></li>                         
                             </ul>
                         </div>
                     </div>
@@ -129,9 +130,9 @@
                                                             </td>
                                                             <td class="text-nowrap align-middle">${hotel.hotel_name}</td>
                                                             <td class="text-nowrap align-middle"  style='max-width: 200px;
-                                                                overflow-x: auto;''>${hotel.hotel_address}</td>                                                            
+                                                                overflow-x: hidden;''>${hotel.hotel_address}</td>                                                            
                                                             <td class="text-nowrap align-middle" style='max-width: 200px;
-                                                                overflow-x: auto;''><span>${hotel.hotel_description}</span></td>
+                                                                overflow-x: hidden;''><span>${hotel.hotel_description}</span></td>
                                                             <td class="text-nowrap align-middle"style='max-width: 200px;
                                                                 overflow-x: auto;' ><span>                                                                    
                                                                     <c:set var="c" value="0"/>                                                                                                                                        
@@ -164,7 +165,7 @@
                                         <div class="d-flex justify-content-center">
                                             <ul class="pagination mt-3 mb-0">
                                                 <c:forEach begin="${1}" end="${num}" var="i">                                                    
-                                                    <li class="${i==page?"active page-item":"page-item"}"><a href="/roomManagerController?page=${i}" class="page-link">${i}</a></li>                                                    
+                                                    <li class="${i==page?"active page-item":"page-item"}"><a href="/hotelManagerController?page=${i}" class="page-link">${i}</a></li>                                                    
                                                     </c:forEach>
                                             </ul>
                                         </div>
