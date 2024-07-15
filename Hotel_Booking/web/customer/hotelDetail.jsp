@@ -158,7 +158,7 @@
 
                 <!-- Room List -->
                 <div class="row mt-3">
-                    <form action="/reserveController" method="get" class="container" id="reservationForm" onsubmit="return checkForm()">
+                    <form action="/reserveController" method="get" class="container" id="reservationForm">
                         <div class="header-section">
                             <h3>Availability</h3>
                             <div class="d-flex justify-content-center">
@@ -246,17 +246,25 @@
 
             <div class="container" style="background-color: #99CCCC; border-radius: 10px ">
                 <div class="container" style="background-color: #DDDDDD; border-radius: 10px">
-                    <form method="post" action="/feedbackController">
+                    <form method="post" action="/feedbackController" id="formFeedback">
                         <div class="flex-grow-0 py-3 px-4 border-top">
                             <div>
                                 <h4>Your Feedback</h4>
                             </div>
-                            <div class="input-group">
-                                <input type="text" name="txtComment" class="form-control" placeholder="Type your message">
-                                <input name="username" type="hidden" value="<%= value%>" >
-                                <input name="hotel_id" type="hidden" value="<%= h.getHotel_id()%>" >
-                                <button class="btn btn-primary" name="btnFeedback">Send</button>
-                            </div>
+                            <c:if test="${canFeedback}">
+                                <div class="input-group">
+                                    <input type="text" name="txtComment" class="form-control" placeholder="Type your message">
+                                    <input name="username" type="hidden" value="<%= value%>" >
+                                    <input name="hotel_id" type="hidden" value="<%= h.getHotel_id()%>" >
+                                    <button class="btn btn-primary" name="btnFeedback">Send</button>
+                                </div>
+                            </c:if>
+                            <c:if test="${!canFeedback}">
+                                <div class="input-group">
+                                    <input type="text" name="txtComment" class="form-control" placeholder="Type your message" disabled>
+                                    <button class="btn btn-primary" name="btnFeedback" disabled>Send</button>
+                                </div>
+                            </c:if>
                         </div>
                     </form>
                 </div>
@@ -332,9 +340,16 @@
                 document.getElementById("checkInDate").setAttribute("min", today);
                 document.getElementById("checkOutDate").setAttribute("min", today);
                 function submitForm(actionType) {
-                    if (checkDates()) {
-                        setFormAction(actionType);
-                        document.getElementById('reservationForm').submit();
+                    if (actionType === 'change') {
+                        if (checkDatesChange()) {
+                            setFormAction(actionType);
+                            document.getElementById('reservationForm').submit();
+                        }
+                    }else{
+                        if (checkForm()) {
+                            setFormAction(actionType);
+                            document.getElementById('reservationForm').submit();
+                        }
                     }
                 }
 
@@ -354,6 +369,7 @@
                     if (actionType === 'change') {
                         form.action = '/reserveController/Change';
                     } else {
+                        checkForm();
                         form.action = '/reserveController/submit';
                     }
                 }
@@ -362,6 +378,28 @@
                     var checkInDate = document.getElementById('checkInDate').value;
                     var checkOutDate = document.getElementById('checkOutDate').value;
 
+                    if (!checkInDate || !checkOutDate) {
+                        if (!checkInDate) {
+                            alert("Please fill in the check-in dates.");
+                        }
+                        if (!checkOutDate) {
+                            alert("Please fill in the check-out dates.");
+                        } else {
+                            alert("Please fill in both the check-in and check-out dates.");
+                        }
+                        return false;
+                    }
+
+                    if (new Date(checkInDate) >= new Date(checkOutDate)) {
+                        alert("Check-out date must be after check-in date.");
+                        return false;
+                    }
+                    return true;
+                }
+                
+                function checkDatesChange() {
+                    var checkInDate = document.getElementById('checkInDate').value;
+                    var checkOutDate = document.getElementById('checkOutDate').value;
                     if (new Date(checkInDate) >= new Date(checkOutDate)) {
                         alert("Check-out date must be after check-in date.");
                         return false;
@@ -394,36 +432,11 @@
                         alert("Please select at least one room to reserve.");
                         return false; // Prevent form submission
                     }
-                    validateForm();
+
                     return true; // Allow form submission
                 }
 
-                function validateForm() {
 
-                    var checkin = document.getElementById('checkInDate').value;
-                    var checkout = document.getElementById('checkOuDdate').value;
-
-                    if (!checkin) {
-                        var today = new Date().toISOString().split('T')[0];
-                        document.getElementById('checkInDate').value = today;
-                        checkin = today;
-                    }
-
-                    if (!checkout) {
-                        var today = new Date().toISOString().split('T')[0];
-                        document.getElementById('checkOuDdate').value = today;
-                        checkout = today;
-                    }
-
-                    var checkinDate = new Date(checkin);
-                    var checkoutDate = new Date(checkout);
-                    if (checkoutDate < checkinDate) {
-                        alert('Check-out date must be after check-in date.');
-                        return false;
-                    }
-
-                    return true;
-                }
 
         </script>
         <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"></script>

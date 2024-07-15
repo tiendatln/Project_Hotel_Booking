@@ -1,4 +1,5 @@
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="DAOs.serviceDAOs"%>
 <%@page import="DAOs.roomDAOs"%>
 <%@page import="DAOs.accountDAOs"%>
@@ -17,7 +18,11 @@
         <!-- Bootstrap CSS -->
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="styles.css">
-
+        <style>
+            td{
+                font-size: large
+            }
+        </style>
     </head>
     <body>
         <header>
@@ -37,43 +42,48 @@
                         <th scope="col">Check In Date</th>
                         <th scope="col">Check out Date</th>
                         <th scope="col">Quantity</th>
-                        <th scope="col">Service</th>
+                        <th scope="col">Date</th>
                         <th scope="col">Price</th>
                         <th scope="col">Status</th>
                     </tr>
                 </thead>
                 <%
-                    reservationDAOs reDao = new reservationDAOs();
-                    ResultSet rs = reDao.getAllInfo(value);
-                    while (rs.next()) {
-                        int count = 1;
+                    int count = 1;
                 %>
-                <tbody>
-                    <!-- Example reservation data -->
-                    <tr>
-                        <th scope="row"><%= count %></th>
-                        <td><%= rs.getString("name")%></td>
-                        <td><%= rs.getString("room_name")%></td>
-                        <td><%= rs.getString("hotel_name")%></td>
-                        <td><%= rs.getString("phone")%></td>
-                        <td><%= rs.getDate("check_in_date")%></td>
-                        <td><%= rs.getDate("check_out_date")%></td>
-                        <td><%= rs.getInt("quantity")%></td>
-                        <td><%= rs.getString("service_name")%></td>
-                        <td><%= rs.getLong("list_price")%>$</td>
-                        <td><%if (rs.getInt("status") == 1) {%>
-                            Confirmed
-                            <% } else if (rs.getInt("status") == 0){ %>
-                            Pending
-                            <% } else if(rs.getInt("status") == 2){ %>
-                            Denied
-                            <% } %>
-                        </td>
-                    </tr>
-                </tbody>
-                <%
-                        count = count + 1;
-                    } %>
+                <c:forEach items="${reservation}" var="reservation">
+
+                    <tbody  >
+                        <!-- Example reservation data -->
+                        <tr>
+                            <th scope="row"><%= count%></th>
+                            <td>${reservation.account.name}</td>
+                            <td>${reservation.room.room_name}</td>
+                            <td>${reservation.service.hotel.hotel_name}</td>
+                            <td>${reservation.account.phone}</td>
+                            <td>${reservation.check_in_date}</td>
+                            <td>${reservation.check_out_date}</td>
+                            <td>${reservation.quantity}</td>
+                            <td>${reservation.re_date}</td>
+                            <td>${reservation.list_price}$</td>
+                            <td>
+                                <c:if test="${reservation.status == 1}">
+                                    <span style="color: #00CC00">Confirmed</span>
+                                </c:if>
+                                <c:if test="${reservation.status == 0}">
+                                    <span style="color: #007bff">Pending</span>
+                                    
+                                </c:if>
+                                <c:if test="${reservation.status == 2}">
+                                    <span style="color: red">Denied</span>
+                                </c:if>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <%
+                        count++;
+                    %>
+                </c:forEach>
+
             </table>
         </div>
         <!-- jQuery -->

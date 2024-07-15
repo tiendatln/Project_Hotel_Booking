@@ -117,4 +117,20 @@ public class serviceDAOs {
         }
         return s;
     }
+    public service getServiceByServiceID(int service_id){
+        ResultSet rs = null;
+        service s = null;
+        try {
+            PreparedStatement ps = conn.prepareStatement("select * from Service where service_id = ?");
+            ps.setInt(1, service_id);
+            rs = ps.executeQuery();
+            if(rs.next()){
+                hotel h = new hotel(rs.getInt("hotel_id"));
+                s = new service(rs.getInt("service_id"), rs.getString("service_name"), rs.getInt("service_price"), h);
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(serviceDAOs.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return  s ;
+    }
 }

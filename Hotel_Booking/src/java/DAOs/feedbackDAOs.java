@@ -69,4 +69,18 @@ public class feedbackDAOs {
         }
         return (count == 0) ? null : newFeedback;
     }
+    public int getFeedbackExistByUsername(String username){
+        int count = 0;
+        try {
+            PreparedStatement ps = conn.prepareStatement("select * from Feedback where username = ?");
+            ps.setString(1, username);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                count++;
+            }
+        } catch (Exception e) {
+        }
+        return count;
+    }
+    
 }

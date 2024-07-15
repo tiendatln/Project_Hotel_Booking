@@ -7,15 +7,18 @@ package Controllers;
 import DAOs.accountDAOs;
 import DAOs.feedbackDAOs;
 import DAOs.hotelDAOs;
+import DAOs.reservationDAOs;
 import DAOs.roomDAOs;
 import Model.account;
 import Model.feedback;
 import Model.hotel;
+import Model.reservation;
 import Model.room;
 import Model.roomType;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -78,7 +81,7 @@ public class searchController extends HttpServlet {
             String[] s = path.split("/");
             int hotel_id = Integer.valueOf(s[s.length - 1]);
             roomDAOs rDAO = new roomDAOs();
-            
+
             List<room> room = new ArrayList<>();
             try {
                 ResultSet rs = rDAO.getRoomByHotelID(hotel_id);
@@ -92,20 +95,52 @@ public class searchController extends HttpServlet {
 
             }
             List<room> roomImg = rDAO.getAllRoomImgByHotelId(hotel_id);
-
+            String value = "";
+            Cookie[] cList = null;
+            cList = request.getCookies(); //Lay tat ca cookie cua website nay tren may nguoi dung
+            if (cList != null) {
+                for (int i = 0; i < cList.length; i++) {//Duyet qua het tat ca cookie
+                    if (cList[i].getName().equals("customer")) {//nguoi dung da dang nhap
+                        value = cList[i].getValue();
+                        break; //thoat khoi vong lap
+                    }
+                }
+            }
             request.setAttribute("roomImg", roomImg);
             request.getSession().setAttribute("hotelID", hotel_id);
             request.setAttribute("room", room);
             feedbackDAOs fDAO = new feedbackDAOs();
-            
+            hotelDAOs hDAO = new hotelDAOs();
+            reservationDAOs rsDAO = new reservationDAOs();
+            account ac = new account();
             List<feedback> feedback = fDAO.getFeedbackByHotelID(hotel_id);
-            accountDAOs aDao = new  accountDAOs();
+            accountDAOs aDao = new accountDAOs();
             for (int i = 0; i < feedback.size(); i++) {
-                account ac = aDao.getAccount(feedback.get(i).getAccount().getUsername());
+                ac = aDao.getAccount(feedback.get(i).getAccount().getUsername());
                 feedback.get(i).setAccount(ac);
             }
-            
             request.setAttribute("feedback", feedback);
+            List<reservation> reserve = rsDAO.getReservationByUsername(ac.getUsername());
+            if (reserve != null) {
+                int i = 0;
+                boolean reserveExist = true;
+                while (reserveExist) {
+                    room r = rDAO.getRoomByRoomID(reserve.get(i).getRoom().getRoom_id());
+                    hotel ht = hDAO.getHotelByRoomID(r.getRoom_id());
+                    r.setHotel(ht);
+                    reserve.get(i).setRoom(r);
+                    if (reserve.get(i).getRoom().getHotel().getHotel_id() == hotel_id) {
+                        reserveExist = false;
+                    }
+                    i++;
+                }
+                if (!reserveExist) {
+                    int count = fDAO.getFeedbackExistByUsername(value);
+                    if (count == 0 && count < 1) {
+                        request.setAttribute("canFeedback", true);
+                    }
+                }
+            }
             request.getRequestDispatcher("/customer/hotelDetail.jsp").forward(request, response);
         } else if (path.startsWith("/searchController/Change")) {
             try {

@@ -22,6 +22,10 @@ public class service {
     public service() {
     }
 
+    public service(int service_id) {
+        this.service_id = service_id;
+    }
+
     public service(int service_id, String service_name, int service_price) {
         this.service_id = service_id;
         this.service_name = service_name;

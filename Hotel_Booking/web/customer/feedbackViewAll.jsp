@@ -57,13 +57,9 @@
                         <div class="card-body">
                             <ul class="list-group list-group-flush">
                                 <!--List-item-->
-                                <%
-                                    int counter = 0;
-                                %>
+                                
                                 <c:forEach items="${feedback}" var="feedback">
-                                    <%
-                                        if (counter < 5) {
-                                    %>
+                                    
                                     <li class="list-group-item pt-0">
                                         <div class="d-flex align-items-center">
                                             <div>
@@ -81,10 +77,7 @@
                                             </div>
                                         </div>
                                     </li>
-                                    <%
-                                            counter++;
-                                        }
-                                    %>
+
 
                                 </c:forEach>
 

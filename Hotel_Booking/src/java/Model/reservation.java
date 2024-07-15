@@ -11,16 +11,17 @@ import java.sql.Date;
  * @author tiend
  */
 public class reservation {
+
     private int id;
-    private byte status;
+    private int status;
     private Date re_date;
     private int quantity;
     private Date check_in_date;
     private Date check_out_date;
-    private long list_price;
+    private int list_price;
     private room room;
-    private hotel hotel;
-    private account username;
+    private service service;
+    private account account;
 
     /**
      *
@@ -36,16 +37,14 @@ public class reservation {
     /**
      *
      * @param room
-     * @param hotel
-     * @param username
+     * @param account
      */
-    public reservation(room room, hotel hotel, account username) {
-        this.room= room;
-        this.hotel = hotel;
-        this.username = username;
+    public reservation(room room,  account account) {
+        this.room = room;
+        this.account = account;
     }
 
-    public reservation(int id, byte status, Date re_date, int quantity, Date check_in_date, Date check_out_date, long list_price, room room, hotel hotel, account username) {
+    public reservation(int id, int status, Date re_date, int quantity, Date check_in_date, Date check_out_date, int list_price, room room, service service, account account) {
         this.id = id;
         this.status = status;
         this.re_date = re_date;
@@ -54,23 +53,13 @@ public class reservation {
         this.check_out_date = check_out_date;
         this.list_price = list_price;
         this.room = room;
-        this.hotel = hotel;
-        this.username = username;
+        this.service = service;
+        this.account = account;
     }
 
+ 
 
-
-    /**
-     *
-     * @param id
-     * @param status
-     * @param re_date
-     * @param quantity
-     * @param check_in_date
-     * @param check_out_date
-     * @param list_price
-     */
-    public reservation(int id, byte status, Date re_date, int quantity, Date check_in_date, Date check_out_date, long list_price) {
+    public reservation(int id, int status, Date re_date, int quantity, Date check_in_date, Date check_out_date, int list_price) {
         this.id = id;
         this.status = status;
         this.re_date = re_date;
@@ -88,16 +77,21 @@ public class reservation {
         this.room = room;
     }
 
-    public hotel getHotel() {
-        return hotel;
+    public service getService() {
+        return service;
     }
 
-    public void setHotel(hotel hotel) {
-        this.hotel = hotel;
+    public void setService(service service) {
+        this.service = service;
     }
 
+    public account getAccount() {
+        return account;
+    }
 
-
+    public void setAccount(account account) {
+        this.account = account;
+    }
 
 
     /**
@@ -105,15 +99,16 @@ public class reservation {
      * @return
      */
     public account getUsername() {
-        return username;
+        return account;
     }
 
     /**
      *
+     * @param account
      * @param username
      */
-    public void setUsername(account username) {
-        this.username = username;
+    public void setUsername(account account) {
+        this.account = account;
     }
 
     /**
@@ -132,19 +127,11 @@ public class reservation {
         this.id = id;
     }
 
-    /**
-     *
-     * @return
-     */
-    public byte getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    /**
-     *
-     * @param status
-     */
-    public void setStatus(byte status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
@@ -212,20 +199,13 @@ public class reservation {
         this.check_out_date = check_out_date;
     }
 
-    /**
-     *
-     * @return
-     */
-    public long getList_price() {
+    public int getList_price() {
         return list_price;
     }
 
-    /**
-     *
-     * @param list_price
-     */
-    public void setList_price(long list_price) {
+    public void setList_price(int list_price) {
         this.list_price = list_price;
     }
-    
+
+
 }

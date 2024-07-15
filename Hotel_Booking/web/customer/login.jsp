@@ -56,7 +56,7 @@
                                 </div>
                                 <div class="text-center mt-3 mb-3">
                                     <a href="/registerController/Register">Register new account</a> |
-                                    <a href="/registerController/Register">Forgot Password?</a> |
+                                    <a href="/customer/recover.jsp">Forgot Password?</a> |
                                     <a href="/registerController/Register">Login with Google</a>
                                 </div>
                                 <%

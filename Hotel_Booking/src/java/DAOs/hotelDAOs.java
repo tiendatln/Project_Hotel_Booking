@@ -193,4 +193,23 @@ public class hotelDAOs {
 
         return list;
     }
+    public hotel getHotelByRoomID(int room_id){
+        hotel h = null;
+        ResultSet rs = null;
+        try {
+            PreparedStatement ps = conn.prepareStatement("select h.username, h.hotel_id, hotel_name, hotel_address, hotel_img, hotel_description\n"
+                    + "from Hotel h\n"
+                    + "join Room r on h.hotel_id = r.hotel_id\n"
+                    + "where r.room_id = ?");
+            ps.setInt(1, room_id);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                account a = new account(rs.getString(1));
+                h = new hotel(rs.getInt(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), a);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return h;
+    }
 }

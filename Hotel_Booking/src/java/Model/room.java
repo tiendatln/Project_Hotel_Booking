@@ -24,6 +24,11 @@ public class room {
     public room() {
     }
 
+    public room(int room_id, hotel hotel) {
+        this.room_id = room_id;
+        this.hotel = hotel;
+    }
+
     /**
      *
      * @param room_img

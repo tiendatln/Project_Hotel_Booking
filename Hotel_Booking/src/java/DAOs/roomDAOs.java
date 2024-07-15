@@ -362,25 +362,6 @@ public class roomDAOs {
         return img;
     }
 
-    /**
-     *
-     * @param hotel_id
-     * @return
-     */
-    public int getNumberOfRoom(int hotel_id) {
-        int count = 0;
-        ResultSet rs = null;
-        try {
-            PreparedStatement ps = conn.prepareStatement("select room_id from Room where hotel_id = ?");
-            ps.setInt(1, hotel_id);
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                count++;
-            }
-        } catch (Exception e) {
-        }
-        return count;
-    }
 
     public List<Integer> getRoomIfCheckInAndCheckOutDateNotExistOnReservation(Date CheckInDate, Date CheckOutDate, int hotel_id) {
         List<Integer> list = null;

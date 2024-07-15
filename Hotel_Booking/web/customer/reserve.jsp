@@ -56,7 +56,7 @@
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td class="text-center font-weight-semibold align-middle p-4">$${(roomID.room.room_price * roomID.quantity) * day}</td>
+                                            <td class="text-center font-weight-semibold align-middle p-4">${(roomID.room.room_price * roomID.quantity) * day}$</td>
                                             <td class="align-middle p-4">
                                                 <select class="form-control" id="guests" name="quantity" onchange="submitForm('change')">
                                                     <option value="1"${roomID.quantity eq 1 ? 'selected' : ''}>1</option>
@@ -74,8 +74,8 @@
 
                                             <td class="text-left font-weight-semibold align-middle p-4"><c:forEach items="${service}" var="service">${service.service_name}</c:forEach></td>
                                             
-                                                <td class="text-center font-weight-semibold align-middle p-4">$${servicePrice * roomID.quantity}</td>
-                                            <td class="text-center font-weight-semibold align-middle p-4">$${((roomID.room.room_price * roomID.quantity) * day) + (servicePrice * roomID.quantity)}</td>
+                                                <td class="text-center font-weight-semibold align-middle p-4">${servicePrice * roomID.quantity}$</td>
+                                            <td class="text-center font-weight-semibold align-middle p-4">${((roomID.room.room_price * roomID.quantity) * day) + (servicePrice * roomID.quantity)}$</td>
                                             <td class="text-center align-middle px-0"><button onclick="submitForm('remove/' +${roomID.room.room_id})" class="shop-tooltip close float-none text-danger"  >×</button></td>
                                         </tr>
                                     </c:forEach>
@@ -112,11 +112,11 @@
                             <div class="d-flex">
                                 <div class="text-right mt-4 mr-5">
                                     <label class="text-muted font-weight-normal m-0">Service Price Total</label>
-                                    <div class="text-large"><strong>$${totalServicePrice}</strong></div>
+                                    <div class="text-large"><strong>${totalServicePrice}$</strong></div>
                                 </div>
                                 <div class="text-right mt-4">
                                     <label class="text-muted font-weight-normal m-0">Total price</label>
-                                    <div class="text-large"><strong>$${TotalPrice}</strong></div>
+                                    <div class="text-large"><strong>${TotalPrice}$</strong></div>
                                 </div>
                             </div>
                         </div>

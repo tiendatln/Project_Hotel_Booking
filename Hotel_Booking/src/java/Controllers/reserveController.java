@@ -77,6 +77,7 @@ public class reserveController extends HttpServlet {
             throws ServletException, IOException {
         String path = request.getRequestURI();
         if (path.startsWith("/reserveController")) {
+            
             String[] RoomId = request.getParameterValues("roomID");
             // Check if quantityAndRoomId is not null and contains a comma
             int hotelID = Integer.valueOf(request.getParameter("HotelID"));
@@ -171,14 +172,18 @@ public class reserveController extends HttpServlet {
                 request.getSession().setAttribute("hotelID", hotelID);
                 request.setAttribute("room", room);
                 feedbackDAOs fDAO = new feedbackDAOs();
-
+                account ac = new account();
                 List<feedback> feedback = fDAO.getFeedbackByHotelID(hotelID);
                 accountDAOs aDao = new accountDAOs();
                 for (int i = 0; i < feedback.size(); i++) {
-                    account ac = aDao.getAccount(feedback.get(i).getAccount().getUsername());
+                    ac = aDao.getAccount(feedback.get(i).getAccount().getUsername());
                     feedback.get(i).setAccount(ac);
                 }
+                int count = fDAO.getFeedbackExistByUsername(ac.getUsername());
 
+                if (count > 0 && count == 1) {
+                    request.setAttribute("canFeedback", true);
+                }
                 request.setAttribute("feedback", feedback);
                 request.getRequestDispatcher("/customer/hotelDetail.jsp").forward(request, response);
             }

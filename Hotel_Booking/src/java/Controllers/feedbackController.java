@@ -103,11 +103,14 @@ public class feedbackController extends HttpServlet {
             account ac = new account(username);
             feedback feedback = new feedback(comment);
             roomDAOs rDAO = new roomDAOs();
-            feedback = fDAO.addNewFeedback(feedback, ac, ht);
+            if (comment == "") {
+                request.setAttribute("errorFeedback", true);
+            } else {
+                feedback = fDAO.addNewFeedback(feedback, ac, ht);
+            }
             if (feedback == null) {
                 request.setAttribute("errorFeedback", true);
             }
-
             List<room> room = new ArrayList<>();
             try {
                 ResultSet rs = rDAO.getRoomByHotelID(hotel_id);
