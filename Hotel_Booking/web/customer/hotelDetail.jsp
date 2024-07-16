@@ -163,9 +163,10 @@
                             <h3>Availability</h3>
                             <div class="d-flex justify-content-center">
                                 <div style="display: flex inline; box-sizing: border-box; border: 4px solid yellow; background-color: yellow; border-radius: 10px">
-                                    <input type="date" class="form-control" id="checkInDate" name="checkInDate" onchange="submitForm('change')">
+                                    <input type="date" class="form-control" id="checkInDate" name="checkInDate" <c:if test="${checkInDate != null}">value="${checkInDate}"</c:if> >
                                     <h4>-</h4>
-                                    <input type="date" class="form-control" id="checkOutDate" name="checkOutDate" onchange="submitForm('change')">
+                                    <input type="date" class="form-control" id="checkOutDate" name="checkOutDate" <c:if test="${checkOutDate != null}">value="${checkOutDate}"</c:if> >
+                                    <!--onchange="submitForm('change')"-->
                                 </div>
                             </div>
                         </div>

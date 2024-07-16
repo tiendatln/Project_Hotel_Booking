@@ -70,6 +70,8 @@ public class roomDAOs {
         }
         return rs;
     }
+    
+
 
     /**
      *
@@ -364,7 +366,7 @@ public class roomDAOs {
 
 
     public List<Integer> getRoomIfCheckInAndCheckOutDateNotExistOnReservation(Date CheckInDate, Date CheckOutDate, int hotel_id) {
-        List<Integer> list = null;
+        List<Integer> list = new ArrayList<>();
         ResultSet rs = null;
         try {
             PreparedStatement ps = conn.prepareStatement("SELECT r.room_id\n"
@@ -422,5 +424,38 @@ public class roomDAOs {
         } catch (Exception e) {
         }
         return r;
+    }
+    public List<room> getRoom(int hotel_id, List<Integer> roomOnDate){
+        List<room> room = new ArrayList<>();
+        try {
+            PreparedStatement ps = conn.prepareStatement("select * from Room r join Hotel h on r.hotel_id = h.hotel_id where h.hotel_id = ?");
+            ps.setInt(1, hotel_id);
+            ResultSet rs = ps.executeQuery();
+            int i = 0;
+                while (rs.next()) {
+                    if (rs.getInt("room_id") == roomOnDate.get(i)) {
+                        hotel hotel = new hotel(hotel_id);
+                        roomType rt = new roomType(rs.getInt("room_type_id"));
+                        room.add(new room(rs.getInt("room_id"), rs.getString("room_name"), rs.getInt("room_price"),
+                                rs.getString("room_img"), rs.getBoolean("room_status"), rs.getString("room_description"), rt, hotel));
+                    }
+                    i++;
+                }
+        } catch (Exception e) {
+        }
+        return  room;
+    }
+        public static void main(String[] args) throws SQLException {
+        roomDAOs rd = new roomDAOs();
+        List<Integer> i = new ArrayList<>();
+        i.add(1);
+        i.add(2);
+            List<room> rs = rd.getRoom(1,i);
+            int j = 0;
+            while (j < rs.size()) {                
+                System.out.println(rs.get(j).toString());
+                j++;
+            }
+        
     }
 }

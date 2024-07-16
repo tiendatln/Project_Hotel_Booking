@@ -76,8 +76,8 @@ public class reserveController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String path = request.getRequestURI();
-        if (path.startsWith("/reserveController")) {
-            
+        if (path.startsWith("/reserveController/submit")) {
+
             String[] RoomId = request.getParameterValues("roomID");
             // Check if quantityAndRoomId is not null and contains a comma
             int hotelID = Integer.valueOf(request.getParameter("HotelID"));
@@ -188,31 +188,24 @@ public class reserveController extends HttpServlet {
                 request.getRequestDispatcher("/customer/hotelDetail.jsp").forward(request, response);
             }
         } else if (path.startsWith("/reserveController/Change")) {
+            int hotel_id = Integer.valueOf(request.getParameter("HotelID"));
             try {
                 roomDAOs rDAO = new roomDAOs();
-                Date checkInDate = Date.valueOf(request.getParameter("checkInDate"));
-                Date checkOutDate = Date.valueOf(request.getParameter("checkOutDate"));
-                int hotel_id = Integer.valueOf("HotelID");
-                List<Integer> roomOnDate = rDAO.getRoomIfCheckInAndCheckOutDateNotExistOnReservation(checkInDate, checkOutDate, hotel_id);
-                List<room> room = new ArrayList<>();
-                ResultSet rs = rDAO.getRoomByHotelID(hotel_id);
-                int i = 0;
-                while (rs.next()) {
-                    if (rs.getInt("room_id") == roomOnDate.get(i)) {
-                        hotel hotel = new hotel(hotel_id);
-                        roomType rt = new roomType(rs.getInt("room_type_id"));
-                        room.add(new room(rs.getInt("room_id"), rs.getString("room_name"), rs.getInt("room_price"),
-                                rs.getString("room_img"), rs.getBoolean("room_status"), rs.getString("room_description"), rt, hotel));
-                    }
-                    i++;
-                }
+                long millis = System.currentTimeMillis();
+                Date CheckInDate = new Date(millis);
+                Date CheckOutDate = new Date(millis);
+                CheckInDate = Date.valueOf(request.getParameter("checkInDate"));
+                CheckOutDate = Date.valueOf(request.getParameter("checkOutDate"));
+                List<Integer> roomOnDate = rDAO.getRoomIfCheckInAndCheckOutDateNotExistOnReservation(CheckInDate, CheckOutDate, hotel_id);
+                List<room> room = rDAO.getRoom(hotel_id, roomOnDate);
                 List<room> roomImg = rDAO.getAllRoomImgByHotelId(hotel_id);
                 request.setAttribute("roomImg", roomImg);
                 request.getSession().setAttribute("room", room);
                 request.getSession().setAttribute("hotelID", hotel_id);
                 request.getRequestDispatcher("/customer/hotelDetail.jsp").forward(request, response);
-            } catch (Exception e) {
+            } catch (ServletException | IOException e) {
             }
+            response.sendRedirect("/searchController/HotelDetail/"+hotel_id);
         }
     }
 

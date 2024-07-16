@@ -61,10 +61,12 @@ public class profileController extends HttpServlet {
         Cookie[] cList = null;
         boolean flagCustomer = false;
         boolean flagOwner = false;
+        String username = "";
         cList = request.getCookies();
         if (cList != null) {
             for (int i = 0; i < cList.length; i++) {
                 if (cList[i].getName().equals("customer")) {
+                    username = cList[i].getValue();
                     flagCustomer = true;
                     break;
                 } else if (cList[i].getName().equals("owner")) {
@@ -81,6 +83,11 @@ public class profileController extends HttpServlet {
                 }
             } else if (path.endsWith("/ChangePassword")) {
                 request.getRequestDispatcher("/customer/changePassword.jsp").forward(request, response);
+            }else if(path.endsWith("/BecomeOwner")){
+                accountDAOs aDAO = new accountDAOs();
+                account ac = aDAO.getAccount(username);
+                request.setAttribute("account", ac);
+                request.getRequestDispatcher("/customer/becomesOwner.jsp").forward(request, response);
             }
         } else {
             response.sendRedirect("/homeController/HomeCustomer");

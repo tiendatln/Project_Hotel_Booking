@@ -16,8 +16,9 @@ import Model.service;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+
 import jakarta.servlet.annotation.MultipartConfig;
-import jakarta.servlet.annotation.WebServlet;
+
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -33,6 +34,8 @@ import java.util.List;
  *
  * @author tiend
  */
+
+@MultipartConfig
 public class hotelManagerController extends HttpServlet {
 
     /**
@@ -166,23 +169,23 @@ public class hotelManagerController extends HttpServlet {
             String hotel_name = request.getParameter("hotel_name");
             String hotel_address = request.getParameter("hotel_address");
             String hotel_description = request.getParameter("hotel_description");
-            String hotel_img = "imgs/room/" + request.getParameter("hotel_img");
-//            Part part = request.getPart("hotel_img");
-//            String realPath = getServletContext().getRealPath("/imgs/room/");
-//            Path fileName = Paths.get(part.getSubmittedFileName());
-//            if (!Files.exists(Paths.get(realPath))) {
-//                Files.createDirectories(Paths.get(realPath));
-//            }
-//            String picture = fileName.getFileName().toString();
-//
-//            part.write(realPath + "/" + fileName);
+//            String hotel_img = "imgs/room/" + request.getParameter("hotel_img");
+            Part part = request.getPart("hotel_img");
+            String realPath = getServletContext().getRealPath("/imgs/room/");
+            Path fileName = Paths.get(part.getSubmittedFileName());
+            if (!Files.exists(Paths.get(realPath))) {
+                Files.createDirectories(Paths.get(realPath));
+            }
+            String picture = fileName.getFileName().toString();
+
+            part.write(realPath + "/" + fileName);
 
             account user = adb.getAccount(value);
             hotel hotel = new hotel();
             hotel.setHotel_name(hotel_name);
             hotel.setHotel_address(hotel_address);
             hotel.setHotel_description(hotel_description);
-            hotel.setHotel_img(hotel_img);
+            hotel.setHotel_img(picture);
             hotel.setUsername(user);
             hdb.insertHotel(hotel);
 

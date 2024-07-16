@@ -112,7 +112,7 @@ public class registerController extends HttpServlet {
                         if (!email.equals("")) {
                             // sending otp
                             boolean checkEmail = aDAO.checkEmailUser(email);
-                            if (checkEmail) {
+                            if (!checkEmail) {
                                 Random rand = new Random();
                                 otpvalue = rand.nextInt(1255650);
                                 String to = email;// change accordingly

@@ -71,6 +71,10 @@
         <servlet-name>UserManager</servlet-name>
         <servlet-class>Controllers.UserManager</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>becomesOwnerController</servlet-name>
+        <servlet-class>Controllers.becomesOwnerController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>homeController</servlet-name>
         <url-pattern>/homeController/*</url-pattern>
@@ -139,7 +143,7 @@
         <servlet-name>UserManager</servlet-name>
         <url-pattern>/UserManager/*</url-pattern>
     </servlet-mapping>
-        <servlet>
+    <servlet>
         <servlet-name>dashboardController</servlet-name>
         <servlet-class>Controllers.dashboardController</servlet-class>
     </servlet>
@@ -147,13 +151,17 @@
         <servlet-name>dashboardController</servlet-name>
         <url-pattern>/dashboardController/*</url-pattern>
     </servlet-mapping>
-        <servlet>
+    <servlet>
         <servlet-name>reserveManagerController</servlet-name>
         <servlet-class>Controllers.reserveManagerController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>reserveManagerController</servlet-name>
         <url-pattern>/reserveManagerController/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>becomesOwnerController</servlet-name>
+        <url-pattern>/becomesOwnerController/*</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

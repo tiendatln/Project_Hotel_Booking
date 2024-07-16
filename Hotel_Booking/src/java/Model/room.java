@@ -190,5 +190,10 @@ public class room {
     public void setHotel(hotel hotel) {
         this.hotel = hotel;
     }
+
+    @Override
+    public String toString() {
+        return "room{" + "room_id=" + room_id + ", room_name=" + room_name + ", room_price=" + room_price + ", room_img=" + room_img + ", room_status=" + room_status + ", room_description=" + room_description + ", room_type=" + room_type + ", hotel=" + hotel + '}';
+    }
     
 }

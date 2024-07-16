@@ -126,7 +126,7 @@
                                                                 ${hotel.hotel_id}
                                                             </td>
                                                             <td class="align-middle text-center" style="width: 100px">
-                                                                <div class="bg-light d-inline-flex justify-content-center align-items-center align-top" style="width: 70px; height: 35px; border-radius: 3px;"><img src="<%= request.getContextPath()%>/imgs/room/${room.room_img }" alt="" width="75px;" height="40px;"></div>
+                                                                <div class="bg-light d-inline-flex justify-content-center align-items-center align-top" style="width: 70px; height: 35px; border-radius: 3px;"><img src="<%= request.getContextPath()%>/imgs/room/${hotel.hotel_img}" alt="" width="75px;" height="40px;"></div>
                                                             </td>
                                                             <td class="text-nowrap align-middle">${hotel.hotel_name}</td>
                                                             <td class="text-nowrap align-middle"  style='max-width: 200px;
@@ -188,7 +188,7 @@
                             </div>
                             <div class="modal-body">
                                 <div class="py-1">
-                                    <form class="form" novalidate="" action="/hotelManagerController?action=inserthotel" method="post">
+                                    <form class="form" novalidate="" action="/hotelManagerController?action=inserthotel" method="post" enctype="multipart/form-data">
                                         <div class="row">
                                             <div class="col">
                                                 <div class="row">
