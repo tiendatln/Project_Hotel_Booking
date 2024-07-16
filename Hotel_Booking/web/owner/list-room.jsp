@@ -22,6 +22,7 @@
                 margin-top:20px;
                 background:#f8f8f8
             }
+
         </style>
     </head>
     <body>                   
@@ -287,7 +288,7 @@
                                 </div>
                                 <div class="modal-body">
                                     <div class="py-1">
-                                        <form class="form" novalidate="" action="/roomManagerController?action=updateroom" method="POST" enctype="multipart/form-data">
+                                        <form class="form" id="myForm" novalidate="" action="/roomManagerController?action=updateroom" method="POST" enctype="multipart/form-data">
                                             <div class="row">
                                                 <div class="col mb-3">
                                                     <div class="form-group">
@@ -374,7 +375,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col d-flex justify-content-end">
-                                            <button class="btn btn-primary" type="submit" name="btnUpdate">Save Changes</button>                                                
+                                            <button class="btn btn-primary" type="submit" id="btnSave" name="btnUpdate" value="Save Changes">Save Changes</button>                                                
                                             <a class="btn btn-cancel" data-bs-dismiss="modal" href="#" style="background-color: crimson; margin-left: 15px; color: white;">Cancle</a>
                                         </div>
                                     </div>
@@ -401,6 +402,10 @@
                                                                                 window.location = "/roomManagerController?action=deleteroom&id=" + id;
                                                                             }
                                                                         }
+                                                                        document.getElementById("btnSave").addEventListener("click", function () {
+                                                                            this.disabled = true;
+                                                                            document.getElementById("myForm").submit();
+                                                                        });
         </script>
     </body>
 </html>

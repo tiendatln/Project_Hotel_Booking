@@ -22,6 +22,7 @@
                 margin-top:20px;
                 background:#f8f8f8
             }
+            
         </style>
     </head>
     <body>
@@ -56,7 +57,7 @@
                                     <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
                                     <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
                                     </svg> <%= ac.getName()%></li>
-                               <li class="nav-item"><a class="nav-link px-2" href="/dashboardController"><i class="fa fa-fw fa-database mr-1"></i><span>Dashboard</span></a></li>
+                                <li class="nav-item"><a class="nav-link px-2" href="/dashboardController"><i class="fa fa-fw fa-database mr-1"></i><span>Dashboard</span></a></li>
                                 <li class="nav-item"><a class="nav-link px-2" href="#"><i class="fa fa-fw fa-user mr-1"></i><span>My Profile</span></a></li>
                                 <li class="nav-item"><a class="nav-link px-2" href="/hotelManagerController"><i class="fa fa-fw fa-th-large mr-1"></i><span>Manage Hotel</span></a></li>
                                 <li class="nav-item"><a class="nav-link px-2" href="/roomManagerController"><i class="fa fa-fw fa-th mr-1"></i><span>Manage Room</span></a></li>
@@ -318,17 +319,17 @@
                                             <div class="row">
                                                 <div class="col">
                                                     <div class="row">
-                                                         <div class="form-group">
-                                                                <label>Hotel Name</label>
-                                                                <input class="form-control" type="text" name="hotel_name" placeholder="Name of hotel" value="${hotel.hotel_name}">
-                                                            </div>                                                                                                                
+                                                        <div class="form-group">
+                                                            <label>Hotel Name</label>
+                                                            <input class="form-control" type="text" name="hotel_name" placeholder="Name of hotel" value="${hotel.hotel_name}">
+                                                        </div>                                                                                                                
                                                     </div>
                                                     <div class="row">
                                                         <div class="form-group">
-                                                                <label>Hotel Address</label>                                                                
-                                                                <input class="form-control" name="hotel_address" type="text" required placeholder="Hotel Address" value="${hotel.hotel_address}">
-                                                            </div>
-                                                                                                                
+                                                            <label>Hotel Address</label>                                                                
+                                                            <input class="form-control" name="hotel_address" type="text" required placeholder="Hotel Address" value="${hotel.hotel_address}">
+                                                        </div>
+
                                                     </div>
                                                     <div class="row">
                                                         <div class="col mb-3">

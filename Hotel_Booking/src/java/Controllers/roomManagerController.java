@@ -25,6 +25,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -128,6 +131,13 @@ public class roomManagerController extends HttpServlet {
         }
 
     }
+    public static void main(String[] args) throws IOException {
+        File file = new File("/imgs/room");
+       
+        System.out.println("Absolute Path: " + file.getAbsoluteFile());
+        System.out.println("Canonical Path: " + file.getCanonicalPath());
+		System.out.println("Path: " + file.getPath());
+    }
 
     /**
      * Handles the HTTP <code>POST</code> method.
@@ -140,7 +150,18 @@ public class roomManagerController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String fileImg = "D:\\JAVA\\Project\\Ky5\\Group\\Hotel_Booking\\web\\imgs\\room";
+        String file = request.getSession().getServletContext().getRealPath("/imgs/room");
+        String[] s = file.split("\\\\");
+        String fileImg ="";
+        for (int i = 0; i < s.length; i++) {
+            if(!s[i].equals("build")){
+                fileImg += s[i];
+                if(i < s.length-1){
+                    fileImg += "\\";
+                }
+            }
+        }
+        fileImg.substring(0, fileImg.length() - 1);
         String action = request.getParameter("action");
         String[] arr = request.getParameterValues("roomID");
         if (action.equalsIgnoreCase("insertroom")) {
@@ -235,6 +256,11 @@ public class roomManagerController extends HttpServlet {
                 }
                 rdb.updateRoom(room);
                 System.out.println("updated");
+                try {
+                    TimeUnit.SECONDS.sleep(2);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(roomManagerController.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 response.sendRedirect("/roomManagerController");
             }
 
