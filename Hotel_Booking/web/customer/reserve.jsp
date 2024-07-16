@@ -16,126 +16,103 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/reserve.css">
         <link rel="stylesheet" href="stylesheet">
         <style>
-.card-stepper {
-    z-index: 0;
-}
+            .stepper-wrapper {
+                margin-top: auto;
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 20px;
+            }
+            .stepper-item {
+                position: relative;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                flex: 1;
+               
+            }
 
-#progressbar-2 {
-    color: #455A64;
-}
+            .stepper-item::before {
+                position: absolute;
+                content: "";
+                border-bottom: 2px solid #ccc;
+                width: 100%;
+                top: 20px;
+                left: -50%;
+                z-index: 2;
+            }
 
-#progressbar-2 li {
-    list-style-type: none;
-    font-size: 13px;
-    width: 33.33%;
-    float: left;
-    position: relative;
-}
+            .stepper-item::after {
+                position: absolute;
+                content: "";
+                border-bottom: 2px solid #ccc;
+                width: 100%;
+                top: 20px;
+                left: 50%;
+                z-index: 2;
+            }
 
-#progressbar-2 #step1:before {
-    content: '\f058';
-    font-family: "Font Awesome 5 Free";
-    color: #fff;
-    width: 37px;
-    margin-left: 0px;
-    padding-left: 0px;
-}
-
-#progressbar-2 #step2:before {
-    content: '\f058';
-    font-family: "Font Awesome 5 Free";
-    color: #fff;
-    width: 37px;
-}
-
-#progressbar-2 #step3:before { /* CSS cho bước 3 */
-    content: '\f058';
-    font-family: "Font Awesome 5 Free";
-    color: #fff;
-    width: 37px;
-}
-
-#progressbar-2 li:before {
-    line-height: 37px;
-    display: block;
-    font-size: 12px;
-    background: #c5cae9;
-    border-radius: 50%;
-}
-
-#progressbar-2 li:after {
-    content: '';
-    width: 100%;
-    height: 10px;
-    background: #c5cae9;
-    position: absolute;
-    left: 0%;
-    right: 0%;
-    top: 15px;
-    z-index: -1;
-}
-
-#progressbar-2 li:nth-child(1):after {
-    left: 1%;
-    width: 100%;
-}
-
-#progressbar-2 li:nth-child(2):after {
-    left: 1%;
-    width: 100%;
-}
+            .stepper-item .step-counter {
+                position: relative;
+                z-index: 5;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                background: 	#AAAAAA;
+                margin-bottom: 6px;
+            }
 
 
-#progressbar-2 li.active:before,
-#progressbar-2 li.active:after {
-    background: #6520ff;
-}
+            .stepper-item {
+                font-weight: bold;
+            }
 
+
+            .stepper-item.completed .step-counter {
+                background-color: #3366CC;
+                color: white;
+            }
+
+            .stepper-item.completed::after {
+                position: absolute;
+                content: "";
+                border-bottom: 2px solid #3366CC;
+                width: 100%;
+                top: 20px;
+                left: 50%;
+                z-index: 3;
+            }
+
+            .stepper-item:first-child::before {
+                content: none;
+            }
+            .stepper-item:last-child::after {
+                content: none;
+            }
         </style>
     </head>
     <body>
         <%@include file="layout.jsp" %>
 
-        <div class="container ">
-    <div class="row d-flex justify-content-center align-items-center h-100 container py-5 ">
-        <div class="col-12">
-            <div class="card card-stepper" style="border-radius: 16px;">
-                <div class="card-body p-5">
-                    <ul id="progressbar-2" class="d-flex justify-content-between mx-0 mt-0 mb-5 px-0 pt-0 pb-2">
-                        <li class="step0 active text-center" id="step1"></li>
-                        <li class="step0 active text-center" id="step2"></li>
-                        <li class="step0 text-center" id="step3"></li> <!-- Thêm bước 3 -->
-                    </ul>
-
-                    <div class="d-flex justify-content-between">
-                        <div class="d-lg-flex align-items-center">
-                            <i class="fas fa-clipboard-list fa-3x me-lg-4 mb-3 mb-lg-0"></i>
-                            <div>
-                                <p class="fw-bold mb-1">Order</p>
-                                <p class="fw-bold mb-0">Processed</p>
-                            </div>
-                        </div>
-                        <div class="d-lg-flex align-items-center">
-                            <i class="fas fa-box-open fa-3x me-lg-4 mb-3 mb-lg-0"></i>
-                            <div>
-                                <p class="fw-bold mb-1">Order</p>
-                                <p class="fw-bold mb-0">Shipped</p>
-                            </div>
-                        </div>
-                        <div class="d-lg-flex align-items-center">
-                            <i class="fas fa-box-open fa-3x me-lg-4 mb-3 mb-lg-0"></i>
-                            <div>
-                                <p class="fw-bold mb-1">Order</p>
-                                <p class="fw-bold mb-0">Shipped</p>
-                            </div>
-                        </div>
-                    </div>
-
+        <div class="pt-4 " >
+            <div class="stepper-wrapper">
+                <div class="stepper-item completed">
+                    <div class="step-counter">1</div>
+                    <div class="step-name">Choose Room</div>
+                </div>
+                <div class="stepper-item completed">
+                    <div class="step-counter">2</div>
+                    <div class="step-name">Reserve</div>
+                </div>
+                <div class="stepper-item active">
+                    <div class="step-counter">3</div>
+                    <div class="step-name">Completed</div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
+
 
 
         <div class="container px-3 my-5 clearfix">

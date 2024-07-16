@@ -1,0 +1,159 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Jul 17, 2024, 1:39:28 AM
+    Author     : tiend
+*/
+
+body{
+            margin-top:20px;
+        }
+        .mail-seccess {
+            text-align: center;
+            background: #fff;
+            border-top: 1px solid #eee;
+        }
+        .mail-seccess .success-inner {
+            display: inline-block;
+        }
+        .mail-seccess .success-inner h1 {
+            font-size: 100px;
+            text-shadow: 3px 5px 2px #3333;
+            color: #006DFE;
+            font-weight: 700;
+        }
+        .mail-seccess .success-inner h1 span {
+            display: block;
+            font-size: 25px;
+            color: #333;
+            font-weight: 600;
+            text-shadow: none;
+            margin-top: 20px;
+        }
+        .mail-seccess .success-inner p {
+            padding: 20px 15px;
+        }
+        .mail-seccess .success-inner .btn{
+            color:#fff;
+        }
+        .stepper-wrapper {
+            margin-top: auto;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .stepper-item {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+
+        }
+
+        .stepper-item::before {
+            position: absolute;
+            content: "";
+            border-bottom: 2px solid #ccc;
+            width: 100%;
+            top: 20px;
+            left: -50%;
+            z-index: 2;
+        }
+
+        .stepper-item::after {
+            position: absolute;
+            content: "";
+            border-bottom: 2px solid #ccc;
+            width: 100%;
+            top: 20px;
+            left: 50%;
+            z-index: 2;
+        }
+
+        .stepper-item .step-counter {
+            position: relative;
+            z-index: 5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: 	#AAAAAA;
+            margin-bottom: 6px;
+        }
+
+
+        .stepper-item {
+            font-weight: bold;
+        }
+
+
+        .stepper-item.completed .step-counter {
+            background-color: #3366CC;
+            color: white;
+        }
+
+        .stepper-item.completed::after {
+            position: absolute;
+            content: "";
+            border-bottom: 2px solid #3366CC;
+            width: 100%;
+            top: 20px;
+            left: 50%;
+            z-index: 3;
+        }
+
+        .stepper-item:first-child::before {
+            content: none;
+        }
+        .stepper-item:last-child::after {
+            content: none;
+        }
+
+        .success {
+            width: 30%;
+            display: inline-block;
+            font-size: 50px;
+            color: #f39c12;
+            animation: ring 2s infinite;
+        }
+
+        @keyframes ring {
+            0% {
+                transform: rotate(0);
+            }
+            10% {
+                transform: rotate(30deg);
+            }
+            20% {
+                transform: rotate(-28deg);
+            }
+            30% {
+                transform: rotate(34deg);
+            }
+            40% {
+                transform: rotate(-32deg);
+            }
+            50% {
+                transform: rotate(30deg);
+            }
+            60% {
+                transform: rotate(-28deg);
+            }
+            70% {
+                transform: rotate(32deg);
+            }
+            80% {
+                transform: rotate(-30deg);
+            }
+            90% {
+                transform: rotate(28deg);
+            }
+            100% {
+                transform: rotate(0);
+            }
+        }

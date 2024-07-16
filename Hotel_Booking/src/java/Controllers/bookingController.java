@@ -354,13 +354,12 @@ public class bookingController extends HttpServlet {
                     }
                     request.setAttribute("hotelID", hotelID);
                     // Forward the request to hotelDetail.jsp
-                    request.getRequestDispatcher("/customer/bookingSuccess.jsp").forward(request, response);
+                    response.sendRedirect("/bookingController/Success");
                 } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
                     // Handle the error or redirect to an error page
                     response.sendError(jakarta.servlet.http.HttpServletResponse.SC_BAD_REQUEST, "Invalid quantityAndRoomId format");
                 }
-            }
-            else if (!flagCustomer) {
+            } else if (!flagCustomer) {
                 List<room> roomImg = rDAO.getAllRoomImgByHotelId(hotelID);
                 request.setAttribute("loginToReserve", true);
 
@@ -391,6 +390,8 @@ public class bookingController extends HttpServlet {
                 request.setAttribute("feedback", feedback);
                 request.getRequestDispatcher("/customer/hotelDetail.jsp").forward(request, response);
             }
+        } else if (path.endsWith("/Success")) {
+            request.getRequestDispatcher("/customer/bookingSuccess.jsp").forward(request, response);
         }
     }
 

@@ -20,6 +20,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import java.io.File;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -139,6 +140,7 @@ public class roomManagerController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String fileImg = "D:\\JAVA\\Project\\Ky5\\Group\\Hotel_Booking\\web\\imgs\\room";
         String action = request.getParameter("action");
         String[] arr = request.getParameterValues("roomID");
         if (action.equalsIgnoreCase("insertroom")) {
@@ -151,10 +153,9 @@ public class roomManagerController extends HttpServlet {
             String room_description = request.getParameter("description");
             String room_status_raw = request.getParameter("status");
             Part part = request.getPart("room_img");
-            String realPath = getServletContext().getRealPath("/imgs/room/");
             Path fileName = Paths.get(part.getSubmittedFileName());
-            if (!Files.exists(Paths.get(realPath))) {
-                Files.createDirectories(Paths.get(realPath));
+            if (!Files.exists(Paths.get(fileImg))) {
+                Files.createDirectories(Paths.get(fileImg));
             }
             String picture = fileName.getFileName().toString();
 
@@ -162,7 +163,7 @@ public class roomManagerController extends HttpServlet {
             int hotel_id = Integer.parseInt(hotel_id_raw);
             int room_price = Integer.parseInt(room_price_raw);
             boolean room_status = (room_status_raw.equals("1")) ? true : false;
-            part.write(realPath + "/" + fileName);
+            part.write(fileImg + "/" + fileName);
             roomType roomType = rdb.getRoomTypeByID(room_type_id);
             hotel hotel = hdb.getHotelDetailById(hotel_id);
             room room = new room();
@@ -188,10 +189,9 @@ public class roomManagerController extends HttpServlet {
             String room_description = request.getParameter("description");
             String room_status_raw = request.getParameter("status");
             Part part = request.getPart("room_img");
-            String realPath = getServletContext().getRealPath("/imgs/room/");
             Path fileName = Paths.get(part.getSubmittedFileName());
-            if (!Files.exists(Paths.get(realPath))) {
-                Files.createDirectories(Paths.get(realPath));
+            if (!Files.exists(Paths.get(fileImg))) {
+                Files.createDirectories(Paths.get(fileImg));
             }
             String picture = fileName.getFileName().toString();
 
@@ -219,10 +219,20 @@ public class roomManagerController extends HttpServlet {
                 response.sendRedirect("/roomManagerController");
             } else {
 
-                part.write(realPath + "/" + fileName);
+                part.write(fileImg + "/" + fileName);
 
-                File filePic = new File(getServletContext().getRealPath("/imgs/room/") + rdb.getRoomImgByRoomID(room_id));
-                filePic.deleteOnExit();
+                File filePic = new File(fileImg + "/" + rdb.getRoomImgByRoomID(room_id));
+
+// Check if the file exists before attempting to delete
+                if (filePic.exists()) {
+                    if (filePic.delete()) {
+                        System.out.println("File deleted successfully: " + fileImg + "/" + rdb.getRoomImgByRoomID(room_id));
+                    } else {
+                        System.out.println("Failed to delete the file: " + fileImg + "/" + rdb.getRoomImgByRoomID(room_id));
+                    }
+                } else {
+                    System.out.println("File does not exist: " + fileImg + "/" + rdb.getRoomImgByRoomID(room_id));
+                }
                 rdb.updateRoom(room);
                 System.out.println("updated");
                 response.sendRedirect("/roomManagerController");
