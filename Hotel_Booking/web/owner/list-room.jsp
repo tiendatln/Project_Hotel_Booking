@@ -246,7 +246,8 @@
                                                 <div class="row">
                                                     <div class="col">
                                                         <div id="myfileupload">
-                                                            <input type="file" name="room_img"/>                                                     
+                                                            <input type="file" id="room_img" name="room_img"/>      
+                                                            <img id="imagePreview" src="#" alt="Image Preview" style="display: none; width: 200px; margin-top: 10px;">
                                                         </div>  
                                                     </div>
                                                 </div>
@@ -354,7 +355,8 @@
                                                     <div class="row">
                                                         <div class="col">
                                                             <div id="myfileupload">
-                                                                <input type="file" name="room_img" value="${room.room_img}"/>                                                     
+                                                                <input type="file" name="room_img" id="room_img" value="${room.room_img}"/>   
+                                                                <img id="imagePreview" src="#" alt="Image Preview" style="display: none; width: 200px; margin-top: 10px;">
                                                             </div>  
                                                         </div>
                                                     </div>
@@ -405,6 +407,21 @@
                                                                         document.getElementById("btnSave").addEventListener("click", function () {
                                                                             this.disabled = true;
                                                                             document.getElementById("myForm").submit();
+                                                                        });
+
+                                                                        document.getElementById('room_img').addEventListener('change', function (event) {
+                                                                            let file = event.target.files[0];
+                                                                            if (file) {
+                                                                                let reader = new FileReader();
+                                                                                reader.onload = function (e) {
+                                                                                    let img = document.getElementById('imagePreview');
+                                                                                    img.src = e.target.result;
+                                                                                    img.style.display = 'block';
+                                                                                };
+                                                                                reader.readAsDataURL(file);
+                                                                            } else {
+                                                                                document.getElementById('imagePreview').style.display = 'none';
+                                                                            }
                                                                         });
         </script>
     </body>

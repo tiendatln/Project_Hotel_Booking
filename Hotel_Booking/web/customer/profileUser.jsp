@@ -49,9 +49,9 @@
                 text-align: center;
                 margin-bottom: 30px;
             }
-            .nav-link {
+/*            .nav-link {
                 color: #ffffff !important;
-            }
+            }*/
             .btn-custom {
                 background-color: cadetblue;
                 color: #fff;

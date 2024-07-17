@@ -25,7 +25,6 @@ import java.nio.file.Paths;
  *
  * @author tiend
  */
-
 @MultipartConfig
 public class becomesOwnerController extends HttpServlet {
 
@@ -82,6 +81,18 @@ public class becomesOwnerController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         if (request.getParameter("btnConfirm") != null) {
+            String file = request.getSession().getServletContext().getRealPath("/imgs/owner");
+            String[] s = file.split("\\\\");
+            String fileImg = "";
+            for (int i = 0; i < s.length; i++) {
+                if (!s[i].equals("build")) {
+                    fileImg += s[i];
+                    if (i < s.length - 1) {
+                        fileImg += "\\";
+                    }
+                }
+            }
+            fileImg.substring(0, fileImg.length() - 1);
             String value = "";
             Cookie[] cList = null;
             cList = request.getCookies(); //Lay tat ca cookie cua website nay tren may nguoi dung
@@ -98,28 +109,35 @@ public class becomesOwnerController extends HttpServlet {
             String phone = request.getParameter("phone");
             String hotel_name = request.getParameter("hotel");
             String address = request.getParameter("address");
-            Part part = request.getPart("BusinessLicensImage");
-            String realPath = getServletContext().getRealPath("/imgs/room/");
-            Path fileName = Paths.get(part.getSubmittedFileName());
-            if (!Files.exists(Paths.get(realPath))) {
-                Files.createDirectories(Paths.get(realPath));
-            }
-            String BusinessLicensImage = fileName.getFileName().toString();
-            part.write(realPath + "/" + fileName);
             updateRoleDAOs urDAO = new updateRoleDAOs();
-            account ac = new account(value);
+
             accountDAOs aDAO = new accountDAOs();
-            updateRole up = new updateRole(0, hotel_name, address, BusinessLicensImage, ac);
+            account ac = aDAO.getAccount(value);
+
             boolean checkExist = urDAO.getUpdateExistByUsername(value);
+
             if (!checkExist) {
+                Part part = request.getPart("BusinessLicensImage");
+                String realPath = getServletContext().getRealPath("/imgs/room/");
+                Path fileName = Paths.get(part.getSubmittedFileName());
+                if (!Files.exists(Paths.get(realPath))) {
+                    Files.createDirectories(Paths.get(realPath));
+                }
+                String BusinessLicensImage = fileName.getFileName().toString();
+                part.write(realPath + "/" + fileName);
+                updateRole up = new updateRole(0, hotel_name, address, BusinessLicensImage, ac);
                 if (up == null) {
-                    request.setAttribute("updateError", "");
-                    request.setAttribute("account", ac);
+                    request.setAttribute("updateMesage", "asfaf");
                     request.getRequestDispatcher("/customer/becomesOwner.jsp").forward(request, response);
+                } else {
+                    updateRole addUp = urDAO.insertUpdateRole(up);
+                    if (addUp == null) {
+                        request.setAttribute("updateMesage", "asfaaaas");
+                        request.getRequestDispatcher("/customer/becomesOwner.jsp").forward(request, response);
+                    }
                 }
             }
-            request.setAttribute("updateError", "");
-            request.setAttribute("account", ac);
+            request.setAttribute("updateMesage", true);
             request.getRequestDispatcher("/customer/becomesOwner.jsp").forward(request, response);
         }
     }

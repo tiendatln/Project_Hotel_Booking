@@ -115,7 +115,7 @@
 
 
 
-        <div class="container px-3 my-5 clearfix">
+        <div class="container-fluid px-3 my-5 clearfix" style="width: 70%">
             <!-- Shopping cart table -->
             <div class="card">
                 <div class="card-header">
@@ -131,7 +131,7 @@
                                         <!-- Set columns width -->
                                         <th class="text-center py-3 px-4" style="min-width: 200px;">Product Name &amp; Details</th>
                                         <th class="text-center py-3 px-4" style="width: 120px;">Room Price</th>
-                                        <th class="text-center py-3 px-4" style="width: 120px;">Room Price</th>
+                                        <th class="text-center py-3 px-4" style="width: 150px;">Room Price Total</th>
                                         <th class="text-center py-3 px-4" style="width: 120px;">Quantity</th>
                                         <th class="text-center py-3 px-4" style="width: 120px;">Service</th>
                                         <th class="text-center py-3 px-4" style="width: 120px;">Service Price</th>
@@ -186,7 +186,7 @@
                         <!-- / Shopping cart table -->
 
                         <div class="d-flex flex-wrap justify-content-between align-items-center pb-4">
-                            <div class="mt-4">
+                            <div class="mt-5" style="margin-left: 70px">
                                 <h4 class=" font-weight-bold" style="color: #0c63e4">Name: ${nameUser.getName()}</h4>
                                 <span class="text-muted font-weight-bold" >Email: ${nameUser.getEmail()}</span>
                                 <div class="container mt-5">

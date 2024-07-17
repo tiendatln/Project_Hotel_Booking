@@ -1,9 +1,3 @@
-<%-- 
-    Document   : becomesOwner
-    Created on : Jul 15, 2024, 9:45:43 AM
-    Author     : tiend
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
@@ -12,73 +6,16 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Become Owner</title>
-        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap-theme.min.css">
         <link rel="stylesheet" href="/css/becomesOwner.css">
     </head>
-    <style>
-        .box {
-  width: 40%;
-  margin: 0 auto;
-  background: rgba(255,255,255,0.2);
-  padding: 35px;
-  border: 2px solid #fff;
-  border-radius: 20px/50px;
-  background-clip: padding-box;
-  text-align: center;
-}
-.popup {
-  margin: 70px auto;
-  padding: 20px;
-  background: #fff;
-  border-radius: 5px;
-  width: 30%;
-  position: relative;
-  transition: all 5s ease-in-out;
-}
 
-.popup h2 {
-  margin-top: 0;
-  color: #333;
-  font-family: Tahoma, Arial, sans-serif;
-}
-.popup .close {
-  position: absolute;
-  top: 20px;
-  right: 30px;
-  transition: all 200ms;
-  font-size: 30px;
-  font-weight: bold;
-  text-decoration: none;
-  color: #333;
-}
-.popup .close:hover {
-  color: #06D85F;
-}
-.popup .content {
-  max-height: 30%;
-  overflow: auto;
-}
-
-@media screen and (max-width: 700px){
-  .box{
-    width: 70%;
-  }
-  .popup{
-    width: 70%;
-  }
-}
-h1 {
-  text-align: center;
-  font-family: Tahoma, Arial, sans-serif;
-  color: #06D85F;
-  margin: 80px 0;
-}
-    </style>
     <body>
         <%@include file="layout.jsp" %>
 
-        <div class="container mt-3">
+        <div class="container mt-5">
 
             <div class="row">
                 <div class="col-md-3 sidebar">
@@ -95,13 +32,7 @@ h1 {
                         Become Owner
                     </button>
                 </div>            
-                <!--                <div class="d-flex justify-content-between align-items-lg-center py-3 flex-column flex-lg-row">
-                                    <h2 class="h5 mb-3 mb-lg-0"><a href="../../pages/admin/customers.html" class="text-muted"><i class="bi bi-arrow-left-square me-2"></i></a> Create new customer</h2>
-                                    <div class="hstack gap-3">
-                                        <button class="btn btn-light btn-sm btn-icon-text"><i class="bi bi-x"></i> <span class="text">Cancel</span></button>
-                                        <button class="btn btn-primary btn-sm btn-icon-text"><i class="bi bi-save"></i> <span class="text">Save</span></button>
-                                    </div>
-                                </div>-->
+
                 <div class="container col-md-9">
                     <form action="/becomesOwnerController" method="post" id="becomeOwner" enctype="multipart/form-data">
                         <!-- Main content -->
@@ -116,7 +47,7 @@ h1 {
                                             <div class="col-lg-12">
                                                 <div class="mb-3">
                                                     <label class="form-label">Name</label>
-                                                    <input type="text" name="name" class="form-control" value="${account.getName()}" disabled="">
+                                                    <input type="text" name="name" class="form-control" value="<%= ac.getName()%>" disabled="">
                                                     <div class="error-message" id="firstnameError"></div>
                                                 </div>
                                             </div>
@@ -125,14 +56,14 @@ h1 {
                                             <div class="col-lg-6">
                                                 <div class="mb-3">
                                                     <label class="form-label">Email</label>
-                                                    <input type="email" name="email" class="form-control" value="${account.getEmail()}" disabled="">
+                                                    <input type="email" name="email" class="form-control" value="<%= ac.getEmail()%>" disabled="">
                                                     <div class="error-message" id="emailError"></div>
                                                 </div>
                                             </div>
                                             <div class="col-lg-6">
                                                 <div class="mb-3">
                                                     <label class="form-label">Phone number</label>
-                                                    <input type="text" name="phone" class="form-control" value="${account.getPhone()}" disabled="">
+                                                    <input type="text" name="phone" class="form-control" value="<%= ac.getPhone()%>" disabled="">
                                                     <div class="error-message" id="phoneError"></div>
                                                 </div>
                                             </div>
@@ -154,11 +85,12 @@ h1 {
                                             <div class="error-message" id="addressError"></div>
                                         </div>
                                         <div class="row">
-                                            <div class="card mb-4">
-                                                <div class="card-body">
-                                                    <h3 class="h6">Business Licens Image</h3>
-                                                    <input class="ml-2" type="file" name="BusinessLicensImage">
+                                            <div class="card mb-4 ml-3">
+                                                <div class="card-body m">
+                                                    <h3 class="h6">Business License Image</h3>
+                                                    <input class="ml-2" type="file" name="BusinessLicensImage" id="BusinessLicensImage">
                                                     <div class="error-message" id="hotelImageError"></div>
+                                                    <img id="imagePreview" src="#" alt="Image Preview" style="display: none; width: 200px; margin-top: 10px;">
                                                 </div>
                                             </div>
                                         </div>
@@ -171,28 +103,40 @@ h1 {
                 </div>
             </div>
         </div>
-        <c:if test="${updateError != null}">
-<!--
-            <div id="popup1" class="overlay">
-                <div class="popup">
-                    <h2>Here i am</h2>
-                    <a class="close" href="#">&times;</a>
-                    <div class="content">
-                        Thank to pop me out of that button, but now i'm done so you can close this window.
+        <c:if test="${updateMesage}">
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>afasfafafa</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
                     </div>
                 </div>
-            </div>-->
+            </div>
+
+            <script>
+                $(document).ready(function () {
+                    $('#exampleModal').modal('show');
+                });
+            </script>
         </c:if>
+
         <script>
             document.getElementById('becomeOwner').addEventListener('submit', function (event) {
                 let isValid = true;
-                
+
                 document.querySelectorAll('.error-message').forEach(function (error) {
                     error.textContent = '';
                 });
-
-              
-                
 
                 // Check hotel
                 let hotel = document.querySelector('input[name="hotel"]');
@@ -220,6 +164,25 @@ h1 {
                     event.preventDefault();
                 }
             });
+
+            // Display image preview
+            document.getElementById('BusinessLicensImage').addEventListener('change', function (event) {
+                let file = event.taile = erget.files[0];
+                if (file) {
+                    let reader = new FileReader();
+                    reader.onload = function (e) {
+                        let img = document.getElementById('imagePreview');
+                        img.src = e.target.result;
+                        img.style.display = 'block';
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    document.getElementById('imagePreview').style.display = 'none';
+                }
+            });
         </script>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     </body>
 </html>

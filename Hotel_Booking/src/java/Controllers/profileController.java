@@ -84,9 +84,6 @@ public class profileController extends HttpServlet {
             } else if (path.endsWith("/ChangePassword")) {
                 request.getRequestDispatcher("/customer/changePassword.jsp").forward(request, response);
             }else if(path.endsWith("/BecomeOwner")){
-                accountDAOs aDAO = new accountDAOs();
-                account ac = aDAO.getAccount(username);
-                request.setAttribute("account", ac);
                 request.getRequestDispatcher("/customer/becomesOwner.jsp").forward(request, response);
             }
         } else {
