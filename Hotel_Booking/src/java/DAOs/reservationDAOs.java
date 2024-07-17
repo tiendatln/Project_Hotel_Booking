@@ -136,7 +136,7 @@ public class reservationDAOs {
         }
         return list;
     }
-    
+
     public List<reservation> getListByPage(List<reservation> list, int start, int end) {
         ArrayList<reservation> arr = new ArrayList<>();
         for (int i = start; i < end; i++) {
@@ -163,6 +163,18 @@ public class reservationDAOs {
         } catch (Exception e) {
         }
         return (count == 0) ? null : newRs;
+    }
+
+    public void setStatusBooking(int re_id, int status) {
+        try {
+            PreparedStatement ps = conn.prepareStatement("UPDATE [dbo].[Reservation]\n"
+                    + " SET [status] = ? \n"
+                    + " WHERE re_id = ?");
+            ps.setInt(1, status);
+            ps.setInt(2, re_id);
+            ps.executeUpdate();
+        } catch (Exception e) {
+        }
     }
 
 //    public boolean getReservationExsitByUsername(String username){

@@ -2,7 +2,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-
 package Controllers;
 
 import DAOs.accountDAOs;
@@ -14,6 +13,7 @@ import Model.account;
 import Model.hotel;
 import Model.reservation;
 import Model.room;
+import Model.roomType;
 import Model.service;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -29,34 +29,37 @@ import java.util.List;
  * @author Ngo Hong Hai - CE171752
  */
 public class reserveManagerController extends HttpServlet {
-   
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
+        try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet reserveManagerController</title>");  
+            out.println("<title>Servlet reserveManagerController</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet reserveManagerController at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet reserveManagerController at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
-    } 
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
+    /**
      * Handles the HTTP <code>GET</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -64,7 +67,7 @@ public class reserveManagerController extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         String action = request.getParameter("action");
         if (action == null) {
             Cookie[] cList = null;
@@ -84,7 +87,8 @@ public class reserveManagerController extends HttpServlet {
             serviceDAOs sd = new serviceDAOs();
             accountDAOs ad = new accountDAOs();
             List<reservation> rs = redb.getBookingByOwner(value);
-
+            List<roomType> roomType = rd.getRoomType();
+            List<hotel> hotel = hd.getHotelByUser(value);
             int i = 0;
             while (i < rs.size()) {
                 room r = rd.getRoomByRoomID(rs.get(i).getRoom().getRoom_id());
@@ -113,12 +117,29 @@ public class reserveManagerController extends HttpServlet {
             request.setAttribute("page", page);
             request.setAttribute("num", num);
             request.setAttribute("ReserveData", reserve);
+            request.setAttribute("RoomTypeData", roomType);
+            request.setAttribute("HotelData", hotel);
             request.getRequestDispatcher("/owner/list-booking.jsp").forward(request, response);
+        } else {
+            reservationDAOs redb = new reservationDAOs();
+            if (action.equalsIgnoreCase("confirm")) {
+                String re_id_raw = request.getParameter("id");
+                int re_id = Integer.parseInt(re_id_raw);
+                redb.setStatusBooking(re_id, 1);
+                response.sendRedirect("/reserveManagerController");
+            }
+            if (action.equalsIgnoreCase("cancle")) {
+                String re_id_raw = request.getParameter("id");
+                int re_id = Integer.parseInt(re_id_raw);
+                redb.setStatusBooking(re_id, 2);
+                response.sendRedirect("/reserveManagerController");
+            }
         }
-    } 
+    }
 
-    /** 
+    /**
      * Handles the HTTP <code>POST</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -126,12 +147,13 @@ public class reserveManagerController extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /** 
+    /**
      * Returns a short description of the servlet.
+     *
      * @return a String containing servlet description
      */
     @Override

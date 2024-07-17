@@ -112,6 +112,7 @@
                                                     <th>Booking Date</th>
                                                     <th>Room ID</th>                                                        
                                                     <th class="max-width" style="max-width: 400px;">Hotel</th>
+                                                    <th>Quantity</th>
                                                     <th class="max-width" style="max-width: 400px;">Price</th>                                                        
                                                     <th class="max-width" style="max-width: 400px;">Status</th>
                                                     <th>Actions</th>
@@ -127,7 +128,8 @@
                                                         <td class="text-nowrap align-middle">${reserve.re_date}</td>
                                                         <td class="text-nowrap align-middle">${reserve.room.room_id}</td>                                                            
                                                         <td class="text-nowrap align-middle"'><span>${reserve.service.hotel.hotel_name}</span></td>
-                                                        <td class="text-nowrap align-middle"'><span>${reserve.list_price}</span></td>
+                                                        <td class="text-nowrap align-middle"'><span>${reserve.quantity}</span></td>
+                                                        <td class="text-nowrap align-middle"'><span>${reserve.list_price}$</span></td>
                                                         <td class="text-nowrap align-middle"><span>                                                                    
                                                                 <c:if test="${reserve.status == 1}">
                                                                     <span style="color: #00CC00">Confirmed</span>
@@ -142,7 +144,9 @@
                                                             </span></td>                                                           
                                                         <td class="text-center align-middle">
                                                             <div class="btn-group align-top">
-                                                                <button class="btn btn-outline-secondary badge" type="button" data-bs-toggle="modal" data-bs-target="#update-form-modal${hotel.hotel_id}"  style="background-color: yellow"><span style="color: #2a383e;">View details</span></button>                                                                
+                                                                <button class="btn btn-outline-secondary badge" type="button" data-bs-toggle="modal" data-bs-target="#view-form-modal${reserve.id}"  style="background-color: #ffc107"><span style="color: #f8f8f8;">View details</span></button>&nbsp;&nbsp;&nbsp;                                                       
+                                                                <button class="btn btn-outline-secondary badge" type="button" onclick="doConfirm('${reserve.id}')" style="background-color: #00CC00"><span style="color: #f8f8f8">Confirm</span></button>&nbsp;
+                                                                <button class="btn btn-outline-secondary badge" type="button" onclick="doCancle('${reserve.id}')" style="background-color: orangered"><span style="color: #f8f8f8;">Cancle</span></button>
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -170,186 +174,184 @@
                 </div>
             </div>
 
-            <!-- Add Hotel Form Modal -->
-            <!--            <div class="modal fade" role="dialog" tabindex="-1" id="add-form-modal" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-                            <div class="modal-dialog modal-lg" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">Add Hotel</h5>                                
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="py-1">
-                                            <form class="form" novalidate="" action="/hotelManagerController?action=inserthotel" method="post">
+            <c:forEach items="${ReserveData}" var="reserve">
+                <!--Add Hotel Form Modal -->
+                <div class="modal fade" role="dialog" tabindex="-1" id="view-form-modal${reserve.id}" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Booking Details #${reserve.id}</h5>                                
+                            </div>
+                            <div class="modal-body">
+                                <div class="py-1">
+                                    <form class="form" novalidate="" action="/reserveManagerController" method="post">
+                                        <div class="mb-2"><b>Room Information</b></div>
+                                        <div class="row">
+                                            <div class="col">
                                                 <div class="row">
                                                     <div class="col">
-                                                        <div class="row">
-                                                            <div class="form-group">
-                                                                <label>Hotel Name</label>
-                                                                <input class="form-control" type="text" name="hotel_name" placeholder="Name of hotel" value="">
-                                                            </div>                                                    
+                                                        <div class="form-group">
+                                                            <label>Room ID</label>
+                                                            <input class="form-control" type="text" name="room_id" value="${reserve.room.room_id}" readonly style="background: #f1f1f1" disabled>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="form-group">
+                                                            <label>Room Name</label>
+                                                            <input class="form-control" type="text" name="name" placeholder="Name of room" value="${reserve.room.room_name}" readonly style="background: #f1f1f1" disabled>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="form-group">
+                                                            <label>Room Type</label>
+                                                            <select name="roomType_id" class="form-control" id="exampleSelect1" readonly style="background: #f1f1f1" disabled>
+                                                                <option>-- Select Room Type --</option>
+                                                                <c:forEach items="${RoomTypeData}" var="roomType">
+                                                                    <option value="${roomType.room_type_id}" ${(reserve.room.room_type.room_type_id == roomType.room_type_id) ? "selected" : ""}>${roomType.name_type}</option>
+                                                                </c:forEach>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="form-group">
+                                                            <label>Hotel</label>
+                                                            <select name="hotel_id" class="form-control" id="exampleSelect1" readonly style="background: #f1f1f1" disabled>
+                                                                <option>-- Select Hotel --</option>
+                                                                <c:forEach items="${HotelData}" var="hotel">
+                                                                    <option value="${hotel.hotel_id}" ${(reserve.room.hotel.hotel_id == hotel.hotel_id) ? "selected" : ""}>${hotel.hotel_name}</option>
+                                                                </c:forEach>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="form-group">
+                                                            <label>Location</label>
+                                                            <input class="form-control" type="text" name="room_id" value="${reserve.service.hotel.hotel_address}" readonly style="background: #f1f1f1" disabled>
+                                                        </div>
+                                                    </div>                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col">
+                                                <div class="mb-2"><b>Customer Information</b></div>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="row">                                                            
+                                                            <div class="col">
+                                                                <div class="form-group">
+                                                                    <label>Username</label>
+                                                                    <input class="form-control" type="text" name="name" placeholder="Name of room" value="${reserve.account.username}" readonly style="background: #f1f1f1" disabled>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col">
+                                                                <div class="form-group">
+                                                                    <label>Email</label>
+                                                                    <input class="form-control" type="text" name="room_id" value="${reserve.account.email}" readonly style="background: #f1f1f1" disabled>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                         <div class="row">
-                                                            <div class="form-group">
-                                                                <label>Hotel Address</label>
-                                                                <input class="form-control" name="hotel_address" type="text" required placeholder="Hotel Address">
-                                                            </div>                                                    
-                                                        </div>                                                
-            
-                                                        <div class="row">
-                                                            <div class="col mb-3">
+                                                            <div class="col">
                                                                 <div class="form-group">
-                                                                    <label>Description</label>
-                                                                    <textarea class="form-control" rows="5" placeholder="Write a description for the hotel" name="hotel_description"></textarea>
+                                                                    <label>Full Name</label>
+                                                                    <input class="form-control" type="text" name="name" placeholder="Name of room" value="${reserve.account.name}" readonly style="background: #f1f1f1" disabled>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col">
+                                                                <div class="form-group">
+                                                                    <label>Telephone</label>
+                                                                    <input class="form-control" type="text" name="room_id" value="${reserve.account.phone}" readonly style="background: #f1f1f1" disabled>
+                                                                </div>
+                                                            </div>
+                                                        </div> 
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <div class="form-group">
+                                                                    <label>ID Number</label>
+                                                                    <input class="form-control" type="text" name="name" placeholder="Name of room" value="${reserve.account.id_number}" readonly style="background: #f1f1f1" disabled>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col">
+                                                                <div class="form-group">
+
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-            
-                                                <div class="row">
-                                                    <div class="col-12 col-sm-6 mb-3">
-                                                        <div class="mb-2"><b>Set Hotel Image</b></div>
-                                                        <div class="row">
-                                                            <div class="col">
-                                                                <div id="myfileupload">
-                                                                    <input type="file" name="hotel_img"/>                                                     
-                                                                </div>  
-                                                            </div>
-                                                        </div>
-            
-                                                    </div>
-            
-                                                </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col d-flex justify-content-end">
-                                                <button class="btn btn-primary" type="submit" name="btnAdd">Add</button>                                                
-                                                <a class="btn btn-cancel" data-bs-dismiss="modal" href="#" style="background-color: crimson; margin-left: 15px; color: white;">Cancle</a>
                                             </div>
                                         </div>
-                                        </form>
-            
-                                    </div>
-                                </div>
-                            </div>
-                        </div>-->
 
-            <!-- Add Service Form Modal -->
-            <!--            <div class="modal fade" role="dialog" tabindex="-1" id="add-service-form-modal" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-                            <div class="modal-dialog modal-lg" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">Add Service</h5>                                
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="py-1">
-                                            <form class="form" novalidate="" action="/hotelManagerController?action=insertservice" method="POST">
-                                                <div class="row">
-                                                    <div class="col">
-                                                        <div class="row">
-                                                            <div class="form-group">
-                                                                <label>Service Name</label>
-                                                                <input class="form-control" type="text" name="service_name" placeholder="Name of service" value="">
-                                                            </div>                                                    
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="form-group">
-                                                                <label>Service Price</label>
-                                                                <input class="form-control" name="service_price" type="number" required min="0" placeholder="Service price">
-                                                            </div>                                                    
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="form-group">
-                                                                <label>Hotel</label>
-                                                                <select name="hotel_id" class="form-control" id="exampleSelect1">
-                                                                    <option>-- Select Hotel --</option>
-            <c:forEach items="${HotelData}" var="hotel">
-                <option value="${hotel.hotel_id}">${hotel.hotel_name}</option>
-            </c:forEach>
-        </select>
-    </div>                                                    
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="row" style='margin-top: 20px;'>
-<div class="col d-flex justify-content-end">
-<button class="btn btn-primary" type="submit" name="btnAdd">Add</button>                                                
-<a class="btn btn-cancel" data-bs-dismiss="modal" href="#" style="background-color: crimson; margin-left: 15px; color: white;">Cancle</a>
-</div>
-</div>
-</form>
-
-</div>
-</div>
-</div>
-</div>-->
-
-            <c:forEach items="${HotelData}" var="hotel">
-                <!-- Update Form Modal -->
-<!--                <div class="modal fade" role="dialog" tabindex="-1" id="update-form-modal${hotel.hotel_id}" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-                    <div class="modal-dialog modal-lg" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Update Hotel</h5>                                
-                            </div>
-                            <div class="modal-body">
-                                <div class="py-1">
-                                    <form class="form" novalidate="" action="/hotelManagerController?action=updatehotel" method="POST">
-                                        <div class="row">
-                                            <div class="col mb-3">
-                                                <div class="form-group">
-                                                    <label>Hotel ID</label>
-                                                    <input class="form-control" type="text" name="hotel_id" value="${hotel.hotel_id}" readonly style="background: #f1f1f1">
-                                                </div>
-                                            </div>
-                                        </div>
                                         <div class="row">
                                             <div class="col">
+                                                <div class="mb-2"><b>Booking Information</b></div>
                                                 <div class="row">
-                                                    <div class="form-group">
-                                                        <label>Hotel Name</label>
-                                                        <input class="form-control" type="text" name="hotel_name" placeholder="Name of hotel" value="${hotel.hotel_name}">
-                                                    </div>                                                                                                                
-                                                </div>
-                                                <div class="row">
-                                                    <div class="form-group">
-                                                        <label>Hotel Address</label>                                                                
-                                                        <input class="form-control" name="hotel_address" type="text" required placeholder="Hotel Address" value="${hotel.hotel_address}">
-                                                    </div>
+                                                    <div class="col">
+                                                        <div class="row">                                                            
+                                                            <div class="col">
+                                                                <div class="form-group">
+                                                                    <label>Check-in Date</label>
+                                                                    <input class="form-control" type="text" name="name" placeholder="Name of room" value="${reserve.check_in_date}" readonly style="background: #f1f1f1" disabled>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col">
+                                                                <div class="form-group">
+                                                                    <label>Check-out Date</label>
+                                                                    <input class="form-control" type="text" name="room_id" value="${reserve.check_out_date}" readonly style="background: #f1f1f1" disabled>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <div class="form-group">
+                                                                    <label>Booking Date</label>
+                                                                    <input class="form-control" type="text" name="name" placeholder="Name of room" value="${reserve.re_date}" readonly style="background: #f1f1f1" disabled>
+                                                                </div>
+                                                            </div>
+                                                                <div class="col" style="margin: 25px 0 30px 0; font-size: 20px">
+                                                                <div class="form-group">
+                                                                    <label>Status: </label>                                                                                                                                                                                        
+                                                                    <c:if test="${reserve.status == 1}">
+                                                                        <span style="color: #00CC00">Confirmed</span>
+                                                                    </c:if>
+                                                                    <c:if test="${reserve.status == 0}">
+                                                                        <span style="color: #007bff">Pending</span>
 
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col mb-3">
-                                                        <div class="form-group">
-                                                            <label>Description</label>
-                                                            <textarea class="form-control" rows="5" placeholder="Write a description for the hotel" name="hotel_description">${hotel.hotel_description}</textarea>
+                                                                    </c:if>
+                                                                    <c:if test="${reserve.status == 2}">
+                                                                        <span style="color: red">Canceled</span>
+                                                                    </c:if>                                                                                                                                      
+                                                                </div>
+                                                            </div>
+                                                        </div> 
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <div class="form-group">
+                                                                    <label>Total Price</label>
+                                                                    <input class="form-control" type="text" name="name" placeholder="Name of room" value="${reserve.list_price}$" readonly style="background: #f1f1f1" disabled>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col">
+                                                                <div class="form-group">
+
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <div class="row">
-                                            <div class="col-12 col-sm-6 mb-3">
-                                                <div class="mb-2"><b>Set Hotel Image</b></div>
-                                                <div class="row">
-                                                    <div class="col">
-                                                        <div id="myfileupload">
-                                                            <input type="file" name="hotel_img" value="${hotel.hotel_img}"/>                                                     
-                                                        </div>  
-                                                    </div>
-                                                </div>
-
-                                            </div>                                                
-                                        </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col d-flex justify-content-end">
-                                        <button class="btn btn-primary" type="submit" name="btnUpdate">Save Changes</button>                                                
-                                        <a class="btn btn-cancel" data-bs-dismiss="modal" href="#" style="background-color: crimson; margin-left: 15px; color: white;">Cancle</a>
+                                    <div class="col d-flex justify-content-end">                                                                                        
+                                        <a class="btn btn-cancel" data-bs-dismiss="modal" href="#" style="background-color: crimson; margin-left: 15px; color: white;">Close</a>
                                     </div>
                                 </div>
                                 </form>
@@ -357,8 +359,10 @@
                             </div>
                         </div>
                     </div>
-                </div>   -->
+                </div>
             </c:forEach>
+
+          
 
         </div>
     </div>  
@@ -370,9 +374,14 @@
 
     <!-- Custom JS -->  
     <script>
-                                                                    function doDelete(id) {
-                                                                        if (confirm("Are you sure to delete hotel with ID = " + id)) {
-                                                                            window.location = "/hotelManagerController?action=deletehotel&id=" + id;
+                                                                    function doConfirm(id) {
+                                                                        if (confirm("Are you sure you want to confirm the booking request with ID = " + id)) {
+                                                                            window.location = "/reserveManagerController?action=confirm&id=" + id;
+                                                                        }
+                                                                    }
+                                                                    function doCancle(id) {
+                                                                        if (confirm("Are you sure you want to cancle the booking request with ID = " + id)) {
+                                                                            window.location = "/reserveManagerController?action=cancle&id=" + id;
                                                                         }
                                                                     }
     </script>
