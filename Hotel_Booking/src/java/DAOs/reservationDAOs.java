@@ -113,7 +113,7 @@ public class reservationDAOs {
                     + "join Room r on re.room_id = r.room_id\n"
                     + "join Hotel h on r.hotel_id = h.hotel_id\n"
                     + "where h.username = ? \n"
-                    + "Order by [status]");
+                    + "Order by re_date desc");
             ps.setString(1, username);
             rs = ps.executeQuery();
             int i = 0;

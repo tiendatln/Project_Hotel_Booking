@@ -60,7 +60,7 @@
                                 <li class="nav-item"><a class="nav-link px-2" href="/profileController"><i class="fa fa-fw fa-user mr-1"></i><span>My Profile</span></a></li>
                                 <li class="nav-item"><a class="nav-link px-2" href="/hotelManagerController"><i class="fa fa-fw fa-th-large mr-1"></i><span>Manage Hotel</span></a></li>
                                 <li class="nav-item"><a class="nav-link px-2" href="/roomManagerController"><i class="fa fa-fw fa-th mr-1"></i><span>Manage Room</span></a></li>
-                                <li class="nav-item"><a class="nav-link px-2" href="/reserveManagerController"><i class="fa fa-fw fa-server mr-1"></i><span>Manage Booking</span></a></li>
+                                <li class="nav-item" style="font-weight: bold"><a class="nav-link px-2" href="/reserveManagerController"><i class="fa fa-fw fa-server mr-1"></i><span>Manage Booking</span></a></li>
                                 <li class="nav-item"><a class="nav-link px-2" href="feedbackManagerController"><i class="fa fa-fw fa-send mr-1"></i><span>Manage Feedback</span></a></li>
                                 <li class="nav-item"><a class="nav-link px-2" href="/logoutController/SignOut"><i class="fa fa-fw fa-arrow-left mr-1"></i><span>Logout</span></a></li>                         
                             </ul>
@@ -83,7 +83,7 @@
                                     <div class="col-xl-3 col-md-6">
                                         <div class="card">
                                             <div class="card-body">
-                                                <form action="#" method="POST">
+                                                <form action="/reserveManagerController" method="POST">
                                                     <div class="form-group mb-0">
 
                                                         <div class="input-group mb-0">
