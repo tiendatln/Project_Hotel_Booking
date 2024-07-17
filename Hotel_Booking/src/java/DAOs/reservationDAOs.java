@@ -177,6 +177,82 @@ public class reservationDAOs {
         }
     }
 
+    public int CountBooking(String username) {
+        ResultSet rs = null;
+        int count = 0;
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT COUNT(*) as 'count'\n"
+                    + "FROM Reservation re\n"
+                    + "join Room r on re.room_id = r.room_id\n"
+                    + "join Hotel h on r.hotel_id = h.hotel_id\n"
+                    + "WHERE h.username = ?");
+            ps.setString(1, username);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                count = rs.getInt(1);
+            }
+        } catch (Exception e) {
+        }
+        return count;
+    }
+
+    public int CountConfirmBooking(String username) {
+        ResultSet rs = null;
+        int count = 0;
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT COUNT(*) as 'count'\n"
+                    + "FROM Reservation re\n"
+                    + "join Room r on re.room_id = r.room_id\n"
+                    + "join Hotel h on r.hotel_id = h.hotel_id\n"
+                    + "WHERE h.username = ? AND re.[status] = 1");
+            ps.setString(1, username);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                count = rs.getInt(1);
+            }
+        } catch (Exception e) {
+        }
+        return count;
+    }
+
+    public int CountCancelBooking(String username) {
+        ResultSet rs = null;
+        int count = 0;
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT COUNT(*) as 'count'\n"
+                    + "FROM Reservation re\n"
+                    + "join Room r on re.room_id = r.room_id\n"
+                    + "join Hotel h on r.hotel_id = h.hotel_id\n"
+                    + "WHERE h.username = ? AND re.[status] = 2");
+            ps.setString(1, username);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                count = rs.getInt(1);
+            }
+        } catch (Exception e) {
+        }
+        return count;
+    }
+
+    public int CountPendingBooking(String username) {
+        ResultSet rs = null;
+        int count = 0;
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT COUNT(*) as 'count'\n"
+                    + "FROM Reservation re\n"
+                    + "join Room r on re.room_id = r.room_id\n"
+                    + "join Hotel h on r.hotel_id = h.hotel_id\n"
+                    + "WHERE h.username = ? AND re.[status] = 0");
+            ps.setString(1, username);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                count = rs.getInt(1);
+            }
+        } catch (Exception e) {
+        }
+        return count;
+    }
+
 //    public boolean getReservationExsitByUsername(String username){
 //        int count = 0;
 //        try {

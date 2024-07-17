@@ -23,7 +23,7 @@ import java.util.logging.Logger;
  * @author tiend
  */
 public class roomDAOs {
-
+    
     Connection conn;
 
     /**
@@ -36,7 +36,7 @@ public class roomDAOs {
             Logger.getLogger(reservationDAOs.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
     public List<room> getAllRoomIDByHotelId(int hotel_id) {
         List<room> list = new ArrayList<>();
         ResultSet rs = null;
@@ -45,7 +45,7 @@ public class roomDAOs {
             ps.setInt(1, hotel_id);
             rs = ps.executeQuery();
             while (rs.next()) {
-
+                
                 list.add(new room(rs.getInt("room_id")));
             }
         } catch (SQLException e) {
@@ -251,7 +251,7 @@ public class roomDAOs {
      * @param room
      */
     public void insertRoom(room room) {
-
+        
         try {
             PreparedStatement ps = conn.prepareStatement("INSERT INTO [dbo].[Room]\n"
                     + "([room_name],[room_price],[room_img],[room_status],[room_description],[room_type_id],[hotel_id])\n"
@@ -273,7 +273,7 @@ public class roomDAOs {
      * @param room_id
      */
     public void deleteRoom(int room_id) {
-
+        
         try {
             PreparedStatement ps = conn.prepareStatement("DELETE FROM [dbo].[Room] WHERE room_id = ?");
             ps.setInt(1, room_id);
@@ -281,7 +281,7 @@ public class roomDAOs {
         } catch (Exception e) {
             System.out.println(e);
         }
-
+        
         try {
             PreparedStatement ps = conn.prepareStatement("DELETE FROM [dbo].[Reservation] WHERE room_id = ?");
             ps.setInt(1, room_id);
@@ -296,7 +296,7 @@ public class roomDAOs {
      * @param room
      */
     public void updateRoom(room room) {
-
+        
         try {
             PreparedStatement ps = conn.prepareStatement("UPDATE [dbo].[Room]\n"
                     + "SET [room_name] = ?\n"
@@ -333,7 +333,7 @@ public class roomDAOs {
             ps.setInt(1, hotel_id);
             rs = ps.executeQuery();
             while (rs.next()) {
-
+                
                 list.add(new room(rs.getString("room_img")));
             }
         } catch (SQLException e) {
@@ -361,8 +361,7 @@ public class roomDAOs {
         }
         return img;
     }
-
-
+    
     public List<Integer> getRoomIfCheckInAndCheckOutDateNotExistOnReservation(Date CheckInDate, Date CheckOutDate, int hotel_id) {
         List<Integer> list = null;
         ResultSet rs = null;
@@ -387,7 +386,7 @@ public class roomDAOs {
         }
         return list;
     }
-
+    
     public List<room> getAllRoomByHotelID(int hotel_id) {
         List<room> r = null;
         ResultSet rs = null;
@@ -406,14 +405,15 @@ public class roomDAOs {
         }
         return r;
     }
-    public room getRoomByRoomID(int room_id){
+    
+    public room getRoomByRoomID(int room_id) {
         room r = null;
         ResultSet rs = null;
         try {
             PreparedStatement ps = conn.prepareStatement("select * from Room where room_id = ?");
             ps.setInt(1, room_id);
             rs = ps.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 hotel h = new hotel(rs.getInt("hotel_id"));
                 roomType rt = new roomType(rs.getInt("room_type_id"));
                 r = new room(rs.getInt("room_id"), rs.getString("room_name"), rs.getInt("room_price"), rs.getString("room_img"),
@@ -422,5 +422,23 @@ public class roomDAOs {
         } catch (Exception e) {
         }
         return r;
+    }
+    
+    public int CountRoom(String username) {
+        ResultSet rs = null;
+        int count = 0;
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT COUNT(*) as 'count'\n"
+                    + "FROM Room r\n"
+                    + "join Hotel h on r.hotel_id = h.hotel_id\n"
+                    + "WHERE h.username = ?");
+            ps.setString(1, username);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                count = rs.getInt(1);
+            }
+        } catch (Exception e) {
+        }
+        return count;
     }
 }

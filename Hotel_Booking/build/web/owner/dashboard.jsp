@@ -61,7 +61,7 @@
                                 <li class="nav-item"><a class="nav-link px-2" href="/hotelManagerController"><i class="fa fa-fw fa-th-large mr-1"></i><span>Manage Hotel</span></a></li>
                                 <li class="nav-item"><a class="nav-link px-2" href="/roomManagerController"><i class="fa fa-fw fa-th mr-1"></i><span>Manage Room</span></a></li>
                                 <li class="nav-item"><a class="nav-link px-2" href="/reserveManagerController"><i class="fa fa-fw fa-server mr-1"></i><span>Manage Booking</span></a></li>
-                                <li class="nav-item"><a class="nav-link px-2" href="#"><i class="fa fa-fw fa-send mr-1"></i><span>Manage Feedback</span></a></li>
+                                <li class="nav-item"><a class="nav-link px-2" href="/feedbackManagerController"><i class="fa fa-fw fa-send mr-1"></i><span>Manage Feedback</span></a></li>
                                 <li class="nav-item"><a class="nav-link px-2" href="/logoutController/SignOut"><i class="fa fa-fw fa-arrow-left mr-1"></i><span>Logout</span></a></li>                         
                             </ul>
                         </div>
@@ -80,46 +80,35 @@
                                 <div class="card-body">
 
                                     <div class="row">
-                                        <div class="col-xl-3 col-md-6">
+                                        <div class="col-xl-4 col-md-6">
                                             <div class="card bg-pattern">
                                                 <div class="card-body">
                                                     <div class="float-right">
                                                         <i class="fa fa-th-large text-primary h4 ml-3"></i>
                                                     </div>
-                                                    <h5 class="font-size-20 mt-0 pt-1">24</h5>
+                                                    <h5 class="font-size-20 mt-0 pt-1">${requestScope.hotel}</h5>
                                                     <p class="text-muted mb-0">Number of hotels</p>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-xl-3 col-md-6">
+                                        <div class="col-xl-4 col-md-6">
                                             <div class="card bg-pattern">
                                                 <div class="card-body">
                                                     <div class="float-right">
                                                         <i class="fa fa-th text-primary h4 ml-3"></i>
                                                     </div>
-                                                    <h5 class="font-size-20 mt-0 pt-1">18</h5>
+                                                    <h5 class="font-size-20 mt-0 pt-1">${requestScope.room}</h5>
                                                     <p class="text-muted mb-0">Number of rooms</p>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="col-xl-3 col-md-6">
-                                            <div class="card bg-pattern">
-                                                <div class="card-body">
-                                                    <div class="float-right">
-                                                        <i class="fa fa-server text-primary h4 ml-3"></i>
-                                                    </div>
-                                                    <h5 class="font-size-20 mt-0 pt-1">06</h5>
-                                                    <p class="text-muted mb-0">Number of bookings</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-3 col-md-6">
+                                        </div>                                       
+                                        <div class="col-xl-4 col-md-6">
                                             <div class="card bg-pattern">
                                                 <div class="card-body">
                                                     <div class="float-right">
                                                         <i class="fa fa-send text-primary h4 ml-3"></i>
                                                     </div>
-                                                    <h5 class="font-size-20 mt-0 pt-1">06</h5>
+                                                    <h5 class="font-size-20 mt-0 pt-1">${requestScope.feedback}</h5>
                                                     <p class="text-muted mb-0">Number of feedbacks</p>
                                                 </div>
                                             </div>
@@ -145,15 +134,15 @@
                                                         <div class="row align-items-center mb-2 d-flex">
                                                             <div class="col-8">
                                                                 <h2 class="d-flex align-items-center mb-0">
-                                                                    3,243
+                                                                    ${requestScope.confirm}
                                                                 </h2>
                                                             </div>
-<!--                                                            <div class="col-4 text-right">
-                                                                <span>12.5% <i class="fa fa-arrow-up"></i></span>
-                                                            </div>-->
+                                                            <!--                                                            <div class="col-4 text-right">
+                                                                                                                            <span>12.5% <i class="fa fa-arrow-up"></i></span>
+                                                                                                                        </div>-->
                                                         </div>
                                                         <div class="progress mt-1 " data-height="8" style="height: 8px;">
-                                                            <div class="progress-bar l-bg-cyan" role="progressbar" data-width="25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%;"></div>
+                                                            <div class="progress-bar l-bg-cyan" role="progressbar" data-width="${requestScope.perconfirm}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: ${requestScope.perconfirm}%;"></div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -168,15 +157,15 @@
                                                         <div class="row align-items-center mb-2 d-flex">
                                                             <div class="col-8">
                                                                 <h2 class="d-flex align-items-center mb-0">
-                                                                    3,243
+                                                                    ${requestScope.pending}
                                                                 </h2>
                                                             </div>
-<!--                                                            <div class="col-4 text-right">
-                                                                <span>12.5% <i class="fa fa-arrow-up"></i></span>
-                                                            </div>-->
+                                                            <!--                                                                                                                        <div class="col-4 text-right">
+                                                                                                                                                                                        <span>12.5% <i class="fa fa-arrow-up"></i></span>
+                                                                                                                                                                                    </div>-->
                                                         </div>
                                                         <div class="progress mt-1 " data-height="8" style="height: 8px;">
-                                                            <div class="progress-bar l-bg-cyan" role="progressbar" data-width="25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%;"></div>
+                                                            <div class="progress-bar l-bg-cyan" role="progressbar" data-width="${requestScope.perpending}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: ${requestScope.perpending}%;"></div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -191,15 +180,15 @@
                                                         <div class="row align-items-center mb-2 d-flex">
                                                             <div class="col-8">
                                                                 <h2 class="d-flex align-items-center mb-0">
-                                                                    3,243
+                                                                    ${requestScope.cancel}
                                                                 </h2>
                                                             </div>
-<!--                                                            <div class="col-4 text-right">
-                                                                <span>12.5% <i class="fa fa-arrow-up"></i></span>
-                                                            </div>-->
+                                                            <!--                                                            <div class="col-4 text-right">
+                                                                                                                            <span>12.5% <i class="fa fa-arrow-up"></i></span>
+                                                                                                                        </div>-->
                                                         </div>
                                                         <div class="progress mt-1 " data-height="8" style="height: 8px;">
-                                                            <div class="progress-bar l-bg-cyan" role="progressbar" data-width="25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%;"></div>
+                                                            <div class="progress-bar l-bg-cyan" role="progressbar" data-width="${requestScope.percancel}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: ${requestScope.percancel}%;"></div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -214,293 +203,25 @@
                                                         <div class="row align-items-center mb-2 d-flex">
                                                             <div class="col-8">
                                                                 <h2 class="d-flex align-items-center mb-0">
-                                                                    3,243
+                                                                    ${requestScope.total}
                                                                 </h2>
                                                             </div>
-<!--                                                            <div class="col-4 text-right">
-                                                                <span>12.5% <i class="fa fa-arrow-up"></i></span>
-                                                            </div>-->
+                                                            <!--                                                            <div class="col-4 text-right">
+                                                                                                                            <span>12.5% <i class="fa fa-arrow-up"></i></span>
+                                                                                                                        </div>-->
                                                         </div>
-                                                        <div class="progress mt-1 " data-height="8" style="height: 8px;">
-                                                            <div class="progress-bar l-bg-cyan" role="progressbar" data-width="25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%;"></div>
+                                                        <div data-height="8" style="height: 8px;">                                                            
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            
+
                                         </div>
                                     </div>
 
 
 
 
-
-
-                                    <!--                                    <div class="e-table">
-                                                                            <div class="table-responsive table-lg mt-3">
-                                                                                <div class="e-tabs mb-3 px-3"></div>
-                                                                                <table class="table table-bordered table-hover" style='word-wrap:break-word'>
-                                                                                    <thead>
-                                                                                        <tr>
-                                                                                            <th>ID</th>
-                                                                                            <th>Username</th>
-                                                                                            <th>Booking Date</th>
-                                                                                            <th class="max-width" style="max-width: 400px;">Room ID</th>                                                        
-                                                                                            <th class="max-width" style="max-width: 400px;">Hotel</th>
-                                                                                            <th class="max-width" style="max-width: 400px;">Price</th>                                                        
-                                                                                            <th class="max-width" style="max-width: 400px;">Status</th>
-                                                                                            <th>Actions</th>
-                                                                                        </tr>
-                                                                                    </thead>
-                                    <c:forEach items="${HotelData}" var="hotel">
-                                        <tbody>
-                                            <tr>
-                                                <td class="align-middle" >
-                                        ${hotel.hotel_id}
-                                    </td>
-                                    <td class="align-middle text-center" style="width: 100px">
-                                        <div class="bg-light d-inline-flex justify-content-center align-items-center align-top" style="width: 70px; height: 35px; border-radius: 3px;"><img src="<%= request.getContextPath()%>/imgs/room/${room.room_img }" alt="" width="75px;" height="40px;"></div>
-                                    </td>
-                                    <td class="text-nowrap align-middle">${hotel.hotel_name}</td>
-                                    <td class="text-nowrap align-middle"  style='max-width: 200px;
-                                        overflow-x: auto;''>${hotel.hotel_address}</td>                                                            
-                                    <td class="text-nowrap align-middle" style='max-width: 200px;
-                                        overflow-x: auto;''><span>${hotel.hotel_description}</span></td>
-                                    <td class="text-nowrap align-middle"style='max-width: 200px;
-                                        overflow-x: auto;' ><span>                                                                    
-                                        <c:set var="c" value="0"/>                                                                                                                                        
-                                        <c:forEach items="${ServiceData}" var="s">
-    
-                                            <c:if test="${hotel.hotel_id==s.hotel.hotel_id}">
-                                                <c:set var="c" value="1"/>        
-                                                ${s.service_name} -                                                                            
-                                            </c:if>
-    
-                                        </c:forEach>
-                                        <c:if test="${c!=1}">
-                                            N/A
-                                        </c:if>
-                                    </span></td>                                                           
-                                <td class="text-center align-middle">
-                                    <div class="btn-group align-top">
-                                        <button class="btn btn-outline-secondary badge" type="button" data-bs-toggle="modal" data-bs-target="#update-form-modal${hotel.hotel_id}" style="color: black;" >Edit</button>
-                                        <button class="btn btn-sm btn-outline-secondary badge trash" type="button" style="color: black" onclick="doDelete('${hotel.hotel_id}')"><i class="fa fa-trash"></i></button>
-                                    </div>
-                                </td>
-                            </tr>
-                                    </c:forEach>
-                                </tbody>
-                            </table>
-                        </div>
-    
-    
-                                    <c:set var="page" value="${page}"/>
-                                    <div class="d-flex justify-content-center">
-                                        <ul class="pagination mt-3 mb-0">
-                                    <c:forEach begin="${1}" end="${num}" var="i">                                                    
-                                        <li class="${i==page?"active page-item":"page-item"}"><a href="/roomManagerController?page=${i}" class="page-link">${i}</a></li>                                                    
-                                    </c:forEach>
-                            </ul>
-                        </div>
-    
-    
-                    </div>
-                </div>
-            </div>
-        </div>
-    
-    </div>
-    </div>-->
-
-                                    <!-- Add Hotel Form Modal -->
-                                    <div class="modal fade" role="dialog" tabindex="-1" id="add-form-modal" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-                                        <div class="modal-dialog modal-lg" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title">Add Hotel</h5>                                
-                                                </div>
-                                                <div class="modal-body">
-                                                    <div class="py-1">
-                                                        <form class="form" novalidate="" action="/hotelManagerController?action=inserthotel" method="post">
-                                                            <div class="row">
-                                                                <div class="col">
-                                                                    <div class="row">
-                                                                        <div class="form-group">
-                                                                            <label>Hotel Name</label>
-                                                                            <input class="form-control" type="text" name="hotel_name" placeholder="Name of hotel" value="">
-                                                                        </div>                                                    
-                                                                    </div>
-                                                                    <div class="row">
-                                                                        <div class="form-group">
-                                                                            <label>Hotel Address</label>
-                                                                            <input class="form-control" name="hotel_address" type="text" required placeholder="Hotel Address">
-                                                                        </div>                                                    
-                                                                    </div>                                                
-
-                                                                    <div class="row">
-                                                                        <div class="col mb-3">
-                                                                            <div class="form-group">
-                                                                                <label>Description</label>
-                                                                                <textarea class="form-control" rows="5" placeholder="Write a description for the hotel" name="hotel_description"></textarea>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="row">
-                                                                <div class="col-12 col-sm-6 mb-3">
-                                                                    <div class="mb-2"><b>Set Hotel Image</b></div>
-                                                                    <div class="row">
-                                                                        <div class="col">
-                                                                            <div id="myfileupload">
-                                                                                <input type="file" name="hotel_img"/>                                                     
-                                                                            </div>  
-                                                                        </div>
-                                                                    </div>
-
-                                                                </div>
-
-                                                            </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col d-flex justify-content-end">
-                                                            <button class="btn btn-primary" type="submit" name="btnAdd">Add</button>                                                
-                                                            <a class="btn btn-cancel" data-bs-dismiss="modal" href="#" style="background-color: crimson; margin-left: 15px; color: white;">Cancle</a>
-                                                        </div>
-                                                    </div>
-                                                    </form>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Add Service Form Modal -->
-                                    <div class="modal fade" role="dialog" tabindex="-1" id="add-service-form-modal" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-                                        <div class="modal-dialog modal-lg" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title">Add Service</h5>                                
-                                                </div>
-                                                <div class="modal-body">
-                                                    <div class="py-1">
-                                                        <form class="form" novalidate="" action="/hotelManagerController?action=insertservice" method="POST">
-                                                            <div class="row">
-                                                                <div class="col">
-                                                                    <div class="row">
-                                                                        <div class="form-group">
-                                                                            <label>Service Name</label>
-                                                                            <input class="form-control" type="text" name="service_name" placeholder="Name of service" value="">
-                                                                        </div>                                                    
-                                                                    </div>
-                                                                    <div class="row">
-                                                                        <div class="form-group">
-                                                                            <label>Service Price</label>
-                                                                            <input class="form-control" name="service_price" type="number" required min="0" placeholder="Service price">
-                                                                        </div>                                                    
-                                                                    </div>
-                                                                    <div class="row">
-                                                                        <div class="form-group">
-                                                                            <label>Hotel</label>
-                                                                            <select name="hotel_id" class="form-control" id="exampleSelect1">
-                                                                                <option>-- Select Hotel --</option>
-                                                                                <c:forEach items="${HotelData}" var="hotel">
-                                                                                    <option value="${hotel.hotel_id}">${hotel.hotel_name}</option>
-                                                                                </c:forEach>
-                                                                            </select>
-                                                                        </div>                                                    
-                                                                    </div>
-
-                                                                </div>
-                                                            </div>
-
-                                                    </div>
-                                                    <div class="row" style='margin-top: 20px;'>
-                                                        <div class="col d-flex justify-content-end">
-                                                            <button class="btn btn-primary" type="submit" name="btnAdd">Add</button>                                                
-                                                            <a class="btn btn-cancel" data-bs-dismiss="modal" href="#" style="background-color: crimson; margin-left: 15px; color: white;">Cancle</a>
-                                                        </div>
-                                                    </div>
-                                                    </form>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <c:forEach items="${HotelData}" var="hotel">
-                                        <!-- Update Form Modal -->
-                                        <div class="modal fade" role="dialog" tabindex="-1" id="update-form-modal${hotel.hotel_id}" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-                                            <div class="modal-dialog modal-lg" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title">Update Hotel</h5>                                
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <div class="py-1">
-                                                            <form class="form" novalidate="" action="/hotelManagerController?action=updatehotel" method="POST">
-                                                                <div class="row">
-                                                                    <div class="col mb-3">
-                                                                        <div class="form-group">
-                                                                            <label>Hotel ID</label>
-                                                                            <input class="form-control" type="text" name="hotel_id" value="${hotel.hotel_id}" readonly style="background: #f1f1f1">
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="row">
-                                                                    <div class="col">
-                                                                        <div class="row">
-                                                                            <div class="form-group">
-                                                                                <label>Hotel Name</label>
-                                                                                <input class="form-control" type="text" name="hotel_name" placeholder="Name of hotel" value="${hotel.hotel_name}">
-                                                                            </div>                                                                                                                
-                                                                        </div>
-                                                                        <div class="row">
-                                                                            <div class="form-group">
-                                                                                <label>Hotel Address</label>                                                                
-                                                                                <input class="form-control" name="hotel_address" type="text" required placeholder="Hotel Address" value="${hotel.hotel_address}">
-                                                                            </div>
-
-                                                                        </div>
-                                                                        <div class="row">
-                                                                            <div class="col mb-3">
-                                                                                <div class="form-group">
-                                                                                    <label>Description</label>
-                                                                                    <textarea class="form-control" rows="5" placeholder="Write a description for the hotel" name="hotel_description">${hotel.hotel_description}</textarea>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="row">
-                                                                    <div class="col-12 col-sm-6 mb-3">
-                                                                        <div class="mb-2"><b>Set Hotel Image</b></div>
-                                                                        <div class="row">
-                                                                            <div class="col">
-                                                                                <div id="myfileupload">
-                                                                                    <input type="file" name="hotel_img" value="${hotel.hotel_img}"/>                                                     
-                                                                                </div>  
-                                                                            </div>
-                                                                        </div>
-
-                                                                    </div>                                                
-                                                                </div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col d-flex justify-content-end">
-                                                                <button class="btn btn-primary" type="submit" name="btnUpdate">Save Changes</button>                                                
-                                                                <a class="btn btn-cancel" data-bs-dismiss="modal" href="#" style="background-color: crimson; margin-left: 15px; color: white;">Cancle</a>
-                                                            </div>
-                                                        </div>
-                                                        </form>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>   
-                                    </c:forEach>
 
                                 </div>
                             </div>  
@@ -511,12 +232,6 @@
                             <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
                             <!-- Custom JS -->  
-                            <script>
-                                function doDelete(id) {
-                                    if (confirm("Are you sure to delete hotel with ID = " + id)) {
-                                        window.location = "/hotelManagerController?action=deletehotel&id=" + id;
-                                    }
-                                }
-                            </script>
+
                             </body>
                             </html>

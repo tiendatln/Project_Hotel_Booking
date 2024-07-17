@@ -193,7 +193,8 @@ public class hotelDAOs {
 
         return list;
     }
-    public hotel getHotelByRoomID(int room_id){
+
+    public hotel getHotelByRoomID(int room_id) {
         hotel h = null;
         ResultSet rs = null;
         try {
@@ -211,5 +212,22 @@ public class hotelDAOs {
             System.out.println(e);
         }
         return h;
+    }
+
+    public int CountHotel(String username) {
+        ResultSet rs = null;
+        int count = 0;       
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT COUNT(*) as 'count'\n"
+                    + "FROM Hotel \n"
+                    + "WHERE username = ?");  
+            ps.setString(1, username);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                count = rs.getInt(1);
+            }
+        } catch (Exception e) {
+        }
+        return count;
     }
 }
