@@ -72,6 +72,9 @@ public class profileController extends HttpServlet {
                     break;
                 }
             }
+            if (flagOwner) {
+                request.getRequestDispatcher("/owner/profileOwner.jsp").forward(request, response);
+            }
             String path = request.getRequestURI();
             if (path.endsWith("/ProfileUser")) {
                 if (flagCustomer || flagOwner) {
