@@ -447,17 +447,18 @@ public class roomDAOs {
         }
         return  room;
     }
-        public static void main(String[] args) throws SQLException {
-        roomDAOs rd = new roomDAOs();
-        List<Integer> i = new ArrayList<>();
-        i.add(1);
-        i.add(2);
-            List<room> rs = rd.getRoom(1,i);
-            int j = 0;
-            while (j < rs.size()) {                
-                System.out.println(rs.get(j).toString());
-                j++;
-            }
-        
-    }
+    
+//        public static void main(String[] args) throws SQLException {
+//        roomDAOs rd = new roomDAOs();
+//        List<Integer> i = new ArrayList<>();
+//        i.add(1);
+//        i.add(2);
+//            List<room> rs = rd.getRoom(1,i);
+//            int j = 0;
+//            while (j < rs.size()) {                
+//                System.out.println(rs.get(j).toString());
+//                j++;
+//            }
+//        
+//    }
 }

@@ -76,6 +76,18 @@ public class reservationDAOs {
         }
         return hotel_id;
     }
+    
+        public void setStatusBooking(int re_id, int status) {
+        try {
+            PreparedStatement ps = conn.prepareStatement("UPDATE [dbo].[Reservation]\n"
+                    + " SET [status] = ? \n"
+                    + " WHERE re_id = ?");
+            ps.setInt(1, status);
+            ps.setInt(2, re_id);
+            ps.executeUpdate();
+        } catch (Exception e) {
+        }
+    }
 
     public List<reservation> getReservationByUsername(String username) {
         List<reservation> list = new ArrayList<>();

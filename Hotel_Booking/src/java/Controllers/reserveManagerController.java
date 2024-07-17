@@ -14,6 +14,7 @@ import Model.account;
 import Model.hotel;
 import Model.reservation;
 import Model.room;
+import Model.roomType;
 import Model.service;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -65,7 +66,7 @@ public class reserveManagerController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        String action = request.getParameter("action");
+String action = request.getParameter("action");
         if (action == null) {
             Cookie[] cList = null;
             String value = "";
@@ -84,7 +85,8 @@ public class reserveManagerController extends HttpServlet {
             serviceDAOs sd = new serviceDAOs();
             accountDAOs ad = new accountDAOs();
             List<reservation> rs = redb.getBookingByOwner(value);
-
+            List<roomType> roomType = rd.getRoomType();
+            List<hotel> hotel = hd.getHotelByUser(value);
             int i = 0;
             while (i < rs.size()) {
                 room r = rd.getRoomByRoomID(rs.get(i).getRoom().getRoom_id());
@@ -113,7 +115,23 @@ public class reserveManagerController extends HttpServlet {
             request.setAttribute("page", page);
             request.setAttribute("num", num);
             request.setAttribute("ReserveData", reserve);
+            request.setAttribute("RoomTypeData", roomType);
+            request.setAttribute("HotelData", hotel);
             request.getRequestDispatcher("/owner/list-booking.jsp").forward(request, response);
+        } else {
+            reservationDAOs redb = new reservationDAOs();
+            if (action.equalsIgnoreCase("confirm")) {
+                String re_id_raw = request.getParameter("id");
+                int re_id = Integer.parseInt(re_id_raw);
+                redb.setStatusBooking(re_id, 1);
+                response.sendRedirect("/reserveManagerController");
+            }
+            if (action.equalsIgnoreCase("cancle")) {
+                String re_id_raw = request.getParameter("id");
+                int re_id = Integer.parseInt(re_id_raw);
+                redb.setStatusBooking(re_id, 2);
+                response.sendRedirect("/reserveManagerController");
+            }
         }
     } 
 
