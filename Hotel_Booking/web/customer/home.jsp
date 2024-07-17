@@ -460,11 +460,13 @@
                 int count = 0;
                 while (rs.next() && range) {
             %>
-            <div class="property-card card" style="margin-top: 10px">
-                <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="">
+            <div class="property-card card" style="margin-top: 10px; flex-direction: row">
+                <div>
+                    <img style="width: 300px" src="<%= request.getContextPath()%>/imgs/hotel/<%= rs.getString("hotel_img")%>" class="card-img-top" alt="">
+                </div>
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
-                        <div>
+                        <div style="width: 400px">
                             <h5 class="property-title"><%= rs.getString("hotel_name")%></h5>
                             <p class="property-details text-success">
                                 <a href="#"><%= rs.getString("hotel_address")%></a> <br>

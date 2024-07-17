@@ -160,18 +160,8 @@ public class bookingController extends HttpServlet {
                 List<room> roomImg = rDAO.getAllRoomImgByHotelId(hotelID);
                 request.setAttribute("loginToReserve", true);
 
-                List<room> room = new ArrayList<>();
-                try {
-                    ResultSet rs = rDAO.getRoomByHotelID(hotelID);
-                    while (rs.next()) {
-                        hotel h = new hotel(rs.getInt("hotel_id"));
-                        roomType rt = new roomType(rs.getInt("room_type_id"));
-                        room.add(new room(rs.getInt("room_id"), rs.getString("room_name"), rs.getInt("room_price"), rs.getString("room_img"),
-                                rs.getBoolean("room_status"), rs.getString("room_description"), rt, h));
-                    }
-                } catch (Exception e) {
-
-                }
+                List<room> room = rDAO.getAllRoomByHotelID(hotelID);
+                
                 request.setAttribute("roomImg", roomImg);
                 request.getSession().setAttribute("hotelID", hotelID);
                 request.setAttribute("room", room);
@@ -275,7 +265,7 @@ public class bookingController extends HttpServlet {
                         hotel h = new hotel(rs.getInt("hotel_id"));
                         roomType rt = new roomType(rs.getInt("room_type_id"));
                         room.add(new room(rs.getInt("room_id"), rs.getString("room_name"), rs.getInt("room_price"), rs.getString("room_img"),
-                                rs.getBoolean("room_status"), rs.getString("room_description"), rt, h));
+                                rs.getBoolean("room_status"), rs.getString("room_description"), rt,rs.getInt("room_capacity"), h));
                     }
                 } catch (Exception e) {
 
@@ -370,7 +360,7 @@ public class bookingController extends HttpServlet {
                         hotel h = new hotel(rs.getInt("hotel_id"));
                         roomType rt = new roomType(rs.getInt("room_type_id"));
                         room.add(new room(rs.getInt("room_id"), rs.getString("room_name"), rs.getInt("room_price"), rs.getString("room_img"),
-                                rs.getBoolean("room_status"), rs.getString("room_description"), rt, h));
+                                rs.getBoolean("room_status"), rs.getString("room_description"), rt,rs.getInt("room_capacity") , h));
                     }
                 } catch (Exception e) {
 

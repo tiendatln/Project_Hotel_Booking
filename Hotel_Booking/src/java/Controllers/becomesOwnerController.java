@@ -118,13 +118,13 @@ public class becomesOwnerController extends HttpServlet {
 
             if (!checkExist) {
                 Part part = request.getPart("BusinessLicensImage");
-                String realPath = getServletContext().getRealPath("/imgs/room/");
                 Path fileName = Paths.get(part.getSubmittedFileName());
-                if (!Files.exists(Paths.get(realPath))) {
-                    Files.createDirectories(Paths.get(realPath));
+                if (!Files.exists(Paths.get(fileImg))) {
+                    Files.createDirectories(Paths.get(fileImg));
                 }
+
                 String BusinessLicensImage = fileName.getFileName().toString();
-                part.write(realPath + "/" + fileName);
+                part.write(fileImg + "/" + fileName);
                 updateRole up = new updateRole(0, hotel_name, address, BusinessLicensImage, ac);
                 if (up == null) {
                     request.setAttribute("updateMesage", "asfaf");

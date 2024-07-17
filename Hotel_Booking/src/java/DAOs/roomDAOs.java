@@ -71,6 +71,25 @@ public class roomDAOs {
         return rs;
     }
     
+   public List<room> getAllRoomByHotelID(int hotel_id){
+       List<room> r = new ArrayList<>();
+       ResultSet rs = null;
+        try {
+            PreparedStatement ps = conn.prepareStatement("select * from Room r join Hotel h on r.hotel_id = h.hotel_id where h.hotel_id = ? ");
+            ps.setInt(1, hotel_id);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                    hotel h = new hotel(rs.getInt("hotel_id"));
+                    roomType rt = new roomType(rs.getInt("room_type_id"));
+                    r.add(new room(rs.getInt("room_id"), rs.getString("room_name"), rs.getInt("room_price"), rs.getString("room_img"),
+                            rs.getBoolean("room_status"), rs.getString("room_description"), rt,rs.getInt("room_capacity"), h));
+                }
+        } catch (SQLException e) {
+            Logger.getLogger(roomDAOs.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return r;
+   }
+    
 
 
     /**
@@ -172,11 +191,11 @@ public class roomDAOs {
         List<roomType> list = new ArrayList<>();
         ResultSet rs = null;
         try {
-            PreparedStatement ps = conn.prepareStatement("select room_type_id, name_type, room_capacity\n"
+            PreparedStatement ps = conn.prepareStatement("select room_type_id, name_type\n"
                     + "from RoomType");
             rs = ps.executeQuery();
             while (rs.next()) {
-                list.add(new roomType(rs.getInt(1), rs.getString(2), rs.getInt(3)));
+                list.add(new roomType(rs.getInt(1), rs.getString(2)));
             }
         } catch (Exception e) {
             System.out.println(e);
@@ -208,7 +227,7 @@ public class roomDAOs {
         List<room> list = new ArrayList<>();
         ResultSet rs = null;
         try {
-            PreparedStatement ps = conn.prepareStatement("select h.hotel_id, r.room_type_id, r.room_id, r.room_name, r.room_price, r.room_img, r.room_status, r.room_description\n"
+            PreparedStatement ps = conn.prepareStatement("select h.hotel_id, r.room_type_id, r.room_id, r.room_name, r.room_price, r.room_img, r.room_status, r.room_description,r.room_capacity\n"
                     + "from Room r\n"
                     + "join Hotel h on r.hotel_id = h.hotel_id\n"
                     + "where h.username = ?");
@@ -216,8 +235,8 @@ public class roomDAOs {
             rs = ps.executeQuery();
             while (rs.next()) {
                 hotel h = new hotel(rs.getInt(1), "", "", "", "");
-                roomType rt = new roomType(rs.getInt(2), "", "", 0);
-                list.add(new room(rs.getInt(3), rs.getString(4), rs.getInt(5), rs.getString(6), rs.getBoolean(7), rs.getString(8), rt, h));
+                roomType rt = new roomType(rs.getInt(2), "", "");
+                list.add(new room(rs.getInt(3), rs.getString(4), rs.getInt(5), rs.getString(6), rs.getBoolean(7), rs.getString(8), rt, rs.getInt("room_capacity"), h));
             }
         } catch (SQLException e) {
             System.out.println(e);
@@ -233,14 +252,14 @@ public class roomDAOs {
     public roomType getRoomTypeByID(int room_type_id) {
         ResultSet rs = null;
         try {
-            PreparedStatement ps = conn.prepareStatement("select rt.room_type_id, name_type, room_capacity\n"
+            PreparedStatement ps = conn.prepareStatement("select rt.room_type_id, name_type\n"
                     + "from RoomType rt \n"
                     + "join Room r on rt.room_type_id = r.room_type_id\n"
                     + "where r.room_type_id = ?");
             ps.setInt(1, room_type_id);
             rs = ps.executeQuery();
             while (rs.next()) {
-                return new roomType(rs.getInt(1), rs.getString(2), rs.getInt(3));
+                return new roomType(rs.getInt(1), rs.getString(2));
             }
         } catch (SQLException e) {
             System.out.println(e);
@@ -390,24 +409,7 @@ public class roomDAOs {
         return list;
     }
 
-    public List<room> getAllRoomByHotelID(int hotel_id) {
-        List<room> r = null;
-        ResultSet rs = null;
-        try {
-            PreparedStatement ps = conn.prepareStatement("select * from Room r join Hotel h on r.hotel_id = h.hotel_id where h.hotel_id = ?");
-            ps.setInt(1, hotel_id);
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                hotel h = new hotel(rs.getInt("hotel_id"));
-                roomType rt = new roomType(rs.getInt("room_type_id"));
-                r.add(new room(rs.getInt("room_id"), rs.getString("room_name"), rs.getInt("room_price"), rs.getString("room_img"),
-                        rs.getBoolean("room_status"), rs.getString("room_description"), rt, h));
-            }
-        } catch (Exception e) {
-            Logger.getLogger(roomDAOs.class.getName()).log(Level.SEVERE, null, e);
-        }
-        return r;
-    }
+    
     public room getRoomByRoomID(int room_id){
         room r = null;
         ResultSet rs = null;
@@ -419,7 +421,7 @@ public class roomDAOs {
                 hotel h = new hotel(rs.getInt("hotel_id"));
                 roomType rt = new roomType(rs.getInt("room_type_id"));
                 r = new room(rs.getInt("room_id"), rs.getString("room_name"), rs.getInt("room_price"), rs.getString("room_img"),
-                        rs.getBoolean("room_status"), rs.getString("room_description"), rt, h);
+                        rs.getBoolean("room_status"), rs.getString("room_description"), rt,rs.getInt("room_capacity"), h);
             }
         } catch (Exception e) {
         }
@@ -437,7 +439,7 @@ public class roomDAOs {
                         hotel hotel = new hotel(hotel_id);
                         roomType rt = new roomType(rs.getInt("room_type_id"));
                         room.add(new room(rs.getInt("room_id"), rs.getString("room_name"), rs.getInt("room_price"),
-                                rs.getString("room_img"), rs.getBoolean("room_status"), rs.getString("room_description"), rt, hotel));
+                                rs.getString("room_img"), rs.getBoolean("room_status"), rs.getString("room_description"), rt,rs.getInt("room_capacity"), hotel));
                     }
                     i++;
                 }

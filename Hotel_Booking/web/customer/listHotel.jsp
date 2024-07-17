@@ -126,10 +126,10 @@
                         ResultSet rs = hDAO.searchHotelByLocal(destination,checkinDate,checkoutDate);
                         while (rs.next()) {
                     %>
-                    <div class="property-card card">
-                        <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="">
+                    <div class="property-card card" style="flex-direction: row;">
+                        <img style="width: 300px" src="<%= request.getContextPath()%>/imgs/hotel/<%= rs.getString("hotel_img")%>" class="card-img-top" alt="">
                         <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex justify-content-between align-items-center" >
                                 <div>
                                     <h5 class="property-title"><%= rs.getString("hotel_name")%></h5>
                                     <p class="property-details text-success">

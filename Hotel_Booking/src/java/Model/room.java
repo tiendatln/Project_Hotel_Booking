@@ -16,6 +16,7 @@ public class room {
     private boolean room_status;
     private String room_description;
     private roomType room_type;
+    private int room_capacity;
     private hotel hotel;
 
     /**
@@ -41,18 +42,8 @@ public class room {
         this.room_id = room_id;
     }
 
-    /**
-     *
-     * @param room_id
-     * @param room_name
-     * @param room_price
-     * @param room_img
-     * @param room_status
-     * @param room_description
-     * @param room_type
-     * @param hotel
-     */
-    public room(int room_id, String room_name, int room_price, String room_img, boolean room_status, String room_description, roomType room_type, hotel hotel) {
+
+    public room(int room_id, String room_name, int room_price, String room_img, boolean room_status, String room_description, roomType room_type, int room_capacity, hotel hotel) {
         this.room_id = room_id;
         this.room_name = room_name;
         this.room_price = room_price;
@@ -60,7 +51,16 @@ public class room {
         this.room_status = room_status;
         this.room_description = room_description;
         this.room_type = room_type;
+        this.room_capacity = room_capacity;
         this.hotel = hotel;
+    }
+
+    public int getRoom_capacity() {
+        return room_capacity;
+    }
+
+    public void setRoom_capacity(int room_capacity) {
+        this.room_capacity = room_capacity;
     }
 
     /**

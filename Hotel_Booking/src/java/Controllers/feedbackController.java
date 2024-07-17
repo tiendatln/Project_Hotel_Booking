@@ -111,18 +111,8 @@ public class feedbackController extends HttpServlet {
             if (feedback == null) {
                 request.setAttribute("errorFeedback", true);
             }
-            List<room> room = new ArrayList<>();
-            try {
-                ResultSet rs = rDAO.getRoomByHotelID(hotel_id);
-                while (rs.next()) {
-                    hotel h = new hotel(rs.getInt("hotel_id"));
-                    roomType rt = new roomType(rs.getInt("room_type_id"));
-                    room.add(new room(rs.getInt("room_id"), rs.getString("room_name"), rs.getInt("room_price"), rs.getString("room_img"),
-                            rs.getBoolean("room_status"), rs.getString("room_description"), rt, h));
-                }
-            } catch (Exception e) {
+            List<room> room = rDAO.getAllRoomByHotelID(hotel_id);
 
-            }
             List<room> roomImg = rDAO.getAllRoomImgByHotelId(hotel_id);
 
             request.setAttribute("roomImg", roomImg);

@@ -17,6 +17,7 @@
         <!-- CSS JS bootstrap 5.0-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+        
         <style>
             body{
                 margin-top:20px;
@@ -134,7 +135,7 @@
                                                             <td class="text-nowrap align-middle">${room.room_name}</td>
                                                             <td class="text-nowrap align-middle">${room.room_price}$</td>
                                                             <td class="text-nowrap align-middle" ><span>${room.room_type.name_type}</span></td>
-                                                            <td class="text-nowrap align-middle" ><span>${room.room_type.room_capacity}</span></td>
+                                                            <td class="text-nowrap align-middle" ><span>${room.room_capacity}</span></td>
                                                             <td class="text-nowrap align-middle" style='max-width: 200px;
                                                                 overflow-x: hidden;'><span>${room.room_description}</span></td>
                                                             <td class="text-nowrap align-middle"><span>${room.hotel.hotel_name}</span></td>

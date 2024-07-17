@@ -7,6 +7,7 @@ package DAOs;
 import DB.DBConnection;
 import Model.account;
 import Model.hotel;
+import Model.reservation;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -109,7 +110,8 @@ public class hotelDAOs {
      * @param local
      * @return
      */
-    public ResultSet searchHotelByLocal(String local, Date CheckInDate, Date CheckOutDate) {
+    public List<reservation> searchHotelByLocal(String local, Date CheckInDate, Date CheckOutDate) {
+        List<reservation> re = new ArrayList<>();
         ResultSet rs = null;
         try {
             PreparedStatement ps = conn.prepareStatement("SELECT * FROM Hotel h \n"
@@ -119,17 +121,20 @@ public class hotelDAOs {
                     + "on rs.room_id = r.room_id \n"
                     + "where hotel_address LIKE ? \n"
                     + "and (check_in_date not BETWEEN ? AND ? \n"
-                    + "or check_out_date not BETWEEN ? AND ?)");
+                    + "and check_out_date not BETWEEN ? AND ?)");
             ps.setString(1, "%" + local + "%");
             ps.setDate(2, CheckInDate);
             ps.setDate(3, CheckOutDate);
             ps.setDate(4, CheckInDate);
             ps.setDate(5, CheckOutDate);
             rs = ps.executeQuery();
+            while (rs.next()) {                
+                
+            }
         } catch (SQLException e) {
             Logger.getLogger(roomDAOs.class.getName()).log(Level.SEVERE, null, e);
         }
-        return rs;
+        return re;
     }
 
     /**

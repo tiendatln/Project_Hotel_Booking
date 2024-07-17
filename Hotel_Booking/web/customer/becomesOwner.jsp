@@ -104,29 +104,11 @@
             </div>
         </div>
         <c:if test="${updateMesage}">
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <p>afasfafafa</p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
 
             <script>
-                $(document).ready(function () {
-                    $('#exampleModal').modal('show');
-                });
+                alert("Send request success.");
+
             </script>
         </c:if>
 
@@ -166,8 +148,9 @@
             });
 
             // Display image preview
+// Display image preview
             document.getElementById('BusinessLicensImage').addEventListener('change', function (event) {
-                let file = event.taile = erget.files[0];
+                let file = event.target.files[0];
                 if (file) {
                     let reader = new FileReader();
                     reader.onload = function (e) {
@@ -180,6 +163,7 @@
                     document.getElementById('imagePreview').style.display = 'none';
                 }
             });
+
         </script>
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
         <!-- Include all compiled plugins (below), or include individual files as needed -->
