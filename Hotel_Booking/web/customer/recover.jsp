@@ -24,15 +24,14 @@
                             <form action="/forgetPasswordOTP" method="post" >
                                 <div class="form-group">
                                     <label for="username">New Password</label>
-                                    <input type="text" class="form-control" id="username" placeholder="Enter username"  name="txtNewPassword" >
+                                    <input type="password" class="form-control" id="newPassword" placeholder="Enter password"  name="txtNewPassword" >
                                 </div>
                                 <div class="form-group">
                                     <label for="password">Confirm Password</label>
-                                    <input type="password" class="form-control" id="password" placeholder="Enter password"  name="txtConfirmPassword" >
+                                    <input type="password" class="form-control" id="confirmPassword" placeholder="Enter password"  name="txtConfirmPassword" >
                                 </div>
-
                                 <div>
-                                    <span id="Error"></span>
+                                    <span id="ErrorPassword" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-primary btn-block" name="btnResetPassword">Reset Password</button>
@@ -46,5 +45,14 @@
                 </div>
             </div>
         </div>
+        <script>
+            function checkPassword() {
+                var newPassword = document.getElementById('newPassword').value;
+                var confirmPassword = document.getElementById('confirmPassword').value;
+                if (newPassword !== confirmPassword) {
+                    document.getElementById('ErrorPassword').innerHTML "New Password and Confirm Password not match!";
+                }
+            }
+        </script>
     </body>
 </html>

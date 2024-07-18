@@ -126,12 +126,11 @@ public class forgetPasswordOTP extends HttpServlet {
                     mySession.setAttribute("email", email);
                     request.getRequestDispatcher("/customer/recoverOTP.jsp").forward(request, response);
                 } else {
+                    request.setAttribute("ErrorEmail", true);
                     request.getRequestDispatcher("/customer/EnterEmailSendOTP.jsp").forward(request, response);
                 }
 
             }
-            request.setAttribute("emailError", true);
-            request.getRequestDispatcher("/customer/EnterEmailSendOTP.jsp").forward(request, response);
         } else if (request.getParameter("btnEnterOTP") != null) {
             int otpEnter = Integer.valueOf(request.getParameter("otp"));
             HttpSession session = request.getSession();

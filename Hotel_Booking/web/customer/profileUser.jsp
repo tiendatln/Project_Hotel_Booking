@@ -90,7 +90,7 @@
                 </div>
                 <div class="col-md-9">
                     <div class="card profile-card">
-                        <img src="https://via.placeholder.com/600x200" class="card-img-top" alt="Profile Cover">
+                        
                         <div class="card-body">
                             <div class="profile-header">User Profile</div>
                             <form action="/profileController/ProfileUser" method="post" onsubmit="return confirmUpdate()">

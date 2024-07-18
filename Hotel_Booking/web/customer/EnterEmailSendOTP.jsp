@@ -40,7 +40,7 @@
     </head>
     <body>
         <div class="container h-100">
-            <div class="row h-100">
+            <div class="row" style="margin-top: 5cm">
                 <div class="col-sm-10 col-md-8 col-lg-6 mx-auto d-table h-100">
                     <div class="d-table-cell align-middle">
 
@@ -61,8 +61,12 @@
                                             <span id="error"></span>
                                         </div>
                                         <div class="text-center mt-3">
-                                            <button type="submit" name="btnSendOTP" class="btn btn-lg btn-primary">Send OTP</button>>
+                                            <button type="submit" name="btnSendOTP" class="btn btn-lg btn-primary">Send OTP</button>
+                                            
                                             <!-- <button type="submit" class="btn btn-lg btn-primary">Reset password</button> -->
+                                        </div>
+                                        <div class="text-center m-2">
+                                            <a href="/loginController/login">Back To Login</a>
                                         </div>
                                     </form>
                                 </div>
@@ -73,9 +77,9 @@
                 </div>
             </div>
         </div>
-        <c:if test="${emailError}">
+        <c:if test="${ErrorEmail}">
             <script>
-                alert("Email is Wrong!");
+                alert("Email is Wrong!"); 
             </script>
         </c:if>
             <script>
