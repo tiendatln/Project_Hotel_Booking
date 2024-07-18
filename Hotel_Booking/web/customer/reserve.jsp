@@ -158,16 +158,9 @@
                                             <td class="text-center font-weight-semibold align-middle p-4">${(roomID.room.room_price * roomID.quantity) * day}$</td>
                                             <td class="align-middle p-4">
                                                 <select class="form-control" id="guests" name="quantity" onchange="submitForm('change')">
-                                                    <option value="1"${roomID.quantity eq 1 ? 'selected' : ''}>1</option>
-                                                    <option value="2"${roomID.quantity eq 2 ? 'selected' : ''}>2</option>
-                                                    <option value="3"${roomID.quantity eq 3 ? 'selected' : ''}>3</option>
-                                                    <option value="4"${roomID.quantity eq 4 ? 'selected' : ''}>4</option>
-                                                    <option value="5"${roomID.quantity eq 5 ? 'selected' : ''}>5</option>
-                                                    <option value="6"${roomID.quantity eq 6 ? 'selected' : ''}>6</option>
-                                                    <option value="7"${roomID.quantity eq 7 ? 'selected' : ''}>7</option>
-                                                    <option value="8"${roomID.quantity eq 8 ? 'selected' : ''}>8</option>
-                                                    <option value="9"${roomID.quantity eq 9 ? 'selected' : ''}>9</option>
-                                                    <option value="10"${roomID.quantity eq 10 ? 'selected' : ''}>10</option>
+                                                    <c:forEach begin="1" end="${roomID.room.room_capacity}" var="i" step="1">
+                                                    <option value="1"${roomID.quantity eq  i ? 'selected' : ''}>${i}</option>
+                                                    </c:forEach>
                                                 </select>
                                             </td>
 
@@ -221,7 +214,7 @@
                         </div>
 
                         <div class="float-right">
-                            <a href="/searchController/HotelDetail/${hotel.getHotel_id()}" class="btn btn-lg btn-default md-btn-flat mt-2 mr-3">Back to shopping</a>
+                            <a href="/searchController/HotelDetail/${checkIndate}/${checkOutDate}/${hotel.getHotel_id()}" class="btn btn-lg btn-default md-btn-flat mt-2 mr-3">Back to shopping</a>
                             <button  onclick="submitForm('submit')" class="btn btn-lg btn-primary mt-2">Booking</button>
                         </div>
                     </form>

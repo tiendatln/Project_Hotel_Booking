@@ -25,49 +25,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>hotel Detail</title>
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-        <style>
-
-            .card {
-                box-shadow: 0 20px 27px 0 rgb(0 0 0 / 5%);
-            }
-            .avatar {
-                width: 3rem;
-                height: 3rem;
-                font-size: .765625rem;
-            }
-            a {
-                text-decoration:none;
-            }
-            .apartment-type {
-                font-size: 1.25rem;
-                font-weight: bold;
-            }
-            .price {
-                color: red;
-                font-weight: bold;
-            }
-            .discount {
-                color: green;
-                font-weight: bold;
-            }
-            .badge {
-                font-size: 0.875rem;
-            }
-            .features {
-                font-size: 0.875rem;
-                color: #555;
-            }
-            .features span {
-                display: block;
-            }
-            .availability-container {
-                margin-top: 20px;
-            }
-            .header-section {
-                padding: 15px;
-                border-bottom: 1px solid #ddd;
-            }
-        </style>
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/hotelDetail.css">
     </head>
 
     <body>
@@ -159,7 +117,7 @@
                 <div class="row mt-3">
                     <form action="/reserveController/submit" method="get" class="container" id="reservationForm" onsubmit="return checkCheckboxes()">
                         <input hidden="" type="date" class="form-control" id="checkInDate" name="checkInDate" value="${checkInDate}" >
-                        
+
                         <input hidden="" type="date" class="form-control" id="checkOutDate" name="checkOutDate" value="${checkOutDate}" >
 
                         <div class="col-12">
@@ -212,7 +170,8 @@
                                                 </div>
                                                 <div class="col-md-2 text-center">
 
-                                                    <span class="price" name="capacity">${ro.room_capacity}</span><br>
+                                                    <span class="price" name="capacity" >${ro.room_capacity}</span><br>
+                                                    <input hidden="" name="quantity" value="${ro.room_capacity}">
                                                 </div>
                                                 <div class="col-md-2 text-center">
                                                     <input type="checkbox" id="roomID" name="roomID" value="${ro.room_id}">
@@ -240,6 +199,9 @@
                                     <input type="text" name="txtComment" class="form-control" placeholder="Type your message">
                                     <input name="username" type="hidden" value="<%= value%>" >
                                     <input name="hotel_id" type="hidden" value="<%= h.getHotel_id()%>" >
+                                    <input hidden="" type="date" class="form-control" id="checkInDate" name="checkInDate" value="${checkInDate}" >
+
+                                    <input hidden="" type="date" class="form-control" id="checkOutDate" name="checkOutDate" value="${checkOutDate}" >
                                     <button class="btn btn-primary" name="btnFeedback">Send</button>
                                 </div>
                             </c:if>

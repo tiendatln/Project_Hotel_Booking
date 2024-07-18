@@ -75,6 +75,14 @@
         <servlet-name>becomesOwnerController</servlet-name>
         <servlet-class>Controllers.becomesOwnerController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>feedbackManagerController</servlet-name>
+        <servlet-class>Controllers.feedbackManagerController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>viewUpdateOwnerControlller</servlet-name>
+        <servlet-class>Controllers.viewUpdateOwnerControlller</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>homeController</servlet-name>
         <url-pattern>/homeController/*</url-pattern>
@@ -159,9 +167,17 @@
         <servlet-name>reserveManagerController</servlet-name>
         <url-pattern>/reserveManagerController/*</url-pattern>
     </servlet-mapping>
-    <servlet-mapping>
+    <servlet-mapping>feedbackManagerController
         <servlet-name>becomesOwnerController</servlet-name>
         <url-pattern>/becomesOwnerController/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>feedbackManagerController</servlet-name>
+        <url-pattern>/feedbackManagerController/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>viewUpdateOwnerControlller</servlet-name>
+        <url-pattern>/viewUpdateOwnerControlller/*</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

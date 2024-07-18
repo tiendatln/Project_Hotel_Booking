@@ -195,13 +195,16 @@ public class reservationDAOs {
         List<reservation> list = new ArrayList<>();
         ResultSet rs = null;
         try {
-            PreparedStatement ps = conn.prepareStatement("select * from Reservation where username = ? ");
+            PreparedStatement ps = conn.prepareStatement("select * from Reservation where username = ? ORDER BY [status] ASC; ");
             ps.setString(1, username);
             rs = ps.executeQuery();
             int i = 0;
             while (rs.next()) {
+                hotelDAOs hDAO = new hotelDAOs();
+                hotel h = hDAO.getHotelByRoomID(rs.getInt("room_id"));
                 service s = new service(rs.getInt("service_id"));
                 room r = new room(rs.getInt("room_id"));
+                r.setHotel(h);
                 account a = new account(rs.getString("username"));
                 list.add(i, new reservation(rs.getInt("re_id"),
                         rs.getInt("status"),
@@ -292,5 +295,115 @@ public class reservationDAOs {
             Logger.getLogger(accountDAOs.class.getName()).log(Level.SEVERE, null, e);
         }
         return false;
+    }
+    public int CountBooking(String username) {
+        ResultSet rs = null;
+        int count = 0;
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT COUNT(*) as 'count'\n"
+                    + "FROM Reservation re\n"
+                    + "join Room r on re.room_id = r.room_id\n"
+                    + "join Hotel h on r.hotel_id = h.hotel_id\n"
+                    + "WHERE h.username = ?");
+            ps.setString(1, username);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                count = rs.getInt(1);
+            }
+        } catch (Exception e) {
+        }
+        return count;
+    }
+
+    public int CountConfirmBooking(String username) {
+        ResultSet rs = null;
+        int count = 0;
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT COUNT(*) as 'count'\n"
+                    + "FROM Reservation re\n"
+                    + "join Room r on re.room_id = r.room_id\n"
+                    + "join Hotel h on r.hotel_id = h.hotel_id\n"
+                    + "WHERE h.username = ? AND re.[status] = 1");
+            ps.setString(1, username);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                count = rs.getInt(1);
+            }
+        } catch (Exception e) {
+        }
+        return count;
+    }
+
+    public int CountCancelBooking(String username) {
+        ResultSet rs = null;
+        int count = 0;
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT COUNT(*) as 'count'\n"
+                    + "FROM Reservation re\n"
+                    + "join Room r on re.room_id = r.room_id\n"
+                    + "join Hotel h on r.hotel_id = h.hotel_id\n"
+                    + "WHERE h.username = ? AND re.[status] = 2");
+            ps.setString(1, username);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                count = rs.getInt(1);
+            }
+        } catch (Exception e) {
+        }
+        return count;
+    }
+
+    public int CountPendingBooking(String username) {
+        ResultSet rs = null;
+        int count = 0;
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT COUNT(*) as 'count'\n"
+                    + "FROM Reservation re\n"
+                    + "join Room r on re.room_id = r.room_id\n"
+                    + "join Hotel h on r.hotel_id = h.hotel_id\n"
+                    + "WHERE h.username = ? AND re.[status] = 0");
+            ps.setString(1, username);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                count = rs.getInt(1);
+            }
+        } catch (Exception e) {
+        }
+        return count;
+    }
+
+    public List<reservation> SearchBooking(String text) {
+        List<reservation> list = new ArrayList<>();
+        ResultSet rs = null;
+        try {
+            PreparedStatement ps = conn.prepareStatement("select re.service_id, r.room_id, re.username, re.re_id, [status], re_date, re.quantity, check_in_date, check_out_date, list_price\n"
+                    + "from Reservation re\n"
+                    + "inner join Room r on re.room_id = r.room_id\n"
+                    + "inner join Hotel h on r.hotel_id = h.hotel_id\n"
+                    + "where re_id LIKE ? OR re.username LIKE ? OR h.hotel_name LIKE ?\n"
+                    + "Order by [status], re_date desc");
+            ps.setString(1, text);
+            ps.setString(2, "%" + text + "%");
+            ps.setString(3, "%" + text + "%");
+            rs = ps.executeQuery();
+            int i = 0;
+            while (rs.next()) {
+                service s = new service(rs.getInt(1));
+                room r = new room(rs.getInt(2));
+                account a = new account(rs.getString(3));
+                list.add(i, new reservation(rs.getInt(4),
+                        rs.getInt(5),
+                        rs.getDate(6),
+                        rs.getInt(7),
+                        rs.getDate(8),
+                        rs.getDate(9),
+                        rs.getInt(10), r, s, a));
+                i++;
+
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(reservationDAOs.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return list;
     }
 }

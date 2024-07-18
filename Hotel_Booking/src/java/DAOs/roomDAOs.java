@@ -505,6 +505,23 @@ public class roomDAOs {
         }
         return room;
     }
+    public int CountRoom(String username) {
+        ResultSet rs = null;
+        int count = 0;
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT COUNT(*) as 'count'\n"
+                    + "FROM Room r\n"
+                    + "join Hotel h on r.hotel_id = h.hotel_id\n"
+                    + "WHERE h.username = ?");
+            ps.setString(1, username);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                count = rs.getInt(1);
+            }
+        } catch (Exception e) {
+        }
+        return count;
+    }
 
 //        public static void main(String[] args) throws SQLException {
 //        roomDAOs rd = new roomDAOs();

@@ -118,18 +118,20 @@ public class searchController extends HttpServlet {
                 boolean reserveExist = true;
                 boolean status = false;
                 int countStatus = 0;
-                while (reserveExist) {
-                    room r = rDAO.getRoomByRoomID(reserve.get(i).getRoom().getRoom_id());
-                    hotel ht = hDAO.getHotelByRoomID(r.getRoom_id());
-                    r.setHotel(ht);
-                    reserve.get(i).setRoom(r);
+                while (reserveExist && i < reserve.size()) {
                     if (reserve.get(i).getRoom().getHotel().getHotel_id() == hotel_id) {
-                        reserveExist = false;
-                        if (reserve.get(i).getStatus() == 1) {
-                            countStatus++;
-                        }
-                        if (countStatus == reserve.size() - 1) {
-                            status = true;
+                        room r = rDAO.getRoomByRoomID(reserve.get(i).getRoom().getRoom_id());
+                        hotel ht = hDAO.getHotelByRoomID(r.getRoom_id());
+                        r.setHotel(ht);
+                        reserve.get(i).setRoom(r);
+                        if (reserve.get(i).getRoom().getHotel().getHotel_id() == hotel_id) {
+                            reserveExist = false;
+                            if (reserve.get(i).getStatus() == 1) {
+                                countStatus++;
+                            }
+                            if (countStatus == reserve.size() - 1) {
+                                status = true;
+                            }
                         }
                     }
                     i++;
@@ -147,11 +149,13 @@ public class searchController extends HttpServlet {
             int i = 0;
             if (!re.isEmpty()) {
                 int j = 0;
+                int countToSetQuantity = 0;
                 while (i < listRoom.size()) { //roomID
                     boolean checkQuantity = true;
                     boolean checkRoomID = true;
                     int countRoom = 0;
                     int quantity = 0;
+                    int checkQuantityOfRoom = 0;
                     int room_id = listRoom.get(i).getRoom_id();
                     int k = 0;
                     while (j < re.size() && checkQuantity && checkRoomID) { //RoomID in reservation
@@ -165,6 +169,7 @@ public class searchController extends HttpServlet {
                                 }
                                 if (k != 0 && roomIdByReservation == room_id) {
                                     quantity += re.get(j).getQuantity();
+
                                 }
                                 k++;
                                 if (quantity >= roomCapacity) {
@@ -175,6 +180,8 @@ public class searchController extends HttpServlet {
                                     } else {
                                         checkQuantity = false;
                                     }
+                                } else {
+                                    checkQuantityOfRoom = quantity;
                                 }
                             } else {
                                 checkRoomID = false;
@@ -184,28 +191,18 @@ public class searchController extends HttpServlet {
                             }
                         }
                     }
-//                    int roomCount = rDAO.getCountRoomByRoomID(listRoom.get(i).getRoom_id());
+
                     if (checkQuantity && 1 > countRoom) {
                         room.add(listRoom.get(i));
+                        int quantityOfRoom = listRoom.get(i).getRoom_capacity();
+                        checkQuantityOfRoom = quantityOfRoom - checkQuantityOfRoom;
+                        room.get(countToSetQuantity).setRoom_capacity(checkQuantityOfRoom);
+                        countToSetQuantity++;
                     }
                     i++;
                 }
                 i = 0;
 
-                while (i < listRoom.size()) {
-                    int countRoomID = 0;
-                    int y = 0;
-                    while (y < re.size()) {
-                        if (listRoom.get(i).getRoom_id() == re.get(y).getRoom().getRoom_id()) {
-                            countRoomID++;
-                        }
-                        y++;
-                    }
-                    if (countRoomID >= re.size()) {
-                        room.add(listRoom.get(i));
-                    }
-                    i++;
-                }
             } else {
                 room = listRoom;
             }
@@ -220,7 +217,7 @@ public class searchController extends HttpServlet {
             request.setAttribute("checkInDate", checkinDate);
             request.setAttribute("checkOutDate", checkoutDate);
             request.getRequestDispatcher("/customer/hotelDetail.jsp").forward(request, response);
-        } 
+        }
     }
 
     /**

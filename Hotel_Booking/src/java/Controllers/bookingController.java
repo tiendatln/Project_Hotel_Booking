@@ -135,7 +135,7 @@ public class bookingController extends HttpServlet {
                             }
                         }
                     }
-                    if(re != null){
+                    if(!re.isEmpty()){
                     totalPrice += totalServicePrice;
                     accountDAOs aDAO = new accountDAOs();
                     hotelDAOs hDAO = new hotelDAOs();
@@ -154,7 +154,7 @@ public class bookingController extends HttpServlet {
                     // Forward the request to hotelDetail.jsp
                     request.getRequestDispatcher("/customer/reserve.jsp").forward(request, response);
                     }else{
-                        
+                        response.sendRedirect("/searchController/HotelDetail/"+CheckInDate+"/"+CheckOutDate+"/"+hotelID);
                     }
                 } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
                     // Handle the error or redirect to an error page

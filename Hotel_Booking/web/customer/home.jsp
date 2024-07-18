@@ -466,9 +466,9 @@
                 Date checkoutDate = new Date(checkoutMillis);
                 while (rs.next() && range) {
             %>
-            <div class="property-card card" style="margin-top: 10px; flex-direction: row">
+            <div class="property-card card" style="margin-top: 10px; flex-direction: row; border-radius: 10px">
                 <div>
-                    <img style="width: 300px" src="<%= request.getContextPath()%>/imgs/hotel/<%= rs.getString("hotel_img")%>" class="card-img-top" alt="">
+                    <img style="width: 300px; border-radius: 10px; " src="<%= request.getContextPath()%>/imgs/hotel/<%= rs.getString("hotel_img")%>" class="card-img-top" alt="">
                 </div>
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
@@ -522,6 +522,8 @@
                 }%>
             <!-- Add more property cards as needed -->
         </div>
+            
+            
         <%
             String massageRegister = (String) request.getSession().getAttribute("massageRegister");
             if (massageRegister != null) {

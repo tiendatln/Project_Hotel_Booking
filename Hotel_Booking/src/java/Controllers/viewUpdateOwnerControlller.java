@@ -4,25 +4,18 @@
  */
 package Controllers;
 
-import DAOs.accountDAOs;
-import DAOs.feedbackDAOs;
-import DAOs.hotelDAOs;
-import DAOs.reservationDAOs;
-import DAOs.roomDAOs;
-import DAOs.serviceDAOs;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author Ngo Hong Hai - CE171752
+ * @author tiend
  */
-public class dashboardController extends HttpServlet {
+public class viewUpdateOwnerControlller extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,10 +34,10 @@ public class dashboardController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet dashboardController</title>");
+            out.println("<title>Servlet viewUpdateOwnerControlller</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet dashboardController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet viewUpdateOwnerControlller at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -62,45 +55,10 @@ public class dashboardController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Cookie[] cList = null;
-        String value = "";
-        cList = request.getCookies(); //Lay tat ca cookie cua website nay tren may nguoi dung
-        if (cList != null) {
-            for (int i = 0; i < cList.length; i++) {//Duyet qua het tat ca cookie           
-                if (cList[i].getName().equals("owner")) {//nguoi dung da dang nhap
-                    value = cList[i].getValue();
-                    break; //thoat khoi vong lap
-                }
-            }
+        String path = request.getRequestURI();
+        if(path.endsWith("/View")){
+            request.getRequestDispatcher("/customer/viewUpdateOwner.jsp").forward(request, response);
         }
-        roomDAOs rd = new roomDAOs();
-        hotelDAOs hd = new hotelDAOs();
-        reservationDAOs redb = new reservationDAOs();
-        serviceDAOs sd = new serviceDAOs();
-        accountDAOs ad = new accountDAOs();
-        feedbackDAOs fdb = new feedbackDAOs();
-        
-        int countHotel = hd.CountHotel(value); 
-        int countRoom = rd.CountRoom(value); 
-        int countFeedback = fdb.CountFeedback(value); 
-        int countTotalBooking = redb.CountBooking(value); 
-        int countConfirm = redb.CountConfirmBooking(value); 
-        int countCancel = redb.CountCancelBooking(value);
-        int countPending = redb.CountPendingBooking(value); 
-        double percent_Confirm = ((double) countConfirm / countTotalBooking) * 100; 
-        double percent_Cancel = ((double) countCancel / countTotalBooking) * 100;
-        double percent_Pending = ((double) countPending / countTotalBooking) * 100;
-        request.setAttribute("hotel", countHotel);
-        request.setAttribute("room", countRoom);
-        request.setAttribute("feedback", countFeedback);
-        request.setAttribute("total", countTotalBooking);
-        request.setAttribute("confirm", countConfirm);
-        request.setAttribute("cancel", countCancel);
-        request.setAttribute("pending", countPending);
-        request.setAttribute("perconfirm", percent_Confirm);
-        request.setAttribute("percancel", percent_Cancel);
-        request.setAttribute("perpending", percent_Pending);
-        request.getRequestDispatcher("/owner/dashboard.jsp").forward(request, response);
     }
 
     /**

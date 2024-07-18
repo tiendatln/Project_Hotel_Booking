@@ -94,7 +94,12 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <button style="width: 200px" type="submit" class="btn btn-primary btn-block" name="btnConfirm">Confirm</button>
+                                        <div >
+                                            <div >
+                                                <button style="width: 200px; margin-bottom: 10px" type="submit" class="btn btn-primary btn-block" name="btnConfirm">Confirm</button>
+                                                <a  href="/viewUpdateOwnerControlller/View">View Request</a>
+                                            </div >
+                                        </div>
                                     </div>
                                 </div>
                             </div>

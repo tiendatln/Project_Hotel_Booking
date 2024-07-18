@@ -107,9 +107,7 @@ public class hotelDAOs {
         return arr;
     }
 
-    
-    
-        public List<hotel> getHotelByLocal(String local) {
+    public List<hotel> getHotelByLocal(String local) {
         List<hotel> h = new ArrayList<>();
         ResultSet rs = null;
         try {
@@ -118,7 +116,7 @@ public class hotelDAOs {
             rs = ps.executeQuery();
             while (rs.next()) {
                 account ac = new account(rs.getString("username"));
-                h.add(new hotel(rs.getInt("hotel_id"), rs.getString("hotel_name"), rs.getString("hotel_address"), 
+                h.add(new hotel(rs.getInt("hotel_id"), rs.getString("hotel_name"), rs.getString("hotel_address"),
                         rs.getString("hotel_img"), rs.getString("hotel_description"), ac));
             }
         } catch (SQLException e) {
@@ -126,9 +124,9 @@ public class hotelDAOs {
         }
         return h;
     }
-    
-        public List<hotel> getHotelListByHotelID(int hotel_id){
-            List<hotel> h = new ArrayList<>();
+
+    public List<hotel> getHotelListByHotelID(int hotel_id) {
+        List<hotel> h = new ArrayList<>();
         ResultSet rs = null;
         try {
             PreparedStatement ps = conn.prepareStatement("SELECT * FROM Hotel where hotel_id = ?");
@@ -136,14 +134,14 @@ public class hotelDAOs {
             rs = ps.executeQuery();
             while (rs.next()) {
                 account ac = new account(rs.getString("username"));
-                h.add(new hotel(rs.getInt("hotel_id"), rs.getString("hotel_name"), rs.getString("hotel_address"), 
+                h.add(new hotel(rs.getInt("hotel_id"), rs.getString("hotel_name"), rs.getString("hotel_address"),
                         rs.getString("hotel_img"), rs.getString("hotel_description"), ac));
             }
         } catch (SQLException e) {
             Logger.getLogger(roomDAOs.class.getName()).log(Level.SEVERE, null, e);
         }
         return h;
-        }
+    }
 
     /**
      *
@@ -206,7 +204,8 @@ public class hotelDAOs {
 
         return list;
     }
-    public hotel getHotelByRoomID(int room_id){
+
+    public hotel getHotelByRoomID(int room_id) {
         hotel h = null;
         ResultSet rs = null;
         try {
@@ -224,5 +223,47 @@ public class hotelDAOs {
             System.out.println(e);
         }
         return h;
+    }
+
+    public int CountHotel(String username) {
+        ResultSet rs = null;
+        int count = 0;
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT COUNT(*) as 'count'\n"
+                    + "FROM Hotel \n"
+                    + "WHERE username = ?");
+            ps.setString(1, username);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                count = rs.getInt(1);
+            }
+        } catch (Exception e) {
+        }
+        return count;
+    }
+
+    public List<hotel> SearchHotelByKeyWord(String text) {
+        List<hotel> list = new ArrayList<>();
+        ResultSet rs = null;
+        try {
+            PreparedStatement ps = conn.prepareStatement("select distinct a.username, h.hotel_id, hotel_name, hotel_address, hotel_img, hotel_description\n"
+                    + "from Hotel h\n"
+                    + "inner join Account a on h.username = a.username\n"
+                    + "inner join [Service] s on h.hotel_id = s.hotel_id\n"
+                    + "where h.hotel_id LIKE ? OR hotel_address LIKE ? OR [service_name] LIKE ?\n"
+                    + "order by h.hotel_id");
+            ps.setString(1, text);
+            ps.setString(2, "%" + text + "%");
+            ps.setString(3, "%" + text + "%");
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                account a = new account(rs.getString(1));
+                list.add(new hotel(rs.getInt(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), a));
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        return list;
     }
 }
