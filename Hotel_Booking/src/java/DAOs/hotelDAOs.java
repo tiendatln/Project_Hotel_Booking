@@ -216,11 +216,11 @@ public class hotelDAOs {
 
     public int CountHotel(String username) {
         ResultSet rs = null;
-        int count = 0;       
+        int count = 0;
         try {
             PreparedStatement ps = conn.prepareStatement("SELECT COUNT(*) as 'count'\n"
                     + "FROM Hotel \n"
-                    + "WHERE username = ?");  
+                    + "WHERE username = ?");
             ps.setString(1, username);
             rs = ps.executeQuery();
             while (rs.next()) {
@@ -229,5 +229,30 @@ public class hotelDAOs {
         } catch (Exception e) {
         }
         return count;
+    }
+
+    public List<hotel> SearchHotelByKeyWord(String text) {
+        List<hotel> list = new ArrayList<>();
+        ResultSet rs = null;
+        try {
+            PreparedStatement ps = conn.prepareStatement("select distinct a.username, h.hotel_id, hotel_name, hotel_address, hotel_img, hotel_description\n"
+                    + "from Hotel h\n"
+                    + "inner join Account a on h.username = a.username\n"
+                    + "inner join [Service] s on h.hotel_id = s.hotel_id\n"
+                    + "where h.hotel_id LIKE ? OR hotel_address LIKE ? OR [service_name] LIKE ?\n"
+                    + "order by h.hotel_id");
+            ps.setString(1, text);
+            ps.setString(2, "%" + text + "%");
+            ps.setString(3, "%" + text + "%");
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                account a = new account(rs.getString(1));
+                list.add(new hotel(rs.getInt(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), a));
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        return list;
     }
 }

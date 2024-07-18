@@ -90,7 +90,7 @@
                                                         <div class="input-group">
                                                             <span class="input-group-addon"><i
                                                                     class="glyphicon glyphicon-envelope color-blue"></i></span> <input
-                                                                placeholder="Room ID"
+                                                                placeholder="Search....."
                                                                 class="form-control" type="text" required="required">
                                                         </div>
                                                         <div class="text-center px-xl-3" style="margin-top: 5px;"><button type="submit" class="btn btn-primary" name="btnSearch">Search</button></div>
@@ -159,7 +159,11 @@
                                             </table>
                                         </div>
 
-
+                                        <div class="d-flex justify-content-center">
+                                            <c:if test="${message}">
+                                                <span>No room found</span>
+                                            </c:if>    
+                                        </div>
                                         <c:set var="page" value="${page}"/>
                                         <div class="d-flex justify-content-center">
                                             <ul class="pagination mt-3 mb-0">
@@ -256,8 +260,8 @@
                                                 <div class="row">
                                                     <div class="col">
                                                         <select name="status" class="form-control" id="exampleSelect1">                                                            
-                                                            <option value="1">Active</option>                                               
-                                                            <option value="0">Inactive</option>                                               
+                                                            <option value="1"><span style="color: #00CC00">Active</span></option>                                               
+                                                            <option value="0"><span style="color: red">Inactive</span></option>                                               
                                                         </select>
                                                     </div>
                                                 </div>
@@ -364,8 +368,8 @@
                                                     <div class="row">
                                                         <div class="col">
                                                             <select name="status" class="form-control" id="exampleSelect1">                                                            
-                                                                <option value="1" ${(room.room_status == true) ? "selected" : ""}>Active</option>                                               
-                                                                <option value="0" ${(room.room_status == false) ? "selected" : ""}>Inactive</option>                                               
+                                                                <option value="1" ${(room.room_status == true) ? "selected" : ""}><span style="color: #00CC00">Active</span></option>                                               
+                                                                <option value="0" ${(room.room_status == false) ? "selected" : ""}><span style="color: red">Inactive</span></option>                                               
                                                             </select>
                                                         </div>
                                                     </div>

@@ -52,7 +52,7 @@ public class hotelManagerController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet hotelManagerController</title>");            
+            out.println("<title>Servlet hotelManagerController</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet hotelManagerController at " + request.getContextPath() + "</h1>");
@@ -75,6 +75,7 @@ public class hotelManagerController extends HttpServlet {
             throws ServletException, IOException {
         String action = request.getParameter("action");
         if (action == null) {
+            String key = request.getParameter("key");
             Cookie[] cList = null;
             String value = "";
             cList = request.getCookies(); //Lay tat ca cookie cua website nay tren may nguoi dung
@@ -90,7 +91,17 @@ public class hotelManagerController extends HttpServlet {
             hotelDAOs hd = new hotelDAOs();
             serviceDAOs sd = new serviceDAOs();
             hotel h = new hotel();
-            List<hotel> hotelList = hd.getHotelByUser(value);
+            List<hotel> hotelList = null;
+            if (key != null) {
+                hotelList = hd.SearchHotelByKeyWord(key);
+            } else {
+                hotelList = hd.getHotelByUser(value);
+            }
+            
+            if (hotelList.size() < 1) {
+                request.setAttribute("message", true);
+            }
+
             List<service> service = sd.getAllService();
             int page, numberpage = 6;
             int size = hotelList.size();
@@ -105,6 +116,7 @@ public class hotelManagerController extends HttpServlet {
             start = (page - 1) * numberpage;
             end = Math.min(page * numberpage, size);
             List<hotel> hotel = hd.getListByPage(hotelList, start, end);
+            request.setAttribute("keyword", key);
             request.setAttribute("page", page);
             request.setAttribute("num", num);
             request.setAttribute("HotelData", hotel);
@@ -149,6 +161,7 @@ public class hotelManagerController extends HttpServlet {
             throws ServletException, IOException {
         String action = request.getParameter("action");
         if (action.equalsIgnoreCase("inserthotel")) {
+
             Cookie[] cList = null;
             String value = "";
             cList = request.getCookies(); //Lay tat ca cookie cua website nay tren may nguoi dung
@@ -245,6 +258,50 @@ public class hotelManagerController extends HttpServlet {
             System.out.println("updated");
             response.sendRedirect("/hotelManagerController");
         }
+
+        if (action.equalsIgnoreCase("search")) {
+            String key = request.getParameter("key");
+            Cookie[] cList = null;
+            String value = "";
+            cList = request.getCookies(); //Lay tat ca cookie cua website nay tren may nguoi dung
+            if (cList != null) {
+                for (int i = 0; i < cList.length; i++) {//Duyet qua het tat ca cookie           
+                    if (cList[i].getName().equals("owner")) {//nguoi dung da dang nhap
+                        value = cList[i].getValue();
+                        break; //thoat khoi vong lap
+                    }
+                }
+            }
+            roomDAOs rd = new roomDAOs();
+            hotelDAOs hd = new hotelDAOs();
+            serviceDAOs sd = new serviceDAOs();
+            hotel h = new hotel();
+            List<hotel> hotelList = hd.SearchHotelByKeyWord(key);
+             if (hotelList.size() < 1) {
+                request.setAttribute("message", true);
+            }
+            List<service> service = sd.getAllService();
+            int page, numberpage = 6;
+            int size = hotelList.size();
+            int num = (size % 6 == 0 ? (size / 6) : ((size / 6)) + 1); // so trang 
+            String xpage = request.getParameter("page");
+            if (xpage == null) {
+                page = 1;
+            } else {
+                page = Integer.parseInt(xpage);
+            }
+            int start, end;
+            start = (page - 1) * numberpage;
+            end = Math.min(page * numberpage, size);
+            List<hotel> hotel = hd.getListByPage(hotelList, start, end);
+            request.setAttribute("keyword", key);
+            request.setAttribute("page", page);
+            request.setAttribute("num", num);
+            request.setAttribute("HotelData", hotel);
+            request.setAttribute("ServiceData", service);
+            request.getRequestDispatcher("/owner/list-hotel.jsp").forward(request, response);
+        }
+
     }
 
     /**

@@ -133,4 +133,29 @@ public class feedbackDAOs {
         return count;
     }
 
+    public List<feedback> SearchFeedbackByKeyWord(String text) {
+        List<feedback> feedbackList = new ArrayList<>();
+        try {
+            PreparedStatement ps = conn.prepareStatement("select f.username, h.hotel_id, feedback_id, comment\n"
+                    + "from Feedback f \n"
+                    + "inner join Hotel h on f.hotel_id = h.hotel_id\n"
+                    + "where feedback_id LIKE ? OR f.username LIKE ? OR h.hotel_name LIKE ?");
+            ps.setString(1, text);
+            ps.setString(2, "%" + text + "%");
+            ps.setString(3, "%" + text + "%");
+            ResultSet rs = ps.executeQuery();
+            int i = 0;
+            while (rs.next()) {
+                account a = new account(rs.getString(1));
+                hotel h = new hotel(rs.getInt(2));
+                feedback feedback = new feedback(rs.getInt(3), rs.getString(4), a, h);
+                feedbackList.add(i, feedback);
+                i++;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Consider proper logging or rethrowing the exception based on your requirement
+        }
+        return feedbackList;
+    }
+
 }

@@ -23,6 +23,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
+import javax.persistence.metamodel.SetAttribute;
 
 /**
  *
@@ -70,6 +71,7 @@ public class reserveManagerController extends HttpServlet {
             throws ServletException, IOException {
         String action = request.getParameter("action");
         if (action == null) {
+            String key = request.getParameter("key");
             Cookie[] cList = null;
             String value = "";
             cList = request.getCookies(); //Lay tat ca cookie cua website nay tren may nguoi dung
@@ -86,7 +88,16 @@ public class reserveManagerController extends HttpServlet {
             reservationDAOs redb = new reservationDAOs();
             serviceDAOs sd = new serviceDAOs();
             accountDAOs ad = new accountDAOs();
-            List<reservation> rs = redb.getBookingByOwner(value);
+            List<reservation> rs = null;
+            if (key != null) {
+                rs = redb.SearchBooking(key);
+            } else {
+                rs = redb.getBookingByOwner(value);
+            }
+
+            if (rs.size() < 1) {
+                request.setAttribute("message", true);
+            }
             List<roomType> roomType = rd.getRoomType();
             List<hotel> hotel = hd.getHotelByUser(value);
             int i = 0;
@@ -114,6 +125,7 @@ public class reserveManagerController extends HttpServlet {
             start = (page - 1) * numberpage;
             end = Math.min(page * numberpage, size);
             List<reservation> reserve = redb.getListByPage(rs, start, end);
+            request.setAttribute("keyword", key);
             request.setAttribute("page", page);
             request.setAttribute("num", num);
             request.setAttribute("ReserveData", reserve);
@@ -148,7 +160,64 @@ public class reserveManagerController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String action = request.getParameter("action");
+        if (action.equalsIgnoreCase("search")) {
+            String key = request.getParameter("key");
+            Cookie[] cList = null;
+            String value = "";
+            cList = request.getCookies(); //Lay tat ca cookie cua website nay tren may nguoi dung
+            if (cList != null) {
+                for (int i = 0; i < cList.length; i++) {//Duyet qua het tat ca cookie           
+                    if (cList[i].getName().equals("owner")) {//nguoi dung da dang nhap
+                        value = cList[i].getValue();
+                        break; //thoat khoi vong lap
+                    }
+                }
+            }
+            roomDAOs rd = new roomDAOs();
+            hotelDAOs hd = new hotelDAOs();
+            reservationDAOs redb = new reservationDAOs();
+            serviceDAOs sd = new serviceDAOs();
+            accountDAOs ad = new accountDAOs();
+            List<reservation> rs = redb.SearchBooking(key);
+            if (rs.size() < 1) {
+                request.setAttribute("message", true);
+            }
+            List<roomType> roomType = rd.getRoomType();
+            List<hotel> hotel = hd.getHotelByUser(value);
+            int i = 0;
+            while (i < rs.size()) {
+                room r = rd.getRoomByRoomID(rs.get(i).getRoom().getRoom_id());
+                account ac = ad.getAccount(rs.get(i).getAccount().getUsername());
+                service s = sd.getServiceByServiceID(rs.get(i).getService().getService_id());
+                hotel h = hd.getHotelDetailById(s.getHotel().getHotel_id());
+                rs.get(i).setRoom(r);
+                rs.get(i).setUsername(ac);
+                rs.get(i).setService(s);
+                rs.get(i).getService().setHotel(h);
+                i++;
+            }
+            int page, numberpage = 6;
+            int size = rs.size();
+            int num = (size % 6 == 0 ? (size / 6) : ((size / 6)) + 1); // so trang 
+            String xpage = request.getParameter("page");
+            if (xpage == null) {
+                page = 1;
+            } else {
+                page = Integer.parseInt(xpage);
+            }
+            int start, end;
+            start = (page - 1) * numberpage;
+            end = Math.min(page * numberpage, size);
+            List<reservation> reserve = redb.getListByPage(rs, start, end);
+            request.setAttribute("keyword", key);
+            request.setAttribute("page", page);
+            request.setAttribute("num", num);
+            request.setAttribute("ReserveData", reserve);
+            request.setAttribute("RoomTypeData", roomType);
+            request.setAttribute("HotelData", hotel);
+            request.getRequestDispatcher("/owner/list-booking.jsp").forward(request, response);
+        }
     }
 
     /**

@@ -89,6 +89,9 @@ public class roomManagerController extends HttpServlet {
             hotel h = new hotel();
             roomType rt = new roomType();
             List<room> roomList = rd.getRoomByUsername(value);
+            if (roomList.size() < 1) {
+                request.setAttribute("message", true);
+            }
             List<roomType> roomType = rd.getRoomType();
             List<hotel> hotel = hd.getHotelByUser(value);
             for (room room : roomList) {

@@ -83,11 +83,11 @@
                                     <div class="col-xl-3 col-md-6">
                                         <div class="card">
                                             <div class="card-body">
-                                                <form action="#" method="POST">
+                                                <form action="/feedbackManagerController?action=search" method="POST">
                                                     <div class="form-group mb-0">
 
                                                         <div class="input-group mb-0">
-                                                            <input type="text" class="form-control" placeholder="Search...." aria-describedby="project-search-addon" />
+                                                            <input type="text" class="form-control" placeholder="Search...." aria-describedby="project-search-addon" name="key" value="${keyword}"/>
                                                             <div class="input-group-append">
                                                                 <button type="submit" class="btn btn-danger" type="button" id="project-search-addon" style="margin-left: 10px"><i class="fa fa-search search-icon font-12"></i></button>
                                                             </div>
@@ -134,12 +134,16 @@
                                         </table>
                                     </div>
 
-
+                                    <div class="d-flex justify-content-center">
+                                        <c:if test="${message}">
+                                            <span>No feedback found</span>
+                                        </c:if>    
+                                    </div>
                                     <c:set var="page" value="${page}"/>
                                     <div class="d-flex justify-content-center">
                                         <ul class="pagination mt-3 mb-0">
                                             <c:forEach begin="${1}" end="${num}" var="i">                                                    
-                                                <li class="${i==page?"active page-item":"page-item"}"><a href="/feedbackManagerController?page=${i}" class="page-link">${i}</a></li>                                                    
+                                                <li class="${i==page?"active page-item":"page-item"}"><a href="/feedbackManagerController?page=${i}&keyword=${keyword}" class="page-link">${i}</a></li>                                                    
                                                 </c:forEach>
                                         </ul>
                                     </div>

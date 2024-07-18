@@ -113,7 +113,7 @@ public class reservationDAOs {
                     + "join Room r on re.room_id = r.room_id\n"
                     + "join Hotel h on r.hotel_id = h.hotel_id\n"
                     + "where h.username = ? \n"
-                    + "Order by re_date desc");
+                    + "Order by [status], re_date desc");
             ps.setString(1, username);
             rs = ps.executeQuery();
             int i = 0;
@@ -251,6 +251,41 @@ public class reservationDAOs {
         } catch (Exception e) {
         }
         return count;
+    }
+
+    public List<reservation> SearchBooking(String text) {
+        List<reservation> list = new ArrayList<>();
+        ResultSet rs = null;
+        try {
+            PreparedStatement ps = conn.prepareStatement("select re.service_id, r.room_id, re.username, re.re_id, [status], re_date, re.quantity, check_in_date, check_out_date, list_price\n"
+                    + "from Reservation re\n"
+                    + "inner join Room r on re.room_id = r.room_id\n"
+                    + "inner join Hotel h on r.hotel_id = h.hotel_id\n"
+                    + "where re_id LIKE ? OR re.username LIKE ? OR h.hotel_name LIKE ?\n"
+                    + "Order by [status], re_date desc");
+            ps.setString(1, text);
+            ps.setString(2, "%" + text + "%");
+            ps.setString(3, "%" + text + "%");
+            rs = ps.executeQuery();
+            int i = 0;
+            while (rs.next()) {
+                service s = new service(rs.getInt(1));
+                room r = new room(rs.getInt(2));
+                account a = new account(rs.getString(3));
+                list.add(i, new reservation(rs.getInt(4),
+                        rs.getInt(5),
+                        rs.getDate(6),
+                        rs.getInt(7),
+                        rs.getDate(8),
+                        rs.getDate(9),
+                        rs.getInt(10), r, s, a));
+                i++;
+
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(reservationDAOs.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return list;
     }
 
 //    public boolean getReservationExsitByUsername(String username){

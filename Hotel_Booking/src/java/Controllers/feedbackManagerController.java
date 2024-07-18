@@ -72,6 +72,7 @@ public class feedbackManagerController extends HttpServlet {
             throws ServletException, IOException {
         String action = request.getParameter("action");
         if (action == null) {
+            String key = request.getParameter("key"); 
             Cookie[] cList = null;
             String value = "";
             cList = request.getCookies(); //Lay tat ca cookie cua website nay tren may nguoi dung
@@ -90,7 +91,16 @@ public class feedbackManagerController extends HttpServlet {
             accountDAOs ad = new accountDAOs();
             feedbackDAOs fdb = new feedbackDAOs();
             List<hotel> hotel = hd.getHotelByUser(value);
-            List<feedback> fb = fdb.getFeedbackByOwner(value);
+            List<feedback> fb = null; 
+            if (key != null) {
+                fb = fdb.SearchFeedbackByKeyWord(key); 
+            } else {
+                fb = fdb.getFeedbackByOwner(value);
+            }
+            
+            if (fb.size() < 1) {
+                request.setAttribute("message", true);
+            }
             int i = 0;
             while (i < fb.size()) {
                 account ac = ad.getAccount(fb.get(i).getAccount().getUsername());
@@ -112,6 +122,7 @@ public class feedbackManagerController extends HttpServlet {
             start = (page - 1) * numberpage;
             end = Math.min(page * numberpage, size);
             List<feedback> feedback = fdb.getListByPage(fb, start, end);
+            request.setAttribute("keyword", key);
             request.setAttribute("page", page);
             request.setAttribute("num", num);
             request.setAttribute("HotelData", hotel);
@@ -131,7 +142,59 @@ public class feedbackManagerController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String action = request.getParameter("action"); 
+        if (action.equalsIgnoreCase("search")) {
+            String key = request.getParameter("key"); 
+            Cookie[] cList = null;
+            String value = "";
+            cList = request.getCookies(); //Lay tat ca cookie cua website nay tren may nguoi dung
+            if (cList != null) {
+                for (int i = 0; i < cList.length; i++) {//Duyet qua het tat ca cookie           
+                    if (cList[i].getName().equals("owner")) {//nguoi dung da dang nhap
+                        value = cList[i].getValue();
+                        break; //thoat khoi vong lap
+                    }
+                }
+            }
+            roomDAOs rd = new roomDAOs();
+            hotelDAOs hd = new hotelDAOs();
+            reservationDAOs redb = new reservationDAOs();
+            serviceDAOs sd = new serviceDAOs();
+            accountDAOs ad = new accountDAOs();
+            feedbackDAOs fdb = new feedbackDAOs();
+            List<hotel> hotel = hd.getHotelByUser(value);
+            List<feedback> fb = fdb.SearchFeedbackByKeyWord(key);
+            if (fb.size() < 1) {
+                request.setAttribute("message", true);
+            }
+            int i = 0;
+            while (i < fb.size()) {
+                account ac = ad.getAccount(fb.get(i).getAccount().getUsername());
+                hotel h = hd.getHotelDetailById(fb.get(i).getHotel().getHotel_id());
+                fb.get(i).setAccount(ac);
+                fb.get(i).setHotel(h);
+                i++;
+            }
+            int page, numberpage = 6;
+            int size = fb.size();
+            int num = (size % 6 == 0 ? (size / 6) : ((size / 6)) + 1); // so trang 
+            String xpage = request.getParameter("page");
+            if (xpage == null) {
+                page = 1;
+            } else {
+                page = Integer.parseInt(xpage);
+            }
+            int start, end;
+            start = (page - 1) * numberpage;
+            end = Math.min(page * numberpage, size);
+            List<feedback> feedback = fdb.getListByPage(fb, start, end);
+            request.setAttribute("keyword", key);
+            request.setAttribute("page", page);
+            request.setAttribute("num", num);
+            request.setAttribute("HotelData", hotel);
+            request.setAttribute("FeedbackData", feedback);
+            request.getRequestDispatcher("/owner/list-feedback.jsp").forward(request, response);
+        }
     }
 
     /**

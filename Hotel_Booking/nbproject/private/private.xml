@@ -2,6 +2,10 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/D:/FPT%20programming/Java%20web/Project_Hotel_Booking-main/Hotel_Booking/web/owner/list-hotel.jsp</file>
+            <file>file:/D:/FPT%20programming/Java%20web/Project_Hotel_Booking-main/Hotel_Booking/src/java/Controllers/hotelManagerController.java</file>
+            <file>file:/D:/FPT%20programming/Java%20web/Project_Hotel_Booking-main/Hotel_Booking/src/java/DAOs/serviceDAOs.java</file>
+        </group>
     </open-files>
 </project-private>

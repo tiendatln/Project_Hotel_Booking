@@ -83,11 +83,11 @@
                                     <div class="col-xl-3 col-md-6">
                                         <div class="card">
                                             <div class="card-body">
-                                                <form action="/reserveManagerController" method="POST">
+                                                <form action="/reserveManagerController?action=search" method="POST">
                                                     <div class="form-group mb-0">
 
                                                         <div class="input-group mb-0">
-                                                            <input type="text" class="form-control" placeholder="Booking ID" aria-describedby="project-search-addon" />
+                                                            <input type="text" class="form-control" placeholder="Search......" aria-describedby="project-search-addon" name="key" value="${keyword}"/>
                                                             <div class="input-group-append">
                                                                 <button type="submit" class="btn btn-danger" type="button" id="project-search-addon" style="margin-left: 10px"><i class="fa fa-search search-icon font-12"></i></button>
                                                             </div>
@@ -155,12 +155,17 @@
                                         </table>
                                     </div>
 
+                                    <div class="d-flex justify-content-center">
+                                        <c:if test="${message}">
+                                            <span>No booking found</span>
+                                        </c:if>    
+                                    </div>
 
                                     <c:set var="page" value="${page}"/>
                                     <div class="d-flex justify-content-center">
                                         <ul class="pagination mt-3 mb-0">
                                             <c:forEach begin="${1}" end="${num}" var="i">                                                    
-                                                <li class="${i==page?"active page-item":"page-item"}"><a href="/reserveManagerController?page=${i}" class="page-link">${i}</a></li>                                                    
+                                                <li class="${i==page?"active page-item":"page-item"}"><a href="/reserveManagerController?page=${i}&key=${keyword}" class="page-link">${i}</a></li>                                                    
                                                 </c:forEach>
                                         </ul>
                                     </div>
@@ -314,7 +319,7 @@
                                                                     <input class="form-control" type="text" name="name" placeholder="Name of room" value="${reserve.re_date}" readonly style="background: #f1f1f1" disabled>
                                                                 </div>
                                                             </div>
-                                                                <div class="col" style="margin: 25px 0 30px 0; font-size: 20px">
+                                                            <div class="col" style="margin: 25px 0 30px 0; font-size: 20px">
                                                                 <div class="form-group">
                                                                     <label>Status: </label>                                                                                                                                                                                        
                                                                     <c:if test="${reserve.status == 1}">
@@ -362,7 +367,7 @@
                 </div>
             </c:forEach>
 
-          
+
 
         </div>
     </div>  
