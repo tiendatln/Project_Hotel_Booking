@@ -4,6 +4,10 @@
     Author     : tiend
 --%>
 
+<%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
+<%@page import="Model.hotel"%>
+<%@page import="java.util.List"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="DAOs.hotelDAOs"%>
 <%@page import="java.sql.Date"%>
 <%@page import="DAOs.serviceDAOs"%>
@@ -74,12 +78,12 @@
     <body>
         <%@include file="layout.jsp" %>
         <%
-            String destination = (String) request.getSession().getAttribute("destination");
-            String roomType = (String) request.getSession().getAttribute("roomType");
-            long checkin = (long) request.getSession().getAttribute("checkin");
-            long checkout = (long) request.getSession().getAttribute("checkout");
+            String destination = (String) request.getAttribute("destination");
+            long checkin = (long) request.getAttribute("checkin");
+            long checkout = (long) request.getAttribute("checkout");
             Date checkinDate = new Date(checkin);
             Date checkoutDate = new Date(checkout);
+            int i = 0;
         %>
         <div class="container mt-4">
             <div class="row">
@@ -120,58 +124,47 @@
                     </div>
                 </div>
                 <div class="col-md-9">
-                    <%
-                        roomDAOs roomDAO = new roomDAOs();
-                        hotelDAOs hDAO = new hotelDAOs();
-                        ResultSet rs = hDAO.searchHotelByLocal(destination,checkinDate,checkoutDate);
-                        while (rs.next()) {
-                    %>
+                    <c:forEach items="${hotel}" var="h">
+                  
                     <div class="property-card card" style="flex-direction: row;">
-                        <img style="width: 300px" src="<%= request.getContextPath()%>/imgs/hotel/<%= rs.getString("hotel_img")%>" class="card-img-top" alt="">
+                        <img style="width: 250px; height: 250px; border-radius: 10px;" src="<%= request.getContextPath()%>/imgs/hotel/${h.hotel_img}" class="card-img-top" alt="">
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-center" >
                                 <div>
-                                    <h5 class="property-title"><%= rs.getString("hotel_name")%></h5>
+                                    <h5 class="property-title">${h.hotel_name}</h5>
                                     <p class="property-details text-success">
-                                        <a href="#"><%= rs.getString("hotel_address")%></a> <br>
+                                        <a href="#">${h.hotel_address}</a> <br>
                                         Service: 
-                                        <%
-                                            serviceDAOs sDAO = new serviceDAOs();
-                                            ResultSet rsv = sDAO.getServiceByHotelID(rs.getInt("hotel_id"));
-                                            while (rsv.next()) {
-                                        %>
-                                        <%= rsv.getString("service_name")%>.
-                                        <% }%>
+                                        
+                                        <c:forEach items="${service}" var="s">
+                                            <c:if test="${s.hotel.hotel_id == h.hotel_id}">
+                                                ${s.service_name} -
+                                            </c:if>
+                                        </c:forEach>
+                                        
                                         <br>
-
-                                        <%
-                                            ResultSet rrt = roomDAO.showRoomTypeByHotelID(rs.getInt("hotel_id"));
-                                            while (rrt.next()) {
-                                        %>
-
-                                        <%= rrt.getString("name_type")%>.
-
-                                        <%
-                                            }
-                                        %>
                                     </p>
                                 </div>
                                 <div class="text-right">
                                     <p class="price">
                                         <%
-                                            int lowPrice = roomDAO.getLowPrice(rs.getInt("hotel_id"));
-                                            int highPrice = roomDAO.getHighPrice(rs.getInt("hotel_id"));
+                                            roomDAOs roomDAO = new roomDAOs();
+                                            List<hotel> ht = (List<hotel>) request.getAttribute("hotel");
+                                            int lowPrice = roomDAO.getLowPrice(ht.get(i).getHotel_id());
+                                            int highPrice = roomDAO.getHighPrice(ht.get(i).getHotel_id());
+                                            i++;
                                         %>
                                         $<%= lowPrice%> - $<%= highPrice%>
                                     </p>
 
                                     <p>Includes taxes and fees</p>
-                                    <a class="btn btn-primary" href="/searchController/HotelDetail/<%= rs.getInt("hotel_id")%>" >See availability</a>
+                                    <a class="btn btn-primary" href="/searchController/HotelDetail/${h.hotel_address}/<%= checkinDate %>/<%= checkoutDate %>/${h.hotel_id}" >See availability</a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <% }%>
+                    
+                    </c:forEach>
                     <!-- Add more property cards as needed -->
                 </div>
             </div>

@@ -1,3 +1,4 @@
+<%@page import="java.sql.Date"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="DAOs.hotelDAOs"%>
 <%@page import="DAOs.serviceDAOs"%>
@@ -458,6 +459,11 @@
                 ResultSet rs = hDAO.getAllHotel();
                 boolean range = true;
                 int count = 0;
+                long millis = System.currentTimeMillis();
+                long tenDaysInMillis = 1L * 24 * 60 * 60 * 1000;
+                long checkoutMillis = millis + tenDaysInMillis;
+                Date checkinDate = new Date(millis);
+                Date checkoutDate = new Date(checkoutMillis);
                 while (rs.next() && range) {
             %>
             <div class="property-card card" style="margin-top: 10px; flex-direction: row">
@@ -503,7 +509,7 @@
                             </p>
 
                             <p>Includes taxes and fees</p>
-                            <a class="btn btn-primary" href="/searchController/HotelDetail/<%= rs.getInt("hotel_id")%>" >See availability</a>
+                            <a class="btn btn-primary" href="/searchController/HotelDetail/<%= rs.getString("hotel_address")%>/<%= checkinDate %>/<%= checkoutDate %>/<%= rs.getInt("hotel_id")%>" >See availability</a>
                         </div>
                     </div>
                 </div>
@@ -527,11 +533,6 @@
                 request.getSession().removeAttribute("massageRegister");
             }
         %>
-        <c:if test="${searchError}">
-            <script>
-                alert("Location not found!");
-            </script>
-        </c:if>
         <c:if test="${searchError}">
             <script>
                 alert("Location not found!");

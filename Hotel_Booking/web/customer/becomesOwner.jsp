@@ -107,7 +107,15 @@
 
 
             <script>
-                alert("Send request success.");
+                alert("The send request success.");
+
+            </script>
+        </c:if>
+        <c:if test="${updateExist}">
+
+
+            <script>
+                alert("The send request already exists.");
 
             </script>
         </c:if>

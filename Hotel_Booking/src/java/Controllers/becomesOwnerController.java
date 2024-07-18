@@ -125,7 +125,7 @@ public class becomesOwnerController extends HttpServlet {
 
                 String BusinessLicensImage = fileName.getFileName().toString();
                 part.write(fileImg + "/" + fileName);
-                updateRole up = new updateRole(0, hotel_name, address, BusinessLicensImage, ac);
+                updateRole up = new updateRole(0, hotel_name, address, BusinessLicensImage, 0, ac);
                 if (up == null) {
                     request.setAttribute("updateMesage", "asfaf");
                     request.getRequestDispatcher("/customer/becomesOwner.jsp").forward(request, response);
@@ -136,8 +136,10 @@ public class becomesOwnerController extends HttpServlet {
                         request.getRequestDispatcher("/customer/becomesOwner.jsp").forward(request, response);
                     }
                 }
+                request.setAttribute("updateMesage", true);
+                request.getRequestDispatcher("/customer/becomesOwner.jsp").forward(request, response);
             }
-            request.setAttribute("updateMesage", true);
+            request.setAttribute("updateExist", true);
             request.getRequestDispatcher("/customer/becomesOwner.jsp").forward(request, response);
         }
     }

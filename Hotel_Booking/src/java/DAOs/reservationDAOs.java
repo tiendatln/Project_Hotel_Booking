@@ -12,6 +12,7 @@ import Model.room;
 import Model.service;
 import java.math.BigDecimal;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -58,6 +59,106 @@ public class reservationDAOs {
 
     /**
      *
+     * @param local
+     * @return
+     */
+    public List<reservation> getReservationAndHotelByLocalAndDate(String local, Date CheckInDate, Date CheckOutDate) {
+        List<reservation> re = new ArrayList<>();
+        ResultSet rs = null;
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM Hotel h \n"
+                    + "join Room r on r.hotel_id = h.hotel_id \n"
+                    + "join Reservation rs on rs.room_id = r.room_id \n"
+                    + "where hotel_address LIKE ? and (? BETWEEN check_in_date \n"
+                    + "AND check_out_date or ? BETWEEN check_in_date and check_out_date)\n"
+                    + "or (check_in_date BETWEEN ? AND ? \n"
+                    + "or check_out_date BETWEEN ? and ?)\n"
+                    + "ORDER BY h.hotel_id, r.room_id  ASC;");
+            ps.setString(1, "%" + local + "%");
+            ps.setDate(2, CheckInDate);
+            ps.setDate(3, CheckOutDate);
+            ps.setDate(4, CheckInDate);
+            ps.setDate(5, CheckOutDate);
+            ps.setDate(6, CheckInDate);
+            ps.setDate(7, CheckOutDate);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                roomDAOs rDAO = new roomDAOs();
+                hotelDAOs hDAO = new hotelDAOs();
+                room r = rDAO.getRoomByRoomID(rs.getInt("room_id"));
+                hotel h = hDAO.getHotelByRoomID(r.getRoom_id());
+                r.setHotel(h);
+                service sv = new service(rs.getInt("service_id"));
+                account ac = new account(rs.getString("username"));
+                re.add(new reservation(rs.getInt("re_id"), rs.getInt("status"), rs.getDate("re_date"), rs.getInt("quantity"),
+                        rs.getDate("check_in_date"), rs.getDate("check_out_date"),
+                        rs.getInt("list_price"), r, sv, ac));
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(roomDAOs.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return re;
+    }
+
+    public List<reservation> getReservationAndRoomByLocalAndDate(String local, Date CheckInDate, Date CheckOutDate, int hotel_id) {
+        List<reservation> re = new ArrayList<>();
+        ResultSet rs = null;
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT * \n"
+                    + "FROM Hotel h \n"
+                    + "JOIN Room r ON r.hotel_id = h.hotel_id \n"
+                    + "JOIN Reservation rs ON rs.room_id = r.room_id \n"
+                    + "WHERE h.hotel_address LIKE ? \n"
+                    + "  AND ((? BETWEEN rs.check_in_date AND rs.check_out_date \n"
+                    + "        OR ? BETWEEN rs.check_in_date AND rs.check_out_date) \n"
+                    + "       OR (rs.check_in_date BETWEEN ? AND ? \n"
+                    + "           OR rs.check_out_date BETWEEN ? AND ?)) \n"
+                    + "  AND h.hotel_id = ? \n"
+                    + "ORDER BY h.hotel_id, r.room_id ASC;");
+            ps.setString(1, "%" + local + "%");
+            ps.setDate(2, CheckInDate);
+            ps.setDate(3, CheckOutDate);
+            ps.setDate(4, CheckInDate);
+            ps.setDate(5, CheckOutDate);
+            ps.setDate(6, CheckInDate);
+            ps.setDate(7, CheckOutDate);
+            ps.setInt(8, hotel_id);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                roomDAOs rDAO = new roomDAOs();
+                hotelDAOs hDAO = new hotelDAOs();
+                room r = rDAO.getRoomByRoomID(rs.getInt("room_id"));
+                hotel h = hDAO.getHotelByRoomID(r.getRoom_id());
+                r.setHotel(h);
+                service sv = new service(rs.getInt("service_id"));
+                account ac = new account(rs.getString("username"));
+                re.add(new reservation(rs.getInt("re_id"), rs.getInt("status"), rs.getDate("re_date"), rs.getInt("quantity"),
+                        rs.getDate("check_in_date"), rs.getDate("check_out_date"),
+                        rs.getInt("list_price"), r, sv, ac));
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(roomDAOs.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return re;
+    }
+
+//    public static void main(String[] args) {
+//        long millis = System.currentTimeMillis();
+//        long tenDaysInMillis = 10L * 24 * 60 * 60 * 1000;
+//        long checkoutMillis = millis + tenDaysInMillis;
+//        Date checkinDate = new Date(millis);
+//        Date checkoutDate = new Date(checkoutMillis);
+//        reservationDAOs red = new reservationDAOs();
+//        List<reservation> re = red.getReservationAndHotelByLocalAndDate("nha trang", checkinDate, checkoutDate);
+//        int i = 0;
+//        while (i < re.size()) {
+//            System.out.println(re.get(i).getRoom().getRoom_id());
+//            i++;
+//        }
+//
+//    }
+    /**
+     *
      * @param room_id
      * @return
      */
@@ -76,8 +177,8 @@ public class reservationDAOs {
         }
         return hotel_id;
     }
-    
-        public void setStatusBooking(int re_id, int status) {
+
+    public void setStatusBooking(int re_id, int status) {
         try {
             PreparedStatement ps = conn.prepareStatement("UPDATE [dbo].[Reservation]\n"
                     + " SET [status] = ? \n"
@@ -176,14 +277,15 @@ public class reservationDAOs {
         }
         return arr;
     }
-    public boolean deleteReservationByUsername(String username){
+
+    public boolean deleteReservationByUsername(String username) {
         int count = 0;
         try {
             PreparedStatement ps = conn.prepareStatement("DELETE FROM Reservation WHERE username = ?");
             ps.setString(1, username);
             count = ps.executeUpdate();
-            if(count > 0){
-                return  true;
+            if (count > 0) {
+                return true;
             }
         } catch (SQLException e) {
             Logger.getLogger(accountDAOs.class.getName()).log(Level.SEVERE, null, e);

@@ -13,17 +13,27 @@ public class updateRole {
     private String hotel_name;
     private String hotel_address;
     private String business_licens_img;
+    private int status;
     private account account;
 
     public updateRole() {
     }
 
-    public updateRole(int id, String hotel_name, String hotel_address, String business_licens_img, account account) {
+    public updateRole(int id, String hotel_name, String hotel_address, String business_licens_img, int status, account account) {
         this.id = id;
         this.hotel_name = hotel_name;
         this.hotel_address = hotel_address;
         this.business_licens_img = business_licens_img;
+        this.status = status;
         this.account = account;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     public int getId() {

@@ -135,6 +135,7 @@ public class bookingController extends HttpServlet {
                             }
                         }
                     }
+                    if(re != null){
                     totalPrice += totalServicePrice;
                     accountDAOs aDAO = new accountDAOs();
                     hotelDAOs hDAO = new hotelDAOs();
@@ -152,6 +153,9 @@ public class bookingController extends HttpServlet {
                     request.setAttribute("checkOutDate", CheckOutDate);
                     // Forward the request to hotelDetail.jsp
                     request.getRequestDispatcher("/customer/reserve.jsp").forward(request, response);
+                    }else{
+                        
+                    }
                 } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
                     // Handle the error or redirect to an error page
                     response.sendError(jakarta.servlet.http.HttpServletResponse.SC_BAD_REQUEST, "Invalid quantityAndRoomId format");

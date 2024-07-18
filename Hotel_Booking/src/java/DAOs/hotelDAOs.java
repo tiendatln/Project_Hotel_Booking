@@ -8,6 +8,8 @@ import DB.DBConnection;
 import Model.account;
 import Model.hotel;
 import Model.reservation;
+import Model.room;
+import Model.service;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -105,37 +107,43 @@ public class hotelDAOs {
         return arr;
     }
 
-    /**
-     *
-     * @param local
-     * @return
-     */
-    public List<reservation> searchHotelByLocal(String local, Date CheckInDate, Date CheckOutDate) {
-        List<reservation> re = new ArrayList<>();
+    
+    
+        public List<hotel> getHotelByLocal(String local) {
+        List<hotel> h = new ArrayList<>();
         ResultSet rs = null;
         try {
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM Hotel h \n"
-                    + "join Room r \n"
-                    + "on r.hotel_id = h.hotel_id \n"
-                    + "join Reservation rs \n"
-                    + "on rs.room_id = r.room_id \n"
-                    + "where hotel_address LIKE ? \n"
-                    + "and (check_in_date not BETWEEN ? AND ? \n"
-                    + "and check_out_date not BETWEEN ? AND ?)");
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM Hotel where hotel_address LIKE ?");
             ps.setString(1, "%" + local + "%");
-            ps.setDate(2, CheckInDate);
-            ps.setDate(3, CheckOutDate);
-            ps.setDate(4, CheckInDate);
-            ps.setDate(5, CheckOutDate);
             rs = ps.executeQuery();
-            while (rs.next()) {                
-                
+            while (rs.next()) {
+                account ac = new account(rs.getString("username"));
+                h.add(new hotel(rs.getInt("hotel_id"), rs.getString("hotel_name"), rs.getString("hotel_address"), 
+                        rs.getString("hotel_img"), rs.getString("hotel_description"), ac));
             }
         } catch (SQLException e) {
             Logger.getLogger(roomDAOs.class.getName()).log(Level.SEVERE, null, e);
         }
-        return re;
+        return h;
     }
+    
+        public List<hotel> getHotelListByHotelID(int hotel_id){
+            List<hotel> h = new ArrayList<>();
+        ResultSet rs = null;
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM Hotel where hotel_id = ?");
+            ps.setInt(1, hotel_id);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                account ac = new account(rs.getString("username"));
+                h.add(new hotel(rs.getInt("hotel_id"), rs.getString("hotel_name"), rs.getString("hotel_address"), 
+                        rs.getString("hotel_img"), rs.getString("hotel_description"), ac));
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(roomDAOs.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return h;
+        }
 
     /**
      *

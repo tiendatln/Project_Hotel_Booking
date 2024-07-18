@@ -45,6 +45,7 @@
                         <th scope="col">Date</th>
                         <th scope="col">Price</th>
                         <th scope="col">Status</th>
+                        <th scope="col" style="width: 40px"></th>
                     </tr>
                 </thead>
                 <%
@@ -71,12 +72,16 @@
                                 </c:if>
                                 <c:if test="${reservation.status == 0}">
                                     <span style="color: #007bff">Pending</span>
-                                    
+
                                 </c:if>
                                 <c:if test="${reservation.status == 2}">
                                     <span style="color: red">Denied</span>
                                 </c:if>
+                                <c:if test="${reservation.status == 3}">
+                                    <span style="color: red">Customer Cancel</span>
+                                </c:if>
                             </td>
+                            <td><a class="btn btn-danger" href="/reservationController/Cancel/${reservation.id}">Cancel</a></td>
                         </tr>
                     </tbody>
                     <%

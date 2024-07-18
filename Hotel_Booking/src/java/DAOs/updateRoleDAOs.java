@@ -35,17 +35,19 @@ public class updateRoleDAOs {
     public updateRole insertUpdateRole(updateRole upRole) {
         int count = 0;
         try {
-            PreparedStatement ps = conn.prepareStatement("INSERT INTO UpdateRole(hotel_name,hotel_address,business_licens_img,username) \n"
-                    + "VALUES (?,?,?,?);");
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO UpdateRole(hotel_name, hotel_address, business_licens_img, status, username) \n"
+                    + "VALUES (?,?,?,?,?);");
             ps.setString(1, upRole.getHotel_name());
             ps.setString(2, upRole.getHotel_address());
             ps.setString(3, upRole.getBusiness_licens_img());
-            ps.setString(4, upRole.getAccount().getUsername());
+            ps.setInt(4, upRole.getStatus());
+            ps.setString(5, upRole.getAccount().getUsername());
             count = ps.executeUpdate();
         } catch (SQLException e) {
         }
         return (count == 0)? null: upRole;
     }
+    
     public  boolean getUpdateExistByUsername(String username){
         try {
             PreparedStatement ps = conn.prepareStatement("select * from UpdateRole where username = ?");
