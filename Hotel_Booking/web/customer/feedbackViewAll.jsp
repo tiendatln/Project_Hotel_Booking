@@ -4,6 +4,7 @@
     Author     : tiend
 --%>
 
+<%@page import="java.sql.Date"%>
 <%@page import="Model.hotel"%>
 <%@page import="DAOs.hotelDAOs"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -40,6 +41,11 @@
             hotelDAOs hDAO = new hotelDAOs();
             int hotel_id = (int) request.getAttribute("hotel_id");
             hotel h = hDAO.getHotelDetailById(hotel_id);
+            long millis = System.currentTimeMillis();
+            long tenDaysInMillis = 1L * 24 * 60 * 60 * 1000;
+            long checkoutMillis = millis + tenDaysInMillis;
+            Date checkinDate = new Date(millis);
+            Date checkoutDate = new Date(checkoutMillis);
         %>
         <div class="text-center m-3" >
             <h1>
@@ -52,14 +58,14 @@
                     <div class="card">
                         <div class="d-flex card-header justify-content-between">
                             <h5 class="me-3 mb-0">Feedback</h5>
-                            <a class="btn" style="color: #0d6efd" href="/searchController/HotelDetail/<%= hotel_id%>">Back to Hotel</a>
+                            <a class="btn" style="color: #0d6efd" href="/searchController/HotelDetail/<%= checkinDate%>/<%= checkoutDate%>/<%= hotel_id%>">Back to Hotel</a>
                         </div>
                         <div class="card-body">
                             <ul class="list-group list-group-flush">
                                 <!--List-item-->
-                                
-                                <c:forEach items="${feedback}" var="feedback">
-                                    
+
+                                <c:forEach items="${feedback}" var="feedbackItem">
+
                                     <li class="list-group-item pt-0">
                                         <div class="d-flex align-items-center">
                                             <div>
@@ -69,11 +75,8 @@
                                                 </svg>
                                             </div>
                                             <div class="m-3">
-                                                <%
-                                                    account a = aDAO.getAccount(value);
-                                                %>
-                                                <h5 style="color: #0d6efd"><%= a.getName()%></h5>
-                                                <p class="mb-0">${feedback.comment}</p>
+                                                <h5 style="color: #0d6efd">${feedbackItem.account.name}</h5>
+                                                <p class="mb-0">${feedbackItem.comment}</p>
                                             </div>
                                         </div>
                                     </li>

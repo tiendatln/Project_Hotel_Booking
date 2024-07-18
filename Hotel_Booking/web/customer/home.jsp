@@ -472,7 +472,7 @@
                 </div>
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
-                        <div style="width: 400px">
+                        <div>
                             <h5 class="property-title"><%= rs.getString("hotel_name")%></h5>
                             <p class="property-details text-success">
                                 <a href="#"><%= rs.getString("hotel_address")%></a> <br>
@@ -509,7 +509,7 @@
                             </p>
 
                             <p>Includes taxes and fees</p>
-                            <a class="btn btn-primary" href="/searchController/HotelDetail/<%= rs.getString("hotel_address")%>/<%= checkinDate %>/<%= checkoutDate %>/<%= rs.getInt("hotel_id")%>" >See availability</a>
+                            <a class="btn btn-primary" href="/searchController/HotelDetail/<%= checkinDate %>/<%= checkoutDate %>/<%= rs.getInt("hotel_id")%>" >See availability</a>
                         </div>
                     </div>
                 </div>

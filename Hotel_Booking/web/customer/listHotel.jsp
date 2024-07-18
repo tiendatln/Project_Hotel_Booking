@@ -158,7 +158,7 @@
                                     </p>
 
                                     <p>Includes taxes and fees</p>
-                                    <a class="btn btn-primary" href="/searchController/HotelDetail/${h.hotel_address}/<%= checkinDate %>/<%= checkoutDate %>/${h.hotel_id}" >See availability</a>
+                                    <a class="btn btn-primary" href="/searchController/HotelDetail/<%= checkinDate %>/<%= checkoutDate %>/${h.hotel_id}" >See availability</a>
                                 </div>
                             </div>
                         </div>

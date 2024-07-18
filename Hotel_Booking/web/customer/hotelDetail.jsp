@@ -132,44 +132,35 @@
             </div>
 
             <div class=" availability-container">
-                <!--                <div class="header-section" >
-                                    <h3>Availability</h3>
-                                                        <form method="post" action="/reservationController" onsubmit="return validateForm()">
-                                    <div class="d-flex justify-content-center">
-                <%
+                <div class="header-section" >
+                    <h3>Availability</h3>
+                    <form method="get" action="/reserveController/Change" onsubmit="return checkDates()">
+                        <div class="d-flex justify-content-center">
 
-                %>
-                <div style="display: flex inline; box-sizing: border-box; border: 4px solid yellow; background-color: yellow; border-radius: 10px">
-                    <input type="date" class="form-control" name="checkInDate" >
-                    <h4>-</h4>
-                    <input type="date" class="form-control" name="checkOutDate" >
+
+
+                            <div style="display: flex inline; box-sizing: border-box; border: 4px solid yellow; background-color: yellow; border-radius: 10px">
+                                <input type="date" class="form-control" id="checkInDate" name="checkInDate" value="${checkInDate}" >
+                                <h4>-</h4>
+                                <input type="date" class="form-control" id="checkOutDate" name="checkOutDate" value="${checkOutDate}" >
+                                <input hidden="" id="HotelID" name="HotelID" value="<%= h.getHotel_id()%>">
+                                <!--onchange="submitForm('change')"-->
+                            </div>
+
+
+                            <div style="box-sizing: border-box; border: 4px solid yellow; border-radius: 10px">
+                                <button class="btn btn-primary" type="submit" name="btnChangesearch">Change search</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-                <div style="box-sizing: border-box; border: 4px solid yellow; border-radius: 10px">
-                    <select class="form-control">
-                        <option>2 adults · 0 children · 1 room</option>
-                    </select>
-                </div>
-                <div style="box-sizing: border-box; border: 4px solid yellow; border-radius: 10px">
-                    <a class="btn btn-primary" name="btnChangesearch">Change search</a>
-                </div>
-            </div>
-                                </form>
-        </div>-->
 
                 <!-- Room List -->
                 <div class="row mt-3">
-                    <form action="/reserveController" method="get" class="container" id="reservationForm">
-                        <div class="header-section">
-                            <h3>Availability</h3>
-                            <div class="d-flex justify-content-center">
-                                <div style="display: flex inline; box-sizing: border-box; border: 4px solid yellow; background-color: yellow; border-radius: 10px">
-                                    <input type="date" class="form-control" id="checkInDate" name="checkInDate" value="${checkInDate}" onchange="submitForm('change')">
-                                    <h4>-</h4>
-                                    <input type="date" class="form-control" id="checkOutDate" name="checkOutDate" value="${checkOutDate}" onchange="submitForm('change')">
-                                    <!--onchange="submitForm('change')"-->
-                                </div>
-                            </div>
-                        </div>
+                    <form action="/reserveController/submit" method="get" class="container" id="reservationForm" onsubmit="return checkCheckboxes()">
+                        <input hidden="" type="date" class="form-control" id="checkInDate" name="checkInDate" value="${checkInDate}" >
+                        
+                        <input hidden="" type="date" class="form-control" id="checkOutDate" name="checkOutDate" value="${checkOutDate}" >
 
                         <div class="col-12">
                             <div class="card" style="background-color: #007bff">
@@ -188,9 +179,8 @@
                                             <h5>Available Rooms</h5>
                                         </div>
                                         <div class="col-md-2 text-center">
-                                            <button class="btn btn-primary" type="submit" id="reserve-link" name="btnReserve" onclick="setFormAction('submit')">I'll reserve</button>
+                                            <button class="btn btn-primary" type="submit" id="reserve-link" name="btnReserve" >I'll reserve</button>
                                             <input hidden="" id="HotelID" name="HotelID" value="<%= h.getHotel_id()%>">
-                                            <input hidden="" id="hotel_address" name="hotel_address" value="<%= h.getHotel_address()%>">
                                         </div>
                                     </div>
                                 </div>
@@ -330,9 +320,13 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
         <script src="https://kit.fontawesome.com/a076d05399.js"></script>
         <script >
-                var today = new Date().toISOString().split('T')[0];
-                document.getElementById("checkInDate").setAttribute("min", today);
-                document.getElementById("checkOutDate").setAttribute("min", today);
+                var Today = new Date().toISOString().split('T')[0];
+                var today = new Date();
+                today.setDate(today.getDate() + 1);
+                var tomorrow = today.toISOString().split('T')[0];
+                console.log(tomorrow);
+                document.getElementById("checkInDate").setAttribute("min", Today);
+                document.getElementById("checkOutDate").setAttribute("min", tomorrow);
                 function submitForm(actionType) {
                     if (actionType === 'change') {
                         if (checkDatesChange()) {
@@ -370,6 +364,7 @@
                         } else {
                             alert("Please fill in both the check-in and check-out dates.");
                         }
+
                         return false;
                     }
 
@@ -377,6 +372,7 @@
                         alert("Check-out date must be after check-in date.");
                         return false;
                     }
+                    document.getElementById('reservationForm').submit();
                     return true;
                 }
 
@@ -401,6 +397,7 @@
                         alert("Please select at least one room.");
                         return false;
                     }
+                    document.getElementById('reservationForm').submit();
                     return true;
                 }
 
@@ -408,19 +405,19 @@
                     return checkDates() && checkCheckboxes();
                 }
 
-                function checkCheckboxes() {
-                    // Get all checkboxes with the name 'quantity'
-                    var checkboxes = document.querySelectorAll('input[name="roomID"]');
-                    // Check if any of the checkboxes are checked
-                    var anyChecked = Array.prototype.slice.call(checkboxes).some(x => x.checked);
-                    // If none are checked, prevent form submission and alert the user
-                    if (!anyChecked) {
-                        alert("Please select at least one room to reserve.");
-                        return false; // Prevent form submission
-                    }
-
-                    return true; // Allow form submission
-                }
+//                function checkCheckboxes() {
+//                    // Get all checkboxes with the name 'quantity'
+//                    var checkboxes = document.querySelectorAll('input[name="roomID"]');
+//                    // Check if any of the checkboxes are checked
+//                    var anyChecked = Array.prototype.slice.call(checkboxes).some(x => x.checked);
+//                    // If none are checked, prevent form submission and alert the user
+//                    if (!anyChecked) {
+//                        alert("Please select at least one room to reserve.");
+//                        return false; // Prevent form submission
+//                    }
+//                    do
+//                    return true; // Allow form submission
+//                }
 
 
 
