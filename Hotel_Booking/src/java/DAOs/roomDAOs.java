@@ -109,6 +109,25 @@ public class roomDAOs {
         return count;
     }
 
+    public int getCountRoomByRoomID(int room_id) {
+        int count = 0;
+        ResultSet rs = null;
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT COUNT(r.room_id) AS room_count\n"
+                    + "FROM Room r\n"
+                    + "JOIN Reservation re ON re.room_id = r.room_id\n"
+                    + "WHERE r.room_id = ?; ");
+            ps.setInt(1, room_id);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt("room_count");
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(roomDAOs.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return count;
+    }
+
     /**
      *
      * @param hotel_id

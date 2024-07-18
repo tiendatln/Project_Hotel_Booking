@@ -16,6 +16,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -100,30 +101,29 @@ public class reservationDAOs {
         return re;
     }
 
-    public List<reservation> getReservationAndRoomByLocalAndDate(String local, Date CheckInDate, Date CheckOutDate, int hotel_id) {
+    public List<reservation> getReservationAndRoomByLocalAndDate(Date CheckInDate, Date CheckOutDate, int hotel_id) {
         List<reservation> re = new ArrayList<>();
-        ResultSet rs = null;
+        
         try {
             PreparedStatement ps = conn.prepareStatement("SELECT * \n"
                     + "FROM Hotel h \n"
                     + "JOIN Room r ON r.hotel_id = h.hotel_id \n"
                     + "JOIN Reservation rs ON rs.room_id = r.room_id \n"
-                    + "WHERE h.hotel_address LIKE ? \n"
+                    + "WHERE h.hotel_id = ?  \n"
                     + "  AND ((? BETWEEN rs.check_in_date AND rs.check_out_date \n"
                     + "        OR ? BETWEEN rs.check_in_date AND rs.check_out_date) \n"
                     + "       OR (rs.check_in_date BETWEEN ? AND ? \n"
                     + "           OR rs.check_out_date BETWEEN ? AND ?)) \n"
-                    + "  AND h.hotel_id = ? \n"
+                    + "  \n"
                     + "ORDER BY h.hotel_id, r.room_id ASC;");
-            ps.setString(1, "%" + local + "%");
+            ps.setInt(1, hotel_id);
             ps.setDate(2, CheckInDate);
             ps.setDate(3, CheckOutDate);
             ps.setDate(4, CheckInDate);
             ps.setDate(5, CheckOutDate);
             ps.setDate(6, CheckInDate);
             ps.setDate(7, CheckOutDate);
-            ps.setInt(8, hotel_id);
-            rs = ps.executeQuery();
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 roomDAOs rDAO = new roomDAOs();
                 hotelDAOs hDAO = new hotelDAOs();
@@ -142,21 +142,22 @@ public class reservationDAOs {
         return re;
     }
 
-//    public static void main(String[] args) {
-//        long millis = System.currentTimeMillis();
-//        long tenDaysInMillis = 10L * 24 * 60 * 60 * 1000;
-//        long checkoutMillis = millis + tenDaysInMillis;
-//        Date checkinDate = new Date(millis);
-//        Date checkoutDate = new Date(checkoutMillis);
-//        reservationDAOs red = new reservationDAOs();
-//        List<reservation> re = red.getReservationAndHotelByLocalAndDate("nha trang", checkinDate, checkoutDate);
-//        int i = 0;
-//        while (i < re.size()) {
-//            System.out.println(re.get(i).getRoom().getRoom_id());
-//            i++;
-//        }
-//
-//    }
+    public static void main(String[] args) {
+        long millis = System.currentTimeMillis();
+        long tenDaysInMillis = 10L * 24 * 60 * 60 * 1000;
+        long checkoutMillis = millis + tenDaysInMillis;
+        Date checkinDate = new Date(millis);
+        Date checkoutDate = new Date(checkoutMillis);
+        reservationDAOs red = new reservationDAOs();
+        List<reservation> re = red.getReservationAndRoomByLocalAndDate(checkinDate, checkoutDate, 1);
+        int i = 0;
+        while (i < re.size()) {
+            System.out.println(re.get(i).getRoom().getRoom_id());
+            i++;
+        }
+
+    }
+
     /**
      *
      * @param room_id
