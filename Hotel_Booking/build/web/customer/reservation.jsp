@@ -1,4 +1,4 @@
-    
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="DAOs.serviceDAOs"%>
 <%@page import="DAOs.roomDAOs"%>
@@ -21,6 +21,20 @@
         <style>
             td{
                 font-size: large
+            }
+            .container {
+                text-align: center;
+            }
+
+            h1 {
+                color: green;
+            }
+            .custom-confirm-button {
+                margin-right: 10px; /* Adjust as needed */
+            }
+
+            .custom-cancel-button {
+                margin-left: 10px; /* Adjust as needed */
             }
         </style>
     </head>
@@ -45,6 +59,7 @@
                         <th scope="col">Date</th>
                         <th scope="col">Price</th>
                         <th scope="col">Status</th>
+                        <th scope="col" style="width: 40px"></th>
                     </tr>
                 </thead>
                 <%
@@ -71,12 +86,16 @@
                                 </c:if>
                                 <c:if test="${reservation.status == 0}">
                                     <span style="color: #007bff">Pending</span>
-                                    
+
                                 </c:if>
                                 <c:if test="${reservation.status == 2}">
-                                    <span style="color: red">Canceled</span>
+                                    <span style="color: red">Denied</span>
+                                </c:if>
+                                <c:if test="${reservation.status == 3}">
+                                    <span style="color: red">Customer Cancel</span>
                                 </c:if>
                             </td>
+                            <td><a class="btn btn-danger" onclick="showCustomAlert('/reservationController/Cancel/${reservation.id}')" >Cancel</a></td>
                         </tr>
                     </tbody>
                     <%
@@ -86,6 +105,34 @@
 
             </table>
         </div>
+        <script src=
+                "https://cdn.jsdelivr.net/npm/sweetalert2@11">
+        </script>
+
+
+        <script>
+            function showCustomAlert(url) {
+                // Create a custom alert box with SweetAlert
+                Swal.fire({
+                    title: 'Cancel your reservation',
+                    text: 'This action cannot be roll back!',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes',
+                    cancelButtonText: 'No',
+                    customClass: {
+                        confirmButton: ' btn btn-danger custom-confirm-button ',
+                        cancelButton: 'btn btn-success custom-cancel-button'
+                    },
+                    buttonsStyling: false
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Redirect to the specified URL after user clicks Yes
+                        window.location.href = url;
+                    }
+                });
+            }
+        </script>
+
         <!-- jQuery -->
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>

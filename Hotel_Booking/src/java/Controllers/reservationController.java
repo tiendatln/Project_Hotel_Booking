@@ -84,7 +84,7 @@ public class reservationController extends HttpServlet {
                 }
             }
         }
-        
+
         if (path.endsWith("/YourReservation")) {
             if (flagCustomer) {
                 reservationDAOs rsDAO = new reservationDAOs();
@@ -94,7 +94,7 @@ public class reservationController extends HttpServlet {
                 hotelDAOs hDAO = new hotelDAOs();
                 List<reservation> rs = rsDAO.getReservationByUsername(value);
                 int i = 0;
-                while (i < rs.size()) {                    
+                while (i < rs.size()) {
                     room r = rDAO.getRoomByRoomID(rs.get(i).getRoom().getRoom_id());
                     account ac = aDAO.getAccount(value);
                     service s = sDAO.getServiceByServiceID(rs.get(i).getService().getService_id());
@@ -112,6 +112,30 @@ public class reservationController extends HttpServlet {
             }
         } else if (path.endsWith("/InfoReserve")) {
             request.getRequestDispatcher("/customer/infoForReserve.jsp").forward(request, response);
+        } else if (path.startsWith("/reservationController/Cancel")) {
+            String[] s = path.split("/");
+            int re_id = Integer.valueOf(s[s.length - 1]);
+            reservationDAOs reDAO = new reservationDAOs();
+            reDAO.setStatusBooking(re_id, 3);
+            roomDAOs rDAO = new roomDAOs();
+            accountDAOs aDAO = new accountDAOs();
+            serviceDAOs sDAO = new serviceDAOs();
+            hotelDAOs hDAO = new hotelDAOs();
+            List<reservation> rs = reDAO.getReservationByUsername(value);
+            int i = 0;
+            while (i < rs.size()) {
+                room r = rDAO.getRoomByRoomID(rs.get(i).getRoom().getRoom_id());
+                account ac = aDAO.getAccount(value);
+                service sv = sDAO.getServiceByServiceID(rs.get(i).getService().getService_id());
+                hotel h = hDAO.getHotelDetailById(sv.getHotel().getHotel_id());
+                rs.get(i).setRoom(r);
+                rs.get(i).setUsername(ac);
+                rs.get(i).setService(sv);
+                rs.get(i).getService().setHotel(h);
+                i++;
+            }
+            request.setAttribute("reservation", rs);
+            request.getRequestDispatcher("/customer/reservation.jsp").forward(request, response);
         }
     }
 
@@ -126,7 +150,7 @@ public class reservationController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
     }
 
     /**

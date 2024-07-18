@@ -64,16 +64,24 @@
         <servlet-class>Controllers.forgetPasswordOTP</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>dashboardController</servlet-name>
-        <servlet-class>Controllers.dashboardController</servlet-class>
+        <servlet-name>Dashboard</servlet-name>
+        <servlet-class>Controllers.Dashboard</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>reserveManagerController</servlet-name>
-        <servlet-class>Controllers.reserveManagerController</servlet-class>
+        <servlet-name>UserManager</servlet-name>
+        <servlet-class>Controllers.UserManager</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>becomesOwnerController</servlet-name>
+        <servlet-class>Controllers.becomesOwnerController</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>feedbackManagerController</servlet-name>
         <servlet-class>Controllers.feedbackManagerController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>viewUpdateOwnerControlller</servlet-name>
+        <servlet-class>Controllers.viewUpdateOwnerControlller</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>homeController</servlet-name>
@@ -136,16 +144,40 @@
         <url-pattern>/forgetPasswordOTP/*</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>Dashboard</servlet-name>
+        <url-pattern>/Dashboard/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UserManager</servlet-name>
+        <url-pattern>/UserManager/*</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>dashboardController</servlet-name>
+        <servlet-class>Controllers.dashboardController</servlet-class>
+    </servlet>
+    <servlet-mapping>
         <servlet-name>dashboardController</servlet-name>
         <url-pattern>/dashboardController/*</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>reserveManagerController</servlet-name>
+        <servlet-class>Controllers.reserveManagerController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>reserveManagerController</servlet-name>
         <url-pattern>/reserveManagerController/*</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>feedbackManagerController
+        <servlet-name>becomesOwnerController</servlet-name>
+        <url-pattern>/becomesOwnerController/*</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>feedbackManagerController</servlet-name>
         <url-pattern>/feedbackManagerController/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>viewUpdateOwnerControlller</servlet-name>
+        <url-pattern>/viewUpdateOwnerControlller/*</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

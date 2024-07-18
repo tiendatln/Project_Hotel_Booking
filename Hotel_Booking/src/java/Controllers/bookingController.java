@@ -135,6 +135,7 @@ public class bookingController extends HttpServlet {
                             }
                         }
                     }
+                    if(!re.isEmpty()){
                     totalPrice += totalServicePrice;
                     accountDAOs aDAO = new accountDAOs();
                     hotelDAOs hDAO = new hotelDAOs();
@@ -152,6 +153,9 @@ public class bookingController extends HttpServlet {
                     request.setAttribute("checkOutDate", CheckOutDate);
                     // Forward the request to hotelDetail.jsp
                     request.getRequestDispatcher("/customer/reserve.jsp").forward(request, response);
+                    }else{
+                        response.sendRedirect("/searchController/HotelDetail/"+CheckInDate+"/"+CheckOutDate+"/"+hotelID);
+                    }
                 } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
                     // Handle the error or redirect to an error page
                     response.sendError(jakarta.servlet.http.HttpServletResponse.SC_BAD_REQUEST, "Invalid quantityAndRoomId format");
@@ -160,18 +164,8 @@ public class bookingController extends HttpServlet {
                 List<room> roomImg = rDAO.getAllRoomImgByHotelId(hotelID);
                 request.setAttribute("loginToReserve", true);
 
-                List<room> room = new ArrayList<>();
-                try {
-                    ResultSet rs = rDAO.getRoomByHotelID(hotelID);
-                    while (rs.next()) {
-                        hotel h = new hotel(rs.getInt("hotel_id"));
-                        roomType rt = new roomType(rs.getInt("room_type_id"));
-                        room.add(new room(rs.getInt("room_id"), rs.getString("room_name"), rs.getInt("room_price"), rs.getString("room_img"),
-                                rs.getBoolean("room_status"), rs.getString("room_description"), rt, h));
-                    }
-                } catch (Exception e) {
-
-                }
+                List<room> room = rDAO.getAllRoomByHotelID(hotelID);
+                
                 request.setAttribute("roomImg", roomImg);
                 request.getSession().setAttribute("hotelID", hotelID);
                 request.setAttribute("room", room);
@@ -275,7 +269,7 @@ public class bookingController extends HttpServlet {
                         hotel h = new hotel(rs.getInt("hotel_id"));
                         roomType rt = new roomType(rs.getInt("room_type_id"));
                         room.add(new room(rs.getInt("room_id"), rs.getString("room_name"), rs.getInt("room_price"), rs.getString("room_img"),
-                                rs.getBoolean("room_status"), rs.getString("room_description"), rt, h));
+                                rs.getBoolean("room_status"), rs.getString("room_description"), rt,rs.getInt("room_capacity"), h));
                     }
                 } catch (Exception e) {
 
@@ -354,13 +348,12 @@ public class bookingController extends HttpServlet {
                     }
                     request.setAttribute("hotelID", hotelID);
                     // Forward the request to hotelDetail.jsp
-                    request.getRequestDispatcher("/customer/bookingSuccess.jsp").forward(request, response);
+                    response.sendRedirect("/bookingController/Success");
                 } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
                     // Handle the error or redirect to an error page
                     response.sendError(jakarta.servlet.http.HttpServletResponse.SC_BAD_REQUEST, "Invalid quantityAndRoomId format");
                 }
-            }
-            else if (!flagCustomer) {
+            } else if (!flagCustomer) {
                 List<room> roomImg = rDAO.getAllRoomImgByHotelId(hotelID);
                 request.setAttribute("loginToReserve", true);
 
@@ -371,7 +364,7 @@ public class bookingController extends HttpServlet {
                         hotel h = new hotel(rs.getInt("hotel_id"));
                         roomType rt = new roomType(rs.getInt("room_type_id"));
                         room.add(new room(rs.getInt("room_id"), rs.getString("room_name"), rs.getInt("room_price"), rs.getString("room_img"),
-                                rs.getBoolean("room_status"), rs.getString("room_description"), rt, h));
+                                rs.getBoolean("room_status"), rs.getString("room_description"), rt,rs.getInt("room_capacity") , h));
                     }
                 } catch (Exception e) {
 
@@ -391,6 +384,8 @@ public class bookingController extends HttpServlet {
                 request.setAttribute("feedback", feedback);
                 request.getRequestDispatcher("/customer/hotelDetail.jsp").forward(request, response);
             }
+        } else if (path.endsWith("/Success")) {
+            request.getRequestDispatcher("/customer/bookingSuccess.jsp").forward(request, response);
         }
     }
 

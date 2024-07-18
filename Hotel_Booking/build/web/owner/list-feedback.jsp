@@ -57,7 +57,7 @@
                                     <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
                                     </svg> <%= ac.getName()%></li>
                                 <li class="nav-item"><a class="nav-link px-2" href="/dashboardController"><i class="fa fa-fw fa-database mr-1"></i><span>Dashboard</span></a></li>
-                                <li class="nav-item"><a class="nav-link px-2" href="/profileController"><i class="fa fa-fw fa-user mr-1"></i><span>My Profile</span></a></li>
+                                <li class="nav-item"><a class="nav-link px-2" href="/profileController/ProfileUser"><i class="fa fa-fw fa-user mr-1"></i><span>My Profile</span></a></li>
                                 <li class="nav-item"><a class="nav-link px-2" href="/hotelManagerController"><i class="fa fa-fw fa-th-large mr-1"></i><span>Manage Hotel</span></a></li>
                                 <li class="nav-item"><a class="nav-link px-2" href="/roomManagerController"><i class="fa fa-fw fa-th mr-1"></i><span>Manage Room</span></a></li>
                                 <li class="nav-item"><a class="nav-link px-2" href="/reserveManagerController"><i class="fa fa-fw fa-server mr-1"></i><span>Manage Booking</span></a></li>
@@ -125,7 +125,8 @@
                                                         <td class="text-nowrap align-middle"'><span>${feedback.hotel.hotel_name}</span></td>               
                                                         <td class="text-center align-middle">
                                                             <div class="btn-group align-top">
-                                                                <button class="btn btn-outline-secondary badge" type="button" data-bs-toggle="modal" data-bs-target="#view-form-modal${feedback.id}"  style="background-color: #ffc107"><span style="color: #f8f8f8;">View details</span></button>                                                                
+                                                                <button class="btn btn-outline-secondary badge" type="button" data-bs-toggle="modal" data-bs-target="#view-form-modal${feedback.id}"  style="background-color: #ffc107"><span style="color: #f8f8f8;">View details</span></button>&nbsp;                                                                
+                                                                <button class="btn btn-sm btn-outline-secondary badge trash" type="button" style="color: black;" onclick="doDelete('${feedback.id}')"><i class="fa fa-trash"></i></button>
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -228,16 +229,11 @@
 
     <!-- Custom JS -->  
     <script>
-        function doConfirm(id) {
-            if (confirm("Are you sure you want to confirm the booking request with ID = " + id)) {
-                window.location = "/reserveManagerController?action=confirm&id=" + id;
-            }
-        }
-        function doCancle(id) {
-            if (confirm("Are you sure you want to cancle the booking request with ID = " + id)) {
-                window.location = "/reserveManagerController?action=cancle&id=" + id;
-            }
-        }
+                                                                    function doDelete(id) {
+                                                                        if (confirm("Are you sure to delete feedback with ID = " + id)) {
+                                                                            window.location = "/feedbackManagerController?action=deletefeedback&id=" + id;
+                                                                        }
+                                                                    }
     </script>
 </body>
 </html>

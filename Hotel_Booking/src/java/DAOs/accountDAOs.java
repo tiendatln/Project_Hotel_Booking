@@ -15,6 +15,8 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import Model.account;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -249,5 +251,91 @@ public class accountDAOs {
         } catch (Exception e) {
         }
         return  false;
+    }
+    public List<account> getAllAccount() {
+        String sql = "select * from account";
+        List<account> list = new ArrayList<>();
+        try {
+            PreparedStatement st = conn.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                list.add(new account(rs.getString(1), rs.getString(2), rs.getByte(3), rs.getByte(4), rs.getByte(5),
+                        rs.getByte(6), rs.getInt(7), rs.getString(8), rs.getString(9), rs.getInt(10), rs.getString(11), rs.getString(12)));
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return list;
+    }
+    public void setOwner(String user_id, String owner) {
+        String sql = "UPDATE [dbo].[Account]\n"
+                + "   SET [is_owner] = ? ,[is_manager] = 0, [is_admin] = 0  \n"
+                + " WHERE  [id_number] = ?";
+        try {
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setString(1, owner);
+            st.setString(2, user_id);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
+    public void setBan_status(String user_id, boolean ban) {
+        String sql = "UPDATE [dbo].[Account]\n"
+                + "   SET [ban_status] = ?    \n"
+                + " WHERE  [id_number] = ?";
+        try {
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setBoolean(1, ban);
+            st.setString(2, user_id);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+    }
+
+    public void setBan_Status(String user_id, String ban) {
+        String sql = "UPDATE [dbo].[Account]\n"
+                + "   SET [ban_status] = ?    \n"
+                + " WHERE  [id_number] = ?";
+        try {
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setString(1, ban);
+            st.setString(2, user_id);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+    }
+
+    public void deleteAccount(String id_number) {
+        String sql = "DELETE FROM [dbo].[Account]\n"
+                + "WHERE id_number = ?";
+
+        try {
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setString(1, id_number);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+    public boolean updatePasswordForget(String newPassword, String email){
+        int count = 0;
+        try {
+            PreparedStatement ps = conn.prepareStatement("Update Account Set password = ? where email = ?");
+            ps.setString(1, newPassword);
+            ps.setString(2, email);
+            count = ps.executeUpdate();
+            if(count > 0){
+                return  true;
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(accountDAOs.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return false;
     }
 }

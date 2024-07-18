@@ -1,3 +1,4 @@
+<%@page import="java.sql.Date"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="DAOs.hotelDAOs"%>
 <%@page import="DAOs.serviceDAOs"%>
@@ -10,8 +11,9 @@
     <head>
         <title>Start Page</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="styles.css">
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap-theme.min.css">
         <style>
             .product-content {
                 border: 2px solid #dfe5e9;
@@ -457,10 +459,17 @@
                 ResultSet rs = hDAO.getAllHotel();
                 boolean range = true;
                 int count = 0;
+                long millis = System.currentTimeMillis();
+                long tenDaysInMillis = 1L * 24 * 60 * 60 * 1000;
+                long checkoutMillis = millis + tenDaysInMillis;
+                Date checkinDate = new Date(millis);
+                Date checkoutDate = new Date(checkoutMillis);
                 while (rs.next() && range) {
             %>
-            <div class="property-card card" style="margin-top: 10px">
-                <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="">
+            <div class="property-card card" style="margin-top: 10px; flex-direction: row; border-radius: 10px">
+                <div>
+                    <img style="width: 300px; border-radius: 10px; " src="<%= request.getContextPath()%>/imgs/hotel/<%= rs.getString("hotel_img")%>" class="card-img-top" alt="">
+                </div>
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
@@ -500,7 +509,7 @@
                             </p>
 
                             <p>Includes taxes and fees</p>
-                            <a class="btn btn-primary" href="/searchController/HotelDetail/<%= rs.getInt("hotel_id")%>" >See availability</a>
+                            <a class="btn btn-primary" href="/searchController/HotelDetail/<%= checkinDate %>/<%= checkoutDate %>/<%= rs.getInt("hotel_id")%>" >See availability</a>
                         </div>
                     </div>
                 </div>
@@ -513,6 +522,8 @@
                 }%>
             <!-- Add more property cards as needed -->
         </div>
+            
+            
         <%
             String massageRegister = (String) request.getSession().getAttribute("massageRegister");
             if (massageRegister != null) {
@@ -525,11 +536,6 @@
             }
         %>
         <c:if test="${searchError}">
-            <script>
-                alert("Location not found!");
-            </script>
-        </c:if>
-            <c:if test="${searchError}">
             <script>
                 alert("Location not found!");
             </script>

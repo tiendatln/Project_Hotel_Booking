@@ -4,6 +4,7 @@
     Author     : tiend
 --%>
 
+<%@page import="java.sql.Date"%>
 <%@page import="Model.hotel"%>
 <%@page import="DAOs.hotelDAOs"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -40,6 +41,11 @@
             hotelDAOs hDAO = new hotelDAOs();
             int hotel_id = (int) request.getAttribute("hotel_id");
             hotel h = hDAO.getHotelDetailById(hotel_id);
+            long millis = System.currentTimeMillis();
+            long tenDaysInMillis = 1L * 24 * 60 * 60 * 1000;
+            long checkoutMillis = millis + tenDaysInMillis;
+            Date checkinDate = new Date(millis);
+            Date checkoutDate = new Date(checkoutMillis);
         %>
         <div class="text-center m-3" >
             <h1>
@@ -52,14 +58,14 @@
                     <div class="card">
                         <div class="d-flex card-header justify-content-between">
                             <h5 class="me-3 mb-0">Feedback</h5>
-                            <a class="btn" style="color: #0d6efd" href="/searchController/HotelDetail/<%= hotel_id%>">Back to Hotel</a>
+                            <a class="btn" style="color: #0d6efd" href="/searchController/HotelDetail/<%= checkinDate%>/<%= checkoutDate%>/<%= hotel_id%>">Back to Hotel</a>
                         </div>
                         <div class="card-body">
                             <ul class="list-group list-group-flush">
                                 <!--List-item-->
-                                
-                                <c:forEach items="${feedback}" var="feedback">
-                                    
+
+                                <c:forEach items="${feedback}" var="feedbackItem">
+
                                     <li class="list-group-item pt-0">
                                         <div class="d-flex align-items-center">
                                             <div>
@@ -69,11 +75,13 @@
                                                 </svg>
                                             </div>
                                             <div class="m-3">
-                                                <%
-                                                    account a = aDAO.getAccount(value);
-                                                %>
-                                                <h5 style="color: #0d6efd"><%= a.getName()%></h5>
-                                                <p class="mb-0">${feedback.comment}</p>
+                                                <h5 style="color: #0d6efd">${feedbackItem.account.name}</h5>
+                                                <p class="mb-0">${feedbackItem.comment}</p>
+                                            </div>
+                                            <div>
+                                                <a>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M135.2 17.7C140.6 6.8 151.7 0 163.8 0L284.2 0c12.1 0 23.2 6.8 28.6 17.7L320 32l96 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 96C14.3 96 0 81.7 0 64S14.3 32 32 32l96 0 7.2-14.3zM32 128l384 0 0 320c0 35.3-28.7 64-64 64L96 512c-35.3 0-64-28.7-64-64l0-320zm96 64c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16z"/></svg>
+                                                </a> 
                                             </div>
                                         </div>
                                     </li>

@@ -6,10 +6,13 @@ package Controllers;
 
 import DAOs.accountDAOs;
 import DAOs.feedbackDAOs;
+import DAOs.hotelDAOs;
+import DAOs.reservationDAOs;
 import DAOs.roomDAOs;
 import Model.account;
 import Model.feedback;
 import Model.hotel;
+import Model.reservation;
 import Model.room;
 import Model.roomType;
 import java.io.IOException;
@@ -18,9 +21,11 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.sql.Date;
 
 /**
  *
@@ -99,38 +104,172 @@ public class feedbackController extends HttpServlet {
             String username = request.getParameter("username");
             int hotel_id = Integer.valueOf(request.getParameter("hotel_id"));
             feedbackDAOs fDAO = new feedbackDAOs();
-            hotel ht = new hotel(hotel_id);
+            hotel Hotel = new hotel(hotel_id);
             account ac = new account(username);
-            feedback feedback = new feedback(comment);
+            feedback Feedback = new feedback(comment);
             roomDAOs rDAO = new roomDAOs();
             if (comment == "") {
                 request.setAttribute("errorFeedback", true);
             } else {
-                feedback = fDAO.addNewFeedback(feedback, ac, ht);
+                Feedback = fDAO.addNewFeedback(Feedback, ac, Hotel);
             }
-            if (feedback == null) {
+            if (Feedback == null) {
                 request.setAttribute("errorFeedback", true);
             }
-            List<room> room = new ArrayList<>();
             try {
-                ResultSet rs = rDAO.getRoomByHotelID(hotel_id);
-                while (rs.next()) {
-                    hotel h = new hotel(rs.getInt("hotel_id"));
-                    roomType rt = new roomType(rs.getInt("room_type_id"));
-                    room.add(new room(rs.getInt("room_id"), rs.getString("room_name"), rs.getInt("room_price"), rs.getString("room_img"),
-                            rs.getBoolean("room_status"), rs.getString("room_description"), rt, h));
+                Date checkInDate = Date.valueOf(request.getParameter("checkInDate"));
+                Date checkOutDate = Date.valueOf(request.getParameter("checkOutDate"));
+                List<room> roomImg = rDAO.getAllRoomImgByHotelId(hotel_id);
+                String value = "";
+                Cookie[] cList = null;
+                cList = request.getCookies(); //Lay tat ca cookie cua website nay tren may nguoi dung
+                if (cList != null) {
+                    for (int i = 0; i < cList.length; i++) {//Duyet qua het tat ca cookie
+                        if (cList[i].getName().equals("customer")) {//nguoi dung da dang nhap
+                            value = cList[i].getValue();
+                            break; //thoat khoi vong lap
+                        }
+                    }
                 }
-            } catch (Exception e) {
+                request.setAttribute("roomImg", roomImg);
+                request.setAttribute("hotelID", hotel_id);
+                hotelDAOs hDAO = new hotelDAOs();
+                reservationDAOs rsDAO = new reservationDAOs();
+                List<feedback> feedback = fDAO.getFeedbackByHotelID(hotel_id);
+                accountDAOs aDao = new accountDAOs();
+                for (int i = 0; i < feedback.size(); i++) {
+                    ac = aDao.getAccount(feedback.get(i).getAccount().getUsername());
+                    feedback.get(i).setAccount(ac);
+                }
+                request.setAttribute("feedback", feedback);
+                List<reservation> reserve = rsDAO.getReservationByUsername(value);
+                if (!reserve.isEmpty()) {
+                    int i = 0;
+                    boolean reserveExist = true;
+                    boolean status = false;
+                    int countStatus = 0;
+                    while (reserveExist) {
+                        room r = rDAO.getRoomByRoomID(reserve.get(i).getRoom().getRoom_id());
+                        hotel ht = hDAO.getHotelByRoomID(r.getRoom_id());
+                        r.setHotel(ht);
+                        reserve.get(i).setRoom(r);
+                        if (reserve.get(i).getRoom().getHotel().getHotel_id() == hotel_id) {
+                            reserveExist = false;
+                            if (reserve.get(i).getStatus() == 1) {
+                                countStatus++;
+                            }
+                            if (countStatus == reserve.size() - 1) {
+                                status = true;
+                            }
+                        }
+                        i++;
+                    }
+                    if (!reserveExist && status) {
+                        int count = fDAO.getFeedbackExistByUsername(value);
+                        if (count == 0 && count < 1) {
+                            request.setAttribute("canFeedback", true);
+                        }
+                    }
+                }
+                List<reservation> re = rsDAO.getReservationAndRoomByLocalAndDate(checkInDate, checkOutDate, hotel_id);
+                List<room> listRoom = rDAO.getAllRoomByHotelID(hotel_id);
+                List<room> room = new ArrayList<>();
+                int i = 0;
+                if (!re.isEmpty()) {
+                    int j = 0;
+                    int countToSetQuantity = 0;
+                    while (i < listRoom.size()) { //roomID
+                        boolean checkQuantity = true;
+                        boolean checkRoomID = true;
+                        int countRoom = 0;
+                        int quantity = 0;
+                        int checkQuantityOfRoom = 0;
+                        int room_id = listRoom.get(i).getRoom_id();
+                        int k = 0;
+                        while (j < re.size() && checkQuantity && checkRoomID) { //RoomID in reservation
+                            int roomIdByReservation = re.get(j).getRoom().getRoom_id();
+                            {
+                                if (room_id == roomIdByReservation) {
+                                    int roomCapacity = re.get(j).getRoom().getRoom_capacity();
+                                    int reservationQuantity = re.get(j).getQuantity();
+                                    if (quantity == 0) {
+                                        quantity = reservationQuantity;
+                                    }
+                                    if (k != 0 && roomIdByReservation == room_id) {
+                                        quantity += re.get(j).getQuantity();
 
+                                    }
+                                    k++;
+                                    if (quantity >= roomCapacity) {
+                                        if (1 > countRoom) {
+                                            countRoom++;
+                                            quantity = 0;
+                                            k = 0;
+                                        } else {
+                                            checkQuantity = false;
+                                        }
+                                    } else {
+                                        checkQuantityOfRoom = quantity;
+                                    }
+                                } else {
+
+                                    checkRoomID = false;
+                                }
+                                if (checkRoomID) {
+                                    j++;
+                                }
+                            }
+                        }
+
+                        if (checkQuantity && 1 > countRoom) {
+                            room.add(listRoom.get(i));
+                            int quantityOfRoom = listRoom.get(i).getRoom_capacity();
+                            checkQuantityOfRoom = quantityOfRoom - checkQuantityOfRoom;
+                            room.get(countToSetQuantity).setRoom_capacity(checkQuantityOfRoom);
+                            countToSetQuantity++;
+                        }
+                        i++;
+                    }
+                    i = 0;
+
+                    while (i < listRoom.size()) {
+                        int countRoomID = 0;
+                        int y = 0;
+                        int quantity = 0;
+                        while (y < re.size()) {
+                            if (listRoom.get(i).getRoom_id() == re.get(y).getRoom().getRoom_id()) {
+                                countRoomID++;
+                            } else {
+                                if (quantity == 0) {
+                                    quantity = re.get(y).getQuantity();
+                                } else {
+                                    quantity += re.get(y).getQuantity();
+                                }
+                            }
+                            y++;
+                        }
+                        if (countRoomID >= re.size()) {
+                            room.add(listRoom.get(i));
+                            room.get(i).setRoom_capacity(quantity);
+                        }
+                        i++;
+                    }
+                } else {
+                    room = listRoom;
+                }
+                i = 0;
+                while (i < room.size()) {
+                    roomType rt = rDAO.getRoomTypeByID(room.get(i).getRoom_type().getRoom_type_id());
+                    room.get(i).setRoom_type(rt);
+                    i++;
+                }
+                request.setAttribute("re", re);
+                request.setAttribute("r", room);
+                request.setAttribute("checkInDate", checkInDate);
+                request.setAttribute("checkOutDate", checkOutDate);
+                request.getRequestDispatcher("/customer/hotelDetail.jsp").forward(request, response);
+            } catch (ServletException | IOException e) {
             }
-            List<room> roomImg = rDAO.getAllRoomImgByHotelId(hotel_id);
-
-            request.setAttribute("roomImg", roomImg);
-            request.getSession().setAttribute("hotelID", hotel_id);
-            request.setAttribute("room", room);
-            List<feedback> fb = fDAO.getFeedbackByHotelID(hotel_id);
-            request.setAttribute("feedback", fb);
-            request.getRequestDispatcher("/customer/hotelDetail.jsp").forward(request, response);
         }
 
     }

@@ -9,12 +9,14 @@ import DAOs.feedbackDAOs;
 import DAOs.hotelDAOs;
 import DAOs.reservationDAOs;
 import DAOs.roomDAOs;
+import DAOs.serviceDAOs;
 import Model.account;
 import Model.feedback;
 import Model.hotel;
 import Model.reservation;
 import Model.room;
 import Model.roomType;
+import Model.service;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -76,24 +78,14 @@ public class searchController extends HttpServlet {
             throws ServletException, IOException {
         String path = request.getRequestURI();
         if (path.endsWith("/ListHotel")) {
+
             request.getRequestDispatcher("/customer/listHotel.jsp").forward(request, response);
         } else if (path.startsWith("/searchController/HotelDetail")) {
             String[] s = path.split("/");
+            Date checkinDate = Date.valueOf(s[s.length - 3]);
+            Date checkoutDate = Date.valueOf(s[s.length - 2]);
             int hotel_id = Integer.valueOf(s[s.length - 1]);
             roomDAOs rDAO = new roomDAOs();
-
-            List<room> room = new ArrayList<>();
-            try {
-                ResultSet rs = rDAO.getRoomByHotelID(hotel_id);
-                while (rs.next()) {
-                    hotel h = new hotel(rs.getInt("hotel_id"));
-                    roomType rt = new roomType(rs.getInt("room_type_id"));
-                    room.add(new room(rs.getInt("room_id"), rs.getString("room_name"), rs.getInt("room_price"), rs.getString("room_img"),
-                            rs.getBoolean("room_status"), rs.getString("room_description"), rt, h));
-                }
-            } catch (Exception e) {
-
-            }
             List<room> roomImg = rDAO.getAllRoomImgByHotelId(hotel_id);
             String value = "";
             Cookie[] cList = null;
@@ -107,8 +99,8 @@ public class searchController extends HttpServlet {
                 }
             }
             request.setAttribute("roomImg", roomImg);
-            request.getSession().setAttribute("hotelID", hotel_id);
-            request.setAttribute("room", room);
+            request.setAttribute("hotelID", hotel_id);
+
             feedbackDAOs fDAO = new feedbackDAOs();
             hotelDAOs hDAO = new hotelDAOs();
             reservationDAOs rsDAO = new reservationDAOs();
@@ -121,53 +113,110 @@ public class searchController extends HttpServlet {
             }
             request.setAttribute("feedback", feedback);
             List<reservation> reserve = rsDAO.getReservationByUsername(value);
-            if (reserve.size() != 0) {
+            if (!reserve.isEmpty()) {
                 int i = 0;
                 boolean reserveExist = true;
-                while (reserveExist) {
-                    room r = rDAO.getRoomByRoomID(reserve.get(i).getRoom().getRoom_id());
-                    hotel ht = hDAO.getHotelByRoomID(r.getRoom_id());
-                    r.setHotel(ht);
-                    reserve.get(i).setRoom(r);
+                boolean status = false;
+                int countStatus = 0;
+                while (reserveExist && i < reserve.size()) {
                     if (reserve.get(i).getRoom().getHotel().getHotel_id() == hotel_id) {
-                        reserveExist = false;
+                        room r = rDAO.getRoomByRoomID(reserve.get(i).getRoom().getRoom_id());
+                        hotel ht = hDAO.getHotelByRoomID(r.getRoom_id());
+                        r.setHotel(ht);
+                        reserve.get(i).setRoom(r);
+                        if (reserve.get(i).getRoom().getHotel().getHotel_id() == hotel_id) {
+                            reserveExist = false;
+                            if (reserve.get(i).getStatus() == 1) {
+                                countStatus++;
+                            }
+                            if (countStatus == reserve.size() - 1) {
+                                status = true;
+                            }
+                        }
                     }
                     i++;
                 }
-                if (!reserveExist) {
+                if (!reserveExist && status) {
                     int count = fDAO.getFeedbackExistByUsername(value);
                     if (count == 0 && count < 1) {
                         request.setAttribute("canFeedback", true);
                     }
                 }
             }
-            request.getRequestDispatcher("/customer/hotelDetail.jsp").forward(request, response);
-        } else if (path.startsWith("/searchController/Change")) {
-            try {
-                roomDAOs rDAO = new roomDAOs();
-                Date checkInDate = Date.valueOf(request.getParameter("checkInDate"));
-                Date checkOutDate = Date.valueOf(request.getParameter("checkOutDate"));
-                int hotel_id = Integer.valueOf("HotelID");
-                List<Integer> roomOnDate = rDAO.getRoomIfCheckInAndCheckOutDateNotExistOnReservation(checkInDate, checkOutDate, hotel_id);
-                List<room> room = new ArrayList<>();
-                ResultSet rs = rDAO.getRoomByHotelID(hotel_id);
-                int i = 0;
-                while (rs.next()) {
-                    if (rs.getInt("room_id") == roomOnDate.get(i)) {
-                        hotel hotel = new hotel(hotel_id);
-                        roomType rt = new roomType(rs.getInt("room_type_id"));
-                        room.add(new room(rs.getInt("room_id"), rs.getString("room_name"), rs.getInt("room_price"),
-                                rs.getString("room_img"), rs.getBoolean("room_status"), rs.getString("room_description"), rt, hotel));
+            List<reservation> re = rsDAO.getReservationAndRoomByLocalAndDate(checkinDate, checkoutDate, hotel_id);
+            List<room> listRoom = rDAO.getAllRoomByHotelID(hotel_id);
+            List<room> room = new ArrayList<>();
+            int i = 0;
+            if (!re.isEmpty()) {
+                int j = 0;
+                int countToSetQuantity = 0;
+                while (i < listRoom.size()) { //roomID
+                    boolean checkQuantity = true;
+                    boolean checkRoomID = true;
+                    int countRoom = 0;
+                    int quantity = 0;
+                    int checkQuantityOfRoom = 0;
+                    int room_id = listRoom.get(i).getRoom_id();
+                    int k = 0;
+                    while (j < re.size() && checkQuantity && checkRoomID) { //RoomID in reservation
+                        int roomIdByReservation = re.get(j).getRoom().getRoom_id();
+                        {
+                            if (room_id == roomIdByReservation) {
+                                int roomCapacity = re.get(j).getRoom().getRoom_capacity();
+                                int reservationQuantity = re.get(j).getQuantity();
+                                if (quantity == 0) {
+                                    quantity = reservationQuantity;
+                                }
+                                if (k != 0 && roomIdByReservation == room_id) {
+                                    quantity += re.get(j).getQuantity();
+
+                                }
+                                k++;
+                                if (quantity >= roomCapacity) {
+                                    if (1 > countRoom) {
+                                        countRoom++;
+                                        quantity = 0;
+                                        k = 0;
+                                    } else {
+                                        checkQuantity = false;
+                                    }
+                                } else {
+                                    checkQuantityOfRoom = quantity;
+                                }
+                            } else {
+                                checkRoomID = false;
+                            }
+                            if (checkRoomID) {
+                                j++;
+                            }
+                        }
+                    }
+
+                    if (checkQuantity && 1 > countRoom) {
+                        room.add(listRoom.get(i));
+                        int quantityOfRoom = listRoom.get(i).getRoom_capacity();
+                        checkQuantityOfRoom = quantityOfRoom - checkQuantityOfRoom;
+                        room.get(countToSetQuantity).setRoom_capacity(checkQuantityOfRoom);
+                        countToSetQuantity++;
                     }
                     i++;
                 }
-                List<room> roomImg = rDAO.getAllRoomImgByHotelId(hotel_id);
-                request.setAttribute("roomImg", roomImg);
-                request.getSession().setAttribute("room", room);
-                request.getSession().setAttribute("hotelID", hotel_id);
-                request.getRequestDispatcher("/customer/hotelDetail.jsp").forward(request, response);
-            } catch (Exception e) {
+                i = 0;
+
+            } else {
+                room = listRoom;
             }
+            i = 0;
+            while (i < room.size()) {
+                roomType rt = rDAO.getRoomTypeByID(room.get(i).getRoom_type().getRoom_type_id());
+                room.get(i).setRoom_type(rt);
+                i++;
+            }
+            request.setAttribute("re", re);
+            request.setAttribute("r", room);
+            request.setAttribute("checkInDate", checkinDate);
+            request.setAttribute("checkOutDate", checkoutDate);
+            request.getRequestDispatcher("/customer/hotelDetail.jsp").forward(request, response);
         }
     }
 
@@ -201,21 +250,101 @@ public class searchController extends HttpServlet {
                         checkout = checkoutDate.getTime();
                     }
                     hotelDAOs hDAO = new hotelDAOs();
-                    ResultSet rs = hDAO.searchHotelByLocal(destination, checkinDate, checkoutDate);
-                    int count = 0;
-                    try {
-                        if (rs.next()) {
-                            count++;
+                    roomDAOs roomDAO = new roomDAOs();
+                    reservationDAOs reDAO = new reservationDAOs();
+                    List<reservation> re = reDAO.getReservationAndHotelByLocalAndDate(destination, checkinDate, checkoutDate);
+                    List<hotel> Listht = hDAO.getHotelByLocal(destination);
+                    List<hotel> ht = new ArrayList<>();
+                    if (re.isEmpty()) {
+                        ht = Listht;
+                    } else {
+                        int i = 0;
+
+                        while (i < Listht.size() && i < re.size()) {
+                            int j = 0;
+                            boolean checkQuantity = true;
+                            boolean checkHotelID = true;
+                            int countRoom = 0;
+                            int quantity = 0;
+                            int room_id = re.get(0).getRoom().getRoom_id();
+                            int k = 0;
+                            while (j < re.size() && checkQuantity && checkHotelID) {
+
+                                int hotelIDByRoom = re.get(j).getRoom().getHotel().getHotel_id();
+                                int HotelID = Listht.get(i).getHotel_id();
+                                if (hotelIDByRoom == HotelID) {
+                                    int r = re.get(j).getRoom().getRoom_id();
+                                    if (room_id == r) {
+                                        int roomCapacity = re.get(j).getRoom().getRoom_capacity();
+                                        int reservationQuantity = re.get(j).getQuantity();
+                                        int roomCount = roomDAO.getRoomCountByHotelID(Listht.get(i).getHotel_id());
+                                        if (quantity == 0) {
+                                            quantity = reservationQuantity;
+                                        }
+                                        if (k != 0) {
+                                            quantity += re.get(j).getQuantity();
+                                        }
+                                        k++;
+                                        if (reservationQuantity >= roomCapacity
+                                                || quantity >= roomCapacity) {
+                                            if (roomCount > countRoom) {
+                                                countRoom++;
+                                                quantity = 0;
+                                                k = 0;
+                                            } else {
+                                                checkQuantity = false;
+                                            }
+                                        } else {
+
+                                        }
+                                        if (j < re.size() - 1) {
+                                            room_id = re.get(j + 1).getRoom().getRoom_id();
+                                        }
+                                    } else {
+                                        countRoom++;
+                                        quantity = 0;
+                                    }
+                                    j++;
+                                } else {
+                                    checkHotelID = false;
+                                }
+                            }
+                            int roomCount = roomDAO.getRoomCountByHotelID(Listht.get(i).getHotel_id());
+                            if (checkQuantity && roomCount > countRoom) {
+                                ht.add(Listht.get(i));
+                            }
+
+                            i++;
                         }
-                    } catch (SQLException ex) {
-                        Logger.getLogger(searchController.class.getName()).log(Level.SEVERE, null, ex);
+                        i = 0;
+                        while (i < Listht.size()) {
+                            int countHotelID = 0;
+                            int y = 0;
+                            while (y < re.size()) {
+                                if (Listht.get(i).getHotel_id() != re.get(y).getRoom().getHotel().getHotel_id()) {
+                                    countHotelID++;
+                                }
+                                y++;
+                            }
+                            if (countHotelID == re.size()) {
+                                ht.add(Listht.get(i));
+                            }
+                            i++;
+                        }
                     }
-                    if (count > 0) {
-                        request.getSession().setAttribute("destination", destination);
-                        request.getSession().setAttribute("checkin", checkin);
-                        request.getSession().setAttribute("checkout", checkout);
-                        request.getSession().setAttribute("roomType", roomType);
-                        response.sendRedirect("/searchController/ListHotel");
+
+                    if (!ht.isEmpty()) {
+
+                        serviceDAOs svDAO = new serviceDAOs();
+                        List<service> sv = svDAO.getAllService();
+
+                        request.setAttribute("destination", destination);
+                        request.setAttribute("checkin", checkin);
+                        request.setAttribute("checkout", checkout);
+                        request.setAttribute("roomType", roomType);
+                        request.setAttribute("hotel", ht);
+                        request.setAttribute("service", sv);
+                        request.getRequestDispatcher("/customer/listHotel.jsp").forward(request, response);
                     } else {
                         request.setAttribute("searchError", true);
                         request.getRequestDispatcher("/customer/home.jsp").forward(request, response);

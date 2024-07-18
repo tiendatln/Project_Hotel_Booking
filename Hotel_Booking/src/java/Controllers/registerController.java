@@ -46,7 +46,7 @@ public class registerController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet registerController</title>");            
+            out.println("<title>Servlet registerController</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet registerController at " + request.getContextPath() + "</h1>");
@@ -111,52 +111,57 @@ public class registerController extends HttpServlet {
                         HttpSession mySession = request.getSession();
                         if (!email.equals("")) {
                             // sending otp
-                            Random rand = new Random();
-                            otpvalue = rand.nextInt(1255650);
-                            String to = email;// change accordingly
-                            String host = "smtp.gmail.com";
-                            String port = "465";
-                            // Get the session object
-                            Properties props = new Properties();
-                            props.put("mail.smtp.host", host);
-                            props.put("mail.smtp.port", port);
-                            props.put("mail.smtp.auth", "true");
-                            props.put("mail.smtp.ssl.enable", "true");
-                            props.put("mail.smtp.starttls.enable", "true");
-                            Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator() {
-                                @Override
-                                protected PasswordAuthentication getPasswordAuthentication() {
-                                    return new PasswordAuthentication("datlntce171894@fpt.edu.vn", "ytac vgaa luxu cgdy");// Put your email
-                                    // id and
-                                    // password here
+                            boolean checkEmail = aDAO.checkEmailUser(email);
+                            if (!checkEmail) {
+                                Random rand = new Random();
+                                otpvalue = rand.nextInt(1255650);
+                                String to = email;// change accordingly
+                                String host = "smtp.gmail.com";
+                                String port = "465";
+                                // Get the session object
+                                Properties props = new Properties();
+                                props.put("mail.smtp.host", host);
+                                props.put("mail.smtp.port", port);
+                                props.put("mail.smtp.auth", "true");
+                                props.put("mail.smtp.ssl.enable", "true");
+                                props.put("mail.smtp.starttls.enable", "true");
+                                Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator() {
+                                    @Override
+                                    protected PasswordAuthentication getPasswordAuthentication() {
+                                        return new PasswordAuthentication("datlntce171894@fpt.edu.vn", "ytac vgaa luxu cgdy");// Put your email
+                                        // id and
+                                        // password here
+                                    }
+                                });
+                                // compose message
+                                try {
+                                    MimeMessage message = new MimeMessage(session);
+                                    message.setFrom(new InternetAddress("datlntce171894@fpt.edu.vn"));// change accordingly
+                                    message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+                                    message.setSubject("Hello");
+                                    message.setText("your OTP is: " + otpvalue);
+                                    // send message
+                                    Transport.send(message);
+                                    System.out.println("message sent successfully");
+                                } catch (MessagingException e) {
+                                    throw new RuntimeException(e);
                                 }
-                            });
-                            // compose message
-                            try {
-                                MimeMessage message = new MimeMessage(session);
-                                message.setFrom(new InternetAddress("datlntce171894@fpt.edu.vn"));// change accordingly
-                                message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
-                                message.setSubject("Hello");
-                                message.setText("your OTP is: " + otpvalue);
-                                // send message
-                                Transport.send(message);
-                                System.out.println("message sent successfully");
-                            } catch (MessagingException e) {
-                                throw new RuntimeException(e);
+                                mySession.setAttribute("otp", otpvalue);
+                                mySession.setAttribute("username", username);
+                                mySession.setAttribute("password", password);
+                                mySession.setAttribute("email", email);
+                                mySession.setAttribute("name", name);
+                                mySession.setAttribute("age", age);
+                                mySession.setAttribute("phone", phone);
+                                mySession.setAttribute("id_number", id_number);
+                                request.setAttribute("message", "OTP is sent to your email id");
+                                response.sendRedirect("/registerController/EnterOTP");
+                            }else{
+                                request.setAttribute("emailExist", true);
+                                request.getRequestDispatcher("/customer/register.jsp").forward(request, response);
                             }
-                            mySession.setAttribute("otp", otpvalue);
-                            mySession.setAttribute("username", username);
-                            mySession.setAttribute("password", password);
-                            mySession.setAttribute("email", email);
-                            mySession.setAttribute("name", name);
-                            mySession.setAttribute("age", age);
-                            mySession.setAttribute("phone", phone);
-                            mySession.setAttribute("id_number", id_number);
-                            request.setAttribute("message", "OTP is sent to your email id");
                         }
-
                         //request.setAttribute("connection", con);
-                        response.sendRedirect("/registerController/EnterOTP");
                     }
                 }
             } catch (IOException | NumberFormatException e) {

@@ -17,11 +17,13 @@
         <!-- CSS JS bootstrap 5.0-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
         <style>
             body{
                 margin-top:20px;
                 background:#f8f8f8
             }
+
         </style>
     </head>
     <body>                   
@@ -57,7 +59,7 @@
                                     <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
                                     </svg> <%= ac.getName()%></li>
                                 <li class="nav-item"><a class="nav-link px-2" href="/dashboardController"><i class="fa fa-fw fa-database mr-1"></i><span>Dashboard</span></a></li>
-                                <li class="nav-item"><a class="nav-link px-2" href="/profileController"><i class="fa fa-fw fa-user mr-1"></i><span>My Profile</span></a></li>
+                                <li class="nav-item"><a class="nav-link px-2" href="/profileController/ProfileUser"><i class="fa fa-fw fa-user mr-1"></i><span>My Profile</span></a></li>
                                 <li class="nav-item"><a class="nav-link px-2" href="/hotelManagerController"><i class="fa fa-fw fa-th-large mr-1"></i><span>Manage Hotel</span></a></li>
                                 <li class="nav-item" style="font-weight: bold"><a class="nav-link px-2" href="/roomManagerController"><i class="fa fa-fw fa-th mr-1"></i><span>Manage Room</span></a></li>
                                 <li class="nav-item"><a class="nav-link px-2" href="/reserveManagerController"><i class="fa fa-fw fa-server mr-1"></i><span>Manage Booking</span></a></li>
@@ -85,13 +87,13 @@
                                         <div class="card">
                                             <div class="card-body">                                   
 
-                                                <form method="post" action="#">
+                                                <form method="post" action="/roomManagerController?action=search">
                                                     <div class="form-group">                                                                                                                
                                                         <div class="input-group">
                                                             <span class="input-group-addon"><i
                                                                     class="glyphicon glyphicon-envelope color-blue"></i></span> <input
-                                                                placeholder="Search....."
-                                                                class="form-control" type="text" required="required">
+                                                                placeholder="Search......"
+                                                                class="form-control" type="text" name="key" value="${keyword}">
                                                         </div>
                                                         <div class="text-center px-xl-3" style="margin-top: 5px;"><button type="submit" class="btn btn-primary" name="btnSearch">Search</button></div>
                                                     </div>
@@ -114,7 +116,7 @@
                                                         <th class="max-width">Room Name</th>
                                                         <th>Price</th>
                                                         <th class="sortable">Room Type</th>
-                                                        <th>Capacity</th>
+                                                        <th>Quantity</th>
                                                         <th class="max-width" style="max-width: 400px;">Description</th>
                                                         <th>Hotel</th>
                                                         <th>Status</th>
@@ -133,7 +135,7 @@
                                                             <td class="text-nowrap align-middle">${room.room_name}</td>
                                                             <td class="text-nowrap align-middle">${room.room_price}$</td>
                                                             <td class="text-nowrap align-middle" ><span>${room.room_type.name_type}</span></td>
-                                                            <td class="text-nowrap align-middle" ><span>${room.room_type.room_capacity}</span></td>
+                                                            <td class="text-nowrap align-middle" ><span>${room.room_capacity}</span></td>
                                                             <td class="text-nowrap align-middle" style='max-width: 200px;
                                                                 overflow-x: hidden;'><span>${room.room_description}</span></td>
                                                             <td class="text-nowrap align-middle"><span>${room.hotel.hotel_name}</span></td>
@@ -168,7 +170,7 @@
                                         <div class="d-flex justify-content-center">
                                             <ul class="pagination mt-3 mb-0">
                                                 <c:forEach begin="${1}" end="${num}" var="i">                                                    
-                                                    <li class="${i==page?"active page-item":"page-item"}"><a href="/roomManagerController?page=${i}" class="page-link">${i}</a></li>                                                    
+                                                    <li class="${i==page?"active page-item":"page-item"}"><a href="/roomManagerController?page=${i}&key=${keyword}" class="page-link">${i}</a></li>                                                    
                                                     </c:forEach>
                                             </ul>
                                         </div>
@@ -233,6 +235,14 @@
                                                     </div>
                                                 </div>
                                                 <div class="row">
+                                                    <div class="col-12 col-sm-6 mb-3">
+                                                        <div class="form-group">
+                                                            <label>Quantity</label>
+                                                            <input class="form-control" name="quantity" type="number" required min="1" placeholder="Number of rooms">
+                                                        </div>
+                                                    </div>                                                    
+                                                </div>
+                                                <div class="row">
                                                     <div class="col mb-3">
                                                         <div class="form-group">
                                                             <label>Description</label>
@@ -249,7 +259,8 @@
                                                 <div class="row">
                                                     <div class="col">
                                                         <div id="myfileupload">
-                                                            <input type="file" name="room_img"/>                                                     
+                                                            <input type="file" id="room_img" name="room_img"/>      
+                                                            <img id="imagePreview" src="#" alt="Image Preview" style="display: none; width: 200px; margin-top: 10px;">
                                                         </div>  
                                                     </div>
                                                 </div>
@@ -260,8 +271,8 @@
                                                 <div class="row">
                                                     <div class="col">
                                                         <select name="status" class="form-control" id="exampleSelect1">                                                            
-                                                            <option value="1"><span style="color: #00CC00">Active</span></option>                                               
-                                                            <option value="0"><span style="color: red">Inactive</span></option>                                               
+                                                            <option value="1">Active</option>                                               
+                                                            <option value="0">Inactive</option>                                               
                                                         </select>
                                                     </div>
                                                 </div>
@@ -291,7 +302,7 @@
                                 </div>
                                 <div class="modal-body">
                                     <div class="py-1">
-                                        <form class="form" novalidate="" action="/roomManagerController?action=updateroom" method="POST" enctype="multipart/form-data">
+                                        <form class="form" id="myForm" novalidate="" action="/roomManagerController?action=updateroom" method="POST" enctype="multipart/form-data">
                                             <div class="row">
                                                 <div class="col mb-3">
                                                     <div class="form-group">
@@ -341,6 +352,14 @@
                                                         </div>
                                                     </div>
                                                     <div class="row">
+                                                        <div class="col-12 col-sm-6 mb-3">
+                                                            <div class="form-group">
+                                                                <label>Quantity</label>
+                                                                <input class="form-control" name="quantity" type="number" required min="0" placeholder="Number of rooms" value="${room.room_capacity}">
+                                                            </div>
+                                                        </div>                                                        
+                                                    </div>
+                                                    <div class="row">
                                                         <div class="col mb-3">
                                                             <div class="form-group">
                                                                 <label>Description</label>
@@ -357,7 +376,8 @@
                                                     <div class="row">
                                                         <div class="col">
                                                             <div id="myfileupload">
-                                                                <input type="file" name="room_img" value="${room.room_img}"/>                                                     
+                                                                <input type="file" name="room_img" id="room_img" value="${room.room_img}"/>   
+                                                                <img id="imagePreview" src="#" alt="Image Preview" style="display: none; width: 200px; margin-top: 10px;">
                                                             </div>  
                                                         </div>
                                                     </div>
@@ -368,8 +388,8 @@
                                                     <div class="row">
                                                         <div class="col">
                                                             <select name="status" class="form-control" id="exampleSelect1">                                                            
-                                                                <option value="1" ${(room.room_status == true) ? "selected" : ""}><span style="color: #00CC00">Active</span></option>                                               
-                                                                <option value="0" ${(room.room_status == false) ? "selected" : ""}><span style="color: red">Inactive</span></option>                                               
+                                                                <option value="1" ${(room.room_status == true) ? "selected" : ""}>Active</option>                                               
+                                                                <option value="0" ${(room.room_status == false) ? "selected" : ""}>Inactive</option>                                               
                                                             </select>
                                                         </div>
                                                     </div>
@@ -378,7 +398,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col d-flex justify-content-end">
-                                            <button class="btn btn-primary" type="submit" name="btnUpdate">Save Changes</button>                                                
+                                            <button class="btn btn-primary" type="submit" id="btnSave" name="btnUpdate" value="Save Changes">Save Changes</button>                                                
                                             <a class="btn btn-cancel" data-bs-dismiss="modal" href="#" style="background-color: crimson; margin-left: 15px; color: white;">Cancle</a>
                                         </div>
                                     </div>
@@ -405,6 +425,25 @@
                                                                                 window.location = "/roomManagerController?action=deleteroom&id=" + id;
                                                                             }
                                                                         }
+                                                                        document.getElementById("btnSave").addEventListener("click", function () {
+                                                                            this.disabled = true;
+                                                                            document.getElementById("myForm").submit();
+                                                                        });
+
+                                                                        document.getElementById('room_img').addEventListener('change', function (event) {
+                                                                            let file = event.target.files[0];
+                                                                            if (file) {
+                                                                                let reader = new FileReader();
+                                                                                reader.onload = function (e) {
+                                                                                    let img = document.getElementById('imagePreview');
+                                                                                    img.src = e.target.result;
+                                                                                    img.style.display = 'block';
+                                                                                };
+                                                                                reader.readAsDataURL(file);
+                                                                            } else {
+                                                                                document.getElementById('imagePreview').style.display = 'none';
+                                                                            }
+                                                                        });
         </script>
     </body>
 </html>

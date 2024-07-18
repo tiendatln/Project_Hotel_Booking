@@ -91,7 +91,7 @@
                                     <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
                                     </svg> <%= ac.getName()%></li>
                                 <li class="nav-item"><a class="nav-link px-2" href="/dashboardController"><i class="fa fa-fw fa-database mr-1"></i><span>Dashboard</span></a></li>
-                                <li class="nav-item" style="font-weight: bold"><a class="nav-link px-2" href="/profileController"><i class="fa fa-fw fa-user mr-1"></i><span>My Profile</span></a></li>
+                                <li class="nav-item" style="font-weight: bold"><a class="nav-link px-2" href="/profileController/ProfileUser"><i class="fa fa-fw fa-user mr-1"></i><span>My Profile</span></a></li>
                                 <li class="nav-item"><a class="nav-link px-2" href="/hotelManagerController"><i class="fa fa-fw fa-th-large mr-1"></i><span>Manage Hotel</span></a></li>
                                 <li class="nav-item"><a class="nav-link px-2" href="/roomManagerController"><i class="fa fa-fw fa-th mr-1"></i><span>Manage Room</span></a></li>
                                 <li class="nav-item"><a class="nav-link px-2" href="/reserveManagerController"><i class="fa fa-fw fa-server mr-1"></i><span>Manage Booking</span></a></li>
@@ -101,60 +101,61 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-9">
-                    <div class="card profile-card">
-                        <img src="https://via.placeholder.com/600x200" class="card-img-top" alt="Profile Cover">
-                        <div class="card-body">
-                            <div class="profile-header">User Profile</div>
-                            <form action="/profileController/ProfileUser" method="post" onsubmit="return confirmUpdate()">
-                                <div class="row">
-                                    <div class="col-md-6 profile-info">
-                                        <label for="name"><strong>Name:</strong></label>
-                                        <input type="text" class="form-control" id="name" name="name" value="<%= ac.getName()%>">
+                <div class="col-md-9 container" >
+                    <div class="row" style="">
+                        <div class="card profile-card">
+                            <div class="card-body">
+                                <div class="profile-header text-center">Owner Profile</div>
+                                <form action="/profileController/ProfileUser" method="post" onsubmit="return confirmUpdate()">
+                                    <div class="row" >
+                                        <div class="col-md-6 profile-info">
+                                            <label for="name"><strong>Name:</strong></label>
+                                            <input type="text" class="form-control" id="name" name="name" value="<%= ac.getName()%>">
+                                        </div>
+                                        <div class="col-md-6 profile-info">
+                                            <label for="email"><strong>Email:</strong></label>
+                                            <input type="email" class="form-control" id="email" name="email" value="<%= ac.getEmail()%>">
+                                        </div>
+                                        <div class="col-md-6 profile-info">
+                                            <label for="age"><strong>Age:</strong></label>
+                                            <input type="number" class="form-control" id="age" name="age" value="<%= ac.getAge()%>">
+                                        </div>
+                                        <div class="col-md-6 profile-info">
+                                            <label for="phone"><strong>Phone:</strong></label>
+                                            <input type="text" class="form-control" id="phone" name="phone" value="<%= ac.getPhone()%>">
+                                        </div>
+                                        <div class="col-md-6 profile-info">
+                                            <label for="id_number"><strong>ID Number:</strong></label>
+                                            <input type="text" class="form-control" id="id_number" name="id_number" value="<%= ac.getId_number()%>">
+                                        </div>
+                                        <div class="col-md-6 profile-info ">
+                                            <label for="report_count"><strong>Report Count:</strong></label>
+                                            <input type="number" class="form-control" id="report_count" name="report_count" value="<%= ac.getReport_count()%>" readonly>
+                                        </div>
                                     </div>
-                                    <div class="col-md-6 profile-info">
-                                        <label for="email"><strong>Email:</strong></label>
-                                        <input type="email" class="form-control" id="email" name="email" value="<%= ac.getEmail()%>">
+                                    <%
+                                        String errorMessage = (String) request.getSession().getAttribute("errorMessage");
+                                        String successMessage = (String) request.getSession().getAttribute("successMessage");
+                                        if (errorMessage != null) {
+                                    %>
+                                    <div class="text-center">
+                                        <p class="text-danger"><%= errorMessage%></p>
                                     </div>
-                                    <div class="col-md-6 profile-info">
-                                        <label for="age"><strong>Age:</strong></label>
-                                        <input type="number" class="form-control" id="age" name="age" value="<%= ac.getAge()%>">
-                                    </div>
-                                    <div class="col-md-6 profile-info">
-                                        <label for="phone"><strong>Phone:</strong></label>
-                                        <input type="text" class="form-control" id="phone" name="phone" value="<%= ac.getPhone()%>">
-                                    </div>
-                                    <div class="col-md-6 profile-info">
-                                        <label for="id_number"><strong>ID Number:</strong></label>
-                                        <input type="text" class="form-control" id="id_number" name="id_number" value="<%= ac.getId_number()%>">
-                                    </div>
-                                    <div class="col-md-6 profile-info ">
-                                        <label for="report_count"><strong>Report Count:</strong></label>
-                                        <input type="number" class="form-control" id="report_count" name="report_count" value="<%= ac.getReport_count()%>" readonly>
-                                    </div>
-                                </div>
-                                <%
-                                    String errorMessage = (String) request.getSession().getAttribute("errorMessage");
-                                    String successMessage = (String) request.getSession().getAttribute("successMessage");
-                                    if (errorMessage != null) {
-                                %>
-                                <div class="text-center">
-                                    <p class="text-danger"><%= errorMessage%></p>
-                                </div>
 
-                                <%
-                                    request.getSession().removeAttribute("errorMessage");
-                                } else if (successMessage != null) {%>
-                                <div class="text-center">
-                                    <p class="text-success"><%= successMessage%></p>
-                                </div>
-                                <% }
-                                    request.getSession().removeAttribute("successMessage");
-                                %>
-                                <div class="text-center mt-4">
-                                    <button type="submit" class="btn btn-custom" name="btnUpdateProfile">Update Profile</button>
-                                </div>
-                            </form>
+                                    <%
+                                        request.getSession().removeAttribute("errorMessage");
+                                    } else if (successMessage != null) {%>
+                                    <div class="text-center">
+                                        <p class="text-success"><%= successMessage%></p>
+                                    </div>
+                                    <% }
+                                        request.getSession().removeAttribute("successMessage");
+                                    %>
+                                    <div class="text-center mt-4">
+                                        <button type="submit" class="btn btn-custom" name="btnUpdateProfile">Update Profile</button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -171,9 +172,9 @@
 
     <!-- Custom JS -->  
     <script>
-                                function confirmUpdate() {
-                                    return confirm("Bạn có chắc chắn muốn thay đổi thông tin không?");
-                                }
+                                    function confirmUpdate() {
+                                        return confirm("Bạn có chắc chắn muốn thay đổi thông tin không?");
+                                    }
     </script>
 </body>
 </html>

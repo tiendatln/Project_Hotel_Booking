@@ -107,7 +107,7 @@ public class loginController extends HttpServlet {
                     c.setPath("/");
                     response.addCookie(c);
                     if (setRole.equalsIgnoreCase("admin")) {
-                        response.sendRedirect("/homeController/HomeAdmin");
+                        response.sendRedirect("/Dashboard");
                     } else if (setRole.equalsIgnoreCase("owner")) {
                         response.sendRedirect("/homeController/HomeOwner");
                     } else {
