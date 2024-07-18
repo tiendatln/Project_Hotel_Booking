@@ -34,20 +34,7 @@ public class ManageRole extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-     String action = request.getParameter("action");
-        String id_raw = request.getParameter("id"); 
-            accountDAOs ad = new accountDAOs();
-            account a = new account();
-        try {
-              int id = Integer.parseInt(id_raw);
-            if (action != null) {
-            if (action.equals("deletedon")) {
-                ad.deleteUpdateRole(id);
-                response.sendRedirect("/setrole");
-            }
-        } 
-        } catch (Exception e) {
-        }
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -63,39 +50,37 @@ public class ManageRole extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         //  processRequest(request, response);
-      ////  request.setCharacterEncoding("UTF-8");
-      //  response.setCharacterEncoding("UTF-8");
-      //  response.setContentType("text/html; charset=UTF-8");
-     
-      try { 
-            
-            
-            
-            
-            
-            
-            accountDAOs ad = new accountDAOs();
-            account a = new account();
-            
-            
-            
-         
-      
-          
-            
-            
-            
-            String user = request.getParameter("user");
-            if (user != null) {
+      request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html; charset=UTF-8");
+          accountDAOs ad = new accountDAOs();
+            account a = new account();            
+           String user = request.getParameter("user");       
+           String id_raw = request.getParameter("id");        
+           String action = request.getParameter("action");
+
+      try {            
+       
+          if(action ==null){
+              List<updateRole> listupdaterole = ad.getAllUpdateRole();
+            request.setAttribute("listupdaterole", listupdaterole);
+            request.getRequestDispatcher("/admin/managerole.jsp").forward(request, response);         
+          }else{
+               if (action.equalsIgnoreCase("setrole")) {
                 a = ad.getAccount(user);
                 ad.setOwner(a.getUsername());
                 request.setAttribute("seto", a.getIs_owner());
-                request.setAttribute("deleteuser", a.getUsername());
+                response.sendRedirect("setrole");              
+            }else  if (action.equalsIgnoreCase("deleteDon")) {
+                  int id = Integer.parseInt(id_raw);               
+            ad.deleteUpdateRole(id);
+                    response.sendRedirect("/setrole"); 
+
             }
-            List<updateRole> listupdaterole = ad.getAllUpdateRole();
-            request.setAttribute("listupdaterole", listupdaterole);
-            request.getRequestDispatcher("/admin/managerole.jsp").forward(request, response);         
-                response.sendRedirect("/setrole");
+          }
+           
+
+           
         } catch (NumberFormatException e) {
             System.out.println(e);
         }

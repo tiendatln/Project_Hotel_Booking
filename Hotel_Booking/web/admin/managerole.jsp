@@ -28,11 +28,19 @@
         <script type="text/javascript">
             function doSetRole(username) {
                 if (confirm("ban co muon set role " + username)) {
-                    window.location = "setrole?user=" + username;
+                    window.location = "setrole?action=setrole&user=" + username;
 
                 }
             }
         </script>    
+        <script type="text/javascript">
+            function dodelete(id) {
+                if (confirm("ban co muon xoa k" + id)) {
+                    window.location = "setrole?action=deleteDon&id=" + id;
+
+                }
+            }
+        </script>
     </head>
     <body class="app sidebar-mini rtl">
         <!-- Navbar-->
@@ -117,14 +125,14 @@
 
                                         </td>
                                         <td>
-                                            <a href="#" onclick="doSetRole('${i.account.username}')">Set Role</a>                                           
+                                            <button class="btn btn-primary btn-sm edit" onclick="doSetRole('${i.account.username}')" type="button" title="Grant of administrative privileges" id="show-emp" data-bs-toggle="modal" data-bs-target="#ModalUP${u.id_number}">
+                                                Set Role     <i class="fas fa-edit"></i></button>
                                         </td>   
-                                        <th>
-                                            <button class="btn btn-primary btn-sm trash" type="button" title="Delete" value="${i.id}" style="background-color: red; border:none;"><i
-                                                    class="fas fa-trash-alt"></i>
+                                        <td>
+                                            <button class="btn btn-primary btn-sm trash" type="button" title="Xóa" onclick="dodelete('${i.id}')"  style="background-color: red; border:none;"> 
+                                                Delete    <i  class="fas fa-trash-alt"></i>
                                             </button>
-
-                                        </th>
+                                        </td>
                                     </tr>
                                 </c:forEach>                           
                             </tbody>
@@ -148,23 +156,23 @@
     <script type="text/javascript" src="admin/js/plugins/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="admin/js/plugins/dataTables.bootstrap.min.js"></script>
     <script type="text/javascript">$('#sampleTable').DataTable();</script>    
-    <script>
-          $(document).ready(jQuery(function () {
-                jQuery(".trash").click(function () {
-                    swal({
-                        title: "Cảnh báo",
-                        text: "Bạn có chắc chắn là muốn xóa account này?",
-                        buttons: ["Hủy bỏ", "Đồng ý"],
-                    })
-                            .then((willDelete) => {
-                                if (willDelete) {
-                                    window.location = "setrole?action=deletedon&id=" + $(this).attr("value");
-                                    swal("Đã xóa thành công.", {
-                                    });
-                                }
-                            });
-                });
-            }));
-    </script>
+    <!--    <script>
+              $(document).ready(jQuery(function () {
+                    jQuery(".trash").click(function () {
+                        swal({
+                            title: "Cảnh báo",
+                            text: "Bạn có chắc chắn là muốn xóa account này?",
+                            buttons: ["Hủy bỏ", "Đồng ý"],
+                        })
+                                .then((willDelete) => {
+                                    if (willDelete) {
+                                        window.location = "setrole?action=deletedon&id=" + $(this).attr("value");
+                                        swal("Đã xóa thành công.", {
+                                        });
+                                    }
+                                });
+                    });
+                }));
+        </script>-->
 </body>
 </html>
