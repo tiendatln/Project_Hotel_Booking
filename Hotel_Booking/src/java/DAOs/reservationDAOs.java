@@ -103,7 +103,7 @@ public class reservationDAOs {
 
     public List<reservation> getReservationAndRoomByLocalAndDate(Date CheckInDate, Date CheckOutDate, int hotel_id) {
         List<reservation> re = new ArrayList<>();
-        
+
         try {
             PreparedStatement ps = conn.prepareStatement("SELECT * \n"
                     + "FROM Hotel h \n"
@@ -250,7 +250,7 @@ public class reservationDAOs {
                     + "join Room r on re.room_id = r.room_id\n"
                     + "join Hotel h on r.hotel_id = h.hotel_id\n"
                     + "where h.username = ? \n"
-                    + "Order by [status]");
+                    + "Order by [status], re_date desc");
             ps.setString(1, username);
             rs = ps.executeQuery();
             int i = 0;
@@ -296,6 +296,7 @@ public class reservationDAOs {
         }
         return false;
     }
+
     public int CountBooking(String username) {
         ResultSet rs = null;
         int count = 0;
@@ -342,6 +343,25 @@ public class reservationDAOs {
                     + "FROM Reservation re\n"
                     + "join Room r on re.room_id = r.room_id\n"
                     + "join Hotel h on r.hotel_id = h.hotel_id\n"
+                    + "WHERE h.username = ? AND re.[status] = 3");
+            ps.setString(1, username);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                count = rs.getInt(1);
+            }
+        } catch (Exception e) {
+        }
+        return count;
+    }
+
+    public int CountRejectBooking(String username) {
+        ResultSet rs = null;
+        int count = 0;
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT COUNT(*) as 'count'\n"
+                    + "FROM Reservation re\n"
+                    + "join Room r on re.room_id = r.room_id\n"
+                    + "join Hotel h on r.hotel_id = h.hotel_id\n"
                     + "WHERE h.username = ? AND re.[status] = 2");
             ps.setString(1, username);
             rs = ps.executeQuery();
@@ -372,7 +392,7 @@ public class reservationDAOs {
         return count;
     }
 
-    public List<reservation> SearchBooking(String text) {
+    public List<reservation> SearchBooking(String username, String text) {
         List<reservation> list = new ArrayList<>();
         ResultSet rs = null;
         try {
@@ -380,11 +400,12 @@ public class reservationDAOs {
                     + "from Reservation re\n"
                     + "inner join Room r on re.room_id = r.room_id\n"
                     + "inner join Hotel h on r.hotel_id = h.hotel_id\n"
-                    + "where re_id LIKE ? OR re.username LIKE ? OR h.hotel_name LIKE ?\n"
+                    + "where h.username = ? AND re_id LIKE ? OR re.username LIKE ? OR h.hotel_name LIKE ?\n"
                     + "Order by [status], re_date desc");
-            ps.setString(1, text);
-            ps.setString(2, "%" + text + "%");
+            ps.setString(1, username);
+            ps.setString(2, text);
             ps.setString(3, "%" + text + "%");
+            ps.setString(4, "%" + text + "%");
             rs = ps.executeQuery();
             int i = 0;
             while (rs.next()) {

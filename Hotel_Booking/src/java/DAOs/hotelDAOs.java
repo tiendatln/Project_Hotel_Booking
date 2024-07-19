@@ -242,17 +242,18 @@ public class hotelDAOs {
         return count;
     }
 
-    public List<hotel> SearchHotelByKeyWord(String text) {
+    public List<hotel> SearchHotelByKeyWord(String username, String text) {
         List<hotel> list = new ArrayList<>();
         ResultSet rs = null;
         try {
             PreparedStatement ps = conn.prepareStatement("select distinct a.username, h.hotel_id, hotel_name, hotel_address, hotel_img, hotel_description\n"
                     + "from Hotel h\n"
                     + "inner join Account a on h.username = a.username\n"
-                    + "where h.hotel_id LIKE ? OR hotel_address LIKE ?\n"
+                    + "where h.username = ? AND h.hotel_name LIKE ? OR hotel_address LIKE ?\n"
                     + "order by h.hotel_id");
-            ps.setString(1, text);
+            ps.setString(1, username);
             ps.setString(2, "%" + text + "%");
+            ps.setString(3, "%" + text + "%");
             rs = ps.executeQuery();
             while (rs.next()) {
                 account a = new account(rs.getString(1));

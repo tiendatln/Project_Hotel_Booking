@@ -1,6 +1,6 @@
 <%-- 
-    Document   : list-hotel
-    Created on : Jul 11, 2024, 3:36:15 PM
+    Document   : list-service
+    Created on : Jul 19, 2024, 7:46:33 PM
     Author     : Ngo Hong Hai - CE171752
 --%>
 
@@ -12,7 +12,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Manage Service</title>
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">       
         <!-- CSS JS bootstrap 5.0-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
@@ -58,8 +58,8 @@
                                     </svg> <%= ac.getName()%></li>
                                 <li class="nav-item"><a class="nav-link px-2" href="/dashboardController"><i class="fa fa-fw fa-database mr-1"></i><span>Dashboard</span></a></li>
                                 <li class="nav-item"><a class="nav-link px-2" href="/profileController/ProfileUser"><i class="fa fa-fw fa-user mr-1"></i><span>My Profile</span></a></li>
-                                <li class="nav-item" style="font-weight: bold"><a class="nav-link px-2" href="/hotelManagerController"><i class="fa fa-fw fa-th-large mr-1"></i><span>Manage Hotel</span></a></li>
-                                <li class="nav-item"><a class="nav-link px-2" href="/serviceManagerController"><i class="fa fa-fw fa-th-large mr-1"></i><span>Manage Service</span></a></li>
+                                <li class="nav-item"><a class="nav-link px-2" href="/hotelManagerController"><i class="fa fa-fw fa-th-large mr-1"></i><span>Manage Hotel</span></a></li>
+                                <li class="nav-item" style="font-weight: bold"><a class="nav-link px-2" href="/serviceManagerController"><i class="fa fa-fw fa-th-large mr-1"></i><span>Manage Service</span></a></li>
                                 <li class="nav-item"><a class="nav-link px-2" href="/roomManagerController"><i class="fa fa-fw fa-th mr-1"></i><span>Manage Room</span></a></li>
                                 <li class="nav-item"><a class="nav-link px-2" href="/reserveManagerController"><i class="fa fa-fw fa-server mr-1"></i><span>Manage Booking</span></a></li>
                                 <li class="nav-item"><a class="nav-link px-2" href="feedbackManagerController"><i class="fa fa-fw fa-send mr-1"></i><span>Manage Feedback</span></a></li>
@@ -71,7 +71,7 @@
                 <div class="col">
                     <div class="e-tabs mb-3 px-3">
                         <ul class="nav nav-tabs">
-                            <li class="nav-item"><a class="nav-link active" href="#">Manage hotel</a></li>
+                            <li class="nav-item"><a class="nav-link active" href="#">Manage service</a></li>
                         </ul>
                     </div>
 
@@ -79,14 +79,14 @@
                         <div class="col mb-3">
                             <div class="e-panel card">
                                 <div class="card-body">
-                                    <div class="text-left px-xl-3">                                        
-                                        <button class="btn btn-success btn-block" type="button" data-bs-toggle="modal" data-bs-target="#add-form-modal"> <i class="fa fa-fw  fa-plus"></i> Add hotel</button>                                             
-                                    </div>                                    
+                                    <div class="text-left px-xl-3">                                                                                 
+                                        <button class="btn btn-success btn-block" type="button" data-bs-toggle="modal" data-bs-target="#add-service-form-modal"> <i class="fa fa-fw  fa-plus"></i> Add services</button> 
+                                    </div>                                   
                                     <div class="col-12 col-lg-3 ms-auto" >
                                         <div class="card">
                                             <div class="card-body">                                   
 
-                                                <form method="post" action="/hotelManagerController?action=search">
+                                                <form method="post" action="/serviceManagerController?action=search">
                                                     <div class="form-group">                                                                                                                
                                                         <div class="input-group">
                                                             <span class="input-group-addon"><i
@@ -111,49 +111,28 @@
                                                 <thead>
                                                     <tr>
                                                         <th>ID</th>
-                                                        <th>Image</th>
-                                                        <th class="max-width">Hotel Name</th>
-                                                        <th class="max-width" style="max-width: 400px;">Hotel Address</th>                                                        
-                                                        <th class="max-width" style="max-width: 400px;">Description</th>                                                        
-                                                        <th class="max-width" style="max-width: 400px;">Services</th>
+                                                        <th class="max-width">Service Name</th>
+                                                        <th>Price</th>
+                                                        <th class="max-width" style="max-width: 400px;">Hotel</th>                                                                                                               
                                                         <th>Actions</th>
                                                     </tr>
                                                 </thead>
 
-                                                <c:forEach items="${HotelData}" var="hotel">
+                                                <c:forEach items="${ServiceData}" var="service">
                                                     <tbody>                                                   
 
                                                         <tr>                                                            
                                                             <td class="align-middle" >
-                                                                ${hotel.hotel_id}
-                                                            </td>
-                                                            <td class="align-middle text-center" style="width: 100px">
-                                                                <div class="bg-light d-inline-flex justify-content-center align-items-center align-top" style="width: 70px; height: 35px; border-radius: 3px;"><img src="<%= request.getContextPath()%>/imgs/hotel/${hotel.hotel_img}" alt="" width="75px;" height="40px;"></div>
-                                                            </td>
-                                                            <td class="text-nowrap align-middle">${hotel.hotel_name}</td>
+                                                                ${service.service_id}
+                                                            </td>                                                            
+                                                            <td class="text-nowrap align-middle">${service.service_name}</td>
+                                                            <td class="text-nowrap align-middle">${service.service_price}</td>
                                                             <td class="text-nowrap align-middle"  style='max-width: 200px;
-                                                                overflow-x: hidden;''>${hotel.hotel_address}</td>                                                            
-                                                            <td class="text-nowrap align-middle" style='max-width: 200px;
-                                                                overflow-x: hidden;''><span>${hotel.hotel_description}</span></td>
-                                                            <td class="text-nowrap align-middle"style='max-width: 200px;
-                                                                overflow-x: auto;' ><span>                                                                    
-                                                                    <c:set var="c" value="0"/>                                                                                                                                        
-                                                                    <c:forEach items="${ServiceData}" var="s">
-
-                                                                        <c:if test="${hotel.hotel_id==s.hotel.hotel_id}">
-                                                                            <c:set var="c" value="1"/>        
-                                                                            ${s.service_name} -                                                                            
-                                                                        </c:if>
-
-                                                                    </c:forEach>
-                                                                    <c:if test="${c!=1}">
-                                                                        N/A
-                                                                    </c:if>
-                                                                </span></td>                                                           
+                                                                overflow-x: hidden;''>${service.hotel.hotel_name}</td>                                                                                                                                                                                
                                                             <td class="text-center align-middle">
                                                                 <div class="btn-group align-top">
-                                                                    <button class="btn btn-outline-secondary badge" type="button" data-bs-toggle="modal" data-bs-target="#update-form-modal${hotel.hotel_id}" style="color: black;" >Edit</button>
-                                                                    <button class="btn btn-sm btn-outline-secondary badge trash" type="button" style="color: black" onclick="doDelete('${hotel.hotel_id}')"><i class="fa fa-trash"></i></button>
+                                                                    <button class="btn btn-outline-secondary badge" type="button" data-bs-toggle="modal" data-bs-target="#update-form-modal${service.service_id}" style="color: black;" >Edit</button>
+                                                                    <button class="btn btn-sm btn-outline-secondary badge trash" type="button" style="color: black" onclick="doDelete('${service.service_id}')"><i class="fa fa-trash"></i></button>
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -165,14 +144,14 @@
 
                                         <div class="d-flex justify-content-center">
                                             <c:if test="${message}">
-                                                <span>No hotel found</span>
+                                                <span>No service found</span>
                                             </c:if>    
                                         </div>
                                         <c:set var="page" value="${page}"/>
                                         <div class="d-flex justify-content-center">
                                             <ul class="pagination mt-3 mb-0">
                                                 <c:forEach begin="${1}" end="${num}" var="i">                                                    
-                                                    <li class="${i==page?"active page-item":"page-item"}"><a href="/hotelManagerController?page=${i}&key=${keyword}" class="page-link">${i}</a></li>      
+                                                    <li class="${i==page?"active page-item":"page-item"}"><a href="/serviceManagerController?page=${i}&key=${keyword}" class="page-link">${i}</a></li>      
                                                     </c:forEach>
                                             </ul>
                                         </div>
@@ -186,59 +165,48 @@
                     </div>
                 </div>
 
-                <!-- Add Hotel Form Modal -->
-                <div class="modal fade" role="dialog" tabindex="-1" id="add-form-modal" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+
+                <!-- Add Service Form Modal -->
+                <div class="modal fade" role="dialog" tabindex="-1" id="add-service-form-modal" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
                     <div class="modal-dialog modal-lg" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title">Add Hotel</h5>                                
+                                <h5 class="modal-title">Add Service</h5>                                
                             </div>
                             <div class="modal-body">
                                 <div class="py-1">
-                                    <form class="form" novalidate="" action="/hotelManagerController?action=inserthotel" method="post" enctype="multipart/form-data">
+                                    <form class="form" novalidate="" action="/serviceManagerController?action=insertservice" method="POST">
                                         <div class="row">
                                             <div class="col">
                                                 <div class="row">
                                                     <div class="form-group">
-                                                        <label>Hotel Name</label>
-                                                        <input class="form-control" type="text" name="hotel_name" placeholder="Name of hotel" value="">
+                                                        <label>Service Name</label>
+                                                        <input class="form-control" type="text" name="service_name" placeholder="Name of service" value="">
                                                     </div>                                                    
                                                 </div>
                                                 <div class="row">
                                                     <div class="form-group">
-                                                        <label>Hotel Address</label>
-                                                        <input class="form-control" name="hotel_address" type="text" required placeholder="Hotel Address">
+                                                        <label>Service Price</label>
+                                                        <input class="form-control" name="service_price" type="number" required min="0" placeholder="Service price">
                                                     </div>                                                    
-                                                </div>                                                
-
-                                                <div class="row">
-                                                    <div class="col mb-3">
-                                                        <div class="form-group">
-                                                            <label>Description</label>
-                                                            <textarea class="form-control" rows="5" placeholder="Write a description for the hotel" name="hotel_description"></textarea>
-                                                        </div>
-                                                    </div>
                                                 </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-12 col-sm-6 mb-3">
-                                                <div class="mb-2"><b>Set Hotel Image</b></div>
                                                 <div class="row">
-                                                    <div class="col">
-                                                        <div id="myfileupload">
-                                                            <input type="file" name="hotel_img"/>         
-                                                            <img id="imagePreview" src="#" alt="Image Preview" style="display: none; width: 200px; margin-top: 10px;">
-                                                        </div>  
-                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Hotel</label>
+                                                        <select name="hotel_id" class="form-control" id="exampleSelect1">
+                                                            <option>-- Select Hotel --</option>
+                                                            <c:forEach items="${HotelData}" var="hotel">
+                                                                <option value="${hotel.hotel_id}">${hotel.hotel_name}</option>
+                                                            </c:forEach>
+                                                        </select>
+                                                    </div>                                                    
                                                 </div>
 
                                             </div>
-
                                         </div>
+
                                 </div>
-                                <div class="row">
+                                <div class="row" style='margin-top: 20px;'>
                                     <div class="col d-flex justify-content-end">
                                         <button class="btn btn-primary" type="submit" name="btnAdd">Add</button>                                                
                                         <a class="btn btn-cancel" data-bs-dismiss="modal" href="#" style="background-color: crimson; margin-left: 15px; color: white;">Cancle</a>
@@ -251,23 +219,22 @@
                     </div>
                 </div>
 
-
-                <c:forEach items="${HotelData}" var="hotel">
+                <c:forEach items="${ServiceData}" var="service">
                     <!-- Update Form Modal -->
-                    <div class="modal fade" role="dialog" tabindex="-1" id="update-form-modal${hotel.hotel_id}" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                    <div class="modal fade" role="dialog" tabindex="-1" id="update-form-modal${service.service_id}" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
                         <div class="modal-dialog modal-lg" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title">Update Hotel</h5>                                
+                                    <h5 class="modal-title">Update Service</h5>                                
                                 </div>
                                 <div class="modal-body">
                                     <div class="py-1">
-                                        <form class="form" id="myForm" novalidate="" action="/hotelManagerController?action=updatehotel" method="POST" enctype="multipart/form-data">
+                                        <form class="form" novalidate="" action="/serviceManagerController?action=updateservice" method="POST">
                                             <div class="row">
                                                 <div class="col mb-3">
                                                     <div class="form-group">
-                                                        <label>Hotel ID</label>
-                                                        <input class="form-control" type="text" name="hotel_id" value="${hotel.hotel_id}" readonly style="background: #f1f1f1">
+                                                        <label>Service ID</label>
+                                                        <input class="form-control" type="text" name="service_id" value="${service.service_id}" readonly style="background: #f1f1f1">
                                                     </div>
                                                 </div>
                                             </div>
@@ -275,44 +242,31 @@
                                                 <div class="col">
                                                     <div class="row">
                                                         <div class="form-group">
-                                                            <label>Hotel Name</label>
-                                                            <input class="form-control" type="text" name="hotel_name" placeholder="Name of hotel" value="${hotel.hotel_name}">
+                                                            <label>Service Name</label>
+                                                            <input class="form-control" type="text" name="service_name" placeholder="Name of service" value="${service.service_name}">
                                                         </div>                                                                                                                
                                                     </div>
                                                     <div class="row">
                                                         <div class="form-group">
-                                                            <label>Hotel Address</label>                                                                
-                                                            <input class="form-control" name="hotel_address" type="text" required placeholder="Hotel Address" value="${hotel.hotel_address}">
-                                                        </div>
-
+                                                            <label>Service Price</label>
+                                                            <input class="form-control" name="service_price" type="number" required min="0" placeholder="Service price" value="${service.service_price}">
+                                                        </div>                                                    
                                                     </div>
                                                     <div class="row">
-                                                        <div class="col mb-3">
-                                                            <div class="form-group">
-                                                                <label>Description</label>
-                                                                <textarea class="form-control" rows="5" placeholder="Write a description for the hotel" name="hotel_description">${hotel.hotel_description}</textarea>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                        <div class="form-group">
+                                                            <label>Hotel</label>
+                                                            <select name="hotel_id" class="form-control" id="exampleSelect1">
+                                                                <option>-- Select Hotel --</option>
+                                                                <c:forEach items="${HotelData}" var="hotel">
+                                                                    <option value="${hotel.hotel_id}" ${(service.hotel.hotel_id == hotel.hotel_id) ? "selected" : ""}>${hotel.hotel_name}</option>
+                                                                </c:forEach>
+                                                            </select>
+                                                        </div>                                                    
+                                                    </div>                                                    
                                                 </div>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-12 col-sm-6 mb-3">
-                                                    <div class="mb-2"><b>Set Hotel Image</b></div>
-                                                    <div class="row">
-                                                        <div class="col">
-                                                            <div id="myfileupload">
-                                                                <input type="file" name="hotel_img" value="${hotel.hotel_img}"/>       
-                                                                <img id="imagePreview" src="#" alt="Image Preview" style="display: none; width: 200px; margin-top: 10px;">
-                                                            </div>  
-                                                        </div>
-                                                    </div>
-
-                                                </div>                                                
-                                            </div>
+                                            </div>                                           
                                     </div>
-                                    <div class="row">
+                                    <div class="row" style="margin-top: 20px;">
                                         <div class="col d-flex justify-content-end">
                                             <button class="btn btn-primary" type="submit" name="btnUpdate">Save Changes</button>                                                
                                             <a class="btn btn-cancel" data-bs-dismiss="modal" href="#" style="background-color: crimson; margin-left: 15px; color: white;">Cancle</a>
@@ -337,29 +291,10 @@
         <!-- Custom JS -->  
         <script>
                                                                         function doDelete(id) {
-                                                                            if (confirm("Are you sure to delete hotel with ID = " + id)) {
-                                                                                window.location = "/hotelManagerController?action=deletehotel&id=" + id;
+                                                                            if (confirm("Are you sure to delete service with ID = " + id)) {
+                                                                                window.location = "/serviceManagerController?action=deleteservice&id=" + id;
                                                                             }
                                                                         }
-                                                                        document.getElementById("btnSave").addEventListener("click", function () {
-                                                                            this.disabled = true;
-                                                                            document.getElementById("myForm").submit();
-                                                                        });
-
-                                                                        document.getElementById('hotel_img').addEventListener('change', function (event) {
-                                                                            let file = event.target.files[0];
-                                                                            if (file) {
-                                                                                let reader = new FileReader();
-                                                                                reader.onload = function (e) {
-                                                                                    let img = document.getElementById('imagePreview');
-                                                                                    img.src = e.target.result;
-                                                                                    img.style.display = 'block';
-                                                                                };
-                                                                                reader.readAsDataURL(file);
-                                                                            } else {
-                                                                                document.getElementById('imagePreview').style.display = 'none';
-                                                                            }
-                                                                        });
         </script>
     </body>
 </html>

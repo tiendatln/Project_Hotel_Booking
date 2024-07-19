@@ -59,6 +59,7 @@
                                 <li class="nav-item" style="font-weight: bold"><a class="nav-link px-2" href="/dashboardController"><i class="fa fa-fw fa-database mr-1"></i><span>Dashboard</span></a></li>
                                 <li class="nav-item"><a class="nav-link px-2" href="/profileController/ProfileUser"><i class="fa fa-fw fa-user mr-1"></i><span>My Profile</span></a></li>
                                 <li class="nav-item"><a class="nav-link px-2" href="/hotelManagerController"><i class="fa fa-fw fa-th-large mr-1"></i><span>Manage Hotel</span></a></li>
+                                <li class="nav-item"><a class="nav-link px-2" href="/serviceManagerController"><i class="fa fa-fw fa-th-large mr-1"></i><span>Manage Service</span></a></li>
                                 <li class="nav-item"><a class="nav-link px-2" href="/roomManagerController"><i class="fa fa-fw fa-th mr-1"></i><span>Manage Room</span></a></li>
                                 <li class="nav-item"><a class="nav-link px-2" href="/reserveManagerController"><i class="fa fa-fw fa-server mr-1"></i><span>Manage Booking</span></a></li>
                                 <li class="nav-item"><a class="nav-link px-2" href="/feedbackManagerController"><i class="fa fa-fw fa-send mr-1"></i><span>Manage Feedback</span></a></li>
@@ -80,7 +81,7 @@
                                 <div class="card-body">
 
                                     <div class="row">
-                                        <div class="col-xl-4 col-md-6">
+                                        <div class="col-xl-3 col-md-6">
                                             <div class="card bg-pattern">
                                                 <div class="card-body">
                                                     <div class="float-right">
@@ -91,7 +92,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-xl-4 col-md-6">
+                                        <div class="col-xl-3 col-md-6">
                                             <div class="card bg-pattern">
                                                 <div class="card-body">
                                                     <div class="float-right">
@@ -101,8 +102,19 @@
                                                     <p class="text-muted mb-0">Number of rooms</p>
                                                 </div>
                                             </div>
-                                        </div>                                       
-                                        <div class="col-xl-4 col-md-6">
+                                        </div>
+                                        <div class="col-xl-3 col-md-6">
+                                            <div class="card bg-pattern">
+                                                <div class="card-body">
+                                                    <div class="float-right">
+                                                        <i class="fa fa-server text-primary h4 ml-3"></i>
+                                                    </div>
+                                                    <h5 class="font-size-20 mt-0 pt-1">${requestScope.total}</h5>
+                                                    <p class="text-muted mb-0">Total booking</p>
+                                                </div>
+                                            </div>
+                                        </div>     
+                                        <div class="col-xl-3 col-md-6">
                                             <div class="card bg-pattern">
                                                 <div class="card-body">
                                                     <div class="float-right">
@@ -141,7 +153,7 @@
                                                                                                                             <span>12.5% <i class="fa fa-arrow-up"></i></span>
                                                                                                                         </div>-->
                                                         </div>
-                                                        <div class="progress mt-1 " data-height="8" style="height: 8px;">
+                                                        <div class="progress mt-1" data-height="8" style="height: 8px;">
                                                             <div class="progress-bar l-bg-cyan" role="progressbar" data-width="${requestScope.perconfirm}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: ${requestScope.perconfirm}%;"></div>
                                                         </div>
                                                     </div>
@@ -164,7 +176,7 @@
                                                                                                                                                                                         <span>12.5% <i class="fa fa-arrow-up"></i></span>
                                                                                                                                                                                     </div>-->
                                                         </div>
-                                                        <div class="progress mt-1 " data-height="8" style="height: 8px;">
+                                                        <div class="progress mt-1" data-height="8" style="height: 8px;">
                                                             <div class="progress-bar l-bg-cyan" role="progressbar" data-width="${requestScope.perpending}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: ${requestScope.perpending}%;"></div>
                                                         </div>
                                                     </div>
@@ -198,19 +210,20 @@
                                                     <div class="card-statistic-3 p-4">
                                                         <!--                                                        <div class="card-icon card-icon-large"><i class="fas fa-shopping-cart"></i></div>-->
                                                         <div class="mb-4">
-                                                            <h5 class="card-title mb-0">Total booking</h5>
+                                                            <h5 class="card-title mb-0">Rejected</h5>
                                                         </div>
                                                         <div class="row align-items-center mb-2 d-flex">
                                                             <div class="col-8">
                                                                 <h2 class="d-flex align-items-center mb-0">
-                                                                    ${requestScope.total}
+                                                                    ${requestScope.reject}
                                                                 </h2>
                                                             </div>
                                                             <!--                                                            <div class="col-4 text-right">
                                                                                                                             <span>12.5% <i class="fa fa-arrow-up"></i></span>
                                                                                                                         </div>-->
                                                         </div>
-                                                        <div data-height="8" style="height: 8px;">                                                            
+                                                        <div class="progress mt-1 " data-height="8" style="height: 8px;">
+                                                            <div class="progress-bar l-bg-cyan" role="progressbar" data-width="${requestScope.perreject}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: ${requestScope.perreject}%;"></div>
                                                         </div>
                                                     </div>
                                                 </div>

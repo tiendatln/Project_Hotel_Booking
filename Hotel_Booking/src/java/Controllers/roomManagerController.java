@@ -95,11 +95,11 @@ public class roomManagerController extends HttpServlet {
             roomType rt = new roomType();
             List<room> roomList = null;
             if (key != null) {
-                roomList = rd.SearchRoomByKeyWord(key);
+                roomList = rd.SearchRoomByKeyWord(value, key);
             } else {
                 roomList = rd.getRoomByUsername(value);
             }
-            
+
             if (roomList.size() < 1) {
                 request.setAttribute("message", true);
             }
@@ -300,7 +300,7 @@ public class roomManagerController extends HttpServlet {
             hotelDAOs hd = new hotelDAOs();
             hotel h = new hotel();
             roomType rt = new roomType();
-            List<room> roomList = rd.SearchRoomByKeyWord(key);
+            List<room> roomList = rd.SearchRoomByKeyWord(value, key);
             if (roomList.size() < 1) {
                 request.setAttribute("message", true);
             }

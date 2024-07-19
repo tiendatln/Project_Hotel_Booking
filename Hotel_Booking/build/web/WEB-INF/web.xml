@@ -83,6 +83,10 @@
         <servlet-name>viewUpdateOwnerControlller</servlet-name>
         <servlet-class>Controllers.viewUpdateOwnerControlller</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>serviceManagerController</servlet-name>
+        <servlet-class>Controllers.serviceManagerController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>homeController</servlet-name>
         <url-pattern>/homeController/*</url-pattern>
@@ -178,6 +182,10 @@
     <servlet-mapping>
         <servlet-name>viewUpdateOwnerControlller</servlet-name>
         <url-pattern>/viewUpdateOwnerControlller/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>serviceManagerController</servlet-name>
+        <url-pattern>/serviceManagerController/*</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

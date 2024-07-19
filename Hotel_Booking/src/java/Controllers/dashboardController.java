@@ -79,15 +79,17 @@ public class dashboardController extends HttpServlet {
         serviceDAOs sd = new serviceDAOs();
         accountDAOs ad = new accountDAOs();
         feedbackDAOs fdb = new feedbackDAOs();
-        
-        int countHotel = hd.CountHotel(value); 
-        int countRoom = rd.CountRoom(value); 
-        int countFeedback = fdb.CountFeedback(value); 
-        int countTotalBooking = redb.CountBooking(value); 
-        int countConfirm = redb.CountConfirmBooking(value); 
+
+        int countHotel = hd.CountHotel(value);
+        int countRoom = rd.CountRoom(value);
+        int countFeedback = fdb.CountFeedback(value);
+        int countTotalBooking = redb.CountBooking(value);
+        int countConfirm = redb.CountConfirmBooking(value);
+        int countReject = redb.CountRejectBooking(value);
         int countCancel = redb.CountCancelBooking(value);
-        int countPending = redb.CountPendingBooking(value); 
-        double percent_Confirm = ((double) countConfirm / countTotalBooking) * 100; 
+        int countPending = redb.CountPendingBooking(value);
+        double percent_Confirm = ((double) countConfirm / countTotalBooking) * 100;
+        double percent_Reject = ((double) countReject / countTotalBooking) * 100;
         double percent_Cancel = ((double) countCancel / countTotalBooking) * 100;
         double percent_Pending = ((double) countPending / countTotalBooking) * 100;
         request.setAttribute("hotel", countHotel);
@@ -95,9 +97,11 @@ public class dashboardController extends HttpServlet {
         request.setAttribute("feedback", countFeedback);
         request.setAttribute("total", countTotalBooking);
         request.setAttribute("confirm", countConfirm);
+        request.setAttribute("reject", countReject);
         request.setAttribute("cancel", countCancel);
         request.setAttribute("pending", countPending);
         request.setAttribute("perconfirm", percent_Confirm);
+        request.setAttribute("perreject", percent_Reject);
         request.setAttribute("percancel", percent_Cancel);
         request.setAttribute("perpending", percent_Pending);
         request.getRequestDispatcher("/owner/dashboard.jsp").forward(request, response);

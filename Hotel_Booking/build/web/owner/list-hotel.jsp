@@ -59,6 +59,7 @@
                                 <li class="nav-item"><a class="nav-link px-2" href="/dashboardController"><i class="fa fa-fw fa-database mr-1"></i><span>Dashboard</span></a></li>
                                 <li class="nav-item"><a class="nav-link px-2" href="/profileController/ProfileUser"><i class="fa fa-fw fa-user mr-1"></i><span>My Profile</span></a></li>
                                 <li class="nav-item" style="font-weight: bold"><a class="nav-link px-2" href="/hotelManagerController"><i class="fa fa-fw fa-th-large mr-1"></i><span>Manage Hotel</span></a></li>
+                                <li class="nav-item"><a class="nav-link px-2" href="/serviceManagerController"><i class="fa fa-fw fa-th-large mr-1"></i><span>Manage Service</span></a></li>
                                 <li class="nav-item"><a class="nav-link px-2" href="/roomManagerController"><i class="fa fa-fw fa-th mr-1"></i><span>Manage Room</span></a></li>
                                 <li class="nav-item"><a class="nav-link px-2" href="/reserveManagerController"><i class="fa fa-fw fa-server mr-1"></i><span>Manage Booking</span></a></li>
                                 <li class="nav-item"><a class="nav-link px-2" href="feedbackManagerController"><i class="fa fa-fw fa-send mr-1"></i><span>Manage Feedback</span></a></li>
@@ -79,8 +80,7 @@
                             <div class="e-panel card">
                                 <div class="card-body">
                                     <div class="text-left px-xl-3">                                        
-                                        <button class="btn btn-success btn-block" type="button" data-bs-toggle="modal" data-bs-target="#add-form-modal"> <i class="fa fa-fw  fa-plus"></i> Add hotel</button>     
-                                        <button class="btn btn-primary btn-block" type="button" data-bs-toggle="modal" data-bs-target="#add-service-form-modal" style="margin-left: 20px;"> <i class="fa fa-fw  fa-plus-circle"></i> Add services</button> 
+                                        <button class="btn btn-success btn-block" type="button" data-bs-toggle="modal" data-bs-target="#add-form-modal"> <i class="fa fa-fw  fa-plus"></i> Add hotel</button>                                             
                                     </div>                                    
                                     <div class="col-12 col-lg-3 ms-auto" >
                                         <div class="card">
@@ -228,7 +228,8 @@
                                                 <div class="row">
                                                     <div class="col">
                                                         <div id="myfileupload">
-                                                            <input type="file" name="hotel_img"/>                                                     
+                                                            <input type="file" name="hotel_img"/>         
+                                                            <img id="imagePreview" src="#" alt="Image Preview" style="display: none; width: 200px; margin-top: 10px;">
                                                         </div>  
                                                     </div>
                                                 </div>
@@ -250,58 +251,6 @@
                     </div>
                 </div>
 
-                <!-- Add Service Form Modal -->
-                <div class="modal fade" role="dialog" tabindex="-1" id="add-service-form-modal" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-                    <div class="modal-dialog modal-lg" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Add Service</h5>                                
-                            </div>
-                            <div class="modal-body">
-                                <div class="py-1">
-                                    <form class="form" novalidate="" action="/hotelManagerController?action=insertservice" method="POST">
-                                        <div class="row">
-                                            <div class="col">
-                                                <div class="row">
-                                                    <div class="form-group">
-                                                        <label>Service Name</label>
-                                                        <input class="form-control" type="text" name="service_name" placeholder="Name of service" value="">
-                                                    </div>                                                    
-                                                </div>
-                                                <div class="row">
-                                                    <div class="form-group">
-                                                        <label>Service Price</label>
-                                                        <input class="form-control" name="service_price" type="number" required min="0" placeholder="Service price">
-                                                    </div>                                                    
-                                                </div>
-                                                <div class="row">
-                                                    <div class="form-group">
-                                                        <label>Hotel</label>
-                                                        <select name="hotel_id" class="form-control" id="exampleSelect1">
-                                                            <option>-- Select Hotel --</option>
-                                                            <c:forEach items="${AllHotelData}" var="hotel">
-                                                                <option value="${hotel.hotel_id}">${hotel.hotel_name}</option>
-                                                            </c:forEach>
-                                                        </select>
-                                                    </div>                                                    
-                                                </div>
-
-                                            </div>
-                                        </div>
-
-                                </div>
-                                <div class="row" style='margin-top: 20px;'>
-                                    <div class="col d-flex justify-content-end">
-                                        <button class="btn btn-primary" type="submit" name="btnAdd">Add</button>                                                
-                                        <a class="btn btn-cancel" data-bs-dismiss="modal" href="#" style="background-color: crimson; margin-left: 15px; color: white;">Cancle</a>
-                                    </div>
-                                </div>
-                                </form>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
                 <c:forEach items="${HotelData}" var="hotel">
                     <!-- Update Form Modal -->
@@ -313,7 +262,7 @@
                                 </div>
                                 <div class="modal-body">
                                     <div class="py-1">
-                                        <form class="form" novalidate="" action="/hotelManagerController?action=updatehotel" method="POST" enctype="multipart/form-data">
+                                        <form class="form" id="myForm" novalidate="" action="/hotelManagerController?action=updatehotel" method="POST" enctype="multipart/form-data">
                                             <div class="row">
                                                 <div class="col mb-3">
                                                     <div class="form-group">
@@ -354,7 +303,8 @@
                                                     <div class="row">
                                                         <div class="col">
                                                             <div id="myfileupload">
-                                                                <input type="file" name="hotel_img" value="${hotel.hotel_img}"/>                                                     
+                                                                <input type="file" name="hotel_img" value="${hotel.hotel_img}"/>       
+                                                                <img id="imagePreview" src="#" alt="Image Preview" style="display: none; width: 200px; margin-top: 10px;">
                                                             </div>  
                                                         </div>
                                                     </div>
@@ -391,6 +341,25 @@
                                                                                 window.location = "/hotelManagerController?action=deletehotel&id=" + id;
                                                                             }
                                                                         }
+                                                                        document.getElementById("btnSave").addEventListener("click", function () {
+                                                                            this.disabled = true;
+                                                                            document.getElementById("myForm").submit();
+                                                                        });
+
+                                                                        document.getElementById('hotel_img').addEventListener('change', function (event) {
+                                                                            let file = event.target.files[0];
+                                                                            if (file) {
+                                                                                let reader = new FileReader();
+                                                                                reader.onload = function (e) {
+                                                                                    let img = document.getElementById('imagePreview');
+                                                                                    img.src = e.target.result;
+                                                                                    img.style.display = 'block';
+                                                                                };
+                                                                                reader.readAsDataURL(file);
+                                                                            } else {
+                                                                                document.getElementById('imagePreview').style.display = 'none';
+                                                                            }
+                                                                        });
         </script>
     </body>
 </html>

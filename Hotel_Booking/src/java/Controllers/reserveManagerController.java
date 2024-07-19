@@ -90,7 +90,7 @@ public class reserveManagerController extends HttpServlet {
             accountDAOs ad = new accountDAOs();
             List<reservation> rs = null;
             if (key != null) {
-                rs = redb.SearchBooking(key);
+                rs = redb.SearchBooking(value, key);
             } else {
                 rs = redb.getBookingByOwner(value);
             }
@@ -179,7 +179,7 @@ public class reserveManagerController extends HttpServlet {
             reservationDAOs redb = new reservationDAOs();
             serviceDAOs sd = new serviceDAOs();
             accountDAOs ad = new accountDAOs();
-            List<reservation> rs = redb.SearchBooking(key);
+            List<reservation> rs = redb.SearchBooking(value, key);
             if (rs.size() < 1) {
                 request.setAttribute("message", true);
             }
