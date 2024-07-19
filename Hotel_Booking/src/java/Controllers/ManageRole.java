@@ -4,18 +4,25 @@
  */
 package Controllers;
 
+import DAOs.accountDAOs;
+import DAOs.updateRoleDAOs;
+import Model.account;
+import Model.updateRole;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  *
- * @author tiend
+ * @author Ngo Hong Hai - CE171752
  */
-public class homeController extends HttpServlet {
+@WebServlet(name = "ManageRole", urlPatterns = {"/setrole"})
+public class ManageRole extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -28,19 +35,7 @@ public class homeController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet homeController</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet homeController at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -55,13 +50,41 @@ public class homeController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String path = request.getRequestURI();
-        if (path.endsWith("/HomeCustomer")) {
-            request.getRequestDispatcher("/customer/home.jsp").forward(request, response);
-        } else if (path.endsWith("/HomeAdmin")) {
-            response.sendRedirect("/Dashboard");
-        } else if (path.endsWith("/HomeOwner")) {            
-            response.sendRedirect("/roomManagerController");
+        //  processRequest(request, response);
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html; charset=UTF-8");
+        accountDAOs ad = new accountDAOs();
+        updateRoleDAOs ud = new updateRoleDAOs();
+        account a = new account();
+        String user = request.getParameter("user");
+        String id_raw = request.getParameter("id");
+        String action = request.getParameter("action");
+
+        try {
+
+            if (action == null) {
+                List<updateRole> listupdaterole = ud.getAllUpdateRole();
+                request.setAttribute("listupdaterole", listupdaterole);
+                request.getRequestDispatcher("/admin/managerole.jsp").forward(request, response);
+            } else {
+                if (action.equalsIgnoreCase("setrole")) {
+
+                    a = ad.getAccount(user);
+                    ad.setStatusUpdateRole(user, 1);
+                    ad.setOwner(a.getUsername());
+
+                    response.sendRedirect("setrole");
+                } else if (action.equalsIgnoreCase("deleteDon")) {
+                    int id = Integer.parseInt(id_raw);
+                    ud.deleteUpdateRole(id);
+                    response.sendRedirect("/setrole");
+
+                }
+            }
+
+        } catch (NumberFormatException e) {
+            System.out.println(e);
         }
     }
 
@@ -76,7 +99,12 @@ public class homeController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        // processRequest(request, response);
+
+//        try {
+//       
+//       } catch (Exception e) {
+//        }
     }
 
     /**

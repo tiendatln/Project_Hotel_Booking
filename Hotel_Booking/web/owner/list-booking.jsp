@@ -107,12 +107,13 @@
                                         <table class="table table-bordered table-hover" style='word-wrap:break-word'>
                                             <thead>
                                                 <tr>
-                                                    <th>ID</th>
                                                     <th>Username</th>
                                                     <th>Booking Date</th>
-                                                    <th>Room ID</th>                                                        
+                                                    <th>Phone Number</th>                                                        
                                                     <th class="max-width" style="max-width: 400px;">Hotel</th>
                                                     <th>Quantity</th>
+                                                    <th>Check-In-Date</th>
+                                                    <th>Check-Out-Date</th>
                                                     <th class="max-width" style="max-width: 400px;">Price</th>                                                        
                                                     <th class="max-width" style="max-width: 400px;">Status</th>
                                                     <th>Actions</th>
@@ -121,14 +122,13 @@
                                             <c:forEach items="${ReserveData}" var="reserve">
                                                 <tbody>
                                                     <tr>
-                                                        <td class="align-middle" >
-                                                            ${reserve.id}
-                                                        </td>
-                                                        <td class="text-nowrap align-middle">${reserve.account.username}</td>
+                                                        <td class=" align-middle">${reserve.account.name}</td>
                                                         <td class="text-nowrap align-middle">${reserve.re_date}</td>
-                                                        <td class="text-nowrap align-middle">${reserve.room.room_id}</td>                                                            
+                                                        <td class="text-nowrap align-middle">${reserve.account.phone}</td>                                                            
                                                         <td class="text-nowrap align-middle"'><span>${reserve.service.hotel.hotel_name}</span></td>
                                                         <td class="text-nowrap align-middle"'><span>${reserve.quantity}</span></td>
+                                                        <td class="text-nowrap align-middle">${reserve.check_in_date}</td>
+                                                        <td class="text-nowrap align-middle">${reserve.check_out_date}</td>
                                                         <td class="text-nowrap align-middle"'><span>${reserve.list_price}$</span></td>
                                                         <td class="text-nowrap align-middle"><span>                                                                    
                                                                 <c:if test="${reserve.status == 1}">

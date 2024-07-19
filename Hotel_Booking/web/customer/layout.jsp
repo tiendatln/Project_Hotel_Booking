@@ -13,7 +13,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
-        
+        <link rel="icon" href="<%= request.getContextPath()%>/imgs/icon.jpg">
     </head>
     <body>
         <%
@@ -50,15 +50,17 @@
                 }
             }
         %>
-        <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: cadetblue">
-            <a class="navbar-brand" href="/homeController/HomeCustomer">Our Hotel</a>
+        <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: cadetblue; box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;">
+            <a class="navbar-brand" href="/homeController/HomeCustomer">
+                Our Hotel
+            </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item"><a class="nav-link" href="/reservationController/YourReservation">Your Reservation</a></li>
-                    <li class="nav-item nav-item dropdown">
+                    <li class="nav-item nav-item dropdown d-flex justify-content-end">
                         <%
                             accountDAOs aDAO = new accountDAOs();
                             account ac = aDAO.getAccount(value);
@@ -76,14 +78,14 @@
                             Account
                             <% } %>
                         </a>
-                        <div class="dropdown-menu " aria-labelledby="navbarDropdown">
+                        <div class="dropdown-menu " aria-labelledby="navbarDropdown" style="box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;">
                             <% if (flagCustomer) { %>
 
-                            <a class="dropdown-item" href="/profileController/ProfileUser">Your Profile</a>
+                            <a class="dropdown-item" id="layout" href="/profileController/ProfileUser">Your Profile</a>
 
-                            <a class="dropdown-item" href="/logoutController/SignOut">Sign Out</a>
+                            <a class="dropdown-item" id="layout" href="/logoutController/SignOut">Sign Out</a>
                             <% } else { %>
-                            <a class="dropdown-item" href="/loginController/login">Login</a>
+                            <a class="dropdown-item" id="layout" href="/loginController/login">Login</a>
                             <% }%>
                         </div>
                     </li>
@@ -91,4 +93,13 @@
             </div>
         </nav>
     </body>
+    <style>
+        #layout:hover{
+            box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+        }
+        #layout{
+            font-family: monospace;
+        }
+        
+    </style>
 </html>

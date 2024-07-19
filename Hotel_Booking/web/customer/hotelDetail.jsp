@@ -23,51 +23,10 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
         <title>hotel Detail</title>
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-        <style>
-             .card {
-                box-shadow: 0 20px 27px 0 rgb(0 0 0 / 5%);
-            }
-            .avatar {
-                width: 3rem;
-                height: 3rem;
-                font-size: .765625rem;
-            }
-            a {
-                text-decoration:none;
-            }
-            .apartment-type {
-                font-size: 1.25rem;
-                font-weight: bold;
-            }
-            .price {
-                color: red;
-                font-weight: bold;
-            }
-            .discount {
-                color: green;
-                font-weight: bold;
-            }
-            .badge {
-                font-size: 0.875rem;
-            }
-            .features {
-                font-size: 0.875rem;
-                color: #555;
-            }
-            .features span {
-                display: block;
-            }
-            .availability-container {
-                margin-top: 20px;
-            }
-            .header-section {
-                padding: 15px;
-                border-bottom: 1px solid #ddd;
-            }
-
-        </style>
+        
     </head>
 
     <body>
@@ -188,7 +147,7 @@
                         </div>
                         <c:if test="${empty r}">
                             <div class="col-12 mb-3">
-                                <div class="card ">
+                                <div class="card " style="box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;">
                                     <div class="card-body">
                                         <div class="text-center">
                                             <h4>Room is currently sold out</h4>
@@ -200,8 +159,8 @@
                         <c:forEach items="${r}" var="ro">
 
                             <c:if test="${ro.room_status}">
-                                <div class="col-12 mb-3" id="room_id">
-                                    <div class="card">
+                                <div class="col-12 mb-3" id="room_id" >
+                                    <div class="card" style="box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;">
                                         <div class="card-body">
                                             <div class="row">
                                                 <div class="col-md-3 apartment-type">
@@ -228,7 +187,16 @@
                                                     <input hidden="" name="quantity" value="${ro.room_capacity}">
                                                 </div>
                                                 <div class="col-md-2 text-center">
-                                                    <input type="checkbox" id="roomID" name="roomID" value="${ro.room_id}">
+
+                                                    <div class="checkbox-wrapper-31">
+                                                        <input type="checkbox" id="roomID" name="roomID" value="${ro.room_id}">
+                                                        <svg viewBox="0 0 35.6 35.6">
+                                                        <circle class="background" cx="17.8" cy="17.8" r="17.8"></circle>
+                                                        <circle class="stroke" cx="17.8" cy="17.8" r="14.37"></circle>
+                                                        <polyline class="check" points="11.78 18.12 15.55 22.23 25.17 12.87"></polyline>
+                                                        </svg>
+                                                    </div>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -250,7 +218,7 @@
                                 <h4>Your Feedback</h4>
                             </div>
                             <c:if test="${canFeedback}">
-                                <div class="input-group">
+                                <div class="input-group" style="box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;">
                                     <input type="text" name="txtComment" class="form-control" placeholder="Type your message">
                                     <input name="username" type="hidden" value="<%= value%>" >
                                     <input name="hotel_id" type="hidden" value="<%= h.getHotel_id()%>" >
@@ -289,7 +257,7 @@
                                             <%
                                                 if (counter < 5) {
                                             %>
-                                            <li class="list-group-item pt-0">
+                                            <li class="list-group-item pt-0"style="box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;"> 
                                                 <div class="d-flex align-items-center">
                                                     <div>
                                                         <svg style="width: 20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -441,5 +409,108 @@
         </script>
         <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"></script>
     </body>
+    <style>
+            .card {
+                box-shadow: 0 20px 27px 0 rgb(0 0 0 / 5%);
+            }
+            .avatar {
+                width: 3rem;
+                height: 3rem;
+                font-size: .765625rem;
+            }
+            a {
+                text-decoration:none;
+            }
+            .apartment-type {
+                font-size: 1.25rem;
+                font-weight: bold;
+            }
+            .price {
+                color: red;
+                font-weight: bold;
+            }
+            .discount {
+                color: green;
+                font-weight: bold;
+            }
+            .badge {
+                font-size: 0.875rem;
+            }
+            .features {
+                font-size: 0.875rem;
+                color: #555;
+            }
+            .features span {
+                display: block;
+            }
+            .availability-container {
+                margin-top: 20px;
+            }
+            .header-section {
+                padding: 15px;
+                border-bottom: 1px solid #ddd;
+            }
+
+            .checkbox-wrapper-31:hover .check {
+                stroke-dashoffset: 0;
+            }
+
+            .checkbox-wrapper-31 {
+                position: relative;
+                display: inline-block;
+                width: 40px;
+                height: 40px;
+            }
+            .checkbox-wrapper-31 .background {
+                fill: #ccc;
+                transition: ease all 0.6s;
+                -webkit-transition: ease all 0.6s;
+            }
+            .checkbox-wrapper-31 .stroke {
+                fill: none;
+                stroke: #fff;
+                stroke-miterlimit: 10;
+                stroke-width: 2px;
+                stroke-dashoffset: 100;
+                stroke-dasharray: 100;
+                transition: ease all 0.6s;
+                -webkit-transition: ease all 0.6s;
+            }
+            .checkbox-wrapper-31 .check {
+                fill: none;
+                stroke: #fff;
+                stroke-linecap: round;
+                stroke-linejoin: round;
+                stroke-width: 2px;
+                stroke-dashoffset: 22;
+                stroke-dasharray: 22;
+                transition: ease all 0.6s;
+                -webkit-transition: ease all 0.6s;
+            }
+            .checkbox-wrapper-31 input[type=checkbox] {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                left: 0;
+                top: 0;
+                margin: 0;
+                opacity: 0;
+                -appearance: none;
+                -webkit-appearance: none;
+            }
+            .checkbox-wrapper-31 input[type=checkbox]:hover {
+                cursor: pointer;
+            }
+            .checkbox-wrapper-31 input[type=checkbox]:checked + svg .background {
+                fill: #6cbe45;
+            }
+            .checkbox-wrapper-31 input[type=checkbox]:checked + svg .stroke {
+                stroke-dashoffset: 0;
+            }
+            .checkbox-wrapper-31 input[type=checkbox]:checked + svg .check {
+                stroke-dashoffset: 0;
+            }
+
+        </style>
 </html>
 

@@ -88,9 +88,9 @@
         <div class="container mt-4">
             <div class="row">
                 <div class="col-md-3">
-                    <div class="search-container">
+                    <div class="search-container" style="box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;">
                         <h5>Search</h5>
-                        <form method="post" action="/searchController" onsubmit="return validateForm()">
+                        <form method="post" action="/searchController" onsubmit="return validateForm()" >
                             <div class="form-group">
                                 <label for="destination">Destination/property name:</label>
                                 <input type="text" class="form-control" id="destination" name="destination" value="<%= destination%>">
@@ -126,7 +126,7 @@
                 <div class="col-md-9">
                     <c:forEach items="${hotel}" var="h">
                   
-                    <div class="property-card card" style="flex-direction: row;">
+                    <div class="property-card card" style="flex-direction: row;box-shadow: rgba(0, 0, 0, 0.09) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;">
                         <img style="width: 250px; height: 250px; border-radius: 10px;" src="<%= request.getContextPath()%>/imgs/hotel/${h.hotel_img}" class="card-img-top" alt="">
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-center" >

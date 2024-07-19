@@ -73,7 +73,7 @@ public class UserManager extends HttpServlet {
             List<account> c = new ArrayList<>();
             if (action == null) {
                 for (int i = 0; i < a.size(); i++) {
-                    if (a.get(i).getIs_adnmin() == 0) {
+                    if (a.get(i).getIs_adnmin() != 1) {
                         c.add(a.get(i));
                         request.setAttribute("user", c);
                     }
@@ -112,6 +112,7 @@ public class UserManager extends HttpServlet {
             String user_id = request.getParameter("user_id");
             String owner = request.getParameter("check");
             acDAO.setOwner(user_id, owner);
+            acDAO.setStatusUpdateRole(user_id, 2);
             response.sendRedirect("/UserManager");
         } else if (action.equals("ban_status")) {
             String user_id = request.getParameter("user_id");

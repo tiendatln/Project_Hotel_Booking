@@ -255,11 +255,13 @@
 
                                         <div class="row">
                                             <div class="col-12 col-sm-6 mb-3">
-                                                <div class="mb-2"><b>Set Room Image</b></div>
+<!--                                                <div class="mb-2"><b>Set Room Image</b></div>-->
                                                 <div class="row">
                                                     <div class="col">
                                                         <div id="myfileupload">
-                                                            <input type="file" id="room_img" name="room_img"/>      
+                                                            <label for="formFileSm" class="form-label " style="font-weight: bold;">Set Room Image</label>
+                                                                <input class="form-control form-control-sm" id="formFileSm" type="file" name="room_img" accept=".jpg,.jpeg,.png,.gif,.bmp">
+<!--                                                            <input type="file" id="room_img" name="room_img"/>      -->
                                                             <img id="imagePreview" src="#" alt="Image Preview" style="display: none; width: 200px; margin-top: 10px;">
                                                         </div>  
                                                     </div>
@@ -372,11 +374,13 @@
 
                                             <div class="row">
                                                 <div class="col-12 col-sm-6 mb-3">
-                                                    <div class="mb-2"><b>Set Room Image</b></div>
+<!--                                                    <div class="mb-2"><b>Set Room Image</b></div>-->
                                                     <div class="row">
                                                         <div class="col">
                                                             <div id="myfileupload">
-                                                                <input type="file" name="room_img" id="room_img" value="${room.room_img}"/>   
+                                                                <label for="formFileSm" class="form-label " style="font-weight: bold;">Set Room Image</label>
+                                                                <input class="form-control form-control-sm" id="formFileSm" type="file" name="room_img" accept=".jpg,.jpeg,.png,.gif,.bmp" >
+<!--                                                                <input type="file" name="room_img" id="room_img" value="${room.room_img}"/>   -->
                                                                 <img id="imagePreview" src="#" alt="Image Preview" style="display: none; width: 200px; margin-top: 10px;">
                                                             </div>  
                                                         </div>
@@ -430,7 +434,7 @@
                                                                             document.getElementById("myForm").submit();
                                                                         });
 
-                                                                        document.getElementById('room_img').addEventListener('change', function (event) {
+                                                                        document.getElementById('formFileSm').addEventListener('change', function (event) {
                                                                             let file = event.target.files[0];
                                                                             if (file) {
                                                                                 let reader = new FileReader();

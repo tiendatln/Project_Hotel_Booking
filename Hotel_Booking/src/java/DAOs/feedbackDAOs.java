@@ -122,6 +122,28 @@ public class feedbackDAOs {
         }
         return feedbackList;
     }
+    
+    
+    public List<feedback> getFeedbackByAdmin() {
+        List<feedback> feedbackList = new ArrayList<>();
+        try {
+              PreparedStatement ps = conn.prepareStatement("select f.username, h.hotel_id, feedback_id, comment \n"
+                    + "from Feedback f\n"
+                    + "join Hotel h on f.hotel_id = h.hotel_id");
+            ResultSet rs = ps.executeQuery();
+            int i = 0;
+            while (rs.next()) {
+                account a = new account(rs.getString(1));
+                hotel h = new hotel(rs.getInt(2));
+                feedback feedback = new feedback(rs.getInt(3), rs.getString(4), a, h);
+                feedbackList.add(i, feedback);
+                i++;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Consider proper logging or rethrowing the exception based on your requirement
+        }
+        return feedbackList;
+    }
 
     public List<feedback> getListByPage(List<feedback> list, int start, int end) {
         ArrayList<feedback> arr = new ArrayList<>();
@@ -131,7 +153,21 @@ public class feedbackDAOs {
         return arr;
     }
 
-    public int CountFeedback(String username) {
+    public int CountFeedback() {
+        ResultSet rs = null;
+        int count = 0;
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT COUNT(*) as 'count'\n"
+                    + "FROM Feedback" );
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt("count");
+            }
+        } catch (Exception e) {
+        }
+        return count;
+    }
+     public int CountFeedback(String username) {
         ResultSet rs = null;
         int count = 0;
         try {

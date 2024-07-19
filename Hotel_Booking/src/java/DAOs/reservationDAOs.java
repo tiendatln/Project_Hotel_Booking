@@ -103,7 +103,7 @@ public class reservationDAOs {
 
     public List<reservation> getReservationAndRoomByLocalAndDate(Date CheckInDate, Date CheckOutDate, int hotel_id) {
         List<reservation> re = new ArrayList<>();
-        
+
         try {
             PreparedStatement ps = conn.prepareStatement("SELECT * \n"
                     + "FROM Hotel h \n"
@@ -296,6 +296,73 @@ public class reservationDAOs {
         }
         return false;
     }
+
+
+    public int CountBooking() {
+        ResultSet rs = null;
+        int count = 0;
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT COUNT(*) as 'count'\n"
+                    + "FROM Reservation ");
+
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                count = rs.getInt(1);
+            }
+        } catch (Exception e) {
+        }
+        return count;
+    }
+
+    public int CountConfirmBooking() {
+        ResultSet rs = null;
+        int count = 0;
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT COUNT(*) as 'count'\n"
+                    + "FROM Reservation "
+                    + "WHERE [status] = 1");
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                count = rs.getInt(1);
+            }
+        } catch (Exception e) {
+        }
+        return count;
+    }
+
+    public int CountCancelBooking() {
+        ResultSet rs = null;
+        int count = 0;
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT COUNT(*) as 'count'\n"
+                    + "FROM Reservation "
+                    + "WHERE [status] = 2");
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                count = rs.getInt(1);
+            }
+        } catch (Exception e) {
+        }
+        return count;
+    }
+
+    public int CountPendingBooking() {
+        ResultSet rs = null;
+        int count = 0;
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT COUNT(*) as 'count'\n"
+                    + "FROM Reservation \n"
+                    + "WHERE [status] = 0");
+
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                count = rs.getInt(1);
+            }
+        } catch (Exception e) {
+        }
+        return count;
+    }
+    
     public int CountBooking(String username) {
         ResultSet rs = null;
         int count = 0;

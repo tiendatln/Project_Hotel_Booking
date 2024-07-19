@@ -157,7 +157,7 @@
                                             <td class="text-center font-weight-semibold align-middle p-4">${roomID.room.room_price}$</td>
                                             <td class="text-center font-weight-semibold align-middle p-4">${(roomID.room.room_price * roomID.quantity) * day}$</td>
                                             <td class="align-middle p-4">
-                                                <select class="form-control" id="guests" name="quantity" onchange="submitForm('change')">
+                                                <select class="form-control" id="guests" name="quantity" onchange="submitForm('change')" >
                                                     <c:forEach begin="1" end="${roomID.room.room_capacity}" var="i" step="1">
                                                     <option value="${i}"${roomID.quantity eq  i ? 'selected' : ''}>${i}</option>
                                                     </c:forEach>
@@ -215,7 +215,7 @@
                         </div>
 
                         <div class="float-right">
-                            <a href="/searchController/HotelDetail/${checkIndate}/${checkOutDate}/${hotel.getHotel_id()}" class="btn btn-lg btn-default md-btn-flat mt-2 mr-3">Back to shopping</a>
+                            <a href="/searchController/HotelDetail/${checkIndate}/${checkOutDate}/${hotel.getHotel_id()}" class="btn btn-lg btn-default md-btn-flat mt-2 mr-3">Back to Hotel</a>
                             <button  onclick="submitForm('submit')" class="btn btn-lg btn-primary mt-2">Booking</button>
                         </div>
                     </form>

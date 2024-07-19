@@ -88,7 +88,7 @@
                                             <div class="card mb-4 ml-3">
                                                 <div class="card-body m">
                                                     <h3 class="h6">Business License Image</h3>
-                                                    <input class="ml-2" type="file" name="BusinessLicensImage" id="BusinessLicensImage">
+                                                    <input class="ml-2" type="file" name="BusinessLicensImage" id="BusinessLicensImage" accept=".jpg,.jpeg,.png,.gif,.bmp">
                                                     <div class="error-message" id="hotelImageError"></div>
                                                     <img id="imagePreview" src="#" alt="Image Preview" style="display: none; width: 200px; margin-top: 10px;">
                                                 </div>

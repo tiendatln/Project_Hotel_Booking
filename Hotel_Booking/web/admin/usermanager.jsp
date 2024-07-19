@@ -37,7 +37,7 @@
 
 
                 <!-- User Menu-->
-                <li><a class="app-nav__item" href="home"><i class='bx bx-log-out bx-rotate-180'></i> </a>
+                <li><a class="app-nav__item" href="/logoutController/SignOut"><i class='bx bx-log-out bx-rotate-180'></i> </a>
 
                 </li>
             </ul>
@@ -60,8 +60,10 @@
                 <li><a class="app-menu__item" href="productmanager" style="text-decoration: none;"><i
                             class='app-menu__icon bx bx-purchase-tag-alt'></i><span class="app-menu__label">Quản lý sản phẩm</span></a>
                 </li>
-                <li><a class="app-menu__item" href="ordermanager" style="text-decoration: none;"><i class='app-menu__icon bx bx-task'></i><span
-                            class="app-menu__label">Quản lý đơn hàng</span></a></li>
+                <li><a class="app-menu__item" href="/setrole" style="text-decoration: none;"><i class='app-menu__icon bx bx-task'></i><span
+                            class="app-menu__label">Manage Role</span></a></li>
+                <li><a class="app-menu__item" href="/feedbackmanage" style="text-decoration: none;"><i class='app-menu__icon bx bx-task'></i><span
+                            class="app-menu__label">Feedback Manage</span></a></li>
             </ul>
         </aside>
 
@@ -114,9 +116,9 @@
                                     <c:if test="${u.ban_status==1}"><td>Lock</td></c:if>
                                     <c:if test="${u.ban_status!=1}"> <td>Normal</td> </c:if> 
                                         <td>
-                                            <button class="btn btn-primary btn-sm edit" type="button" title="Grant of administrative privileges" id="show-emp" data-bs-toggle="modal" data-bs-target="#ModalUP${u.id_number}">
+                                            <button class="btn btn-primary btn-sm edit" type="button" title="Grant of administrative privileges" id="show-emp" data-bs-toggle="modal" data-bs-target="#ModalUP${u.username}">
                                             <i class="fas fa-edit"></i></button>
-                                        <button class="btn btn-secondary btn-sm edit" type="button" title="Lock Account" id="show-editor" data-bs-toggle="modal" data-bs-target="#ModalEditor${u.id_number}">
+                                        <button class="btn btn-secondary btn-sm edit" type="button" title="Lock Account" id="show-editor" data-bs-toggle="modal" data-bs-target="#ModalEditor${u.username}">
                                             <i class="fas fa-user-edit"></i>
                                         </button>
                                     </td>
@@ -131,7 +133,7 @@
             </div>
         </main>
         <c:forEach items="${user}" var="u">           
-            <div class="modal fade" id="ModalUP${u.id_number}" tabindex="-1" role="dialog" aria-hidden="true" data-bs-backdrop="static"
+            <div class="modal fade" id="ModalUP${u.username}" tabindex="-1" role="dialog" aria-hidden="true" data-bs-backdrop="static"
                  data-bs-keyboard="false">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">                  
@@ -140,7 +142,7 @@
                                 <div class="row">
                                     <div class="form-group col-md-6">
                                         <label for="exampleSelect1" class="control-label">Set Role</label>
-                                        <input hidden name="user_id" value="${u.id_number}">
+                                        <input hidden name="user_id" value="${u.username}">
                                         <select name="check" class="form-control" id="exampleSelect1">
                                             <option value="0" ${u.is_owner eq 0 ? 'selected' : ''}>Customer</option>
                                             <option value="1" ${u.is_owner eq 1 ? 'selected' : ''}>Owner </option>
@@ -156,7 +158,7 @@
                     </div>
                 </div>
             </div>
-            <div class="modal fade" id="ModalEditor${u.id_number}" tabindex="-1" role="dialog" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal fade" id="ModalEditor${u.username}" tabindex="-1" role="dialog" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <form method="post" action="/UserManager?action=ban_status">
@@ -164,7 +166,7 @@
                                 <div class="row">
                                     <div class="form-group col-md-6">
                                         <label for="editorSelect" class="control-label">Ban Account</label>
-                                        <input type="hidden" name="user_id" value="${u.id_number}">
+                                        <input type="hidden" name="user_id" value="${u.username}">
                                         <select name="clockaccount" class="form-control" id="editorSelect">
                                             <option value="False" ${u.ban_status eq 0 ? 'selected' : ''}>Unban</option>
                                             <option value="True" ${u.ban_status eq 1 ? 'selected' : ''}>Ban</option>

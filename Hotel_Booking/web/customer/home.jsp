@@ -374,21 +374,21 @@
             }
         </style>
     </head>
-    <body style="background-color: #dfe5e9">
+    <body style="background-color: #DDDDDD">
         <header>
             <%@include file="layout.jsp" %>
             <div class="bg-dark">
-                <div class="container ">
-                    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                <div class="container " >
+                    <div id="myCarousel" class="carousel slide" data-ride="carousel" >
                         <ol class="carousel-indicators">
                             <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
                             <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
                         </ol>
-                        <div class="carousel-inner container-fluid">
+                        <div class="carousel-inner container-fluid" >
                             <div class="carousel-item active">
                                 <img src="/imgs/slide3.jpg" class="d-block w-100" alt="Slide 1" style="height: 500px;">
                             </div>
-                            <div class="carousel-item">
+                            <div class="carousel-item" >
                                 <img src="/imgs/silde2.jpg" class="d-block w-100" alt="Slide 2" style="height: 500px;">
                             </div>
                         </div>
@@ -403,8 +403,8 @@
             </div>
         </header>
 
-        <div class="container" style="background-color: brown">
-            <div class="card custom-bg p-4 d-flex">
+        <div class="container" style="background-color: brown; box-shadow: rgba(0, 0, 0, 0.17) 0px -23px 25px 0px inset, rgba(0, 0, 0, 0.15) 0px -36px 30px 0px inset, rgba(0, 0, 0, 0.1) 0px -79px 40px 0px inset, rgba(0, 0, 0, 0.06) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;">
+            <div class="card custom-bg p-4 d-flex" style="box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;">
                 <form id="hotel-form" onsubmit="return validateForm()" method="post" action="/searchController">
                     <div class="row">
                         <div class="form-group col-md align-items-start flex-column">
@@ -415,7 +415,7 @@
                             </c:if>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row" >
                         <div class="form-group col-md-5 align-items-start flex-column">
                             <label for="checkin-date" class=" d-inline-flex">Check-in</label>
                             <input type="date" class="form-control" id="checkin-date" name="checkin-date" onkeydown="return false" >
@@ -452,7 +452,7 @@
         </div>
 
         <!-- Product Display Section -->
-        <div class="container" style="width: 50%;">
+        <div class="container" style="width: 50%; ">
             <%
                 roomDAOs roomDAO = new roomDAOs();
                 hotelDAOs hDAO = new hotelDAOs();
@@ -466,7 +466,7 @@
                 Date checkoutDate = new Date(checkoutMillis);
                 while (rs.next() && range) {
             %>
-            <div class="property-card card row" style="margin-top: 10px; flex-direction: row; border-radius: 10px">
+            <div class="property-card card row" style="margin-top: 10px; flex-direction: row; border-radius: 10px; box-shadow: rgba(0, 0, 0, 0.09) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;">
                 <div class="col-4 d-flex " >
                     <img style=" border-radius: 10px; " src="<%= request.getContextPath()%>/imgs/hotel/<%= rs.getString("hotel_img")%>" class="card-img-top" alt="">
                 </div>

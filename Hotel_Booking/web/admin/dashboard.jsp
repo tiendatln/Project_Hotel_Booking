@@ -18,16 +18,57 @@
         <!-- or -->
         <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
         <!-- Font-icon css-->
-<!--        <link rel="stylesheet" href="${pageContext.request.contextPath}/admin/css/font-awesome.min.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/font-awesome.min.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/font-awesome.min.css">-->
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/admin/css/font-awesome.min.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/admin/css/main.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/admin/css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css"
+              href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/admin/css/bootstrap.mim.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/admin/css//main.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/admin/css//font-awesome.min.css">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                // Dynamic data passed from the backend
+                const feedbackData = {
+                    approved: ${requestScope.confirm},
+                    pending: ${requestScope.pending},
+                    rejected: ${requestScope.cancel}
+                };
+
+                // Get context with jQuery - using jQuery's .get() method.
+                const ctx = document.getElementById('feedbackStatusChart').getContext('2d');
+
+                // Create a new chart instance
+                new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: ['Approved', 'Pending', 'Rejected'],
+                        datasets: [{
+                                data: [feedbackData.approved, feedbackData.pending, feedbackData.rejected],
+                                backgroundColor: ['#4caf50', '#ffeb3b', '#f44336']
+                            }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function (tooltipItem) {
+                                        return tooltipItem.label + ': ' + tooltipItem.raw;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            });
+        </script>
+
+
     </head>
     <body class="app sidebar-mini rtl">
         <!-- Navbar-->
@@ -59,8 +100,10 @@
                 <li><a class="app-menu__item" href="productmanager"><i
                             class='app-menu__icon bx bx-purchase-tag-alt'></i><span class="app-menu__label">Manage Hotel</span></a>
                 </li>
-                <li><a class="app-menu__item" href="ordermanager"><i class='app-menu__icon bx bx-task'></i><span
-                            class="app-menu__label">Quản lý đơn hàng</span></a></li>                
+                <li><a class="app-menu__item" href="/setrole"><i class='app-menu__icon bx bx-task'></i><span
+                            class="app-menu__label">Manage Role</span></a></li>        
+                <li><a class="app-menu__item" href="/feedbackmanage" style="text-decoration: none;"><i class='app-menu__icon bx bx-task'></i><span
+                            class="app-menu__label">Feedback Manage</span></a></li>        
             </ul>
         </aside>
         <main class="app-content">
@@ -80,31 +123,51 @@
                         <div class="col-md-6">
                             <div class="widget-small primary coloured-icon"><i class='icon bx bxs-user-account fa-3x'></i>
                                 <div class="info">
-                                    <h4>Tổng khách hàng</h4>
-                                    <p><b>${requestScope.countuser} khách hàng</b></p>
-                                    <p class="info-tong">Tổng số khách hàng được quản lý.</p>
+                                    <h4>Total Customers</h4>
+                                    <p><b>${requestScope.countuser}  Customers</b></p>
+                                    <p class="info-tong">Total number of managed Customer.</p>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="widget-small primary coloured-icon"><i class='icon bx bxs-user-account fa-3x'></i>
                                 <div class="info">
-                                    <h4>Tổng owner</h4>
-                                    <p><b>${requestScope.countowner} Owner</b></p>
-                                    <p class="info-tong">Tổng số Owner được quản lý.</p>
+                                    <h4>Total owners</h4>
+                                    <p><b>${requestScope.countowner} Owners</b></p>
+                                    <p class="info-tong">Total number of managed Owners.</p>
                                 </div>
                             </div>
                         </div>
                         <!-- col-6 -->
                         <div class="col-md-6">
-                            <div class="widget-small info coloured-icon"><i class='icon bx bxs-data fa-3x'></i>
+                            <div class="widget-small info coloured-icon"><i class='icon bx bxs-building-house fa-3x'></i>
                                 <div class="info">
-                                    <h4>Tổng Hotel</h4>
-                                    <p><b>${requestScope.product} Hotel</b></p>
-                                    <p class="info-tong">Tổng số sản phẩm được quản lý.</p>
+                                    <h4>Total Hotels</h4>
+                                    <p><b>${requestScope.hotel} Hotels</b></p>
+                                    <p class="info-tong">Total number of hotels managed.</p>
                                 </div>
                             </div>
                         </div>
+
+                        <div class="col-md-6">
+                            <div class="widget-small info coloured-icon"><i class='icon bx bxs-message-rounded-dots fa-3x'></i>
+                                <div class="info">
+                                    <h4>Total Feedbacks</h4>
+                                    <p><b>${requestScope.feedback} Feedbacks</b></p>
+                                    <p class="info-tong">Total number of feedbacks received.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="widget-small info coloured-icon"><i class='icon bx bxs-home-alt-2 fa-3x'></i>
+                                <div class="info">
+                                    <h4>Total Rooms</h4>
+                                    <p><b>${requestScope.room} Rooms</b></p>
+                                    <p class="info-tong">Total number of rooms available.</p>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- col-6 -->
                         <div class="col-md-6">
                             <div class="widget-small warning coloured-icon"><i class='icon bx bxs-shopping-bags fa-3x'></i>
@@ -122,6 +185,14 @@
                                     <h4>Sắp hết hàng</h4>
                                     <p><b>${requestScope.low} sản phẩm</b></p>
                                     <p class="info-tong">Số sản phẩm cảnh báo hết cần nhập thêm.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="widget-small info coloured-icon">
+                                <div class="info">
+                                    <h4>Feedback Review Status</h4>
+                                    <canvas id="feedbackStatusChart"></canvas>
                                 </div>
                             </div>
                         </div>

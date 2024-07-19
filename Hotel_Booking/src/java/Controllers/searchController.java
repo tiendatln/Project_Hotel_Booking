@@ -353,7 +353,7 @@ public class searchController extends HttpServlet {
 
                 }
             } else {
-                request.setAttribute("search", true);
+//                request.setAttribute("search", true);
                 request.getRequestDispatcher("/customer/home.jsp").forward(request, response);
             }
         }

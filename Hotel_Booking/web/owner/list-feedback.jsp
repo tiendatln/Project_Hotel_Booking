@@ -120,7 +120,7 @@
                                                         <td class="align-middle" >
                                                             ${feedback.id}
                                                         </td>
-                                                        <td class="text-nowrap align-middle">${feedback.account.username}</td>
+                                                        <td class="text-nowrap align-middle">${feedback.account.name}</td>
                                                         <td class="text-nowrap align-middle">${feedback.comment}</td>
                                                         <td class="text-nowrap align-middle"'><span>${feedback.hotel.hotel_name}</span></td>               
                                                         <td class="text-center align-middle">

@@ -5,11 +5,17 @@
 package Controllers;
 
 import DAOs.accountDAOs;
+import DAOs.feedbackDAOs;
+import DAOs.hotelDAOs;
+import DAOs.reservationDAOs;
+import DAOs.roomDAOs;
+import DAOs.serviceDAOs;
 import Model.account;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -37,7 +43,7 @@ public class Dashboard extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet Dashboard</title>");            
+            out.println("<title>Servlet Dashboard</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet Dashboard at " + request.getContextPath() + "</h1>");
@@ -58,8 +64,46 @@ public class Dashboard extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        Cookie[] cList = null;
+        String value = "";
+        cList = request.getCookies(); //Lay tat ca cookie cua website nay tren may nguoi dung
+        if (cList != null) {
+            for (int i = 0; i < cList.length; i++) {//Duyet qua het tat ca cookie           
+                if (cList[i].getName().equals("owner")) {//nguoi dung da dang nhap
+                    value = cList[i].getValue();
+                    break; //thoat khoi vong lap
+                }
+            }
+        }
+        roomDAOs rd = new roomDAOs();
+        hotelDAOs hd = new hotelDAOs();
+        reservationDAOs redb = new reservationDAOs();
+        serviceDAOs sd = new serviceDAOs();
+        accountDAOs ad = new accountDAOs();
+        feedbackDAOs fdb = new feedbackDAOs();
+
         try {
-            accountDAOs ad = new accountDAOs();
+            int countHotel = hd.CountHotel();
+            int countRoom = rd.CountRoom();
+            int countFeedback = fdb.CountFeedback();
+            int countTotalBooking = redb.CountBooking();
+            int countConfirm = redb.CountConfirmBooking();
+            int countCancel = redb.CountCancelBooking();
+            int countPending = redb.CountPendingBooking();
+            double percent_Confirm = ((double) countConfirm / countTotalBooking) * 100;
+            double percent_Cancel = ((double) countCancel / countTotalBooking) * 100;
+            double percent_Pending = ((double) countPending / countTotalBooking) * 100;
+            request.setAttribute("hotel", countHotel);
+            request.setAttribute("room", countRoom);
+            request.setAttribute("feedback", countFeedback);
+            request.setAttribute("total", countTotalBooking);
+            request.setAttribute("confirm", countConfirm);
+            request.setAttribute("cancel", countCancel);
+            request.setAttribute("pending", countPending);
+            request.setAttribute("perconfirm", percent_Confirm);
+            request.setAttribute("percancel", percent_Cancel);
+            request.setAttribute("perpending", percent_Pending);
             List<account> a = ad.getAllAccount();
             int countUser = 0, countOwner = 0;
             for (int i = 0; i < a.size(); i++) {
@@ -76,6 +120,7 @@ public class Dashboard extends HttpServlet {
         } catch (NumberFormatException e) {
             System.out.println(e);
         }
+
     }
 
     /**

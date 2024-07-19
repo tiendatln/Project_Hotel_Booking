@@ -224,11 +224,15 @@
 
                                         <div class="row">
                                             <div class="col-12 col-sm-6 mb-3">
-                                                <div class="mb-2"><b>Set Hotel Image</b></div>
+                                                <!--                                                <div class="mb-2"><b>Set Hotel Image</b></div>-->
                                                 <div class="row">
                                                     <div class="col">
                                                         <div id="myfileupload">
-                                                            <input type="file" name="hotel_img"/>                                                     
+                                                            <label for="formFileSm" class="form-label " style="font-weight: bold;">Set Hotel Image</label>
+                                                            <input class="form-control form-control-sm" id="formFileSm" type="file" name="hotel_img" accept=".jpg,.jpeg,.png,.gif,.bmp">
+                                                            <!--  <input type="file" id="hotel_img" name="hotel_img"/>-->
+                                                            <img id="imagePreview" src="#" alt="Image Preview" style="display: none; width: 200px; margin-top: 10px;">
+
                                                         </div>  
                                                     </div>
                                                 </div>
@@ -350,11 +354,14 @@
 
                                             <div class="row">
                                                 <div class="col-12 col-sm-6 mb-3">
-                                                    <div class="mb-2"><b>Set Hotel Image</b></div>
+                                                    <!--                                                    <div class="mb-2"><b>Set Hotel Image</b></div>-->
                                                     <div class="row">
                                                         <div class="col">
                                                             <div id="myfileupload">
-                                                                <input type="file" name="hotel_img" value="${hotel.hotel_img}"/>                                                     
+                                                                <label for="formFileSm" class="form-label " style="font-weight: bold;">Set Hotel Image</label>
+                                                                <input class="form-control form-control-sm" id="formFileSm" type="file" name="hotel_img" accept=".jpg,.jpeg,.png,.gif,.bmp">
+<!--                                                                <input type="file" id="hotel_img" name="hotel_img" value="${hotel.hotel_img}"/>-->
+                                                                <img id="imagePreview" src="#" alt="Image Preview" style="display: none; width: 200px; margin-top: 10px;">
                                                             </div>  
                                                         </div>
                                                     </div>
@@ -391,6 +398,20 @@
                                                                                 window.location = "/hotelManagerController?action=deletehotel&id=" + id;
                                                                             }
                                                                         }
+                                                                        document.getElementById('formFileSm').addEventListener('change', function (event) {
+                                                                            let file = event.target.files[0];
+                                                                            if (file) {
+                                                                                let reader = new FileReader();
+                                                                                reader.onload = function (e) {
+                                                                                    let img = document.getElementById('imagePreview');
+                                                                                    img.src = e.target.result;
+                                                                                    img.style.display = 'block';
+                                                                                };
+                                                                                reader.readAsDataURL(file);
+                                                                            } else {
+                                                                                document.getElementById('imagePreview').style.display = 'none';
+                                                                            }
+                                                                        });
         </script>
     </body>
 </html>

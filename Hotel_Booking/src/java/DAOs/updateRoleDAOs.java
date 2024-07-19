@@ -5,11 +5,14 @@
 package DAOs;
 
 import DB.DBConnection;
+import Model.account;
 import Model.updateRole;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -59,5 +62,52 @@ public class updateRoleDAOs {
         } catch (Exception e) {
         }
         return  false;
+    }
+    
+    public  updateRole getUpdateRoleOfUsername(String username){
+        updateRole ud = null;
+        try {
+            PreparedStatement ps = conn.prepareStatement("select * from UpdateRole where username = ?");
+            ps.setString(1, username);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                account ac = new account(rs.getString("username"));
+                ud = new updateRole(rs.getInt("id"), rs.getString("hotel_name"), rs.getString("hotel_address"), 
+                        rs.getString("business_licens_img"), rs.getInt("status"), ac);
+            }
+        } catch (Exception e) {
+        }
+        return  ud;
+    }
+    
+    public List<updateRole> getAllUpdateRole() {
+       
+        List<updateRole> list = new ArrayList<>();
+        try {
+            PreparedStatement st =conn.prepareStatement("select u.username, u.id,u.hotel_name, u.hotel_address, u.business_licens_img, u.status  from UpdateRole u");
+            ResultSet rs = st.executeQuery();
+       
+            while (rs.next()) {
+                account a = new account(rs.getString(1));
+       
+                list.add(new updateRole(rs.getInt(2), rs.getString(3),  rs.getString(4), rs.getString(5), rs.getInt(6), a));
+            }
+  
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return list;
+    }
+      public void deleteUpdateRole(int id) {
+        String sql = "DELETE FROM [dbo].[UpdateRole]\n"
+                + "WHERE id = ?";
+
+        try {
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setInt(1, id);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
     }
 }

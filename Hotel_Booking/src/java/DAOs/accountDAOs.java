@@ -267,10 +267,11 @@ public class accountDAOs {
         }
         return list;
     }
+    
     public void setOwner(String user_id, String owner) {
         String sql = "UPDATE [dbo].[Account]\n"
                 + "   SET [is_owner] = ? ,[is_manager] = 0, [is_admin] = 0  \n"
-                + " WHERE  [id_number] = ?";
+                + " WHERE  [username] = ?";
         try {
             PreparedStatement st = conn.prepareStatement(sql);
             st.setString(1, owner);
@@ -337,5 +338,30 @@ public class accountDAOs {
             Logger.getLogger(accountDAOs.class.getName()).log(Level.SEVERE, null, e);
         }
         return false;
+    }
+     public void setOwner(String user) {
+        String sql = "UPDATE [dbo].[Account]\n"
+                + "   SET [is_owner] = 1 \n"
+                + " WHERE  [username] = ?";
+        try {
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setString(1, user);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+     public void setStatusUpdateRole(String user, int status) {
+        String sql = "UPDATE [dbo].[UpdateRole]\n"
+                + "   SET [status] = ? \n"
+                + " WHERE  [username] = ?";
+        try {
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setInt(1, status);
+            st.setString(2, user);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
     }
 }
