@@ -117,30 +117,30 @@ public class searchController extends HttpServlet {
                 int i = 0;
                 boolean reserveExist = true;
                 boolean status = false;
-                int countStatus = 0;
+                
                 while (reserveExist && i < reserve.size()) {
-                    if (reserve.get(i).getRoom().getHotel().getHotel_id() == hotel_id) {
-                        room r = rDAO.getRoomByRoomID(reserve.get(i).getRoom().getRoom_id());
+                    int j = 0;
+                    int countStatus = 0;
+                    
+                        room r = rDAO.getRoomByRoomID(reserve.get(j).getRoom().getRoom_id());
                         hotel ht = hDAO.getHotelByRoomID(r.getRoom_id());
                         r.setHotel(ht);
                         reserve.get(i).setRoom(r);
-                        if (reserve.get(i).getRoom().getHotel().getHotel_id() == hotel_id) {
-                            reserveExist = false;
+                        if (reserve.get(j).getRoom().getHotel().getHotel_id() == hotel_id) {
                             if (reserve.get(i).getStatus() == 1) {
                                 countStatus++;
+                                reserveExist=false;
                             }
-                            if (countStatus == reserve.size() - 1) {
-                                status = true;
-                            }
+                            
                         }
-                    }
+                        
                     i++;
                 }
-                if (!reserveExist && status) {
+                if (!reserveExist ) {
                     int count = fDAO.getFeedbackExistByUsername(value);
-                    if (count == 0 && count < 1) {
-                        request.setAttribute("canFeedback", true);
-                    }
+
+                    request.setAttribute("canFeedback", true);
+
                 }
             }
             List<reservation> re = rsDAO.getReservationAndRoomByLocalAndDate(checkinDate, checkoutDate, hotel_id);

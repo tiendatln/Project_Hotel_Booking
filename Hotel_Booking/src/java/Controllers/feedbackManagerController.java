@@ -72,7 +72,7 @@ public class feedbackManagerController extends HttpServlet {
             throws ServletException, IOException {
         String action = request.getParameter("action");
         if (action == null) {
-            String key = request.getParameter("key"); 
+            String key = request.getParameter("key");            
             Cookie[] cList = null;
             String value = "";
             cList = request.getCookies(); //Lay tat ca cookie cua website nay tren may nguoi dung
@@ -91,9 +91,9 @@ public class feedbackManagerController extends HttpServlet {
             accountDAOs ad = new accountDAOs();
             feedbackDAOs fdb = new feedbackDAOs();
             List<hotel> hotel = hd.getHotelByUser(value);
-            List<feedback> fb = null; 
+            List<feedback> fb = null;            
             if (key != null) {
-                fb = fdb.SearchFeedbackByKeyWord(key); 
+                fb = fdb.SearchFeedbackByKeyWord(key);                
             } else {
                 fb = fdb.getFeedbackByOwner(value);
             }
@@ -128,6 +128,14 @@ public class feedbackManagerController extends HttpServlet {
             request.setAttribute("HotelData", hotel);
             request.setAttribute("FeedbackData", feedback);
             request.getRequestDispatcher("/owner/list-feedback.jsp").forward(request, response);
+        } else {
+            if (action.equalsIgnoreCase("deletefeedback")) {
+                feedbackDAOs fdb = new feedbackDAOs();                
+                String feedback_id_raw = request.getParameter("id");                
+                int feedback_id = Integer.parseInt(feedback_id_raw);                
+                fdb.deleteFeedback(feedback_id);
+                response.sendRedirect("/feedbackManagerController");
+            }
         }
     }
 
@@ -142,9 +150,9 @@ public class feedbackManagerController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String action = request.getParameter("action"); 
+        String action = request.getParameter("action");        
         if (action.equalsIgnoreCase("search")) {
-            String key = request.getParameter("key"); 
+            String key = request.getParameter("key");            
             Cookie[] cList = null;
             String value = "";
             cList = request.getCookies(); //Lay tat ca cookie cua website nay tren may nguoi dung

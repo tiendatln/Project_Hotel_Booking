@@ -159,9 +159,10 @@
                                             <td class="align-middle p-4">
                                                 <select class="form-control" id="guests" name="quantity" onchange="submitForm('change')">
                                                     <c:forEach begin="1" end="${roomID.room.room_capacity}" var="i" step="1">
-                                                    <option value="1"${roomID.quantity eq  i ? 'selected' : ''}>${i}</option>
+                                                    <option value="${i}"${roomID.quantity eq  i ? 'selected' : ''}>${i}</option>
                                                     </c:forEach>
                                                 </select>
+                                                <input hidden="" name="roomQuantity" value="${roomID.room.room_capacity}">
                                             </td>
 
                                             <td class="text-left font-weight-semibold align-middle p-4"><c:forEach items="${service}" var="service">${service.service_name}</c:forEach></td>

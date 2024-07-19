@@ -266,4 +266,18 @@ public class hotelDAOs {
 
         return list;
     }
+     public String getHotelImgByHotelID(int hotel_id) {
+        ResultSet rs = null;
+        String img = "";
+        try {
+            PreparedStatement ps = conn.prepareStatement("select * from Hotel where hotel_id = ?");
+            ps.setInt(1, hotel_id);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                img = rs.getString("hotel_img");
+            }
+        } catch (SQLException e) {
+        }
+        return img;
+    }
 }

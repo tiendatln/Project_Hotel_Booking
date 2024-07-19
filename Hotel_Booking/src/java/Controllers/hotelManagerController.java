@@ -17,22 +17,26 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author tiend
  */
+@MultipartConfig
 public class hotelManagerController extends HttpServlet {
 
     /**
@@ -97,7 +101,7 @@ public class hotelManagerController extends HttpServlet {
             } else {
                 hotelList = hd.getHotelByUser(value);
             }
-            
+
             if (hotelList.size() < 1) {
                 request.setAttribute("message", true);
             }
@@ -120,6 +124,7 @@ public class hotelManagerController extends HttpServlet {
             request.setAttribute("page", page);
             request.setAttribute("num", num);
             request.setAttribute("HotelData", hotel);
+            request.setAttribute("AllHotelData", hotelList);
             request.setAttribute("ServiceData", service);
             request.getRequestDispatcher("/owner/list-hotel.jsp").forward(request, response);
         } else {
@@ -159,6 +164,18 @@ public class hotelManagerController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String file = request.getSession().getServletContext().getRealPath("/imgs/hotel");
+        String[] s = file.split("\\\\");
+        String fileImg = "";
+        for (int i = 0; i < s.length; i++) {
+            if (!s[i].equals("build")) {
+                fileImg += s[i];
+                if (i < s.length - 1) {
+                    fileImg += "\\";
+                }
+            }
+        }
+        fileImg.substring(0, fileImg.length() - 1);
         String action = request.getParameter("action");
         if (action.equalsIgnoreCase("inserthotel")) {
 
@@ -179,23 +196,22 @@ public class hotelManagerController extends HttpServlet {
             String hotel_name = request.getParameter("hotel_name");
             String hotel_address = request.getParameter("hotel_address");
             String hotel_description = request.getParameter("hotel_description");
-            String hotel_img = "imgs/room/" + request.getParameter("hotel_img");
-//            Part part = request.getPart("hotel_img");
-//            String realPath = getServletContext().getRealPath("/imgs/room/");
-//            Path fileName = Paths.get(part.getSubmittedFileName());
-//            if (!Files.exists(Paths.get(realPath))) {
-//                Files.createDirectories(Paths.get(realPath));
-//            }
-//            String picture = fileName.getFileName().toString();
-//
-//            part.write(realPath + "/" + fileName);
+//            String hotel_img = "imgs/room/" + request.getParameter("hotel_img");
+            Part part = request.getPart("hotel_img");
+            Path fileName = Paths.get(part.getSubmittedFileName());
+            if (!Files.exists(Paths.get(fileImg))) {
+                Files.createDirectories(Paths.get(fileImg));
+            }
+            String picture = fileName.getFileName().toString();
+
+            part.write(fileImg + "/" + fileName);
 
             account user = adb.getAccount(value);
             hotel hotel = new hotel();
             hotel.setHotel_name(hotel_name);
             hotel.setHotel_address(hotel_address);
             hotel.setHotel_description(hotel_description);
-            hotel.setHotel_img(hotel_img);
+            hotel.setHotel_img(picture);
             hotel.setUsername(user);
             hdb.insertHotel(hotel);
 
@@ -242,7 +258,13 @@ public class hotelManagerController extends HttpServlet {
             String hotel_name = request.getParameter("hotel_name");
             String hotel_address = request.getParameter("hotel_address");
             String hotel_description = request.getParameter("hotel_description");
-            String hotel_img = "imgs/room/" + request.getParameter("hotel_img");
+//            String hotel_img = "imgs/room/" + request.getParameter("hotel_img");
+            Part part = request.getPart("hotel_img");
+            Path fileName = Paths.get(part.getSubmittedFileName());
+            if (!Files.exists(Paths.get(fileImg))) {
+                Files.createDirectories(Paths.get(fileImg));
+            }
+            String picture = fileName.getFileName().toString();           
 
             int hotel_id = Integer.parseInt(hotel_id_raw);
 
@@ -252,11 +274,39 @@ public class hotelManagerController extends HttpServlet {
             hotel.setHotel_name(hotel_name);
             hotel.setHotel_address(hotel_address);
             hotel.setHotel_description(hotel_description);
-            hotel.setHotel_img(hotel_img);
+            hotel.setHotel_img(picture);
             hotel.setUsername(user);
-            hdb.updateHotel(hotel);
-            System.out.println("updated");
-            response.sendRedirect("/hotelManagerController");
+
+            if (picture.equals("")) {
+                hdb.updateHotel(hotel);
+                System.out.println("updated");
+                response.sendRedirect("/hotelManagerController");
+            } else {
+
+                part.write(fileImg + "/" + fileName);
+
+                File filePic = new File(fileImg + "/" + hdb.getHotelImgByHotelID(hotel_id));
+
+// Check if the file exists before attempting to delete
+                if (filePic.exists()) {
+                    if (filePic.delete()) {
+
+                    } else {
+
+                    }
+                } else {
+
+                }
+                hdb.updateHotel(hotel);
+                System.out.println("updated");
+                try {
+                    TimeUnit.SECONDS.sleep(2);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(hotelManagerController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                response.sendRedirect("/hotelManagerController");
+            }
         }
 
         if (action.equalsIgnoreCase("search")) {
@@ -277,7 +327,7 @@ public class hotelManagerController extends HttpServlet {
             serviceDAOs sd = new serviceDAOs();
             hotel h = new hotel();
             List<hotel> hotelList = hd.SearchHotelByKeyWord(key);
-             if (hotelList.size() < 1) {
+            if (hotelList.size() < 1) {
                 request.setAttribute("message", true);
             }
             List<service> service = sd.getAllService();

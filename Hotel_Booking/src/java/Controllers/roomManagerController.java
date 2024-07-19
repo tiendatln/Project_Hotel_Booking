@@ -77,6 +77,7 @@ public class roomManagerController extends HttpServlet {
             throws ServletException, IOException {
         String action = request.getParameter("action");
         if (action == null) {
+            String key = request.getParameter("key");
             Cookie[] cList = null;
             String value = "";
             cList = request.getCookies(); //Lay tat ca cookie cua website nay tren may nguoi dung
@@ -92,7 +93,17 @@ public class roomManagerController extends HttpServlet {
             hotelDAOs hd = new hotelDAOs();
             hotel h = new hotel();
             roomType rt = new roomType();
-            List<room> roomList = rd.getRoomByUsername(value);
+            List<room> roomList = null;
+            if (key != null) {
+                roomList = rd.SearchRoomByKeyWord(key);
+            } else {
+                roomList = rd.getRoomByUsername(value);
+            }
+            
+            if (roomList.size() < 1) {
+                request.setAttribute("message", true);
+            }
+
             List<roomType> roomType = rd.getRoomType();
             List<hotel> hotel = hd.getHotelByUser(value);
             for (room room : roomList) {
@@ -114,6 +125,7 @@ public class roomManagerController extends HttpServlet {
             start = (page - 1) * numberpage;
             end = Math.min(page * numberpage, size);
             List<room> room = rd.getListByPage(roomList, start, end);
+            request.setAttribute("keyword", key);
             request.setAttribute("page", page);
             request.setAttribute("num", num);
             request.setAttribute("RoomData", room);
@@ -131,12 +143,13 @@ public class roomManagerController extends HttpServlet {
         }
 
     }
+
     public static void main(String[] args) throws IOException {
         File file = new File("/imgs/room");
-       
+
         System.out.println("Absolute Path: " + file.getAbsoluteFile());
         System.out.println("Canonical Path: " + file.getCanonicalPath());
-		System.out.println("Path: " + file.getPath());
+        System.out.println("Path: " + file.getPath());
     }
 
     /**
@@ -152,11 +165,11 @@ public class roomManagerController extends HttpServlet {
             throws ServletException, IOException {
         String file = request.getSession().getServletContext().getRealPath("/imgs/room");
         String[] s = file.split("\\\\");
-        String fileImg ="";
+        String fileImg = "";
         for (int i = 0; i < s.length; i++) {
-            if(!s[i].equals("build")){
+            if (!s[i].equals("build")) {
                 fileImg += s[i];
-                if(i < s.length-1){
+                if (i < s.length - 1) {
                     fileImg += "\\";
                 }
             }
@@ -171,6 +184,7 @@ public class roomManagerController extends HttpServlet {
             String roomtype_id_raw = request.getParameter("roomType_id");
             String room_price_raw = request.getParameter("price");
             String hotel_id_raw = request.getParameter("hotel_id");
+            String quantity_raw = request.getParameter("quantity");
             String room_description = request.getParameter("description");
             String room_status_raw = request.getParameter("status");
             Part part = request.getPart("room_img");
@@ -182,6 +196,7 @@ public class roomManagerController extends HttpServlet {
 
             int room_type_id = Integer.parseInt(roomtype_id_raw);
             int hotel_id = Integer.parseInt(hotel_id_raw);
+            int quantity = Integer.parseInt(quantity_raw);
             int room_price = Integer.parseInt(room_price_raw);
             boolean room_status = (room_status_raw.equals("1")) ? true : false;
             part.write(fileImg + "/" + fileName);
@@ -193,6 +208,7 @@ public class roomManagerController extends HttpServlet {
             room.setRoom_img(picture);
             room.setRoom_status(room_status);
             room.setRoom_description(room_description);
+            room.setRoom_capacity(quantity);
             room.setRoom_type(roomType);
             room.setHotel(hotel);
 
@@ -207,6 +223,7 @@ public class roomManagerController extends HttpServlet {
             String roomtype_id_raw = request.getParameter("roomType_id");
             String room_price_raw = request.getParameter("price");
             String hotel_id_raw = request.getParameter("hotel_id");
+            String quantity_raw = request.getParameter("quantity");
             String room_description = request.getParameter("description");
             String room_status_raw = request.getParameter("status");
             Part part = request.getPart("room_img");
@@ -219,6 +236,7 @@ public class roomManagerController extends HttpServlet {
             int room_id = Integer.parseInt(room_id_raw);
             int room_type_id = Integer.parseInt(roomtype_id_raw);
             int hotel_id = Integer.parseInt(hotel_id_raw);
+            int quantity = Integer.parseInt(quantity_raw);
             int room_price = Integer.parseInt(room_price_raw);
             boolean room_status = (room_status_raw.equals("1")) ? true : false;
 
@@ -231,6 +249,7 @@ public class roomManagerController extends HttpServlet {
             room.setRoom_img(picture);
             room.setRoom_status(room_status);
             room.setRoom_description(room_description);
+            room.setRoom_capacity(quantity);
             room.setRoom_type(roomType);
             room.setHotel(hotel);
 
@@ -264,6 +283,55 @@ public class roomManagerController extends HttpServlet {
                 response.sendRedirect("/roomManagerController");
             }
 
+        } else if (action.equalsIgnoreCase("search")) {
+            String key = request.getParameter("key");
+            Cookie[] cList = null;
+            String value = "";
+            cList = request.getCookies(); //Lay tat ca cookie cua website nay tren may nguoi dung
+            if (cList != null) {
+                for (int i = 0; i < cList.length; i++) {//Duyet qua het tat ca cookie           
+                    if (cList[i].getName().equals("owner")) {//nguoi dung da dang nhap
+                        value = cList[i].getValue();
+                        break; //thoat khoi vong lap
+                    }
+                }
+            }
+            roomDAOs rd = new roomDAOs();
+            hotelDAOs hd = new hotelDAOs();
+            hotel h = new hotel();
+            roomType rt = new roomType();
+            List<room> roomList = rd.SearchRoomByKeyWord(key);
+            if (roomList.size() < 1) {
+                request.setAttribute("message", true);
+            }
+            List<roomType> roomType = rd.getRoomType();
+            List<hotel> hotel = hd.getHotelByUser(value);
+            for (room room : roomList) {
+                h = hd.getHotelDetailById(room.getHotel().getHotel_id());
+                room.setHotel(h);
+                rt = rd.getRoomTypeByID(room.getRoom_type().getRoom_type_id());
+                room.setRoom_type(rt);
+            }
+            int page, numberpage = 6;
+            int size = roomList.size();
+            int num = (size % 6 == 0 ? (size / 6) : ((size / 6)) + 1); // so trang 
+            String xpage = request.getParameter("page");
+            if (xpage == null) {
+                page = 1;
+            } else {
+                page = Integer.parseInt(xpage);
+            }
+            int start, end;
+            start = (page - 1) * numberpage;
+            end = Math.min(page * numberpage, size);
+            List<room> room = rd.getListByPage(roomList, start, end);
+            request.setAttribute("keyword", key);
+            request.setAttribute("page", page);
+            request.setAttribute("num", num);
+            request.setAttribute("RoomData", room);
+            request.setAttribute("RoomTypeData", roomType);
+            request.setAttribute("HotelData", hotel);
+            request.getRequestDispatcher("/owner/list-room.jsp").forward(request, response);
         }
     }
 

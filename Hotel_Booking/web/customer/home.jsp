@@ -466,13 +466,13 @@
                 Date checkoutDate = new Date(checkoutMillis);
                 while (rs.next() && range) {
             %>
-            <div class="property-card card" style="margin-top: 10px; flex-direction: row; border-radius: 10px">
-                <div>
-                    <img style="width: 300px; border-radius: 10px; " src="<%= request.getContextPath()%>/imgs/hotel/<%= rs.getString("hotel_img")%>" class="card-img-top" alt="">
+            <div class="property-card card row" style="margin-top: 10px; flex-direction: row; border-radius: 10px">
+                <div class="col-4 d-flex " >
+                    <img style=" border-radius: 10px; " src="<%= request.getContextPath()%>/imgs/hotel/<%= rs.getString("hotel_img")%>" class="card-img-top" alt="">
                 </div>
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
+                <div class="card-body col-8">
+                    <div class="d-flex justify-content-between align-items-center row">
+                        <div class="col-8">
                             <h5 class="property-title"><%= rs.getString("hotel_name")%></h5>
                             <p class="property-details text-success">
                                 <a href="#"><%= rs.getString("hotel_address")%></a> <br>
@@ -499,7 +499,7 @@
                                 %>
                             </p>
                         </div>
-                        <div class="text-right">
+                        <div class="text-right col-4">
                             <p class="price">
                                 <%
                                     int lowPrice = roomDAO.getLowPrice(rs.getInt("hotel_id"));

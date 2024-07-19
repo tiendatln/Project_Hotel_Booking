@@ -75,6 +75,17 @@ public class feedbackController extends HttpServlet {
         if (path.startsWith("/feedbackController/ViewAll")) {
             String[] s = path.split("/");
             int hotel_id = Integer.valueOf(s[s.length - 1]);
+            String value = "";
+            Cookie[] cList = null;
+            cList = request.getCookies(); //Lay tat ca cookie cua website nay tren may nguoi dung
+            if (cList != null) {
+                for (int i = 0; i < cList.length; i++) {//Duyet qua het tat ca cookie
+                    if (cList[i].getName().equals("customer")) {//nguoi dung da dang nhap
+                        value = cList[i].getValue();
+                        break; //thoat khoi vong lap
+                    }
+                }
+            }
             feedbackDAOs fDAO = new feedbackDAOs();
             accountDAOs aDao = new accountDAOs();
             request.setAttribute("hotel_id", hotel_id);
@@ -83,6 +94,36 @@ public class feedbackController extends HttpServlet {
                 account ac = aDao.getAccount(fb.get(i).getAccount().getUsername());
                 fb.get(i).setAccount(ac);
             }
+            request.setAttribute("username", value);
+            request.setAttribute("feedback", fb);
+            request.getRequestDispatcher("/customer/feedbackViewAll.jsp").forward(request, response);
+        } else if (path.startsWith("/feedbackController/DeleteFeedback")) {
+            String[] s = path.split("/");
+            int hotel_id = Integer.valueOf(s[s.length - 2]);
+            int feedbackID = Integer.valueOf(s[s.length - 1]);
+            feedbackDAOs fDAO = new feedbackDAOs();
+            if (!fDAO.deleteFeedBack(feedbackID)) {
+                request.setAttribute("Error", true);
+            }
+            String value = "";
+            Cookie[] cList = null;
+            cList = request.getCookies(); //Lay tat ca cookie cua website nay tren may nguoi dung
+            if (cList != null) {
+                for (int i = 0; i < cList.length; i++) {//Duyet qua het tat ca cookie
+                    if (cList[i].getName().equals("customer")) {//nguoi dung da dang nhap
+                        value = cList[i].getValue();
+                        break; //thoat khoi vong lap
+                    }
+                }
+            }
+            accountDAOs aDao = new accountDAOs();
+            request.setAttribute("hotel_id", hotel_id);
+            List<feedback> fb = fDAO.getFeedbackByHotelID(hotel_id);
+            for (int i = 0; i < fb.size(); i++) {
+                account ac = aDao.getAccount(fb.get(i).getAccount().getUsername());
+                fb.get(i).setAccount(ac);
+            }
+            request.setAttribute("username", value);
             request.setAttribute("feedback", fb);
             request.getRequestDispatcher("/customer/feedbackViewAll.jsp").forward(request, response);
         }
@@ -231,29 +272,6 @@ public class feedbackController extends HttpServlet {
                         i++;
                     }
                     i = 0;
-
-                    while (i < listRoom.size()) {
-                        int countRoomID = 0;
-                        int y = 0;
-                        int quantity = 0;
-                        while (y < re.size()) {
-                            if (listRoom.get(i).getRoom_id() == re.get(y).getRoom().getRoom_id()) {
-                                countRoomID++;
-                            } else {
-                                if (quantity == 0) {
-                                    quantity = re.get(y).getQuantity();
-                                } else {
-                                    quantity += re.get(y).getQuantity();
-                                }
-                            }
-                            y++;
-                        }
-                        if (countRoomID >= re.size()) {
-                            room.add(listRoom.get(i));
-                            room.get(i).setRoom_capacity(quantity);
-                        }
-                        i++;
-                    }
                 } else {
                     room = listRoom;
                 }

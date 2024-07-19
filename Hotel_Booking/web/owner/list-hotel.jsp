@@ -172,7 +172,7 @@
                                         <div class="d-flex justify-content-center">
                                             <ul class="pagination mt-3 mb-0">
                                                 <c:forEach begin="${1}" end="${num}" var="i">                                                    
-                                                    <li class="${i==page?"active page-item":"page-item"}"><a href="/hotelManagerController?page=${i}&key=${keyword}" class="page-link">${i}</a></li>                                                    
+                                                    <li class="${i==page?"active page-item":"page-item"}"><a href="/hotelManagerController?page=${i}&key=${keyword}" class="page-link">${i}</a></li>      
                                                     </c:forEach>
                                             </ul>
                                         </div>
@@ -195,7 +195,7 @@
                             </div>
                             <div class="modal-body">
                                 <div class="py-1">
-                                    <form class="form" novalidate="" action="/hotelManagerController?action=inserthotel" method="post">
+                                    <form class="form" novalidate="" action="/hotelManagerController?action=inserthotel" method="post" enctype="multipart/form-data">
                                         <div class="row">
                                             <div class="col">
                                                 <div class="row">
@@ -279,7 +279,7 @@
                                                         <label>Hotel</label>
                                                         <select name="hotel_id" class="form-control" id="exampleSelect1">
                                                             <option>-- Select Hotel --</option>
-                                                            <c:forEach items="${HotelData}" var="hotel">
+                                                            <c:forEach items="${AllHotelData}" var="hotel">
                                                                 <option value="${hotel.hotel_id}">${hotel.hotel_name}</option>
                                                             </c:forEach>
                                                         </select>
@@ -313,7 +313,7 @@
                                 </div>
                                 <div class="modal-body">
                                     <div class="py-1">
-                                        <form class="form" novalidate="" action="/hotelManagerController?action=updatehotel" method="POST">
+                                        <form class="form" novalidate="" action="/hotelManagerController?action=updatehotel" method="POST" enctype="multipart/form-data">
                                             <div class="row">
                                                 <div class="col mb-3">
                                                     <div class="form-group">

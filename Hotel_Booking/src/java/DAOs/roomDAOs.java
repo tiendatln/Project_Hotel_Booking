@@ -523,6 +523,31 @@ public class roomDAOs {
         return count;
     }
 
+    public List<room> SearchRoomByKeyWord(String text) {
+        List<room> list = new ArrayList<>();
+        ResultSet rs = null;
+        try {
+            PreparedStatement ps = conn.prepareStatement("select h.hotel_id, r.room_type_id, r.room_id, r.room_name, r.room_price, r.room_img, r.room_status, r.room_description,r.room_capacity\n"
+                    + "from Room r\n"
+                    + "inner join Hotel h on r.hotel_id = h.hotel_id\n"
+                    + "inner join RoomType rt on r.room_type_id = rt.room_type_id\n"
+                    + "where room_id LIKE ? OR room_name LIKE ? OR rt.name_type LIKE ? OR h.hotel_name LIKE ?");
+            ps.setString(1, text);
+            ps.setString(2, "%" + text + "%");
+            ps.setString(3, "%" + text + "%");
+            ps.setString(4, "%" + text + "%");
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                hotel h = new hotel(rs.getInt(1), "", "", "", "");
+                roomType rt = new roomType(rs.getInt(2), "", "");
+                list.add(new room(rs.getInt(3), rs.getString(4), rs.getInt(5), rs.getString(6), rs.getBoolean(7), rs.getString(8), rt, rs.getInt("room_capacity"), h));
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return list;
+    }
+
 //        public static void main(String[] args) throws SQLException {
 //        roomDAOs rd = new roomDAOs();
 //        int count = rd.getRoomCountByHotelID(1);

@@ -186,6 +186,7 @@ public class bookingController extends HttpServlet {
             String[] s = path.split("/");
             // Check if quantityAndRoomId is not null and contains a comma
             int hotelID = Integer.valueOf(request.getParameter("HotelID"));
+            int roomQuantity = Integer.valueOf(request.getParameter("roomQuantity"));
             String[] quantity = request.getParameterValues("quantity");
             roomDAOs rDAO = new roomDAOs();
             long millis = System.currentTimeMillis();
@@ -228,6 +229,7 @@ public class bookingController extends HttpServlet {
                     for (int i = 0; i < RoomId.length; i++) {
                         Quantity = Integer.valueOf(quantity[i]);
                         room r = rDAO.getRoomByRoomID(Integer.valueOf(RoomId[i]));
+                        r.setRoom_capacity(roomQuantity);
                         re.add(i, new reservation(Quantity, r));
                         re.get(i).setRoom(r);
                         totalPrice += re.get(i).getRoom().getRoom_price() * daysBetween;

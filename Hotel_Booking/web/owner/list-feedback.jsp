@@ -125,7 +125,8 @@
                                                         <td class="text-nowrap align-middle"'><span>${feedback.hotel.hotel_name}</span></td>               
                                                         <td class="text-center align-middle">
                                                             <div class="btn-group align-top">
-                                                                <button class="btn btn-outline-secondary badge" type="button" data-bs-toggle="modal" data-bs-target="#view-form-modal${feedback.id}"  style="background-color: #ffc107"><span style="color: #f8f8f8;">View details</span></button>                                                                
+                                                                <button class="btn btn-outline-secondary badge" type="button" data-bs-toggle="modal" data-bs-target="#view-form-modal${feedback.id}"  style="background-color: #ffc107"><span style="color: #f8f8f8;">View details</span></button>&nbsp;                                                                
+                                                                <button class="btn btn-sm btn-outline-secondary badge trash" type="button" style="color: black;" onclick="doDelete('${feedback.id}')"><i class="fa fa-trash"></i></button>
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -228,16 +229,11 @@
 
     <!-- Custom JS -->  
     <script>
-        function doConfirm(id) {
-            if (confirm("Are you sure you want to confirm the booking request with ID = " + id)) {
-                window.location = "/reserveManagerController?action=confirm&id=" + id;
-            }
-        }
-        function doCancle(id) {
-            if (confirm("Are you sure you want to cancle the booking request with ID = " + id)) {
-                window.location = "/reserveManagerController?action=cancle&id=" + id;
-            }
-        }
+                                                                    function doDelete(id) {
+                                                                        if (confirm("Are you sure to delete feedback with ID = " + id)) {
+                                                                            window.location = "/feedbackManagerController?action=deletefeedback&id=" + id;
+                                                                        }
+                                                                    }
     </script>
 </body>
 </html>

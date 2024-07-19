@@ -25,7 +25,49 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>hotel Detail</title>
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/hotelDetail.css">
+        <style>
+             .card {
+                box-shadow: 0 20px 27px 0 rgb(0 0 0 / 5%);
+            }
+            .avatar {
+                width: 3rem;
+                height: 3rem;
+                font-size: .765625rem;
+            }
+            a {
+                text-decoration:none;
+            }
+            .apartment-type {
+                font-size: 1.25rem;
+                font-weight: bold;
+            }
+            .price {
+                color: red;
+                font-weight: bold;
+            }
+            .discount {
+                color: green;
+                font-weight: bold;
+            }
+            .badge {
+                font-size: 0.875rem;
+            }
+            .features {
+                font-size: 0.875rem;
+                color: #555;
+            }
+            .features span {
+                display: block;
+            }
+            .availability-container {
+                margin-top: 20px;
+            }
+            .header-section {
+                padding: 15px;
+                border-bottom: 1px solid #ddd;
+            }
+
+        </style>
     </head>
 
     <body>
@@ -144,7 +186,19 @@
                                 </div>
                             </div>
                         </div>
+                        <c:if test="${empty r}">
+                            <div class="col-12 mb-3">
+                                <div class="card ">
+                                    <div class="card-body">
+                                        <div class="text-center">
+                                            <h4>Room is currently sold out</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </c:if>
                         <c:forEach items="${r}" var="ro">
+
                             <c:if test="${ro.room_status}">
                                 <div class="col-12 mb-3" id="room_id">
                                     <div class="card">
@@ -181,6 +235,7 @@
                                     </div>
                                 </div>
                             </c:if>
+
                         </c:forEach>
                     </form>
                     <!-- End Repeat -->
