@@ -508,4 +508,22 @@ public class reservationDAOs {
         }
         return list;
     }
+    public int CountRejectBooking(String username) {
+        ResultSet rs = null;
+        int count = 0;
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT COUNT(*) as 'count'\n"
+                    + "FROM Reservation re\n"
+                    + "join Room r on re.room_id = r.room_id\n"
+                    + "join Hotel h on r.hotel_id = h.hotel_id\n"
+                    + "WHERE h.username = ? AND re.[status] = 2");
+            ps.setString(1, username);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                count = rs.getInt(1);
+            }
+        } catch (Exception e) {
+        }
+        return count;
+    }
 }

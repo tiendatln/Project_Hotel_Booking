@@ -10,7 +10,6 @@ import DAOs.hotelDAOs;
 import DAOs.reservationDAOs;
 import DAOs.roomDAOs;
 import DAOs.serviceDAOs;
-import Model.account;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -18,7 +17,6 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
 
 /**
  *
@@ -84,12 +82,14 @@ public class dashboardController extends HttpServlet {
 
         int countHotel = hd.CountHotel(value);
         int countRoom = rd.CountRoom(value);
-        int countFeedback = fdb.CountFeedback();
+        int countFeedback = fdb.CountFeedback(value);
         int countTotalBooking = redb.CountBooking(value);
         int countConfirm = redb.CountConfirmBooking(value);
+        int countReject = redb.CountRejectBooking(value);
         int countCancel = redb.CountCancelBooking(value);
         int countPending = redb.CountPendingBooking(value);
         double percent_Confirm = ((double) countConfirm / countTotalBooking) * 100;
+        double percent_Reject = ((double) countReject / countTotalBooking) * 100;
         double percent_Cancel = ((double) countCancel / countTotalBooking) * 100;
         double percent_Pending = ((double) countPending / countTotalBooking) * 100;
         request.setAttribute("hotel", countHotel);
@@ -97,23 +97,13 @@ public class dashboardController extends HttpServlet {
         request.setAttribute("feedback", countFeedback);
         request.setAttribute("total", countTotalBooking);
         request.setAttribute("confirm", countConfirm);
+        request.setAttribute("reject", countReject);
         request.setAttribute("cancel", countCancel);
         request.setAttribute("pending", countPending);
         request.setAttribute("perconfirm", percent_Confirm);
+        request.setAttribute("perreject", percent_Reject);
         request.setAttribute("percancel", percent_Cancel);
         request.setAttribute("perpending", percent_Pending);
-        List<account> a = ad.getAllAccount();
-        int countUser = 0, countOwner = 0;
-        for (int i = 0; i < a.size(); i++) {
-            if (a.get(i).getIs_owner() == 0 && a.get(i).getIs_adnmin() == 0) {
-                countUser += 1;
-            }
-            if (a.get(i).getIs_owner() == 1) {
-                countOwner += 1;
-            }
-        }
-        request.setAttribute("countuser", countUser);
-        request.setAttribute("countowner", countOwner);
         request.getRequestDispatcher("/owner/dashboard.jsp").forward(request, response);
     }
 
