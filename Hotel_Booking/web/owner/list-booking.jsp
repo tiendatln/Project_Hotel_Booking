@@ -145,8 +145,10 @@
                                                         <td class="text-center align-middle">
                                                             <div class="btn-group align-top">
                                                                 <button class="btn btn-outline-secondary badge" type="button" data-bs-toggle="modal" data-bs-target="#view-form-modal${reserve.id}"  style="background-color: #ffc107"><span style="color: #f8f8f8;">View details</span></button>&nbsp;&nbsp;&nbsp;                                                       
-                                                                <button class="btn btn-outline-secondary badge" type="button" onclick="doConfirm('${reserve.id}')" style="background-color: #00CC00"><span style="color: #f8f8f8">Confirm</span></button>&nbsp;
-                                                                <button class="btn btn-outline-secondary badge" type="button" onclick="doCancle('${reserve.id}')" style="background-color: orangered"><span style="color: #f8f8f8;">Cancle</span></button>
+                                                                <c:if test="${reserve.status == 0}">
+                                                                    <button class="btn btn-outline-secondary badge" type="button" onclick="doConfirm('${reserve.id}')" style="background-color: #00CC00"><span style="color: #f8f8f8">Confirm</span></button>&nbsp;
+                                                                    <button class="btn btn-outline-secondary badge" type="button" onclick="doCancle('${reserve.id}')" style="background-color: orangered"><span style="color: #f8f8f8;">Cancle</span></button>
+                                                                </c:if>
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -379,16 +381,16 @@
 
     <!-- Custom JS -->  
     <script>
-                                                                    function doConfirm(id) {
-                                                                        if (confirm("Are you sure you want to confirm the booking request with ID = " + id)) {
-                                                                            window.location = "/reserveManagerController?action=confirm&id=" + id;
+                                                                        function doConfirm(id) {
+                                                                            if (confirm("Are you sure you want to confirm the booking request with ID = " + id)) {
+                                                                                window.location = "/reserveManagerController?action=confirm&id=" + id;
+                                                                            }
                                                                         }
-                                                                    }
-                                                                    function doCancle(id) {
-                                                                        if (confirm("Are you sure you want to cancle the booking request with ID = " + id)) {
-                                                                            window.location = "/reserveManagerController?action=cancle&id=" + id;
+                                                                        function doCancle(id) {
+                                                                            if (confirm("Are you sure you want to cancle the booking request with ID = " + id)) {
+                                                                                window.location = "/reserveManagerController?action=cancle&id=" + id;
+                                                                            }
                                                                         }
-                                                                    }
     </script>
 </body>
 </html>

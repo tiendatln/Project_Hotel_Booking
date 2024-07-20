@@ -231,4 +231,25 @@ public class feedbackDAOs {
         }      
 
     }
+    public List<feedback> getFeedbackByCustomer(String username) {
+        List<feedback> feedbackList = new ArrayList<>();
+        try {
+            PreparedStatement ps = conn.prepareStatement("select * \n"
+                    + "from Feedback \n"
+                    + "where username = ?");
+            ps.setString(1, username);
+            ResultSet rs = ps.executeQuery();
+            int i = 0;
+            while (rs.next()) {
+                account a = new account(rs.getString("username"));
+                hotel h = new hotel(rs.getInt("hotel_id"));
+                feedback feedback = new feedback(rs.getInt("feedback_id"), rs.getString("comment"), a, h);
+                feedbackList.add(i, feedback);
+                i++;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Consider proper logging or rethrowing the exception based on your requirement
+        }
+        return feedbackList;
+    }
 }

@@ -88,7 +88,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="age">Age</label>
-                                    <input type="number" class="form-control" id="age" name="txtAge" placeholder="Enter your age" >
+                                    <input type="number" class="form-control" id="age" name="txtAge" placeholder="Enter your age" min="1">
                                     <span class="error-message" id="ageError"></span>
                                 </div>
                                 <div class="form-group">

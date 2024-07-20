@@ -104,19 +104,19 @@
                                 <input type="date" class="form-control" id="checkout-date" name="checkout-date" value="<%= checkoutDate%>">
                             </div>
                             <div class="form-group">
-                                <label for="guests">Guest</label>
-
-                                <select class="form-control" id="guests" onchange="javascript: dynamicDropdown(this.options[this.selectedIndex].value);">
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                    <option value="6">6</option>
-                                    <option value="7">7</option>
-                                    <option value="8">8</option>
-                                    <option value="9">9</option>
-                                </select>
+                                <label for="quantity">Guest</label>
+                                <input type="number" class="form-control" id="quantity" name="txtQuantity" placeholder="Enter Quantity" min="1" max="30" list="defaultNumbers" value="${searchQuantity}">
+                                <datalist id="defaultNumbers">
+                                    <option value="1"></option>
+                                    <option value="2"></option>
+                                    <option value="3"></option>
+                                    <option value="4"></option>
+                                    <option value="5"></option>
+                                    <option value="7"></option>
+                                    <option value="8"></option>
+                                    <option value="9"></option>
+                                    <option value="10"></option>
+                                </datalist>
                             </div>
                             <span id="error" class="text-danger"></span>
                             <button type="submit" class="btn btn-primary btn-block" name="btnSearchHotel">Search</button>
@@ -125,45 +125,45 @@
                 </div>
                 <div class="col-md-9">
                     <c:forEach items="${hotel}" var="h">
-                  
-                    <div class="property-card card" style="flex-direction: row;box-shadow: rgba(0, 0, 0, 0.09) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;">
-                        <img style="width: 250px; height: 250px; border-radius: 10px;" src="<%= request.getContextPath()%>/imgs/hotel/${h.hotel_img}" class="card-img-top" alt="">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center" >
-                                <div>
-                                    <h5 class="property-title">${h.hotel_name}</h5>
-                                    <p class="property-details text-success">
-                                        <a href="#">${h.hotel_address}</a> <br>
-                                        Service: 
-                                        
-                                        <c:forEach items="${service}" var="s">
-                                            <c:if test="${s.hotel.hotel_id == h.hotel_id}">
-                                                ${s.service_name} -
-                                            </c:if>
-                                        </c:forEach>
-                                        
-                                        <br>
-                                    </p>
-                                </div>
-                                <div class="text-right">
-                                    <p class="price">
-                                        <%
-                                            roomDAOs roomDAO = new roomDAOs();
-                                            List<hotel> ht = (List<hotel>) request.getAttribute("hotel");
-                                            int lowPrice = roomDAO.getLowPrice(ht.get(i).getHotel_id());
-                                            int highPrice = roomDAO.getHighPrice(ht.get(i).getHotel_id());
-                                            i++;
-                                        %>
-                                        $<%= lowPrice%> - $<%= highPrice%>
-                                    </p>
 
-                                    <p>Includes taxes and fees</p>
-                                    <a class="btn btn-primary" href="/searchController/HotelDetail/<%= checkinDate %>/<%= checkoutDate %>/${h.hotel_id}" >See availability</a>
+                        <div class="property-card card" style="flex-direction: row;box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;">
+                            <img style="width: 250px; height: 250px; border-radius: 10px;" src="<%= request.getContextPath()%>/imgs/hotel/${h.hotel_img}" class="card-img-top" alt="">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center" >
+                                    <div>
+                                        <h5 class="property-title">${h.hotel_name}</h5>
+                                        <p class="property-details text-success">
+                                            <a href="#">${h.hotel_address}</a> <br>
+                                            Service: 
+
+                                            <c:forEach items="${service}" var="s">
+                                                <c:if test="${s.hotel.hotel_id == h.hotel_id}">
+                                                    ${s.service_name} -
+                                                </c:if>
+                                            </c:forEach>
+
+                                            <br>
+                                        </p>
+                                    </div>
+                                    <div class="text-right">
+                                        <p class="price">
+                                            <%
+                                                roomDAOs roomDAO = new roomDAOs();
+                                                List<hotel> ht = (List<hotel>) request.getAttribute("hotel");
+                                                int lowPrice = roomDAO.getLowPrice(ht.get(i).getHotel_id());
+                                                int highPrice = roomDAO.getHighPrice(ht.get(i).getHotel_id());
+                                                i++;
+                                            %>
+                                            $<%= lowPrice%> - $<%= highPrice%>
+                                        </p>
+
+                                        <p>Includes taxes and fees</p>
+                                        <a class="btn btn-primary" href="/searchController/HotelDetail/<%= checkinDate%>/<%= checkoutDate%>/${h.hotel_id}" >See availability</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    
+
                     </c:forEach>
                     <!-- Add more property cards as needed -->
                 </div>
@@ -175,7 +175,7 @@
             var today = new Date().toISOString().split('T')[0];
             document.getElementById("checkin-date").setAttribute("min", today);
             document.getElementById("checkout-date").setAttribute("min", today);
-            
+
             // Function to update the minimum check-out date based on check-in date
             function validateForm() {
                 var checkin = document.getElementById('checkin-date').value;

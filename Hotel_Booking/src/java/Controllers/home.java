@@ -56,7 +56,7 @@ public class home extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("/customer/home.jsp").forward(request, response);
+        response.sendRedirect("/homeController/HomeCustomer");
     }
 
     /**

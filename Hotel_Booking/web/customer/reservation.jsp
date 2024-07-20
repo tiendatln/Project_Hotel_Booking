@@ -101,6 +101,9 @@
                             <c:if test="${reservation.status == 1}">
                                 <td><a class="btn btn-danger" href="/searchController/HotelDetail/${reservation.check_in_date}/${reservation.check_out_date}/${reservation.service.hotel.hotel_id}" >Send FeedBack</a></td>
                             </c:if>
+                            <c:if test="${reservation.status > 1}">
+                                <td></td>
+                            </c:if>
                         </tr>
                     </tbody>
                     <%

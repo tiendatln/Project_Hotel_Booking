@@ -374,7 +374,7 @@
             }
         </style>
     </head>
-    <body style="background-color: #DDDDDD">
+    <body >
         <header>
             <%@include file="layout.jsp" %>
             <div class="bg-dark">
@@ -426,18 +426,20 @@
                         </div>
 
                         <div class="form-group col-md-2 align-items-start flex-column">
-                            <label for="guests" class="d-inline-flex ">Guests</label>
-                            <select class="form-control" id="guests" onchange="javascript: dynamicDropdown(this.options[this.selectedIndex].value);">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                                <option value="6">6</option>
-                                <option value="7">7</option>
-                                <option value="8">8</option>
-                                <option value="9">9</option>
-                            </select>
+                            <label for="quantity" class="d-inline-flex ">Guests</label>
+
+                            <input type="number" class="form-control" id="quantity" name="txtQuantity" placeholder="Enter Quantity" min="1" max="30" list="defaultNumbers">
+                            <datalist id="defaultNumbers">
+                                <option value="1"></option>
+                                <option value="2"></option>
+                                <option value="3"></option>
+                                <option value="4"></option>
+                                <option value="5"></option>
+                                <option value="7"></option>
+                                <option value="8"></option>
+                                <option value="9"></option>
+                                <option value="10"></option>
+                            </datalist>
                         </div>
                     </div>
 
@@ -466,7 +468,7 @@
                 Date checkoutDate = new Date(checkoutMillis);
                 while (rs.next() && range) {
             %>
-            <div class="property-card card row" style="margin-top: 10px; flex-direction: row; border-radius: 10px; box-shadow: rgba(0, 0, 0, 0.09) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;">
+            <div class="property-card card row" style="margin-top: 10px; flex-direction: row; border-radius: 10px; box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;">
                 <div class="col-4 d-flex " >
                     <img style=" border-radius: 10px; " src="<%= request.getContextPath()%>/imgs/hotel/<%= rs.getString("hotel_img")%>" class="card-img-top" alt="">
                 </div>
@@ -509,7 +511,7 @@
                             </p>
 
                             <p>Includes taxes and fees</p>
-                            <a class="btn btn-primary" href="/searchController/HotelDetail/<%= checkinDate %>/<%= checkoutDate %>/<%= rs.getInt("hotel_id")%>" >See availability</a>
+                            <a class="btn btn-primary" href="/searchController/HotelDetail/<%= checkinDate%>/<%= checkoutDate%>/<%= rs.getInt("hotel_id")%>" >See availability</a>
                         </div>
                     </div>
                 </div>
@@ -522,8 +524,8 @@
                 }%>
             <!-- Add more property cards as needed -->
         </div>
-            
-            
+
+
         <%
             String massageRegister = (String) request.getSession().getAttribute("massageRegister");
             if (massageRegister != null) {
@@ -553,6 +555,7 @@
                 function validateForm() {
                     var checkin = document.getElementById('checkin-date').value;
                     var checkout = document.getElementById('checkout-date').value;
+                    var quantity = document.getElementById('quantity').value;
 
                     if (!checkin) {
                         var today = new Date().toISOString().split('T')[0];
@@ -564,6 +567,10 @@
                         var today = new Date().toISOString().split('T')[0];
                         document.getElementById('checkout-date').value = today;
                         checkout = today;
+                    }
+
+                    if (!quantity) {
+                        document.getElementById('quantity').value = 2;
                     }
 
                     var checkinDate = new Date(checkin);

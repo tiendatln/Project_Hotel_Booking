@@ -110,11 +110,11 @@
                                     </div>
                                     <div class="col-md-6 profile-info">
                                         <label for="phone"><strong>Phone:</strong></label>
-                                        <input type="text" class="form-control" id="phone" name="phone" value="<%= ac.getPhone()%>">
+                                        <input type="number" class="form-control" id="phone" name="phone" value="<%= ac.getPhone()%>" accept="number">
                                     </div>
                                     <div class="col-md-6 profile-info">
                                         <label for="id_number"><strong>ID Number:</strong></label>
-                                        <input type="text" class="form-control" id="id_number" name="id_number" value="<%= ac.getId_number()%>">
+                                        <input type="number" class="form-control" id="id_number" name="id_number" value="<%= ac.getId_number()%>">
                                     </div>
                                     <div class="col-md-6 profile-info ">
                                         <label for="report_count"><strong>Report Count:</strong></label>

@@ -93,7 +93,7 @@
             <div class=" availability-container">
                 <div class="header-section" >
                     <h3>Availability</h3>
-                    <form method="get" action="/reserveController/Change" onsubmit="return checkDates()">
+                    <form method="get" action="/searchController/Change" onsubmit="return checkDates()">
                         <div class="d-flex justify-content-center">
 
 
@@ -190,10 +190,10 @@
 
                                                     <div class="checkbox-wrapper-31">
                                                         <input type="checkbox" id="roomID" name="roomID" value="${ro.room_id}">
-                                                        <svg viewBox="0 0 35.6 35.6">
-                                                        <circle class="background" cx="17.8" cy="17.8" r="17.8"></circle>
-                                                        <circle class="stroke" cx="17.8" cy="17.8" r="14.37"></circle>
-                                                        <polyline class="check" points="11.78 18.12 15.55 22.23 25.17 12.87"></polyline>
+                                                        <svg viewBox="0 0 35.6 35.6" >
+                                                        <circle class="background" cx="17.8" cy="17.8" r="17.8" ></circle>
+                                                        <circle class="stroke" cx="17.8" cy="17.8" r="14.37" ></circle>
+                                                        <polyline class="check"  points="11.78 18.12 15.55 22.23 25.17 12.87"></polyline>
                                                         </svg>
                                                     </div>
 
@@ -475,6 +475,7 @@
                 stroke-dasharray: 100;
                 transition: ease all 0.6s;
                 -webkit-transition: ease all 0.6s;
+                
             }
             .checkbox-wrapper-31 .check {
                 fill: none;
@@ -486,6 +487,7 @@
                 stroke-dasharray: 22;
                 transition: ease all 0.6s;
                 -webkit-transition: ease all 0.6s;
+                
             }
             .checkbox-wrapper-31 input[type=checkbox] {
                 position: absolute;
@@ -503,6 +505,7 @@
             }
             .checkbox-wrapper-31 input[type=checkbox]:checked + svg .background {
                 fill: #6cbe45;
+                
             }
             .checkbox-wrapper-31 input[type=checkbox]:checked + svg .stroke {
                 stroke-dashoffset: 0;

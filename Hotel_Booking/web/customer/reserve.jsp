@@ -129,7 +129,7 @@
                                 <thead>
                                     <tr>
                                         <!-- Set columns width -->
-                                        <th class="text-center py-3 px-4" style="min-width: 200px;">Product Name &amp; Details</th>
+                                        <th class="text-center py-3 px-4" style="min-width: 200px;">Room Name &amp; Details</th>
                                         <th class="text-center py-3 px-4" style="width: 120px;">Room Price</th>
                                         <th class="text-center py-3 px-4" style="width: 150px;">Room Price Total</th>
                                         <th class="text-center py-3 px-4" style="width: 120px;">Quantity</th>

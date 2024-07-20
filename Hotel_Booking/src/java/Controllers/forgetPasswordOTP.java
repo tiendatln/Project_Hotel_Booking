@@ -138,7 +138,7 @@ public class forgetPasswordOTP extends HttpServlet {
             if (otpEnter == otp) {
                 request.getRequestDispatcher("/customer/recover.jsp").forward(request, response);
             } else {
-                request.getSession().setAttribute("messageOTP", "Wrong OTP");
+                request.setAttribute("messageOTP", true);
                 request.getRequestDispatcher("/customer/recoverOTP.jsp").forward(request, response);
             }
         }else if(request.getParameter("btnResetPassword") != null){

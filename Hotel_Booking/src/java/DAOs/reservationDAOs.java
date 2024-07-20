@@ -111,9 +111,9 @@ public class reservationDAOs {
                     + "JOIN Reservation rs ON rs.room_id = r.room_id \n"
                     + "WHERE h.hotel_id = ?  \n"
                     + "  AND ((? BETWEEN rs.check_in_date AND rs.check_out_date \n"
-                    + "        OR ? BETWEEN rs.check_in_date AND rs.check_out_date) \n"
+                    + "        and ? BETWEEN rs.check_in_date AND rs.check_out_date) \n"
                     + "       OR (rs.check_in_date BETWEEN ? AND ? \n"
-                    + "           OR rs.check_out_date BETWEEN ? AND ?)) \n"
+                    + "           and rs.check_out_date BETWEEN ? AND ?)) \n"
                     + "  \n"
                     + "ORDER BY h.hotel_id, r.room_id ASC;");
             ps.setInt(1, hotel_id);

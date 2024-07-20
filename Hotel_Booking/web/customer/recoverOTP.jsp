@@ -4,6 +4,7 @@
     Author     : tiend
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -52,16 +53,11 @@
                 <button type="submit" class="btn btn-primary" name="btnEnterOTP" >Verify OTP</button>
             </form>
         </div>
-        <%
-            String messageOTP = (String) request.getSession().getAttribute("messageOTP");
-            if (messageOTP != null) {
-        %> 
+        <c:if test="${messageOTP}">
         <script>
-            alert(<%= messageOTP%>);
+            alert('Wrong OTP');
         </script>
-        <%
-            }
-        %>
+        </c:if>
         <!-- jQuery and Bootstrap JS -->
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>

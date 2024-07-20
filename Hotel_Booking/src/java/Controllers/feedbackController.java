@@ -126,6 +126,13 @@ public class feedbackController extends HttpServlet {
             request.setAttribute("username", value);
             request.setAttribute("feedback", fb);
             request.getRequestDispatcher("/customer/feedbackViewAll.jsp").forward(request, response);
+        }else if(path.startsWith("/feedbackController/Review")){
+            String[] s = path.split("/");
+            String username = s[s.length - 1];
+            feedbackDAOs fDAO = new feedbackDAOs();
+            List<feedback> listFeedBack = fDAO.getFeedbackByCustomer(username);
+            request.setAttribute("feedback", listFeedBack);
+            request.getRequestDispatcher("/customer/review.jsp").forward(request, response);
         }
     }
 
