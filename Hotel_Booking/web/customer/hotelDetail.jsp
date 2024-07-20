@@ -23,10 +23,10 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        
+
         <title>hotel Detail</title>
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-        
+
     </head>
 
     <body>
@@ -35,36 +35,55 @@
             hotelDAOs hDAO = new hotelDAOs();
             int hotelID = (int) request.getAttribute("hotelID");
             hotel h = hDAO.getHotelDetailById(hotelID);
-
+            String location = h.getHotel_name();
+            location += h.getHotel_address();
+            location.replace(' ', '+');
         %>
         <div class="container mt-4" >
             <h1 class="display-4"><%= h.getHotel_name()%></h1>
             <p class="lead"><i class="fas fa-map-marker-alt"></i> <%= h.getHotel_address()%> – <a href="#">Great
                     location - show map</a></p>
 
-            <div class="container" style="width: 700px">
-                <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-                    <ol class="carousel-indicators" >
-                        <c:forEach items="${roomImg}" varStatus="status">
-                            <li data-target="#carouselExampleIndicators" data-slide-to="${status.index}" class="${status.first ? 'active' : ''}"></li>
+            <div class="row">
+                <div class=" col-9">
+                    <div id="carouselExampleIndicators " class="carousel slide" data-ride="carousel">
+                        <ol class="carousel-indicators" >
+                            <c:forEach items="${roomImg}" varStatus="status">
+                                <li data-target="#carouselExampleIndicators" data-slide-to="${status.index}" class="${status.first ? 'active' : ''}"></li>
+                                </c:forEach>
+                        </ol>
+                        <div class="carousel-inner" >
+                            <c:forEach items="${roomImg}" var="room" varStatus="status">
+                                <div class="carousel-item ${status.first ? 'active' : ''}" >
+                                    <img src="<%= request.getContextPath()%>/imgs/room/${room.room_img}" class="d-block w-100" alt="...">
+                                </div>
                             </c:forEach>
-                    </ol>
-                    <div class="carousel-inner" >
-                        <c:forEach items="${roomImg}" var="room" varStatus="status">
-                            <div class="carousel-item ${status.first ? 'active' : ''}" >
-                                <img src="<%= request.getContextPath()%>/imgs/room/${room.room_img}" class="d-block w-100" alt="...">
-                            </div>
-                        </c:forEach>
+                        </div>
+                        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="carousel-control-next " href="#carouselExampleIndicators" role="button" data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
                     </div>
-                    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Previous</span>
-                    </a>
-                    <a class="carousel-control-next " href="#carouselExampleIndicators" role="button" data-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Next</span>
-                    </a>
                 </div>
+                <div class="col-3" >
+                    <h4 style="margin: 10px">Hotel Location</h4>
+                        <iframe 
+
+                            style="border:0; height: 17rem; "
+                            loading="lazy"
+                            allow-scripts="false"
+                            allowfullscreen
+                            referrerpolicy="no-referrer-when-downgrade " 
+                            src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCic3r4-oNwtB5j-5IVDuPe8k3vyaijOZQ&q=1600+<%= location %>">
+                        </iframe>
+                    
+                </div>
+
+
             </div>
 
             <div class="my-4"">
@@ -94,11 +113,11 @@
                 <div class="header-section" >
                     <h3>Availability</h3>
                     <form method="get" action="/searchController/Change" onsubmit="return checkDates()">
-                        <div class="d-flex justify-content-center">
+                        <div class="d-flex justify-content-center" >
 
 
 
-                            <div style="display: flex inline; box-sizing: border-box; border: 4px solid yellow; background-color: yellow; border-radius: 10px">
+                            <div style="display: flex inline; box-sizing: border-box; border: 4px solid orange; background-color: orange; border-radius: 10px">
                                 <input type="date" class="form-control" id="checkInDate" name="checkInDate" value="${checkInDate}" >
                                 <h4>-</h4>
                                 <input type="date" class="form-control" id="checkOutDate" name="checkOutDate" value="${checkOutDate}" >
@@ -107,7 +126,7 @@
                             </div>
 
 
-                            <div style="box-sizing: border-box; border: 4px solid yellow; border-radius: 10px">
+                            <div style="box-sizing: border-box; border: 4px solid orange; border-radius: 10px">
                                 <button class="btn btn-primary" type="submit" name="btnChangesearch">Change search</button>
                             </div>
                         </div>
@@ -121,7 +140,7 @@
 
                         <input hidden="" type="date" class="form-control" id="checkOutDate" name="checkOutDate" value="${checkOutDate}" >
 
-                        <div class="col-12">
+                        <div class="col-12" id="fun">
                             <div class="card" style="background-color: #007bff">
                                 <div class="card-body" style="background-color: #ddd">
                                     <div class="row">
@@ -188,7 +207,7 @@
                                                 </div>
                                                 <div class="col-md-2 text-center">
 
-                                                    <div class="checkbox-wrapper-31">
+                                                    <div class="checkbox-wrapper-31" id="check">
                                                         <input type="checkbox" id="roomID" name="roomID" value="${ro.room_id}">
                                                         <svg viewBox="0 0 35.6 35.6" >
                                                         <circle class="background" cx="17.8" cy="17.8" r="17.8" ></circle>
@@ -410,110 +429,158 @@
         <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"></script>
     </body>
     <style>
-            .card {
-                box-shadow: 0 20px 27px 0 rgb(0 0 0 / 5%);
-            }
-            .avatar {
-                width: 3rem;
-                height: 3rem;
-                font-size: .765625rem;
-            }
-            a {
-                text-decoration:none;
-            }
-            .apartment-type {
-                font-size: 1.25rem;
-                font-weight: bold;
-            }
-            .price {
-                color: red;
-                font-weight: bold;
-            }
-            .discount {
-                color: green;
-                font-weight: bold;
-            }
-            .badge {
-                font-size: 0.875rem;
-            }
-            .features {
-                font-size: 0.875rem;
-                color: #555;
-            }
-            .features span {
-                display: block;
-            }
-            .availability-container {
-                margin-top: 20px;
-            }
-            .header-section {
-                padding: 15px;
-                border-bottom: 1px solid #ddd;
-            }
+        /*        #check:hover {
+                    
+                    display: inline-block;
+                    font-size: 50px;
+                    color: #f39c12;
+                    animation: ring 1s infinite;
+                }
+        
+                @keyframes ring {
+                    0% {
+                        transform: rotate(0);
+                    }
+                    10% {
+                        transform: rotate(30deg);
+                    }
+                    20% {
+                        transform: rotate(60deg);
+                    }
+                    30% {
+                        transform: rotate(90deg);
+                    }
+                    40% {
+                        transform: rotate(120deg);
+                    }
+                    50% {
+                        transform: rotate(150deg);
+                    }
+                    60% {
+                        transform: rotate(180deg);
+                    }
+                    70% {
+                        transform: rotate(210deg);
+                    }
+                    80% {
+                        transform: rotate(240deg);
+                    }
+                    90% {
+                        transform: rotate(270deg);
+                    }
+                    95% {
+                        transform: rotate(300deg);
+                    }
+                    100% {
+                        transform: rotate(330deg);
+                    }
+                }*/
 
-            .checkbox-wrapper-31:hover .check {
-                stroke-dashoffset: 0;
-            }
 
-            .checkbox-wrapper-31 {
-                position: relative;
-                display: inline-block;
-                width: 40px;
-                height: 40px;
-            }
-            .checkbox-wrapper-31 .background {
-                fill: #ccc;
-                transition: ease all 0.6s;
-                -webkit-transition: ease all 0.6s;
-            }
-            .checkbox-wrapper-31 .stroke {
-                fill: none;
-                stroke: #fff;
-                stroke-miterlimit: 10;
-                stroke-width: 2px;
-                stroke-dashoffset: 100;
-                stroke-dasharray: 100;
-                transition: ease all 0.6s;
-                -webkit-transition: ease all 0.6s;
-                
-            }
-            .checkbox-wrapper-31 .check {
-                fill: none;
-                stroke: #fff;
-                stroke-linecap: round;
-                stroke-linejoin: round;
-                stroke-width: 2px;
-                stroke-dashoffset: 22;
-                stroke-dasharray: 22;
-                transition: ease all 0.6s;
-                -webkit-transition: ease all 0.6s;
-                
-            }
-            .checkbox-wrapper-31 input[type=checkbox] {
-                position: absolute;
-                width: 100%;
-                height: 100%;
-                left: 0;
-                top: 0;
-                margin: 0;
-                opacity: 0;
-                -appearance: none;
-                -webkit-appearance: none;
-            }
-            .checkbox-wrapper-31 input[type=checkbox]:hover {
-                cursor: pointer;
-            }
-            .checkbox-wrapper-31 input[type=checkbox]:checked + svg .background {
-                fill: #6cbe45;
-                
-            }
-            .checkbox-wrapper-31 input[type=checkbox]:checked + svg .stroke {
-                stroke-dashoffset: 0;
-            }
-            .checkbox-wrapper-31 input[type=checkbox]:checked + svg .check {
-                stroke-dashoffset: 0;
-            }
+        .card {
+            box-shadow: 0 20px 27px 0 rgb(0 0 0 / 5%);
+        }
+        .avatar {
+            width: 3rem;
+            height: 3rem;
+            font-size: .765625rem;
+        }
+        a {
+            text-decoration:none;
+        }
+        .apartment-type {
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+        .price {
+            color: red;
+            font-weight: bold;
+        }
+        .discount {
+            color: green;
+            font-weight: bold;
+        }
+        .badge {
+            font-size: 0.875rem;
+        }
+        .features {
+            font-size: 0.875rem;
+            color: #555;
+        }
+        .features span {
+            display: block;
+        }
+        .availability-container {
+            margin-top: 20px;
+        }
+        .header-section {
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+        }
 
-        </style>
+        .checkbox-wrapper-31:hover .check {
+            stroke-dashoffset: 0;
+        }
+
+        .checkbox-wrapper-31 {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+        }
+        .checkbox-wrapper-31 .background {
+            fill: #ccc;
+            transition: ease all 0.6s;
+            -webkit-transition: ease all 0.6s;
+        }
+        .checkbox-wrapper-31 .stroke {
+            fill: none;
+            stroke: #fff;
+            stroke-miterlimit: 10;
+            stroke-width: 2px;
+            stroke-dashoffset: 100;
+            stroke-dasharray: 100;
+            transition: ease all 0.6s;
+            -webkit-transition: ease all 0.6s;
+
+        }
+        .checkbox-wrapper-31 .check {
+            fill: none;
+            stroke: #fff;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-width: 2px;
+            stroke-dashoffset: 22;
+            stroke-dasharray: 22;
+            transition: ease all 0.6s;
+            -webkit-transition: ease all 0.6s;
+
+        }
+        .checkbox-wrapper-31 input[type=checkbox] {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            left: 0;
+            top: 0;
+            margin: 0;
+            opacity: 0;
+            -appearance: none;
+            -webkit-appearance: none;
+        }
+        .checkbox-wrapper-31 input[type=checkbox]:hover {
+            cursor: pointer;
+        }
+        .checkbox-wrapper-31 input[type=checkbox]:checked + svg .background {
+            fill: #6cbe45;
+
+        }
+        .checkbox-wrapper-31 input[type=checkbox]:checked + svg .stroke {
+            stroke-dashoffset: 0;
+        }
+        .checkbox-wrapper-31 input[type=checkbox]:checked + svg .check {
+            stroke-dashoffset: 0;
+        }
+
+    </style>
 </html>
 

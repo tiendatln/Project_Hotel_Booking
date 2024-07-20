@@ -104,11 +104,11 @@ public class searchController extends HttpServlet {
             feedbackDAOs fDAO = new feedbackDAOs();
             hotelDAOs hDAO = new hotelDAOs();
             reservationDAOs rsDAO = new reservationDAOs();
-            account ac = new account();
+            
             List<feedback> feedback = fDAO.getFeedbackByHotelID(hotel_id);
             accountDAOs aDao = new accountDAOs();
             for (int i = 0; i < feedback.size(); i++) {
-                ac = aDao.getAccount(feedback.get(i).getAccount().getUsername());
+                account ac = aDao.getAccount(feedback.get(i).getAccount().getUsername());
                 feedback.get(i).setAccount(ac);
             }
             request.setAttribute("feedback", feedback);
@@ -116,8 +116,6 @@ public class searchController extends HttpServlet {
             if (!reserve.isEmpty()) {
                 int i = 0;
                 boolean reserveExist = true;
-                boolean status = false;
-
                 while (reserveExist && i < reserve.size()) {
                     int j = 0;
                     int countStatus = 0;
@@ -131,14 +129,10 @@ public class searchController extends HttpServlet {
                             countStatus++;
                             reserveExist = false;
                         }
-
                     }
-
                     i++;
                 }
                 if (!reserveExist) {
-                    int count = fDAO.getFeedbackExistByUsername(value);
-
                     request.setAttribute("canFeedback", true);
 
                 }

@@ -110,7 +110,7 @@
                                     </div>
                                     <div class="col-md-6 profile-info">
                                         <label for="phone"><strong>Phone:</strong></label>
-                                        <input type="number" class="form-control" id="phone" name="phone" value="<%= ac.getPhone()%>" accept="number">
+                                        <input type="tel" class="form-control" id="phone" name="phone" value="<%= ac.getPhone()%>" maxlength="10" >
                                     </div>
                                     <div class="col-md-6 profile-info">
                                         <label for="id_number"><strong>ID Number:</strong></label>

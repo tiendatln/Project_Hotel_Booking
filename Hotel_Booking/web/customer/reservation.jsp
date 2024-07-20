@@ -45,6 +45,7 @@
 
         <div class="container-fluid mt-5">
             <h1 class="text-center mb-4">Reservation List</h1>
+            <c:if test="${not empty reservation}">
             <table class="table table-striped table-hover">
                 <thead>
                     <tr>
@@ -112,7 +113,17 @@
                 </c:forEach>
 
             </table>
+                </c:if>
+            <c:if test="${empty reservation}">
+                <div class="text-center" style="margin-top: 6cm">
+                    <h2 style="font-optical-sizing: auto;  ">No Reservation Available</h2>
+                    <h4 style="font-style: oblique; font-optical-sizing: auto;">( you have not made any reservation )</h4>
+                </div>
+            </c:if>
         </div>
+                
+                
+                
         <script src=
                 "https://cdn.jsdelivr.net/npm/sweetalert2@11">
         </script>

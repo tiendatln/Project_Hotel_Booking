@@ -135,6 +135,7 @@ public class reservationController extends HttpServlet {
                 i++;
             }
             request.setAttribute("reservation", rs);
+            request.setAttribute("noReservation", "");
             request.getRequestDispatcher("/customer/reservation.jsp").forward(request, response);
         }
     }
