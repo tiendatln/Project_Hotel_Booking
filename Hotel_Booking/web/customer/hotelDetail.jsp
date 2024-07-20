@@ -425,10 +425,10 @@
 
 
         </script>
-        <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"></script>
+        
     </body>
     <style>
-        /*        #check:hover {
+/*                #fun {
                     
                     display: inline-block;
                     font-size: 50px;
@@ -438,40 +438,40 @@
         
                 @keyframes ring {
                     0% {
-                        transform: rotate(0);
+                        filter: hue-rotate(0);
                     }
                     10% {
-                        transform: rotate(30deg);
+                        filter: hue-rotate(90deg);
                     }
                     20% {
-                        transform: rotate(60deg);
+                        filter: hue-rotate(-0.25turn);
                     }
                     30% {
-                        transform: rotate(90deg);
+                        filter: hue-rotate(3.142rad);
                     }
                     40% {
-                        transform: rotate(120deg);
+                        filter: hue-rotate(0);
                     }
                     50% {
-                        transform: rotate(150deg);
+                        filter: hue-rotate(90deg);
                     }
                     60% {
-                        transform: rotate(180deg);
+                        filter: hue-rotate(-0.25turn);
                     }
                     70% {
-                        transform: rotate(210deg);
+                        filter: hue-rotate(3.142rad);
                     }
                     80% {
-                        transform: rotate(240deg);
+                        filter: hue-rotate(0);
                     }
                     90% {
-                        transform: rotate(270deg);
+                        filter: hue-rotate(90deg);
                     }
                     95% {
-                        transform: rotate(300deg);
+                        filter: hue-rotate(-0.25turn);
                     }
                     100% {
-                        transform: rotate(330deg);
+                        filter: hue-rotate(3.142rad);
                     }
                 }*/
 

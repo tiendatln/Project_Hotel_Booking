@@ -24,8 +24,9 @@
     <body>
         <%@include file="layout.jsp" %>
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-        <div class="container bootstrap snippets bootdey">
+        <div class="container bootstrap snippets bootdey" style="margin-top: 30px">
             <div class="row">
+                
                 <div class="post-list">
                     <div class="row">
                         <div class="col-sm-2">
@@ -51,56 +52,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="post-list">
-                    <div class="row">
-                        <div class="col-sm-2">
-                            <div class="picture">
-                                <img alt="Opt wizard thumbnail" src="https://bootdey.com/img/Content/user_2.jpg">
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <h4>
-                                <a hre="#" class="username">Starla muscle</a>
-                                <label class="label label-info">#responsive</label>
-                            </h4>
-                            <h5> 
-                                <i class="fa fa-calendar"></i>
-                                Aug 06, 12:48 
-                            </h5>
-                            <p class="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In velit lectus, efficitur eu eros vel, luctus aliquet est. Sed sit amet ligula non mauris porta dignissim....</p>    
-                        </div>
-                        <div class="col-sm-4" data-no-turbolink="">
-                            <a class="btn btn-info btn-download btn-round pull-right makeLoading" href="#">
-                                <i class="fa fa-share"></i> View
-                            </a>            
-                        </div>
-                    </div>
-                </div>
-                <div class="post-list">
-                    <div class="row">
-                        <div class="col-sm-2">
-                            <div class="picture">
-                                <img alt="Opt wizard thumbnail" src="https://bootdey.com/img/Content/user_3.jpg">
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <h4>    
-                                <a hre="#" class="username">Barbao"s slim</a>
-                                <label class="label label-info">#BootdeyRules</label>
-                            </h4>
-                            <h5> 
-                                <i class="fa fa-calendar"></i>
-                                Aug 06, 12:48 
-                            </h5>
-                            <p class="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In velit lectus, efficitur eu eros vel, luctus aliquet est. Sed sit amet ligula non mauris porta dignissim....</p>    
-                        </div>
-                        <div class="col-sm-4" data-no-turbolink="">
-                            <a class="btn btn-info btn-download btn-round pull-right makeLoading" href="#">
-                                <i class="fa fa-share"></i> View
-                            </a>            
-                        </div>
-                    </div>
-                </div>
+               
             </div>
         </div>
     </body>
