@@ -97,7 +97,7 @@ public class hotelManagerController extends HttpServlet {
             hotel h = new hotel();
             List<hotel> hotelList = null;
             if (key != null) {
-                hotelList = hd.SearchHotelByKeyWord(key);
+                hotelList = hd.SearchHotelByKeyWord(value, key);
             } else {
                 hotelList = hd.getHotelByUser(value);
             }
@@ -124,7 +124,6 @@ public class hotelManagerController extends HttpServlet {
             request.setAttribute("page", page);
             request.setAttribute("num", num);
             request.setAttribute("HotelData", hotel);
-            request.setAttribute("AllHotelData", hotelList);
             request.setAttribute("ServiceData", service);
             request.getRequestDispatcher("/owner/list-hotel.jsp").forward(request, response);
         } else {
@@ -218,27 +217,7 @@ public class hotelManagerController extends HttpServlet {
             System.out.println("insert successfull");
             response.sendRedirect("/hotelManagerController");
         }
-        if (action.equalsIgnoreCase("insertservice")) {
-            accountDAOs adb = new accountDAOs();
-            hotelDAOs hdb = new hotelDAOs();
-            roomDAOs rdb = new roomDAOs();
-            serviceDAOs sdb = new serviceDAOs();
-            String service_name = request.getParameter("service_name");
-            String service_price_raw = request.getParameter("service_price");
-            String hotel_id_raw = request.getParameter("hotel_id");
 
-            int service_price = Integer.parseInt(service_price_raw);
-            int hotel_id = Integer.parseInt(hotel_id_raw);
-
-            hotel hotel = hdb.getHotelDetailById(hotel_id);
-            service service = new service();
-            service.setService_name(service_name);
-            service.setService_price(service_price);
-            service.setHotel(hotel);
-            sdb.insertService(service);
-            System.out.println("insert successfull");
-            response.sendRedirect("/hotelManagerController");
-        }
         if (action.equalsIgnoreCase("updatehotel")) {
             Cookie[] cList = null;
             String value = "";
@@ -264,7 +243,7 @@ public class hotelManagerController extends HttpServlet {
             if (!Files.exists(Paths.get(fileImg))) {
                 Files.createDirectories(Paths.get(fileImg));
             }
-            String picture = fileName.getFileName().toString();           
+            String picture = fileName.getFileName().toString();
 
             int hotel_id = Integer.parseInt(hotel_id_raw);
 
@@ -326,7 +305,7 @@ public class hotelManagerController extends HttpServlet {
             hotelDAOs hd = new hotelDAOs();
             serviceDAOs sd = new serviceDAOs();
             hotel h = new hotel();
-            List<hotel> hotelList = hd.SearchHotelByKeyWord(key);
+            List<hotel> hotelList = hd.SearchHotelByKeyWord(value, key);
             if (hotelList.size() < 1) {
                 request.setAttribute("message", true);
             }

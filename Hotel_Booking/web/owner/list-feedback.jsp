@@ -59,6 +59,7 @@
                                 <li class="nav-item"><a class="nav-link px-2" href="/dashboardController"><i class="fa fa-fw fa-database mr-1"></i><span>Dashboard</span></a></li>
                                 <li class="nav-item"><a class="nav-link px-2" href="/profileController/ProfileUser"><i class="fa fa-fw fa-user mr-1"></i><span>My Profile</span></a></li>
                                 <li class="nav-item"><a class="nav-link px-2" href="/hotelManagerController"><i class="fa fa-fw fa-th-large mr-1"></i><span>Manage Hotel</span></a></li>
+                                <li class="nav-item"><a class="nav-link px-2" href="/serviceManagerController"><i class="fa fa-fw fa-th-large mr-1"></i><span>Manage Service</span></a></li>
                                 <li class="nav-item"><a class="nav-link px-2" href="/roomManagerController"><i class="fa fa-fw fa-th mr-1"></i><span>Manage Room</span></a></li>
                                 <li class="nav-item"><a class="nav-link px-2" href="/reserveManagerController"><i class="fa fa-fw fa-server mr-1"></i><span>Manage Booking</span></a></li>
                                 <li class="nav-item" style="font-weight: bold"><a class="nav-link px-2" href="/feedbackManagerController"><i class="fa fa-fw fa-send mr-1"></i><span>Manage Feedback</span></a></li>
@@ -120,13 +121,12 @@
                                                         <td class="align-middle" >
                                                             ${feedback.id}
                                                         </td>
-                                                        <td class="text-nowrap align-middle">${feedback.account.name}</td>
+                                                        <td class="text-nowrap align-middle">${feedback.account.username}</td>
                                                         <td class="text-nowrap align-middle">${feedback.comment}</td>
                                                         <td class="text-nowrap align-middle"'><span>${feedback.hotel.hotel_name}</span></td>               
                                                         <td class="text-center align-middle">
                                                             <div class="btn-group align-top">
-                                                                <button class="btn btn-outline-secondary badge" type="button" data-bs-toggle="modal" data-bs-target="#view-form-modal${feedback.id}"  style="background-color: #ffc107"><span style="color: #f8f8f8;">View details</span></button>&nbsp;                                                                
-<!--                                                                <button class="btn btn-sm btn-outline-secondary badge trash" type="button" style="color: black;" onclick="doDelete('${feedback.id}')"><i class="fa fa-trash"></i></button>-->
+                                                                <button class="btn btn-outline-secondary badge" type="button" data-bs-toggle="modal" data-bs-target="#view-form-modal${feedback.id}"  style="background-color: #ffc107"><span style="color: #f8f8f8;">View details</span></button>                                                                                                                             
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -228,12 +228,6 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <!-- Custom JS -->  
-    <script>
-                                                                    function doDelete(id) {
-                                                                        if (confirm("Are you sure to delete feedback with ID = " + id)) {
-                                                                            window.location = "/feedbackManagerController?action=deletefeedback&id=" + id;
-                                                                        }
-                                                                    }
-    </script>
+    
 </body>
 </html>

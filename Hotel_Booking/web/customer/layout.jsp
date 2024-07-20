@@ -82,7 +82,7 @@
                             <% if (flagCustomer) { %>
 
                             <a class="dropdown-item" id="layout" href="/profileController/ProfileUser">Your Profile</a>
-                            <a class="dropdown-item" id="layout" href="/feedbackController/Review/<%= value %>">Review</a>
+                            <a class="dropdown-item" id="layout" href="/feedbackController/Review/<%= value %>">View FeedBack</a>
                             <a class="dropdown-item" id="layout" href="/logoutController/SignOut">Sign Out</a>
                             <% } else { %>
                             <a class="dropdown-item" id="layout" href="/loginController/login">Login</a>

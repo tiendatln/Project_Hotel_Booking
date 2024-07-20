@@ -102,7 +102,7 @@ public class feedbackController extends HttpServlet {
             int hotel_id = Integer.valueOf(s[s.length - 2]);
             int feedbackID = Integer.valueOf(s[s.length - 1]);
             feedbackDAOs fDAO = new feedbackDAOs();
-            if (!fDAO.deleteFeedBack(feedbackID)) {
+            if (fDAO.deleteFeedBack(feedbackID)) {
                 request.setAttribute("Error", true);
             }
             String value = "";
@@ -132,7 +132,7 @@ public class feedbackController extends HttpServlet {
             feedbackDAOs fDAO = new feedbackDAOs();
             List<feedback> listFeedBack = fDAO.getFeedbackByCustomer(username);
             request.setAttribute("feedback", listFeedBack);
-            request.getRequestDispatcher("/customer/review.jsp").forward(request, response);
+            request.getRequestDispatcher("/customer/viewAllFeedBack.jsp").forward(request, response);
         }
     }
 

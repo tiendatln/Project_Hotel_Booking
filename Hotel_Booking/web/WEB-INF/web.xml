@@ -87,6 +87,10 @@
         <servlet-name>reviewController</servlet-name>
         <servlet-class>Controllers.reviewController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>viewHotelMapController</servlet-name>
+        <servlet-class>Controllers.viewHotelMapController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>homeController</servlet-name>
         <url-pattern>/homeController/*</url-pattern>
@@ -186,6 +190,18 @@
     <servlet-mapping>
         <servlet-name>reviewController</servlet-name>
         <url-pattern>/reviewController/*</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>serviceManagerController</servlet-name>
+        <servlet-class>Controllers.serviceManagerController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>serviceManagerController</servlet-name>
+        <url-pattern>/serviceManagerController/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>viewHotelMapController</servlet-name>
+        <url-pattern>/viewHotelMapController/*</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

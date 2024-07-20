@@ -61,6 +61,7 @@
                                 <li class="nav-item"><a class="nav-link px-2" href="/dashboardController"><i class="fa fa-fw fa-database mr-1"></i><span>Dashboard</span></a></li>
                                 <li class="nav-item"><a class="nav-link px-2" href="/profileController/ProfileUser"><i class="fa fa-fw fa-user mr-1"></i><span>My Profile</span></a></li>
                                 <li class="nav-item"><a class="nav-link px-2" href="/hotelManagerController"><i class="fa fa-fw fa-th-large mr-1"></i><span>Manage Hotel</span></a></li>
+                                <li class="nav-item"><a class="nav-link px-2" href="/serviceManagerController"><i class="fa fa-fw fa-th-large mr-1"></i><span>Manage Service</span></a></li>
                                 <li class="nav-item" style="font-weight: bold"><a class="nav-link px-2" href="/roomManagerController"><i class="fa fa-fw fa-th mr-1"></i><span>Manage Room</span></a></li>
                                 <li class="nav-item"><a class="nav-link px-2" href="/reserveManagerController"><i class="fa fa-fw fa-server mr-1"></i><span>Manage Booking</span></a></li>
                                 <li class="nav-item"><a class="nav-link px-2" href="feedbackManagerController"><i class="fa fa-fw fa-send mr-1"></i><span>Manage Feedback</span></a></li>
@@ -255,13 +256,11 @@
 
                                         <div class="row">
                                             <div class="col-12 col-sm-6 mb-3">
-<!--                                                <div class="mb-2"><b>Set Room Image</b></div>-->
+                                                <div class="mb-2"><b>Set Room Image</b></div>
                                                 <div class="row">
                                                     <div class="col">
                                                         <div id="myfileupload">
-                                                            <label for="formFileSm" class="form-label " style="font-weight: bold;">Set Room Image</label>
-                                                                <input class="form-control form-control-sm" id="formFileSm" type="file" name="room_img" accept=".jpg,.jpeg,.png,.gif,.bmp">
-<!--                                                            <input type="file" id="room_img" name="room_img"/>      -->
+                                                            <input type="file" id="room_img" name="room_img"/>      
                                                             <img id="imagePreview" src="#" alt="Image Preview" style="display: none; width: 200px; margin-top: 10px;">
                                                         </div>  
                                                     </div>
@@ -374,13 +373,11 @@
 
                                             <div class="row">
                                                 <div class="col-12 col-sm-6 mb-3">
-<!--                                                    <div class="mb-2"><b>Set Room Image</b></div>-->
+                                                    <div class="mb-2"><b>Set Room Image</b></div>
                                                     <div class="row">
                                                         <div class="col">
                                                             <div id="myfileupload">
-                                                                <label for="formFileSm" class="form-label " style="font-weight: bold;">Set Room Image</label>
-                                                                <input class="form-control form-control-sm" id="formFileSm" type="file" name="room_img" accept=".jpg,.jpeg,.png,.gif,.bmp" >
-<!--                                                                <input type="file" name="room_img" id="room_img" value="${room.room_img}"/>   -->
+                                                                <input type="file" name="room_img" id="room_img" value="${room.room_img}"/>   
                                                                 <img id="imagePreview" src="#" alt="Image Preview" style="display: none; width: 200px; margin-top: 10px;">
                                                             </div>  
                                                         </div>
@@ -434,7 +431,7 @@
                                                                             document.getElementById("myForm").submit();
                                                                         });
 
-                                                                        document.getElementById('formFileSm').addEventListener('change', function (event) {
+                                                                        document.getElementById('room_img').addEventListener('change', function (event) {
                                                                             let file = event.target.files[0];
                                                                             if (file) {
                                                                                 let reader = new FileReader();

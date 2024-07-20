@@ -59,6 +59,7 @@
                                 <li class="nav-item"><a class="nav-link px-2" href="/dashboardController"><i class="fa fa-fw fa-database mr-1"></i><span>Dashboard</span></a></li>
                                 <li class="nav-item"><a class="nav-link px-2" href="/profileController/ProfileUser"><i class="fa fa-fw fa-user mr-1"></i><span>My Profile</span></a></li>
                                 <li class="nav-item"><a class="nav-link px-2" href="/hotelManagerController"><i class="fa fa-fw fa-th-large mr-1"></i><span>Manage Hotel</span></a></li>
+                                <li class="nav-item"><a class="nav-link px-2" href="/serviceManagerController"><i class="fa fa-fw fa-th-large mr-1"></i><span>Manage Service</span></a></li>
                                 <li class="nav-item"><a class="nav-link px-2" href="/roomManagerController"><i class="fa fa-fw fa-th mr-1"></i><span>Manage Room</span></a></li>
                                 <li class="nav-item" style="font-weight: bold"><a class="nav-link px-2" href="/reserveManagerController"><i class="fa fa-fw fa-server mr-1"></i><span>Manage Booking</span></a></li>
                                 <li class="nav-item"><a class="nav-link px-2" href="feedbackManagerController"><i class="fa fa-fw fa-send mr-1"></i><span>Manage Feedback</span></a></li>
@@ -107,13 +108,12 @@
                                         <table class="table table-bordered table-hover" style='word-wrap:break-word'>
                                             <thead>
                                                 <tr>
+                                                    <th>ID</th>
                                                     <th>Username</th>
                                                     <th>Booking Date</th>
-                                                    <th>Phone Number</th>                                                        
+                                                    <th>Room ID</th>                                                        
                                                     <th class="max-width" style="max-width: 400px;">Hotel</th>
                                                     <th>Quantity</th>
-                                                    <th>Check-In-Date</th>
-                                                    <th>Check-Out-Date</th>
                                                     <th class="max-width" style="max-width: 400px;">Price</th>                                                        
                                                     <th class="max-width" style="max-width: 400px;">Status</th>
                                                     <th>Actions</th>
@@ -122,13 +122,14 @@
                                             <c:forEach items="${ReserveData}" var="reserve">
                                                 <tbody>
                                                     <tr>
-                                                        <td class=" align-middle">${reserve.account.name}</td>
+                                                        <td class="align-middle" >
+                                                            ${reserve.id}
+                                                        </td>
+                                                        <td class="text-nowrap align-middle">${reserve.account.username}</td>
                                                         <td class="text-nowrap align-middle">${reserve.re_date}</td>
-                                                        <td class="text-nowrap align-middle">${reserve.account.phone}</td>                                                            
+                                                        <td class="text-nowrap align-middle">${reserve.room.room_id}</td>                                                            
                                                         <td class="text-nowrap align-middle"'><span>${reserve.service.hotel.hotel_name}</span></td>
                                                         <td class="text-nowrap align-middle"'><span>${reserve.quantity}</span></td>
-                                                        <td class="text-nowrap align-middle">${reserve.check_in_date}</td>
-                                                        <td class="text-nowrap align-middle">${reserve.check_out_date}</td>
                                                         <td class="text-nowrap align-middle"'><span>${reserve.list_price}$</span></td>
                                                         <td class="text-nowrap align-middle"><span>                                                                    
                                                                 <c:if test="${reserve.status == 1}">
@@ -139,16 +140,19 @@
 
                                                                 </c:if>
                                                                 <c:if test="${reserve.status == 2}">
-                                                                    <span style="color: red">Canceled</span>
+                                                                    <span style="color: red">Rejected</span>
+                                                                </c:if>
+                                                                <c:if test="${reserve.status == 3}">
+                                                                    <span style="color: orange">Canceled</span>
                                                                 </c:if>
                                                             </span></td>                                                           
                                                         <td class="text-center align-middle">
                                                             <div class="btn-group align-top">
-                                                                <button class="btn btn-outline-secondary badge" type="button" data-bs-toggle="modal" data-bs-target="#view-form-modal${reserve.id}"  style="background-color: #ffc107"><span style="color: #f8f8f8;">View details</span></button>&nbsp;&nbsp;&nbsp;                                                       
+                                                                <button class="btn btn-outline-secondary badge" type="button" data-bs-toggle="modal" data-bs-target="#view-form-modal${reserve.id}"  style="background-color: #ffc107"><span style="color: #f8f8f8;">View details</span></button>&nbsp;&nbsp;&nbsp;        
                                                                 <c:if test="${reserve.status == 0}">
                                                                     <button class="btn btn-outline-secondary badge" type="button" onclick="doConfirm('${reserve.id}')" style="background-color: #00CC00"><span style="color: #f8f8f8">Confirm</span></button>&nbsp;
-                                                                    <button class="btn btn-outline-secondary badge" type="button" onclick="doCancle('${reserve.id}')" style="background-color: orangered"><span style="color: #f8f8f8;">Cancle</span></button>
-                                                                </c:if>
+                                                                <button class="btn btn-outline-secondary badge" type="button" onclick="doReject('${reserve.id}')" style="background-color: orangered"><span style="color: #f8f8f8;">Reject</span></button>
+                                                                </c:if>                                                                
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -252,8 +256,8 @@
                                                         <div class="row">                                                            
                                                             <div class="col">
                                                                 <div class="form-group">
-                                                                    <label>Username</label>
-                                                                    <input class="form-control" type="text" name="name" placeholder="Name of room" value="${reserve.account.username}" readonly style="background: #f1f1f1" disabled>
+                                                                    <label>Name</label>
+                                                                    <input class="form-control" type="text" name="name" placeholder="Name of room" value="${reserve.account.name}" readonly style="background: #f1f1f1" disabled>
                                                                 </div>
                                                             </div>
                                                             <div class="col">
@@ -263,33 +267,14 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="row">
-                                                            <div class="col">
-                                                                <div class="form-group">
-                                                                    <label>Full Name</label>
-                                                                    <input class="form-control" type="text" name="name" placeholder="Name of room" value="${reserve.account.name}" readonly style="background: #f1f1f1" disabled>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col">
+                                                        <div class="row">                                                           
+                                                            <div class="col-12 col-sm-6 mb-3">
                                                                 <div class="form-group">
                                                                     <label>Telephone</label>
                                                                     <input class="form-control" type="text" name="room_id" value="${reserve.account.phone}" readonly style="background: #f1f1f1" disabled>
                                                                 </div>
                                                             </div>
-                                                        </div> 
-                                                        <div class="row">
-                                                            <div class="col">
-                                                                <div class="form-group">
-                                                                    <label>ID Number</label>
-                                                                    <input class="form-control" type="text" name="name" placeholder="Name of room" value="${reserve.account.id_number}" readonly style="background: #f1f1f1" disabled>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col">
-                                                                <div class="form-group">
-
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                        </div>                                                         
                                                     </div>
                                                 </div>
                                             </div>
@@ -332,8 +317,11 @@
 
                                                                     </c:if>
                                                                     <c:if test="${reserve.status == 2}">
-                                                                        <span style="color: red">Canceled</span>
-                                                                    </c:if>                                                                                                                                      
+                                                                        <span style="color: red">Rejected</span>
+                                                                    </c:if>                  
+                                                                    <c:if test="${reserve.status == 3}">
+                                                                        <span style="color: orange">Canceled</span>
+                                                                    </c:if>
                                                                 </div>
                                                             </div>
                                                         </div> 
@@ -381,16 +369,16 @@
 
     <!-- Custom JS -->  
     <script>
-                                                                        function doConfirm(id) {
-                                                                            if (confirm("Are you sure you want to confirm the booking request with ID = " + id)) {
-                                                                                window.location = "/reserveManagerController?action=confirm&id=" + id;
-                                                                            }
+                                                                    function doConfirm(id) {
+                                                                        if (confirm("Are you sure you want to confirm the booking request with ID = " + id)) {
+                                                                            window.location = "/reserveManagerController?action=confirm&id=" + id;
                                                                         }
-                                                                        function doCancle(id) {
-                                                                            if (confirm("Are you sure you want to cancle the booking request with ID = " + id)) {
-                                                                                window.location = "/reserveManagerController?action=cancle&id=" + id;
-                                                                            }
+                                                                    }
+                                                                    function doReject(id) {
+                                                                        if (confirm("Are you sure you want to reject the booking request with ID = " + id)) {
+                                                                            window.location = "/reserveManagerController?action=cancle&id=" + id;
                                                                         }
+                                                                    }
     </script>
 </body>
 </html>

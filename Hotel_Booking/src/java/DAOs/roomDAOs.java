@@ -539,7 +539,7 @@ public class roomDAOs {
         return count;
     }
 
-    public List<room> SearchRoomByKeyWord(String text) {
+     public List<room> SearchRoomByKeyWord(String username, String text) {
         List<room> list = new ArrayList<>();
         ResultSet rs = null;
         try {
@@ -547,11 +547,12 @@ public class roomDAOs {
                     + "from Room r\n"
                     + "inner join Hotel h on r.hotel_id = h.hotel_id\n"
                     + "inner join RoomType rt on r.room_type_id = rt.room_type_id\n"
-                    + "where room_id LIKE ? OR room_name LIKE ? OR rt.name_type LIKE ? OR h.hotel_name LIKE ?");
-            ps.setString(1, text);
-            ps.setString(2, "%" + text + "%");
+                    + "where h.username = ? AND room_id LIKE ? OR room_name LIKE ? OR rt.name_type LIKE ? OR h.hotel_name LIKE ?");
+            ps.setString(1, username);
+            ps.setString(2, text);
             ps.setString(3, "%" + text + "%");
             ps.setString(4, "%" + text + "%");
+            ps.setString(5, "%" + text + "%");
             rs = ps.executeQuery();
             while (rs.next()) {
                 hotel h = new hotel(rs.getInt(1), "", "", "", "");

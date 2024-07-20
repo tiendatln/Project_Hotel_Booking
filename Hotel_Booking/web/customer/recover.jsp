@@ -21,14 +21,16 @@
                     <div class="card">
                         <div class="card-body">
                             <h2 class="card-title text-center">Reset Password</h2>
-                            <form action="/forgetPasswordOTP" method="post" >
+                            <form action="/forgetPasswordOTP" method="post" onsubmit="return checkPassword()">
                                 <div class="form-group">
-                                    <label for="username">New Password</label>
-                                    <input type="password" class="form-control" id="newPassword" placeholder="Enter password"  name="txtNewPassword" >
+                                    <label for="newPassword">New Password</label>
+                                    <input type="password" class="form-control" id="newPassword" placeholder="Enter password" name="txtNewPassword" minlength="5">
+                                    <span id="ErrorNewPassword" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
-                                    <label for="password">Confirm Password</label>
-                                    <input type="password" class="form-control" id="confirmPassword" placeholder="Enter password"  name="txtConfirmPassword" >
+                                    <label for="confirmPassword">Confirm Password</label>
+                                    <input type="password" class="form-control" id="confirmPassword" placeholder="Enter password" name="txtConfirmPassword" minlength="5">
+                                    <span id="ErrorConfirmPassword" class="text-danger"></span>
                                 </div>
                                 <div>
                                     <span id="ErrorPassword" class="text-danger"></span>
@@ -49,9 +51,25 @@
             function checkPassword() {
                 var newPassword = document.getElementById('newPassword').value;
                 var confirmPassword = document.getElementById('confirmPassword').value;
-                if (newPassword !== confirmPassword) {
-                    document.getElementById('ErrorPassword').innerHTML "New Password and Confirm Password not match!";
+                var valid = true;
+
+                document.getElementById('ErrorNewPassword').innerHTML = "";
+                document.getElementById('ErrorConfirmPassword').innerHTML = "";
+                document.getElementById('ErrorPassword').innerHTML = "";
+
+                if (newPassword === "") {
+                    document.getElementById('ErrorNewPassword').innerHTML = "Please Enter New Password.";
+                    valid = false;
                 }
+                if (confirmPassword === "") {
+                    document.getElementById('ErrorConfirmPassword').innerHTML = "Please Enter Confirm Password.";
+                    valid = false;
+                }
+                if (newPassword !== confirmPassword) {
+                    document.getElementById('ErrorPassword').innerHTML = "New Password and Confirm Password do not match!";
+                    valid = false;
+                }
+                return valid;
             }
         </script>
     </body>

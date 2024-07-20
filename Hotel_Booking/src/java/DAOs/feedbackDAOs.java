@@ -185,16 +185,17 @@ public class feedbackDAOs {
         return count;
     }
 
-    public List<feedback> SearchFeedbackByKeyWord(String text) {
+public List<feedback> SearchFeedbackByKeyWord(String username, String text) {
         List<feedback> feedbackList = new ArrayList<>();
         try {
             PreparedStatement ps = conn.prepareStatement("select f.username, h.hotel_id, feedback_id, comment\n"
                     + "from Feedback f \n"
                     + "inner join Hotel h on f.hotel_id = h.hotel_id\n"
-                    + "where feedback_id LIKE ? OR f.username LIKE ? OR h.hotel_name LIKE ?");
-            ps.setString(1, text);
-            ps.setString(2, "%" + text + "%");
+                    + "where h.username = ? AND feedback_id LIKE ? OR f.username LIKE ? OR h.hotel_name LIKE ?");
+            ps.setString(1, username);
+            ps.setString(2, text);
             ps.setString(3, "%" + text + "%");
+            ps.setString(4, "%" + text + "%");
             ResultSet rs = ps.executeQuery();
             int i = 0;
             while (rs.next()) {

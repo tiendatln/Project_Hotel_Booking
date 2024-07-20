@@ -124,8 +124,18 @@
                     </div>
                 </div>
                 <div class="col-md-9">
-                    <c:forEach items="${hotel}" var="h">
 
+                    <c:forEach items="${hotel}" var="h">
+                        <%
+                            roomDAOs roomDAO = new roomDAOs();
+                            List<hotel> ht = (List<hotel>) request.getAttribute("hotel");
+                            int lowPrice = roomDAO.getLowPrice(ht.get(i).getHotel_id());
+                            int highPrice = roomDAO.getHighPrice(ht.get(i).getHotel_id());
+                            String location = ht.get(i).getHotel_name();
+                            location += ht.get(i).getHotel_address();
+                            location.replace(' ', '+');
+                            i++;
+                        %>
                         <div class="property-card card" style="flex-direction: row;box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;">
                             <img style="width: 250px; height: 250px; border-radius: 10px;" src="<%= request.getContextPath()%>/imgs/hotel/${h.hotel_img}" class="card-img-top" alt="">
                             <div class="card-body">
@@ -133,7 +143,7 @@
                                     <div>
                                         <h5 class="property-title">${h.hotel_name}</h5>
                                         <p class="property-details text-success">
-                                            <a href="#">${h.hotel_address}</a> <br>
+                                            <a target="_blank" href="https://www.google.com/maps?q=<%= location %>">${h.hotel_address}</a> <br>
                                             Service: 
 
                                             <c:forEach items="${service}" var="s">
@@ -147,13 +157,7 @@
                                     </div>
                                     <div class="text-right">
                                         <p class="price">
-                                            <%
-                                                roomDAOs roomDAO = new roomDAOs();
-                                                List<hotel> ht = (List<hotel>) request.getAttribute("hotel");
-                                                int lowPrice = roomDAO.getLowPrice(ht.get(i).getHotel_id());
-                                                int highPrice = roomDAO.getHighPrice(ht.get(i).getHotel_id());
-                                                i++;
-                                            %>
+
                                             $<%= lowPrice%> - $<%= highPrice%>
                                         </p>
 

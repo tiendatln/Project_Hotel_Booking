@@ -41,7 +41,7 @@
         %>
         <div class="container mt-4" >
             <h1 class="display-4"><%= h.getHotel_name()%></h1>
-            <p class="lead"><i class="fas fa-map-marker-alt"></i> <%= h.getHotel_address()%> – <a href="#">Great
+            <p class="lead"><i class="fas fa-map-marker-alt"></i> <%= h.getHotel_address()%> – <a target="_blank" href="https://www.google.com/maps?q=<%= location %>">Great
                     location - show map</a></p>
 
             <div class="row">
@@ -70,17 +70,16 @@
                     </div>
                 </div>
                 <div class="col-3" >
-                    <h4 style="margin: 10px">Hotel Location</h4>
+                    <h4 style="margin-bottom:  10px">Hotel Location</h4>
                         <iframe 
-
-                            style="border:0; height: 17rem; "
+                            id="map"
+                            style="border:0; height: 12rem; "
                             loading="lazy"
                             allow-scripts="false"
                             allowfullscreen
                             referrerpolicy="no-referrer-when-downgrade " 
                             src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCic3r4-oNwtB5j-5IVDuPe8k3vyaijOZQ&q=1600+<%= location %>">
                         </iframe>
-                    
                 </div>
 
 
