@@ -9,6 +9,7 @@ import Model.account;
 import Model.hotel;
 import Model.reservation;
 import Model.room;
+import Model.roomType;
 import Model.service;
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -125,11 +126,11 @@ public class reservationDAOs {
             ps.setDate(7, CheckOutDate);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                roomDAOs rDAO = new roomDAOs();
                 hotelDAOs hDAO = new hotelDAOs();
-                room r = rDAO.getRoomByRoomID(rs.getInt("room_id"));
-                hotel h = hDAO.getHotelByRoomID(r.getRoom_id());
-                r.setHotel(h);
+                hotel h = hDAO.getHotelByRoomID(rs.getInt("room_id"));
+                roomType rt = new roomType(rs.getInt("room_type_id"));
+                room r = new room(rs.getInt("room_id"), rs.getString("room_name"), rs.getInt("room_price"), rs.getString("room_img"), 
+                        rs.getBoolean("room_status"), rs.getString("room_description"), rt, rs.getInt("room_capacity"), h);
                 service sv = new service(rs.getInt("service_id"));
                 account ac = new account(rs.getString("username"));
                 re.add(new reservation(rs.getInt("re_id"), rs.getInt("status"), rs.getDate("re_date"), rs.getInt("quantity"),

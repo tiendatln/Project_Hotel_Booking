@@ -255,4 +255,22 @@ public List<feedback> SearchFeedbackByKeyWord(String username, String text) {
         }
         return feedbackList;
     }
+    public List<feedback> getFeedbackByID(int feedbackID) {
+        List<feedback> feedbackList = new ArrayList<>();
+        try {
+            PreparedStatement ps = conn.prepareStatement("select * from Feedback where feedback_id= ?");
+           ps.setInt(1, feedbackID);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+              
+                feedback feedback = new feedback(rs.getInt(1), rs.getString(2), new account(rs.getString(3)), new hotel(rs.getInt(4)));
+                feedbackList.add(feedback);
+                       return feedbackList;
+ 
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Consider proper logging or rethrowing the exception based on your requirement
+        }
+        return null;
+    }
 }

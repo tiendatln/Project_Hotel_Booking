@@ -296,4 +296,5 @@ public class hotelDAOs {
         }
         return img;
     }
+    
 }

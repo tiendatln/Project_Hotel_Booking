@@ -195,7 +195,7 @@
                             </div>
                             <div class="modal-body">
                                 <div class="py-1">
-                                    <form class="form" novalidate="" action="/hotelManagerController?action=inserthotel" method="post" enctype="multipart/form-data">
+                                    <form class="form" action="/hotelManagerController?action=inserthotel" method="post" enctype="multipart/form-data">
                                         <div class="row">
                                             <div class="col">
                                                 <div class="row">
@@ -207,7 +207,7 @@
                                                 <div class="row">
                                                     <div class="form-group">
                                                         <label>Hotel Address</label>
-                                                        <input class="form-control" name="hotel_address" type="text" required placeholder="Hotel Address">
+                                                        <input class="form-control" name="hotel_address" type="text"  placeholder="Hotel Address">
                                                     </div>                                                    
                                                 </div>                                                
 
@@ -226,9 +226,9 @@
                                             <div class="col-12 col-sm-6 mb-3">
                                                 <div class="mb-2"><b>Set Hotel Image</b></div>
                                                 <div class="row">
-                                                    <div class="col">
+                                                    <div class="col-12">
                                                         <div id="myfileupload">
-                                                            <input type="file" name="hotel_img"/>         
+                                                            <input type="file" id="hotel_img" name="hotel_img" accept="image/*" />       
                                                             <img id="imagePreview" src="#" alt="Image Preview" style="display: none; width: 200px; margin-top: 10px;">
                                                         </div>  
                                                     </div>
@@ -262,7 +262,7 @@
                                 </div>
                                 <div class="modal-body">
                                     <div class="py-1">
-                                        <form class="form" id="myForm" novalidate="" action="/hotelManagerController?action=updatehotel" method="POST" enctype="multipart/form-data">
+                                        <form class="form" id="myForm"  action="/hotelManagerController?action=updatehotel" method="POST" enctype="multipart/form-data">
                                             <div class="row">
                                                 <div class="col mb-3">
                                                     <div class="form-group">
@@ -303,7 +303,7 @@
                                                     <div class="row">
                                                         <div class="col">
                                                             <div id="myfileupload">
-                                                                <input type="file" name="hotel_img" value="${hotel.hotel_img}"/>       
+                                                                <input type="file" id="hotel_img" name="hotel_img" accept="image/*" />       
                                                                 <img id="imagePreview" src="#" alt="Image Preview" style="display: none; width: 200px; margin-top: 10px;">
                                                             </div>  
                                                         </div>
@@ -311,15 +311,15 @@
 
                                                 </div>                                                
                                             </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col d-flex justify-content-end">
-                                            <button class="btn btn-primary" type="submit" name="btnUpdate">Save Changes</button>                                                
-                                            <a class="btn btn-cancel" data-bs-dismiss="modal" href="#" style="background-color: crimson; margin-left: 15px; color: white;">Cancle</a>
-                                        </div>
-                                    </div>
-                                    </form>
 
+                                            <div class="row">
+                                                <div class="col d-flex justify-content-end">
+                                                    <button class="btn btn-primary" type="submit" name="btnUpdate">Save Changes</button>                                                
+                                                    <a class="btn btn-cancel" data-bs-dismiss="modal" href="#" style="background-color: crimson; margin-left: 15px; color: white;">Cancle</a>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>

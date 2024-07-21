@@ -21,7 +21,17 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Properties;
+import java.util.Random;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 /**
  *
@@ -92,7 +102,7 @@ public class FeedbackManage extends HttpServlet {
             List<hotel> hotel = hd.getHotelByUser(value);
             List<feedback> fb = null;
 //            if (key != null) {
-//                fb = fdb.SearchFeedbackByKeyWord(key);
+//    fb = fdb.SearchFeedbackByKeyWord(key);
 //            } else {
 //                
 //            }
@@ -132,11 +142,50 @@ public class FeedbackManage extends HttpServlet {
                 feedbackDAOs fdb = new feedbackDAOs();
                 String feedback_id_raw = request.getParameter("id");
                 int feedback_id = Integer.parseInt(feedback_id_raw);
+                accountDAOs ad = new accountDAOs();
+                account a = new account();
+                List<feedback> f = fdb.getFeedbackByID(feedback_id);
+                String sendemail = "";
+                for (int i = 0; i < f.size(); i++) {
+                    a = ad.getAccount(f.get(i).getAccount().getUsername());
+                    sendemail +="Dear "+ a.getUsername() + ",\nWe confirm that your feedback with the content: '" + f.get(i).getComment() + "' has been removed from our system. Please note that any further inappropriate responses may result in account suspension.\n"
+                            + "\n"
+                            + "Best regards,  \n"
+                            + "Website Admin\n"
+                            + "Hotel Reservation System";
+                }
+                String to = a.getEmail();// change accordingly
+                String host = "smtp.gmail.com";
+                String port = "465";
+                // Get the session object
+                Properties props = new Properties();
+                props.put("mail.smtp.host", host);
+                props.put("mail.smtp.port", port);
+                props.put("mail.smtp.auth", "true");
+                props.put("mail.smtp.ssl.enable", "true");
+                props.put("mail.smtp.starttls.enable", "true");
+                Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator() {
+                    @Override
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication("datlntce171894@fpt.edu.vn", "ytac vgaa luxu cgdy");// Put your email
+                    }
+                });
+                try {
+                    MimeMessage message = new MimeMessage(session);
+                    message.setFrom(new InternetAddress("datlntce171894@fpt.edu.vn"));// change accordingly
+                    message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+                    message.setSubject("Hello");
+                    message.setText(sendemail);
+                    // send message
+                    Transport.send(message);
+                } catch (MessagingException e) {
+                    throw new RuntimeException(e);
+                }
+                //    request.setAttribute("message", "OTP is sent to your email id");
                 fdb.deleteFeedback(feedback_id);
                 response.sendRedirect("/feedbackmanage");
             }
         }
-
     }
 
     /**

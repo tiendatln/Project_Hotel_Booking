@@ -94,6 +94,7 @@ public class Dashboard extends HttpServlet {
             double percent_Confirm = ((double) countConfirm / countTotalBooking) * 100;
             double percent_Cancel = ((double) countCancel / countTotalBooking) * 100;
             double percent_Pending = ((double) countPending / countTotalBooking) * 100;
+            request.setAttribute("us", value);
             request.setAttribute("hotel", countHotel);
             request.setAttribute("room", countRoom);
             request.setAttribute("feedback", countFeedback);

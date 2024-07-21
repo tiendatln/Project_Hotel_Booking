@@ -88,13 +88,11 @@
                                         <div class="card">
                                             <div class="card-body">                                   
 
-                                                <form method="post" id="search" action="/roomManagerController?action=search">
+                                                <form method="post" action="/roomManagerController?action=search">
                                                     <div class="form-group">                                                                                                                
                                                         <div class="input-group">
                                                             <span class="input-group-addon"><i
                                                                     class="glyphicon glyphicon-envelope color-blue"></i></span> <input
-                                                                        onchange="submit()"
-                                                                        
                                                                 placeholder="Search......"
                                                                 class="form-control" type="text" name="key" value="${keyword}">
                                                         </div>
@@ -262,7 +260,7 @@
                                                 <div class="row">
                                                     <div class="col">
                                                         <div id="myfileupload">
-                                                            <input type="file" id="room_img" name="room_img"/>      
+                                                            <input type="file" id="room_img" name="room_img" accept="image/*"/>      
                                                             <img id="imagePreview" src="#" alt="Image Preview" style="display: none; width: 200px; margin-top: 10px;">
                                                         </div>  
                                                     </div>
@@ -379,7 +377,7 @@
                                                     <div class="row">
                                                         <div class="col">
                                                             <div id="myfileupload">
-                                                                <input type="file" name="room_img" id="room_img" value="${room.room_img}"/>   
+                                                                <input type="file" name="room_img" id="room_img" value="${room.room_img}" accept="image/*"/>   
                                                                 <img id="imagePreview" src="#" alt="Image Preview" style="display: none; width: 200px; margin-top: 10px;">
                                                             </div>  
                                                         </div>
@@ -447,9 +445,6 @@
                                                                                 document.getElementById('imagePreview').style.display = 'none';
                                                                             }
                                                                         });
-                                                                        function submit(){
-                                                                            document.getElementById("search").submit();
-                                                                        }
         </script>
     </body>
 </html>

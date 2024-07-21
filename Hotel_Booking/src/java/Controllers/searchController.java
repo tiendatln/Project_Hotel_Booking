@@ -291,7 +291,7 @@ public class searchController extends HttpServlet {
                         while (j < re.size() && checkQuantity && checkRoomID) { //RoomID in reservation
                             int roomIdByReservation = re.get(j).getRoom().getRoom_id();
                             {
-                                if (room_id == roomIdByReservation) {
+                                if (room_id == roomIdByReservation && re.get(j).getStatus() <= 1) {
                                     int roomCapacity = re.get(j).getRoom().getRoom_capacity();
                                     int reservationQuantity = re.get(j).getQuantity();
                                     if (quantity == 0) {
@@ -302,7 +302,7 @@ public class searchController extends HttpServlet {
 
                                     }
                                     k++;
-                                    if (quantity >= roomCapacity) {
+                                    if (quantity >= roomCapacity ) {
                                         if (1 > countRoom) {
                                             countRoom++;
                                             quantity = 0;
@@ -314,7 +314,6 @@ public class searchController extends HttpServlet {
                                         checkQuantityOfRoom = quantity;
                                     }
                                 } else {
-
                                     checkRoomID = false;
                                 }
                                 if (checkRoomID) {

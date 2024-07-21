@@ -61,7 +61,7 @@ public class homeController extends HttpServlet {
         } else if (path.endsWith("/HomeAdmin")) {
             response.sendRedirect("/Dashboard");
         } else if (path.endsWith("/HomeOwner")) {            
-            response.sendRedirect("/roomManagerController");
+            response.sendRedirect("/dashboardController");
         }
     }
 

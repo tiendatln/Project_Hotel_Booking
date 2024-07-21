@@ -5,8 +5,10 @@
 package Controllers;
 
 import DAOs.accountDAOs;
+import DAOs.feedbackDAOs;
 import DAOs.updateRoleDAOs;
 import Model.account;
+import Model.feedback;
 import Model.updateRole;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
@@ -16,6 +18,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Properties;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 /**
  *
@@ -54,9 +64,7 @@ public class ManageRole extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html; charset=UTF-8");
-        accountDAOs ad = new accountDAOs();
         updateRoleDAOs ud = new updateRoleDAOs();
-        account a = new account();
         String user = request.getParameter("user");
         String id_raw = request.getParameter("id");
         String action = request.getParameter("action");
@@ -69,14 +77,93 @@ public class ManageRole extends HttpServlet {
                 request.getRequestDispatcher("/admin/managerole.jsp").forward(request, response);
             } else {
                 if (action.equalsIgnoreCase("setrole")) {
+                    account a = new account();
+                    accountDAOs ad = new accountDAOs();
 
                     a = ad.getAccount(user);
                     ad.setStatusUpdateRole(user, 1);
                     ad.setOwner(a.getUsername());
 
+                    String sendemail = "Dear " + a.getUsername() + ",\nYour request to register as the owner hotel has been approved. Welcome to our hotel booking system!\n"
+                            + "\n"
+                            + "Best regards,\n"
+                            + "\n"
+                            + "Website Admin\n"
+                            + "Hotel Booking System";
+                    String to = a.getEmail(); // change accordingly
+                    String host = "smtp.gmail.com";
+                    String port = "465";
+                    // Get the session object
+                    Properties props = new Properties();
+                    props.put("mail.smtp.host", host);
+                    props.put("mail.smtp.port", port);
+                    props.put("mail.smtp.auth", "true");
+                    props.put("mail.smtp.ssl.enable", "true");
+                    props.put("mail.smtp.starttls.enable", "true");
+                    Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator() {
+                        @Override
+                        protected PasswordAuthentication getPasswordAuthentication() {
+                            return new PasswordAuthentication("datlntce171894@fpt.edu.vn", "ytac vgaa luxu cgdy");// Put your email
+                        }
+                    });
+                    try {
+                        MimeMessage message = new MimeMessage(session);
+                        message.setFrom(new InternetAddress("datlntce171894@fpt.edu.vn"));// change accordingly
+                        message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+                        message.setSubject("Hello");
+                        message.setText(sendemail);
+                        // send message
+                        Transport.send(message);
+                    } catch (MessagingException e) {
+                        throw new RuntimeException(e);
+                    }
+
                     response.sendRedirect("setrole");
                 } else if (action.equalsIgnoreCase("deleteDon")) {
+                    account a = new account();
+                    accountDAOs ad = new accountDAOs();
+
                     int id = Integer.parseInt(id_raw);
+                    updateRoleDAOs updao = new updateRoleDAOs();
+                    List<updateRole> u = updao.getUpdateRoleById(id);
+
+                    for (int i = 0; i < u.size(); i++) {
+                        a = ad.getAccount(u.get(i).getAccount().getUsername());
+                    }
+                    String sendemail = "Dear " + a.getUsername() + ",\nThank you for your interest in registering to become Owner Hotel. After careful consideration, we regret to inform you that we cannot proceed with the registration at this time. Please contact us if you need further information.\n"
+                            + "\n"
+                            + "Best regards,\n"
+                            + "Website Admin\n"
+                            + "Hotel Booking System";
+                    String to = a.getEmail(); // change accordingly
+                    String host = "smtp.gmail.com";
+                    String port = "465";
+                    // Get the session object
+                    Properties props = new Properties();
+                    props.put("mail.smtp.host", host);
+                    props.put("mail.smtp.port", port);
+                    props.put("mail.smtp.auth", "true");
+                    props.put("mail.smtp.ssl.enable", "true");
+                    props.put("mail.smtp.starttls.enable", "true");
+                    Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator() {
+                        @Override
+                        protected PasswordAuthentication getPasswordAuthentication() {
+                            return new PasswordAuthentication("datlntce171894@fpt.edu.vn", "ytac vgaa luxu cgdy");// Put your email
+                        }
+                    });
+                    try {
+                        MimeMessage message = new MimeMessage(session);
+                        message.setFrom(new InternetAddress("datlntce171894@fpt.edu.vn"));// change accordingly
+                        message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+                        message.setSubject("Hello");
+                        message.setText(sendemail);
+                        // send message
+                        Transport.send(message);
+                        System.out.println("message sent successfully");
+                    } catch (MessagingException e) {
+                        throw new RuntimeException(e);
+                    }
+
                     ud.deleteUpdateRole(id);
                     response.sendRedirect("/setrole");
 

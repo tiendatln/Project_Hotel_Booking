@@ -110,4 +110,24 @@ public class updateRoleDAOs {
             System.out.println(e);
         }
     }
+          public List<updateRole> getUpdateRoleById(int id) {
+        
+        List<updateRole> list = new ArrayList<>();
+        try {
+            PreparedStatement st = conn.prepareStatement("select *\n"
+                    + "from [dbo].[UpdateRole] u\n"
+                    + " join [dbo].[Account] a on a.username = u.username\n"
+                    + " where u.id =?");
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                list.add(new updateRole(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getInt(5), new account(rs.getString(6))));
+                
+            }
+            
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return list;
+    }
 }
