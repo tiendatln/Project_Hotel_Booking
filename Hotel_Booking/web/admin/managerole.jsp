@@ -63,20 +63,20 @@
             <hr>
             <ul class="app-menu">
                 <li><a class="app-menu__item" href="/Dashboard"><i class='app-menu__icon bx bx-tachometer'></i><span
-                            class="app-menu__label">Control</span></a></li>
+                            class="app-menu__label">Dashboard</span></a></li>
                 <li><a class="app-menu__item" href="/UserManager"><i class='app-menu__icon bx bx-user-voice'></i><span
                             class="app-menu__label">Manage User</span></a></li>
                 
                 <li><a class="app-menu__item" href="/setrole"><i class='app-menu__icon bx bx-task'></i><span
-                            class="app-menu__label">Manage Role</span></a></li>
+                            class="app-menu__label">Owner Applications</span></a></li>
                 <li><a class="app-menu__item" href="/feedbackmanage" style="text-decoration: none;"><i class='app-menu__icon bx bx-task'></i><span
                             class="app-menu__label">Feedback Manage</span></a></li>
             </ul>
         </aside>
         <main class="app-content">
-            <div class="app-title">
+           <div class="app-title">
                 <ul class="app-breadcrumb breadcrumb side">
-                    <li class="breadcrumb-item active"><a href="#"><b>Waiting list for review</b></a></li>
+                    <li class="breadcrumb-item active"><b>Upgrade to owner applications</b></li>
                 </ul>
                 <div id="clock"></div>
             </div>
@@ -85,14 +85,14 @@
                     <div class="tile">
                         <div class="tile-body">                            
                         </div>
-                        <table class="table table-hover table-bordered" id="sampleTable">
+                         <table class="table table-hover table-bordered js-copytextarea" cellpadding="0" cellspacing="0" border="0" id="sampleTable">
                             <thead>
                                 <tr>
                                     <th>ID</th>
                                     <th>Hotel Name</th>
                                     <th>Hotel Address</th>
                                     <th>Image</th>
-                                    <th>username</th>
+                                    <th>Username</th>
                                     <th>Action</th>
                                     <th>Status</th>   
                                     <th>Delete</th>
@@ -136,7 +136,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        
     </main>
     <!-- Essential javascripts for application to work-->
     <script src="admin/js/jquery-3.2.1.min.js"></script>
@@ -151,24 +151,34 @@
     <!-- Data table plugin-->
     <script type="text/javascript" src="admin/js/plugins/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="admin/js/plugins/dataTables.bootstrap.min.js"></script>
-    <script type="text/javascript">$('#sampleTable').DataTable();</script>    
-    <!--    <script>
-              $(document).ready(jQuery(function () {
-                    jQuery(".trash").click(function () {
-                        swal({
-                            title: "Cảnh báo",
-                            text: "Bạn có chắc chắn là muốn xóa account này?",
-                            buttons: ["Hủy bỏ", "Đồng ý"],
-                        })
-                                .then((willDelete) => {
-                                    if (willDelete) {
-                                        window.location = "setrole?action=deletedon&id=" + $(this).attr("value");
-                                        swal("Đã xóa thành công.", {
-                                        });
-                                    }
-                                });
-                    });
-                }));
-        </script>-->
+  <script type="text/javascript">
+    $('#sampleTable').DataTable({
+        language: {
+            // Set language options to English
+            "sEmptyTable": "No data available in table",
+            "sInfo": "Showing _START_ to _END_ of _TOTAL_ entries",
+            "sInfoEmpty": "Showing 0 to 0 of 0 entries",
+            "sInfoFiltered": "(filtered from _MAX_ total entries)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ",",
+            "sLengthMenu": "Show _MENU_ entries",
+            "sLoadingRecords": "Loading...",
+            "sProcessing": "Processing...",
+            "sSearch": "Search:",
+            "sZeroRecords": "No matching records found",
+            "oPaginate": {
+                "sFirst": "First",
+                "sLast": "Last",
+                "sNext": "Next",
+                "sPrevious": "Previous"
+            },
+            "oAria": {
+                "sSortAscending": ": activate to sort column ascending",
+                "sSortDescending": ": activate to sort column descending"
+            }
+        }
+    });
+</script>
+
 </body>
 </html>
