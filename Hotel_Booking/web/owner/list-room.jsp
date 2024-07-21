@@ -88,11 +88,13 @@
                                         <div class="card">
                                             <div class="card-body">                                   
 
-                                                <form method="post" action="/roomManagerController?action=search">
+                                                <form method="post" id="search" action="/roomManagerController?action=search">
                                                     <div class="form-group">                                                                                                                
                                                         <div class="input-group">
                                                             <span class="input-group-addon"><i
                                                                     class="glyphicon glyphicon-envelope color-blue"></i></span> <input
+                                                                        onchange="submit()"
+                                                                        
                                                                 placeholder="Search......"
                                                                 class="form-control" type="text" name="key" value="${keyword}">
                                                         </div>
@@ -445,6 +447,9 @@
                                                                                 document.getElementById('imagePreview').style.display = 'none';
                                                                             }
                                                                         });
+                                                                        function submit(){
+                                                                            document.getElementById("search").submit();
+                                                                        }
         </script>
     </body>
 </html>

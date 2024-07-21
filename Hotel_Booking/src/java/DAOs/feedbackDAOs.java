@@ -242,8 +242,10 @@ public List<feedback> SearchFeedbackByKeyWord(String username, String text) {
             ResultSet rs = ps.executeQuery();
             int i = 0;
             while (rs.next()) {
-                account a = new account(rs.getString("username"));
-                hotel h = new hotel(rs.getInt("hotel_id"));
+                hotelDAOs hDAO = new hotelDAOs();
+                accountDAOs aDAO = new accountDAOs();
+                account a = aDAO.getAccount(username);
+                hotel h = hDAO.getHotelDetailById(rs.getInt("hotel_id"));
                 feedback feedback = new feedback(rs.getInt("feedback_id"), rs.getString("comment"), a, h);
                 feedbackList.add(i, feedback);
                 i++;

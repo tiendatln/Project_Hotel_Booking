@@ -126,13 +126,49 @@ public class feedbackController extends HttpServlet {
             request.setAttribute("username", value);
             request.setAttribute("feedback", fb);
             request.getRequestDispatcher("/customer/feedbackViewAll.jsp").forward(request, response);
-        }else if(path.startsWith("/feedbackController/Review")){
+        } else if (path.startsWith("/feedbackController/Review")) {
             String[] s = path.split("/");
             String username = s[s.length - 1];
+            long millis = System.currentTimeMillis();
+            long tenDaysInMillis = 1L * 24 * 60 * 60 * 1000;
+            long checkoutMillis = millis + tenDaysInMillis;
+            Date checkinDate = new Date(millis);
+            Date checkoutDate = new Date(checkoutMillis);
             feedbackDAOs fDAO = new feedbackDAOs();
             List<feedback> listFeedBack = fDAO.getFeedbackByCustomer(username);
-            request.setAttribute("feedback", listFeedBack);
-            request.getRequestDispatcher("/customer/viewAllFeedBack.jsp").forward(request, response);
+            request.setAttribute("fb", listFeedBack);
+            request.setAttribute("checkinDate", checkinDate);
+            request.setAttribute("checkoutDate", checkoutDate);
+            request.getRequestDispatcher("/customer/viewAllFeedBackCustomer.jsp").forward(request, response);
+        }else if(path.startsWith("/feedbackController/deleteFeedbackByAll")){
+            String[] s = path.split("/");
+            int hotel_id = Integer.valueOf(s[s.length - 2]);
+            int feedbackID = Integer.valueOf(s[s.length - 1]);
+            feedbackDAOs fDAO = new feedbackDAOs();
+            if (fDAO.deleteFeedBack(feedbackID)) {
+                request.setAttribute("Error", true);
+            }
+            String value = "";
+            Cookie[] cList = null;
+            cList = request.getCookies(); //Lay tat ca cookie cua website nay tren may nguoi dung
+            if (cList != null) {
+                for (int i = 0; i < cList.length; i++) {//Duyet qua het tat ca cookie
+                    if (cList[i].getName().equals("customer")) {//nguoi dung da dang nhap
+                        value = cList[i].getValue();
+                        break; //thoat khoi vong lap
+                    }
+                }
+            }
+            long millis = System.currentTimeMillis();
+            long tenDaysInMillis = 1L * 24 * 60 * 60 * 1000;
+            long checkoutMillis = millis + tenDaysInMillis;
+            Date checkinDate = new Date(millis);
+            Date checkoutDate = new Date(checkoutMillis);
+            List<feedback> listFeedBack = fDAO.getFeedbackByCustomer(value);
+            request.setAttribute("fb", listFeedBack);
+            request.setAttribute("checkinDate", checkinDate);
+            request.setAttribute("checkoutDate", checkoutDate);
+            request.getRequestDispatcher("/customer/viewAllFeedBackCustomer.jsp").forward(request, response);
         }
     }
 
