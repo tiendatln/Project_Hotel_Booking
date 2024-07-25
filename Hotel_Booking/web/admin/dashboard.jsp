@@ -77,39 +77,37 @@
                                             aria-label="Hide Sidebar"></a>
             <!-- Navbar Right Menu-->
             <ul class="app-nav">
-                <!-- User Menu-->   
+
+
+                <!-- User Menu-->
                 <li><a class="app-nav__item" href="/logoutController/SignOut"><i class='bx bx-log-out bx-rotate-180'></i> </a>
+
                 </li>
             </ul>
         </header>
         <!-- Sidebar menu-->
         <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
         <aside class="app-sidebar">
-            
-                
-            
+
             <hr>
             <ul class="app-menu">
-                <li><a class="app-menu__item" href="/Dashboard"><i class='app-menu__icon bx bx-tachometer'></i><span
-                            class="app-menu__label">Control</span></a></li>
-                <li><a class="app-menu__item" href="/UserManager"><i class='app-menu__icon bx bx-user-voice'></i><span
+                <li><a class="app-menu__item" href="/Dashboard" style="text-decoration: none;"><i class='app-menu__icon bx bx-tachometer'></i><span
+                            class="app-menu__label">Dashboard</span></a></li>
+                <li><a class="app-menu__item" href="/UserManager" style="text-decoration: none;"><i class='app-menu__icon bx bx-user-voice'></i><span
                             class="app-menu__label">Manage User</span></a></li>
-                
-                <li><a class="app-menu__item" href="/setrole"><i class='app-menu__icon bx bx-task'></i><span
-                            class="app-menu__label">Manage Role</span></a></li>        
+
+                <li><a class="app-menu__item" href="/setrole" style="text-decoration: none;"><i class='app-menu__icon bx bx-task'></i><span
+                            class="app-menu__label">Owner Applications</span></a></li>
                 <li><a class="app-menu__item" href="/feedbackmanage" style="text-decoration: none;"><i class='app-menu__icon bx bx-task'></i><span
-                            class="app-menu__label">Feedback Manage</span></a></li>        
+                            class="app-menu__label">Feedback Manage</span></a></li>
             </ul>
         </aside>
         <main class="app-content">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="app-title">
-                        <ul class="app-breadcrumb breadcrumb">
-                            <li class="breadcrumb-item"><a href="#"><b>Bảng điều khiển</b></a></li>
-                        </ul>                        
-                    </div>
-                </div>
+            <div class="app-title">
+                <ul class="app-breadcrumb breadcrumb side">
+                    <li class="breadcrumb-item active"><b>Dashboard</b></li>
+                </ul>
+                <div id="clock"></div>
             </div>
             <div class="row">
                 <div class="col-md-12 col-lg-12">
@@ -164,7 +162,7 @@
                         </div>
 
                         <!-- col-6 -->
-                        <div class="col-md-6">
+<!--                        <div class="col-md-6">
                             <div class="widget-small warning coloured-icon"><i class='icon bx bxs-shopping-bags fa-3x'></i>
                                 <div class="info">
                                     <h4>Tổng đơn hàng</h4>
@@ -172,9 +170,9 @@
                                     <p class="info-tong">Tổng số hóa đơn bán hàng trong tháng.</p>
                                 </div>
                             </div>
-                        </div>
+                        </div>-->
                         <!-- col-6 -->
-                        <div class="col-md-6">
+<!--                        <div class="col-md-6">
                             <div class="widget-small danger coloured-icon"><i class='icon bx bxs-error-alt fa-3x'></i>
                                 <div class="info">
                                     <h4>Sắp hết hàng</h4>
@@ -182,7 +180,7 @@
                                     <p class="info-tong">Số sản phẩm cảnh báo hết cần nhập thêm.</p>
                                 </div>
                             </div>
-                        </div>
+                        </div>-->
                         <div class="col-md-6">
                             <div class="widget-small info coloured-icon">
                                 <div class="info">
@@ -191,7 +189,7 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- col-12 -->
+<!--                         col-12 
                         <div class="col-md-12">
                             <div class="tile">
                                 <h3 class="tile-title">Đơn hàng hôm nay</h3>
@@ -227,10 +225,10 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <!-- / div trống-->
+                                 / div trống
                             </div>
                         </div>
-                        <!-- / col-12 -->
+                         / col-12 -->
                     </div>
                 </div>
             </div>
@@ -239,7 +237,7 @@
                 <p><b>Copyright
                         <script type="text/javascript">
                             document.write(new Date().getFullYear());
-                        </script> Phần mềm quản lý Website
+                        </script> Hotel Booking System
                     </b></p>
             </div>
         </main>

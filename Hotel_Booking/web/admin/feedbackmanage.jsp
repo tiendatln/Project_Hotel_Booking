@@ -49,12 +49,12 @@
             <hr>
             <ul class="app-menu">
                 <li><a class="app-menu__item" href="/Dashboard" style="text-decoration: none;"><i class='app-menu__icon bx bx-tachometer'></i><span
-                            class="app-menu__label">Control</span></a></li>
+                            class="app-menu__label">Dashboard</span></a></li>
                 <li><a class="app-menu__item" href="/UserManager" style="text-decoration: none;"><i class='app-menu__icon bx bx-user-voice'></i><span
                             class="app-menu__label">Manage User</span></a></li>
-                
+
                 <li><a class="app-menu__item" href="/setrole" style="text-decoration: none;"><i class='app-menu__icon bx bx-task'></i><span
-                            class="app-menu__label"> Role Manage</span></a></li>
+                            class="app-menu__label"> Owner applications</span></a></li>
                 <li><a class="app-menu__item" href="/feedbackmanage" style="text-decoration: none;"><i class='app-menu__icon bx bx-task'></i><span
                             class="app-menu__label">Feedback Manage</span></a></li>
 
@@ -76,8 +76,7 @@
                     <div class="tile">
                         <div class="tile-body">                            
 
-                            <table class="table table-hover table-bordered js-copytextarea" cellpadding="0" cellspacing="0" border="0"
-                                   id="sampleTable">
+                            <table class="table table-hover table-bordered js-copytextarea" cellpadding="0" cellspacing="0" border="0" id="sampleTable">
                                 <thead>
                                     <tr>
                                         <th>ID Feedback</th>
@@ -96,11 +95,9 @@
                                             <td>${f.account.email}</td>
                                             <td>${f.account.phone}</td>
                                             <td>${f.comment}</td>                                    
-                                            <td>${f.comment}</td>
-                                            <td>${f.hotel.hotel_name}</td>
                                             <td>
-                                                <button class="btn btn-primary btn-sm trash" type="button" title="Delete Feedback" value="${f.id}" style="background-color: red; border:none;"><i
-                                                        class="fas fa-trash-alt"></i>
+                                                <button class="btn btn-primary btn-sm trash" type="button" title="Delete Feedback" value="${f.id}" style="background-color: red; border:none;">
+                                                    <i class="fas fa-trash-alt"></i>
                                                 </button>
                                             </td>
                                         </tr>
@@ -108,12 +105,12 @@
                                 </tbody>
                             </table>
 
+
                         </div>
                     </div>
                 </div>
             </div>
         </main>
-
 
 
         <!-- Essential javascripts for application to work-->
@@ -129,14 +126,42 @@
         <!-- Data table plugin-->
         <script type="text/javascript" src="admin/js/plugins/jquery.dataTables.min.js"></script>
         <script type="text/javascript" src="admin/js/plugins/dataTables.bootstrap.min.js"></script>
-        <script type="text/javascript">$('#sampleTable').DataTable();</script>    
+        <script type="text/javascript">
+            $('#sampleTable').DataTable({
+                language: {
+                    // Set language options to English
+                    "sEmptyTable": "No data available in table",
+                    "sInfo": "Showing _START_ to _END_ of _TOTAL_ entries",
+                    "sInfoEmpty": "Showing 0 to 0 of 0 entries",
+                    "sInfoFiltered": "(filtered from _MAX_ total entries)",
+                    "sInfoPostFix": "",
+                    "sInfoThousands": ",",
+                    "sLengthMenu": "Show _MENU_ entries",
+                    "sLoadingRecords": "Loading...",
+                    "sProcessing": "Processing...",
+                    "sSearch": "Search:",
+                    "sZeroRecords": "No matching records found",
+                    "oPaginate": {
+                        "sFirst": "First",
+                        "sLast": "Last",
+                        "sNext": "Next",
+                        "sPrevious": "Previous"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": activate to sort column ascending",
+                        "sSortDescending": ": activate to sort column descending"
+                    }
+                }
+            });
+        </script>
+
         <script>
 
             $(document).ready(jQuery(function () {
                 jQuery(".trash").click(function () {
                     swal({
-                        title: "Cảnh báo",
-                        text: "Bạn có chắc chắn là muốn xóa account này?",
+                        title: "Warming",
+                        text: "Are you certain to delete this feedback?",
                         buttons: ["Cancel", "Accept"],
                     })
                             .then((willDelete) => {

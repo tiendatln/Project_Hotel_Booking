@@ -4,6 +4,7 @@
     Author     : tiend
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -94,7 +95,7 @@
                             Change Password
                         </div>
                         <div class="card-body">
-                            <form action="/profileController/ChangePassword" method="post" id="changePasswordForm">
+                            <form action="/profileController/ChangePassword" method="post" id="changePasswordForm" >
                                 <div class="form-group">
                                     <label for="currentPassword">Current Password</label>
                                     <input type="password" class="form-control" id="currentPassword" name="oldPass" required>
@@ -107,13 +108,42 @@
                                     <label for="confirmPassword">Confirm New Password</label>
                                     <input type="password" class="form-control" id="confirmPassword" required>
                                 </div>
-                                <button type="submit" class="btn btn-primary btn-block" name="btnChangePass">Change Password</button>
+                                <div>
+                                    <ul style="margin: 20px;">
+                                        <li hidden="true" style=" color: red;" id="Error"></li>
+                                        <c:if test="${not empty errorMessage}">
+                                        <li id="Error1" style=" color: red;">${errorMessage}</li>
+                                        </c:if>
+                                        
+                                    </ul>
+                                    
+                                <button style="margin-top: 10px" type="submit" class="btn btn-primary btn-block" name="btnChangePass">Change Password</button>
+                                </div>
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <script>
+            document.getElementById('changePasswordForm').addEventListener('submit', function (event) {
+                let isValid = true;
+                var newPass = document.getElementById('newPassword').value;
+                var confirmPass = document.getElementById('confirmPassword').value;
+                if (newPass !== confirmPass) {
+                    isValid = false;
+                    document.getElementById('Error').innerHTML = "New Password and Confirm Password do not match!";
+                    document.getElementById('Error').hidden = false;
+                    document.getElementById('Error1').hidden = true;
+                }
+                
+                
+                if (!isValid) {
+                    event.preventDefault();
+                }
+            });
+        </script>
 
         <!-- Bootstrap JS and dependencies -->
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

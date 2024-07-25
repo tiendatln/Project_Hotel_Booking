@@ -49,12 +49,12 @@
             <hr>
             <ul class="app-menu">
                 <li><a class="app-menu__item" href="/Dashboard" style="text-decoration: none;"><i class='app-menu__icon bx bx-tachometer'></i><span
-                            class="app-menu__label">Control</span></a></li>
+                            class="app-menu__label">Dashboard</span></a></li>
                 <li><a class="app-menu__item" href="/UserManager" style="text-decoration: none;"><i class='app-menu__icon bx bx-user-voice'></i><span
                             class="app-menu__label">Manage User</span></a></li>
-                
+
                 <li><a class="app-menu__item" href="/setrole" style="text-decoration: none;"><i class='app-menu__icon bx bx-task'></i><span
-                            class="app-menu__label">Manage Role</span></a></li>
+                            class="app-menu__label">Owner Applications</span></a></li>
                 <li><a class="app-menu__item" href="/feedbackmanage" style="text-decoration: none;"><i class='app-menu__icon bx bx-task'></i><span
                             class="app-menu__label">Feedback Manage</span></a></li>
             </ul>
@@ -64,7 +64,7 @@
         <main class="app-content">
             <div class="app-title">
                 <ul class="app-breadcrumb breadcrumb side">
-                    <li class="breadcrumb-item active"><b>Danh sách người dùng</b></li>
+                    <li class="breadcrumb-item active"><b>Account Management</b></li>
                 </ul>
                 <div id="clock"></div>
             </div>
@@ -78,27 +78,27 @@
                                    id="sampleTable">
                                 <thead>
                                     <tr>
-                                        <th>ID khách hàng</th>
-                                        <th>Tên khách hàng</th> 
+
+                                        <th>Username</th> 
                                         <th>Email</th>
                                         <th>Age</th>
                                         <th>Phone</th>
-                                        <th>isOwner</th>
-                                        <th>Ban_status</th>
-                                        <th width="104">Tính năng</th>
+                                        <th>Role</th>
+                                        <th>Ban status</th>
+                                        <th width="104">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <c:forEach items="${user}" var="u">
                                         <tr>
-                                    <censored-style
+<!--                                    <censored-style
                                         censorship-type="visible"
                                         replace-text="*"
                                         replace-repeat="true"
                                         >
                                         <censored><td id="id_number">${u.id_number}</td></censored> 
 
-                                    </censored-style>
+                                    </censored-style>-->
 
                                     <td>${u.username}</td>
                                     <td>${u.email}</td>
@@ -109,9 +109,9 @@
                                     <c:if test="${u.ban_status==1}"><td>Lock</td></c:if>
                                     <c:if test="${u.ban_status!=1}"> <td>Normal</td> </c:if> 
                                         <td>
-                                            <button class="btn btn-primary btn-sm edit" type="button" title="Grant of administrative privileges" id="show-emp" data-bs-toggle="modal" data-bs-target="#ModalUP${u.username}">
+                                            <button class="btn btn-primary btn-sm edit" type="button" title="Set role for account" id="show-emp" data-bs-toggle="modal" data-bs-target="#ModalUP${u.username}">
                                             <i class="fas fa-edit"></i></button>
-                                        <button class="btn btn-secondary btn-sm edit" type="button" title="Lock Account" id="show-editor" data-bs-toggle="modal" data-bs-target="#ModalEditor${u.username}">
+                                        <button class="btn btn-secondary btn-sm edit" type="button" title="Ban Account" id="show-editor" data-bs-toggle="modal" data-bs-target="#ModalEditor${u.username}">
                                             <i class="fas fa-user-edit"></i>
                                         </button>
                                     </td>
@@ -189,26 +189,35 @@
         <!-- Data table plugin-->
         <script type="text/javascript" src="admin/js/plugins/jquery.dataTables.min.js"></script>
         <script type="text/javascript" src="admin/js/plugins/dataTables.bootstrap.min.js"></script>
-        <script type="text/javascript">$('#sampleTable').DataTable();</script>           
-        <script>
+        <script type="text/javascript">
+            $('#sampleTable').DataTable({
+                language: {
+                    // Set language options to English
+                    "sEmptyTable": "No data available in table",
+                    "sInfo": "Showing _START_ to _END_ of _TOTAL_ entries",
+                    "sInfoEmpty": "Showing 0 to 0 of 0 entries",
+                    "sInfoFiltered": "(filtered from _MAX_ total entries)",
+                    "sInfoPostFix": "",
+                    "sInfoThousands": ",",
+                    "sLengthMenu": "Show _MENU_ entries",
+                    "sLoadingRecords": "Loading...",
+                    "sProcessing": "Processing...",
+                    "sSearch": "Search:",
+                    "sZeroRecords": "No matching records found",
+                    "oPaginate": {
+                        "sFirst": "First",
+                        "sLast": "Last",
+                        "sNext": "Next",
+                        "sPrevious": "Previous"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": activate to sort column ascending",
+                        "sSortDescending": ": activate to sort column descending"
+                    }
+                }
+            });
+        </script>
 
 
-//            $(document).ready(jQuery(function () {
-//                jQuery(".trash").click(function () {
-//                    swal({
-//                        title: "Cảnh báo",
-//                        text: "Bạn có chắc chắn là muốn xóa account này?",
-//                        buttons: ["Hủy bỏ", "Đồng ý"],
-//                    })
-//                            .then((willDelete) => {
-//                                if (willDelete) {
-//                                    window.location = "/UserManager?action=deleteaccount&id_number=" + $(this).attr("value");
-//                                    swal("Đã xóa thành công.", {
-//                                    });
-//                                }
-//                            });
-//                });
-//            }));
-        </script>    
     </body>
 </html>

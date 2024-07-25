@@ -104,7 +104,7 @@
                 </div>
                 <div class="col-md-9 container" >
                     <div class="row" style="">
-                        <div class="card profile-card">
+                        <div class="card profile-card col-6" >
                             <div class="card-body">
                                 <div class="profile-header text-center">Owner Profile</div>
                                 <form action="/profileController/ProfileUser" method="post" onsubmit="return confirmUpdate()">
@@ -154,6 +154,42 @@
                                     %>
                                     <div class="text-center mt-4">
                                         <button type="submit" class="btn btn-custom" name="btnUpdateProfile">Update Profile</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="card profile-card col-6" style="margin: 20px; width: 350px">
+                            <div class="card-header text-center profile-header title" style="font-size: 1.5rem;
+                                 font-weight: bold;
+                                 color: #343a40;">
+                                Change Password
+                            </div>
+                            <div class="card-body">
+                                <form action="/profileController/ChangePassword" method="post" id="changePasswordForm" >
+                                    <div class="form-group">
+                                        <label for="currentPassword">Current Password</label>
+                                        <input type="password" class="form-control" id="currentPassword" name="oldPass" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="newPassword">New Password</label>
+                                        <input type="password" class="form-control" id="newPassword" name="newPass" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="confirmPassword">Confirm New Password</label>
+                                        <input type="password" class="form-control" id="confirmPassword" required>
+                                    </div>
+                                    <div>
+                                        <ul style="margin: 20px;">
+                                            <li hidden="true" style=" color: red;" id="Error"></li>
+                                                <c:if test="${not empty errorMessage}">
+                                                <li style=" color: red;">${errorMessage}</li>
+                                                </c:if>
+
+                                        </ul>
+                                        <div class="text-center">
+                                            <button style="margin-top: 10px" type="submit" class="btn btn-primary btn-block" name="btnChangePass">Change Password</button>
+                                        </div>
                                     </div>
                                 </form>
                             </div>

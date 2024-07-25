@@ -328,7 +328,6 @@ public class bookingController extends HttpServlet {
                     int Quantity = 1;
                     int _servicePrice = ServicePrice;
                     _servicePrice *= daysBetween;
-                    int totalServicePrice = _servicePrice;
                     long millis = System.currentTimeMillis();
                     Date re_date = new Date(millis);
                     accountDAOs aDAO = new accountDAOs();

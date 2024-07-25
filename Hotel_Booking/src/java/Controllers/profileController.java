@@ -37,7 +37,7 @@ public class profileController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet profileController</title>");            
+            out.println("<title>Servlet profileController</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet profileController at " + request.getContextPath() + "</h1>");
@@ -78,15 +78,14 @@ public class profileController extends HttpServlet {
             if (path.endsWith("/ProfileUser")) {
                 if (flagCustomer) {
                     request.getRequestDispatcher("/customer/profileUser.jsp").forward(request, response);
-                }else if(flagOwner){
+                } else if (flagOwner) {
                     request.getRequestDispatcher("/owner/profileOwner.jsp").forward(request, response);
-                } 
-                else {
+                } else {
                     response.sendRedirect("/homeController/HomeCustomer");
                 }
             } else if (path.endsWith("/ChangePassword")) {
                 request.getRequestDispatcher("/customer/changePassword.jsp").forward(request, response);
-            }else if(path.endsWith("/BecomeOwner")){
+            } else if (path.endsWith("/BecomeOwner")) {
                 request.getRequestDispatcher("/customer/becomesOwner.jsp").forward(request, response);
             }
         } else {
@@ -152,22 +151,31 @@ public class profileController extends HttpServlet {
                 String oldPassword = request.getParameter("oldPass");
                 String newPassword = request.getParameter("newPass");
                 if (oldPassword.equals("") || newPassword.equals("")) {
-                    request.getSession().setAttribute("errorMessage", "Please fill in all the information!");
-                    response.sendRedirect("/profileController/ChangePassword");
+                    request.setAttribute("errorMessage", "Please fill in all the information!");
+                    request.getRequestDispatcher("/customer/changePassword.jsp").forward(request, response);
                 } else {
-                    String newPassMD5 = accountDAOs.getMd5(newPassword);
-                    account newPass = new account(value, newPassMD5, (byte) 0, (byte) 0, (byte) 0, (byte) 0, 0, "", "", 0, "", "");
-                    account a = aDAO.changePassword(newPass);
-                    if (a == null) {
-                        request.getSession().setAttribute("errorMessage", "Update Fail!");
-                        response.sendRedirect("/profileController/ChangePassword");
+                    if (aDAO.checkPassword(value, oldPassword)) {
+                        if (oldPassword.equals(newPassword)) {
+                            request.setAttribute("errorMessage", "New password can not be the same current password.");
+                            request.getRequestDispatcher("/customer/changePassword.jsp").forward(request, response);
+                        }
+                        String newPassMD5 = accountDAOs.getMd5(newPassword);
+                        account newPass = new account(value, newPassMD5, (byte) 0, (byte) 0, (byte) 0, (byte) 0, 0, "", "", 0, "", "");
+                        account a = aDAO.changePassword(newPass);
+                        if (a == null) {
+                            request.setAttribute("errorMessage", "Update Fail!");
+                            request.getRequestDispatcher("/customer/changePassword.jsp").forward(request, response);
+                        } else {
+                            request.setAttribute("successMessage", "Update Successfully!");
+                            request.getRequestDispatcher("/customer/changePassword.jsp").forward(request, response);
+                        }
                     } else {
-                        request.getSession().setAttribute("successMessage", "Update Successfully!");
-                        response.sendRedirect("/profileController/ChangePassword");
+                        request.setAttribute("errorMessage", "Current password is incorrect.");
+                        request.getRequestDispatcher("/customer/changePassword.jsp").forward(request, response);
                     }
                 }
             } catch (Exception e) {
-                response.sendRedirect("/profileController/ChangePassword");
+                request.getRequestDispatcher("/customer/changePassword.jsp").forward(request, response);
             }
         }
     }

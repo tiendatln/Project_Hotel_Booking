@@ -82,7 +82,7 @@
                                     <label for="name">Name</label>
                                     <input type="text" class="form-control" id="name" name="txtName" placeholder="Enter your name" >
                                     <span class="error-message" id="nameError"></span>
-                                    <c:if test="emailExist">
+                                    <c:if test="${emailExist}">
                                         <span class="error-message">Email is Exist.</span>
                                     </c:if>
                                 </div>
