@@ -9,12 +9,222 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Start Page</title>
+        <title>Home</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
         <!-- Optional theme -->
+        <link rel="icon" href="<%= request.getContextPath()%>/imgs/icon.jpg">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap-theme.min.css">
-        <style>
+        
+    </head>
+    <body style="">
+        <header>
+            <%@include file="layout.jsp" %>
+            <div class="bg-dark ">
+                <div class=" carousel slide">
+                    <div class="carousel-inner d-flex justify-content-center">
+                        <div class="">
+                            <img src="https://www.trailsofindochina.com/wp-content/uploads/2018/04/halong_header2.jpg" class="d-block " alt="slide2" style="">
+                            <div class="carousel-caption d-none d-md-block " style="display: flex; bottom: 7cm">
+                                <h1 style="font-family: monospace; font-weight: bold; ">Hotel Booking System</h1>
+                                <h4>Group 6</h4>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    
+                    
+                    <div class="container carousel-caption d-none d-md-block" style="display: flex; top: 12.5cm; ">
+            <div class="card custom-bg p-4 d-flex" style="color: #2f383d; border-radius: 60px; background-image: conic-gradient(from 80deg at -3% 0%, rgba(255, 255, 255, 1) 0%, rgb(14, 165, 233) 50%, rgb(14, 165, 233) 100%);
+                 box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px, #ff0000 0px 0px 0px 6px;">
+                <form id="hotel-form" onsubmit="return validateForm()" method="post" action="/searchController">
+                    <div class="row">
+                        <div class="form-group col-md align-items-start flex-column">
+                            <label for="validationServer01" class="d-inline-flex font-weight-bold">Destination</label>
+                            <input type="text" placeholder="City" class="form-control" id="destination" name="destination" >
+                            <c:if test="${search}">
+                                <span style="color: red;">Enter a destination to start searching.</span>
+                            </c:if>
+                        </div>
+                    </div>
+                    <div class="row" >
+                        <div class="form-group col-md-5 align-items-start flex-column">
+                            <label for="checkin-date" class=" d-inline-flex font-weight-bold">Check-in</label>
+                            <input type="date" class="form-control" id="checkin-date" name="checkin-date" onkeydown="return false" >
+                        </div>
+                        <div class="form-group col-md-5 align-items-start flex-column">
+                            <label for="checkout-date" class=" d-inline-flex font-weight-bold">Check-out</label>
+                            <input type="date" class="form-control" id="checkout-date" name="checkout-date" onkeydown="return false" >
+                        </div>
+
+                        <div class="form-group col-md-2 align-items-start flex-column">
+                            <label for="quantity" class="d-inline-flex font-weight-bold">Guests</label>
+
+                            <input type="number" class="form-control" id="quantity" name="txtQuantity" placeholder="Enter Quantity" min="1" max="30" list="defaultNumbers">
+                            <datalist id="defaultNumbers">
+                                <option value="1"></option>
+                                <option value="2"></option>
+                                <option value="3"></option>
+                                <option value="4"></option>
+                                <option value="5"></option>
+                                <option value="7"></option>
+                                <option value="8"></option>
+                                <option value="9"></option>
+                                <option value="10"></option>
+                            </datalist>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="text-left col-auto">
+                            <button type="submit" class="btn btn-primary font-weight-semibold" name="btnSearchHotel">Search</button>
+                        </div>
+                        <div id="error" class="error text-danger"></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+                </div>
+            </div>
+        </header>
+
+        
+
+        <!-- Product Display Section -->
+        <div class="container" style="width: 50%; margin-top: 6cm;">
+            <%
+                roomDAOs roomDAO = new roomDAOs();
+                hotelDAOs hDAO = new hotelDAOs();
+                ResultSet rs = hDAO.getAllHotel();
+                boolean range = true;
+                int count = 0;
+                long millis = System.currentTimeMillis();
+                long tenDaysInMillis = 1L * 24 * 60 * 60 * 1000;
+                long checkoutMillis = millis + tenDaysInMillis;
+                Date checkinDate = new Date(millis);
+                Date checkoutDate = new Date(checkoutMillis);
+                while (rs.next() && range) {
+                    String location = rs.getString("hotel_name");
+                    location += rs.getString("hotel_address");
+                    location.replace(' ', '+');
+            %>
+            <div class="property-card card row" style="margin-top: 10px; flex-direction: row; border-radius: 10px; box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;">
+                <div class="col-4 d-flex " >
+                    <img style=" border-radius: 10px; " src="<%= request.getContextPath()%>/imgs/hotel/<%= rs.getString("hotel_img")%>" class="card-img-top" alt="">
+                </div>
+                <div class="card-body col-8">
+                    <div class="d-flex justify-content-between align-items-center row">
+                        <div class="col-8">
+                            <h5 class="property-title"><%= rs.getString("hotel_name")%></h5>
+                            <p class="property-details text-success">
+                                <a target="_blank" href="https://www.google.com/maps?q=<%= location%>"><%= rs.getString("hotel_address")%></a> <br>
+                                Service: 
+                                <%
+                                    serviceDAOs sDAO = new serviceDAOs();
+                                    ResultSet rsv = sDAO.getServiceByHotelID(rs.getInt("hotel_id"));
+                                    while (rsv.next()) {
+                                %>
+                                <%= rsv.getString("service_name")%>.
+                                <% }%>
+                                <br>
+                                <%= rs.getString("hotel_description")%><br>
+
+                                <%
+                                    ResultSet rrt = roomDAO.showRoomTypeByHotelID(rs.getInt("hotel_id"));
+                                    while (rrt.next()) {
+                                %>
+
+                                <%= rrt.getString("name_type")%>.
+
+                                <%
+                                    }
+                                %>
+                            </p>
+                        </div>
+                        <div class="text-right col-4">
+                            <p class="price">
+                                <%
+                                    int lowPrice = roomDAO.getLowPrice(rs.getInt("hotel_id"));
+                                    int highPrice = roomDAO.getHighPrice(rs.getInt("hotel_id"));
+                                %>
+                                $<%= lowPrice%> - $<%= highPrice%>
+                            </p>
+
+                            <p>Includes taxes and fees</p>
+                            <a class="btn btn-primary" href="/searchController/HotelDetail/<%= checkinDate%>/<%= checkoutDate%>/<%= rs.getInt("hotel_id")%>" >See availability</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <%
+                    if (count >= 10) {
+                        range = false;
+                    }
+                    count++;
+                }%>
+            <!-- Add more property cards as needed -->
+        </div>
+
+
+        <%
+            String massageRegister = (String) request.getSession().getAttribute("massageRegister");
+            if (massageRegister != null) {
+        %> 
+        <script>
+            alert("Register Success");
+        </script>
+        <%
+                request.getSession().removeAttribute("massageRegister");
+            }
+        %>
+        <c:if test="${searchError}">
+            <script>
+                alert("Location not found!");
+            </script>
+        </c:if>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script>
+                // Set the minimum check-in date to today
+                var today = new Date().toISOString().split('T')[0];
+                document.getElementById("checkin-date").setAttribute("min", today);
+                document.getElementById("checkout-date").setAttribute("min", today);
+
+                // Function to update the minimum check-out date based on check-in date
+                function validateForm() {
+                    var checkin = document.getElementById('checkin-date').value;
+                    var checkout = document.getElementById('checkout-date').value;
+                    var quantity = document.getElementById('quantity').value;
+
+                    if (!checkin) {
+                        var today = new Date().toISOString().split('T')[0];
+                        document.getElementById('checkin-date').value = today;
+                        checkin = today;
+                    }
+
+                    if (!checkout) {
+                        var today = new Date().toISOString().split('T')[0];
+                        document.getElementById('checkout-date').value = today;
+                        checkout = today;
+                    }
+
+                    if (!quantity) {
+                        document.getElementById('quantity').value = 2;
+                    }
+
+                    var checkinDate = new Date(checkin);
+                    var checkoutDate = new Date(checkout);
+
+                    if (checkoutDate < checkinDate) {
+                        document.getElementById("error").innerHTML = "Check-out date must be after check-in date.";
+                        return false;
+                    }
+
+                    return true;
+                }
+        </script>
+    </body>
+    <style>
             .product-content {
                 border: 2px solid #dfe5e9;
                 margin-bottom: 10px;
@@ -372,220 +582,6 @@
             .product-content {
                 margin-top: 20px;
             }
+
         </style>
-    </head>
-    <body >
-        <header>
-            <%@include file="layout.jsp" %>
-            <div class="bg-dark">
-                <div class="container " >
-                    <div id="myCarousel" class="carousel slide" data-ride="carousel" >
-                        <ol class="carousel-indicators">
-                            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-                            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-                        </ol>
-                        <div class="carousel-inner container-fluid" >
-                            <div class="carousel-item active">
-                                <img src="/imgs/slide3.jpg" class="d-block w-100" alt="Slide 1" style="height: 500px;">
-                            </div>
-                            <div class="carousel-item" >
-                                <img src="/imgs/silde2.jpg" class="d-block w-100" alt="Slide 2" style="height: 500px;">
-                            </div>
-                        </div>
-                        <a class="carousel-control-prev" href="#myCarousel" data-slide="prev">
-                            <span class="carousel-control-prev-icon"></span>
-                        </a>
-                        <a class="carousel-control-next" href="#myCarousel" data-slide="next">
-                            <span class="carousel-control-next-icon"></span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </header>
-
-        <div class="container" style="background-color: brown; box-shadow: rgba(0, 0, 0, 0.17) 0px -23px 25px 0px inset, rgba(0, 0, 0, 0.15) 0px -36px 30px 0px inset, rgba(0, 0, 0, 0.1) 0px -79px 40px 0px inset, rgba(0, 0, 0, 0.06) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;">
-            <div class="card custom-bg p-4 d-flex" style="box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;">
-                <form id="hotel-form" onsubmit="return validateForm()" method="post" action="/searchController">
-                    <div class="row">
-                        <div class="form-group col-md align-items-start flex-column">
-                            <label for="validationServer01" class="d-inline-flex">Destination</label>
-                            <input type="text" placeholder="City" class="form-control" id="destination" name="destination" >
-                            <c:if test="${search}">
-                                <span style="color: red;">Enter a destination to start searching.</span>
-                            </c:if>
-                        </div>
-                    </div>
-                    <div class="row" >
-                        <div class="form-group col-md-5 align-items-start flex-column">
-                            <label for="checkin-date" class=" d-inline-flex">Check-in</label>
-                            <input type="date" class="form-control" id="checkin-date" name="checkin-date" onkeydown="return false" >
-                        </div>
-                        <div class="form-group col-md-5 align-items-start flex-column">
-                            <label for="checkout-date" class=" d-inline-flex">Check-out</label>
-                            <input type="date" class="form-control" id="checkout-date" name="checkout-date" onkeydown="return false" >
-                        </div>
-
-                        <div class="form-group col-md-2 align-items-start flex-column">
-                            <label for="quantity" class="d-inline-flex ">Guests</label>
-
-                            <input type="number" class="form-control" id="quantity" name="txtQuantity" placeholder="Enter Quantity" min="1" max="30" list="defaultNumbers">
-                            <datalist id="defaultNumbers">
-                                <option value="1"></option>
-                                <option value="2"></option>
-                                <option value="3"></option>
-                                <option value="4"></option>
-                                <option value="5"></option>
-                                <option value="7"></option>
-                                <option value="8"></option>
-                                <option value="9"></option>
-                                <option value="10"></option>
-                            </datalist>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="text-left col-auto">
-                            <button type="submit" class="btn btn-primary" name="btnSearchHotel">Search</button>
-                        </div>
-                        <div id="error" class="error text-danger"></div>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <!-- Product Display Section -->
-        <div class="container" style="width: 50%; ">
-            <%
-                roomDAOs roomDAO = new roomDAOs();
-                hotelDAOs hDAO = new hotelDAOs();
-                ResultSet rs = hDAO.getAllHotel();
-                boolean range = true;
-                int count = 0;
-                long millis = System.currentTimeMillis();
-                long tenDaysInMillis = 1L * 24 * 60 * 60 * 1000;
-                long checkoutMillis = millis + tenDaysInMillis;
-                Date checkinDate = new Date(millis);
-                Date checkoutDate = new Date(checkoutMillis);
-                while (rs.next() && range) {
-                    String location = rs.getString("hotel_name");
-                    location += rs.getString("hotel_address");
-                    location.replace(' ', '+');
-            %>
-            <div class="property-card card row" style="margin-top: 10px; flex-direction: row; border-radius: 10px; box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;">
-                <div class="col-4 d-flex " >
-                    <img style=" border-radius: 10px; " src="<%= request.getContextPath()%>/imgs/hotel/<%= rs.getString("hotel_img")%>" class="card-img-top" alt="">
-                </div>
-                <div class="card-body col-8">
-                    <div class="d-flex justify-content-between align-items-center row">
-                        <div class="col-8">
-                            <h5 class="property-title"><%= rs.getString("hotel_name")%></h5>
-                            <p class="property-details text-success">
-                                <a target="_blank" href="https://www.google.com/maps?q=<%= location %>"><%= rs.getString("hotel_address")%></a> <br>
-                                Service: 
-                                <%
-                                    serviceDAOs sDAO = new serviceDAOs();
-                                    ResultSet rsv = sDAO.getServiceByHotelID(rs.getInt("hotel_id"));
-                                    while (rsv.next()) {
-                                %>
-                                <%= rsv.getString("service_name")%>.
-                                <% }%>
-                                <br>
-                                <%= rs.getString("hotel_description")%><br>
-
-                                <%
-                                    ResultSet rrt = roomDAO.showRoomTypeByHotelID(rs.getInt("hotel_id"));
-                                    while (rrt.next()) {
-                                %>
-
-                                <%= rrt.getString("name_type")%>.
-
-                                <%
-                                    }
-                                %>
-                            </p>
-                        </div>
-                        <div class="text-right col-4">
-                            <p class="price">
-                                <%
-                                    int lowPrice = roomDAO.getLowPrice(rs.getInt("hotel_id"));
-                                    int highPrice = roomDAO.getHighPrice(rs.getInt("hotel_id"));
-                                %>
-                                $<%= lowPrice%> - $<%= highPrice%>
-                            </p>
-
-                            <p>Includes taxes and fees</p>
-                            <a class="btn btn-primary" href="/searchController/HotelDetail/<%= checkinDate%>/<%= checkoutDate%>/<%= rs.getInt("hotel_id")%>" >See availability</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <%
-                    if (count >= 10) {
-                        range = false;
-                    }
-                    count++;
-                }%>
-            <!-- Add more property cards as needed -->
-        </div>
-
-
-        <%
-            String massageRegister = (String) request.getSession().getAttribute("massageRegister");
-            if (massageRegister != null) {
-        %> 
-        <script>
-            alert("Register Success");
-        </script>
-        <%
-                request.getSession().removeAttribute("massageRegister");
-            }
-        %>
-        <c:if test="${searchError}">
-            <script>
-                alert("Location not found!");
-            </script>
-        </c:if>
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-        <script>
-                // Set the minimum check-in date to today
-                var today = new Date().toISOString().split('T')[0];
-                document.getElementById("checkin-date").setAttribute("min", today);
-                document.getElementById("checkout-date").setAttribute("min", today);
-
-                // Function to update the minimum check-out date based on check-in date
-                function validateForm() {
-                    var checkin = document.getElementById('checkin-date').value;
-                    var checkout = document.getElementById('checkout-date').value;
-                    var quantity = document.getElementById('quantity').value;
-
-                    if (!checkin) {
-                        var today = new Date().toISOString().split('T')[0];
-                        document.getElementById('checkin-date').value = today;
-                        checkin = today;
-                    }
-
-                    if (!checkout) {
-                        var today = new Date().toISOString().split('T')[0];
-                        document.getElementById('checkout-date').value = today;
-                        checkout = today;
-                    }
-
-                    if (!quantity) {
-                        document.getElementById('quantity').value = 2;
-                    }
-
-                    var checkinDate = new Date(checkin);
-                    var checkoutDate = new Date(checkout);
-
-                    if (checkoutDate < checkinDate) {
-                        document.getElementById("error").innerHTML = "Check-out date must be after check-in date.";
-                        return false;
-                    }
-
-                    return true;
-                }
-        </script>
-    </body>
 </html>

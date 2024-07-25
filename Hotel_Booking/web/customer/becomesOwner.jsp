@@ -6,6 +6,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Become Owner</title>
+        <link rel="icon" href="<%= request.getContextPath()%>/imgs/icon.jpg">
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
         <!-- Optional theme -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap-theme.min.css">
@@ -97,7 +98,6 @@
                                         <div >
                                             <div >
                                                 <button style="width: 200px; margin-bottom: 10px" type="submit" class="btn btn-primary btn-block" name="btnConfirm">Confirm</button>
-                                                <a  href="/viewUpdateOwnerControlller/View">View Request</a>
                                             </div >
                                         </div>
                                     </div>

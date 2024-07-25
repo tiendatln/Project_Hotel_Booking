@@ -28,7 +28,7 @@
                 flex-direction: column;
                 align-items: center;
                 flex: 1;
-               
+
             }
 
             .stepper-item::before {
@@ -159,7 +159,7 @@
                                             <td class="align-middle p-4">
                                                 <select class="form-control" id="guests" name="quantity" onchange="submitForm('change')" >
                                                     <c:forEach begin="1" end="${roomID.room.room_capacity}" var="i" step="1">
-                                                    <option value="${i}"${roomID.quantity eq  i ? 'selected' : ''}>${i}</option>
+                                                        <option value="${i}"${roomID.quantity eq  i ? 'selected' : ''}>${i}</option>
                                                     </c:forEach>
                                                 </select>
                                                 <input hidden="" name="roomQuantity" value="${roomID.room.room_capacity}">
@@ -167,8 +167,8 @@
 
                                             <td class="text-left font-weight-semibold align-middle p-4"><c:forEach items="${service}" var="service">${service.service_name}</c:forEach></td>
 
-                                                <td class="text-center font-weight-semibold align-middle p-4">${servicePrice * roomID.quantity}$</td>
-                                            <td class="text-center font-weight-semibold align-middle p-4">${((roomID.room.room_price * roomID.quantity) * day) + (servicePrice * roomID.quantity)}$</td>
+                                                <td class="text-center font-weight-semibold align-middle p-4">${servicePrice * roomID.quantity * day}$</td>
+                                            <td class="text-center font-weight-semibold align-middle p-4">${((roomID.room.room_price * roomID.quantity) * day) + (servicePrice * roomID.quantity * day)}$</td>
                                             <td class="text-center align-middle px-0"><button onclick="submitForm('remove/' +${roomID.room.room_id})" class="shop-tooltip close float-none text-danger"  >×</button></td>
                                         </tr>
                                     </c:forEach>
@@ -199,6 +199,13 @@
                                                 <input hidden="" name="checkOutDate" value="${checkOutDate}">
                                             </div>
                                         </div>
+
+                                    </div>
+                                    <div class="mt-3">
+                                        <div class="check-details d-flex justify-content-center">Total length of stay: 
+                                            <span class="m-1" style="color: cornflowerblue; font-weight: bold"> ${day}</span>
+                                        </div>
+                                        
                                     </div>
                                 </div>
                             </div>

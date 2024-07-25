@@ -271,7 +271,7 @@ public class roomDAOs {
             rs = ps.executeQuery();
             while (rs.next()) {
                 hotel h = new hotel(rs.getInt(1), "", "", "", "");
-                roomType rt = new roomType(rs.getInt(2), "", "");
+                roomType rt = new roomType(rs.getInt(2), "");
                 list.add(new room(rs.getInt(3), rs.getString(4), rs.getInt(5), rs.getString(6), rs.getBoolean(7), rs.getString(8), rt, rs.getInt("room_capacity"), h));
             }
         } catch (SQLException e) {
@@ -288,10 +288,8 @@ public class roomDAOs {
     public roomType getRoomTypeByID(int room_type_id) {
         ResultSet rs = null;
         try {
-            PreparedStatement ps = conn.prepareStatement("select rt.room_type_id, name_type\n"
-                    + "from RoomType rt \n"
-                    + "join Room r on rt.room_type_id = r.room_type_id\n"
-                    + "where r.room_type_id = ?");
+            PreparedStatement ps = conn.prepareStatement("select * from RoomType   \n"
+                    + "where room_type_id = ?");
             ps.setInt(1, room_type_id);
             rs = ps.executeQuery();
             while (rs.next()) {
@@ -358,20 +356,22 @@ public class roomDAOs {
             PreparedStatement ps = conn.prepareStatement("UPDATE [dbo].[Room]\n"
                     + "SET [room_name] = ?\n"
                     + "      ,[room_price] = ?\n"
-                    + "      ,[room_img] = ?\n"
                     + "      ,[room_status] = ?\n"
+                    + "      ,[room_img] = ?\n"
                     + "      ,[room_description] = ?\n"
+                    + "      ,[room_capacity] = ?\n"
                     + "      ,[room_type_id] = ?\n"
                     + "      ,[hotel_id] = ?\n"
                     + " WHERE room_id = ?");
             ps.setString(1, room.getRoom_name());
             ps.setInt(2, room.getRoom_price());
-            ps.setString(3, room.getRoom_img());
-            ps.setBoolean(4, room.isRoom_status());
+            ps.setBoolean(3, room.isRoom_status());
+            ps.setString(4, room.getRoom_img());
             ps.setString(5, room.getRoom_description());
-            ps.setInt(6, room.getRoom_type().getRoom_type_id());
-            ps.setInt(7, room.getHotel().getHotel_id());
-            ps.setInt(8, room.getRoom_id());
+            ps.setInt(6, room.getRoom_capacity());
+            ps.setInt(7, room.getRoom_type().getRoom_type_id());
+            ps.setInt(8, room.getHotel().getHotel_id());
+            ps.setInt(9, room.getRoom_id());
             ps.executeUpdate();
         } catch (Exception e) {
         }
@@ -505,7 +505,7 @@ public class roomDAOs {
         }
         return room;
     }
-    
+
     public int CountRoom() {
         ResultSet rs = null;
         int count = 0;
@@ -520,7 +520,7 @@ public class roomDAOs {
         }
         return count;
     }
-    
+
     public int CountRoom(String username) {
         ResultSet rs = null;
         int count = 0;
@@ -539,7 +539,7 @@ public class roomDAOs {
         return count;
     }
 
-     public List<room> SearchRoomByKeyWord(String username, String text) {
+    public List<room> SearchRoomByKeyWord(String username, String text) {
         List<room> list = new ArrayList<>();
         ResultSet rs = null;
         try {
@@ -556,7 +556,7 @@ public class roomDAOs {
             rs = ps.executeQuery();
             while (rs.next()) {
                 hotel h = new hotel(rs.getInt(1), "", "", "", "");
-                roomType rt = new roomType(rs.getInt(2), "", "");
+                roomType rt = new roomType(rs.getInt(2), "");
                 list.add(new room(rs.getInt(3), rs.getString(4), rs.getInt(5), rs.getString(6), rs.getBoolean(7), rs.getString(8), rt, rs.getInt("room_capacity"), h));
             }
         } catch (SQLException e) {

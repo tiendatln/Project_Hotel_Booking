@@ -120,19 +120,19 @@ public class bookingController extends HttpServlet {
                     int Quantity = 1;
                     int _servicePrice = ServicePrice;
                     _servicePrice *= daysBetween;
-                    int totalServicePrice = _servicePrice;
+                    int totalServicePrice = 0;
                     for (int i = 0; i < RoomId.length; i++) {
                         if (Integer.valueOf(RoomId[i]) != removeID) {
                             Quantity = Integer.valueOf(quantity[i]);
                             room r = rDAO.getRoomByRoomID(Integer.valueOf(RoomId[i]));
                             re.add(i, new reservation(Quantity, r));
                             re.get(i).setRoom(r);
-                            totalPrice += re.get(i).getRoom().getRoom_price() * daysBetween;
-                            totalPrice *= Quantity;
-                            totalServicePrice *= Quantity;
-                            if (Quantity == 1 && i != 0) {
-                                totalServicePrice += _servicePrice;
-                            }
+                            totalPrice += re.get(i).getRoom().getRoom_price() * daysBetween * Quantity;
+//                            totalPrice *= Quantity;
+                            totalServicePrice += _servicePrice * Quantity;
+//                            if (Quantity != 1 && i != 0) {
+//                                totalServicePrice += _servicePrice;
+//                            }
                         }
                     }
                     if(!re.isEmpty()){
@@ -225,19 +225,20 @@ public class bookingController extends HttpServlet {
                     int Quantity = 1;
                     int _servicePrice = ServicePrice;
                     _servicePrice *= daysBetween;
-                    int totalServicePrice = _servicePrice;
+                    int totalServicePrice = 0;
                     for (int i = 0; i < RoomId.length; i++) {
                         Quantity = Integer.valueOf(quantity[i]);
                         room r = rDAO.getRoomByRoomID(Integer.valueOf(RoomId[i]));
                         r.setRoom_capacity(roomQuantity);
                         re.add(i, new reservation(Quantity, r));
                         re.get(i).setRoom(r);
-                        totalPrice += re.get(i).getRoom().getRoom_price() * daysBetween;
-                        totalPrice *= Quantity;
-                        totalServicePrice *= Quantity;
-                        if (Quantity == 1 && i != 0) {
-                            totalServicePrice += _servicePrice;
-                        }
+                        totalPrice += r.getRoom_price() * daysBetween * Quantity;
+//                        totalPrice *= Quantity;
+                        totalServicePrice += _servicePrice * Quantity;
+//                        if (Quantity != 1 && i != 0) {
+//                            
+//                            totalServicePrice += _servicePrice;
+//                        }
                     }
                     totalPrice += totalServicePrice;
                     accountDAOs aDAO = new accountDAOs();

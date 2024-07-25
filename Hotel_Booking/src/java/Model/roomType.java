@@ -11,7 +11,7 @@ package Model;
 public class roomType {
     private int room_type_id;
     private String name_type;
-    private String room_description;
+
 
     /**
      *
@@ -33,18 +33,7 @@ public class roomType {
         this.name_type = name_type;
     }
 
-    /**
-     *
-     * @param roomtype_id
-     * @param name_type
-     * @param room_description
-     * @param room_capacity
-     */
-    public roomType(int roomtype_id, String name_type, String room_description) {
-        this.room_type_id = roomtype_id;
-        this.name_type = name_type;
-        this.room_description = room_description;
-    }
+
 
     /**
      *
@@ -78,21 +67,6 @@ public class roomType {
         this.name_type = name_type;
     }
 
-    /**
-     *
-     * @return
-     */
-    public String getRoom_description() {
-        return room_description;
-    }
-
-    /**
-     *
-     * @param room_description
-     */
-    public void setRoom_description(String room_description) {
-        this.room_description = room_description;
-    }
 
 
     

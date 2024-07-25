@@ -231,7 +231,8 @@ public class roomManagerController extends HttpServlet {
             if (!Files.exists(Paths.get(fileImg))) {
                 Files.createDirectories(Paths.get(fileImg));
             }
-            String picture = fileName.getFileName().toString();
+            String picture = "";
+            picture = fileName.getFileName().toString();
 
             int room_id = Integer.parseInt(room_id_raw);
             int room_type_id = Integer.parseInt(roomtype_id_raw);
@@ -259,7 +260,7 @@ public class roomManagerController extends HttpServlet {
                 response.sendRedirect("/roomManagerController");
             } else {
 
-                part.write(fileImg + "/" + fileName);
+                
 
                 File filePic = new File(fileImg + "/" + rdb.getRoomImgByRoomID(room_id));
 
@@ -276,10 +277,12 @@ public class roomManagerController extends HttpServlet {
                 rdb.updateRoom(room);
                 System.out.println("updated");
                 try {
+                    part.write(fileImg + "/" + fileName);
                     TimeUnit.SECONDS.sleep(2);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(roomManagerController.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                
                 response.sendRedirect("/roomManagerController");
             }
 

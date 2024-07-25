@@ -13,6 +13,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Change Password</title>
         <!-- Bootstrap CSS -->
+        <link rel="icon" href="<%= request.getContextPath()%>/imgs/icon.jpg">
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
         <style>
             .change-password-page {
@@ -98,7 +99,7 @@
                             <form action="/profileController/ChangePassword" method="post" id="changePasswordForm" >
                                 <div class="form-group">
                                     <label for="currentPassword">Current Password</label>
-                                    <input type="password" class="form-control" id="currentPassword" name="oldPass" required>
+                                    <input type="password" class="form-control" id="currentPassword" name="oldPass" minlength="5" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="newPassword">New Password</label>

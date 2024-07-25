@@ -373,17 +373,16 @@
 
                                             <div class="row">
                                                 <div class="col-12 col-sm-6 mb-3">
-                                                    <div class="mb-2"><b>Set Room Image</b></div>
-                                                    <div class="row">
-                                                        <div class="col">
-                                                            <div id="myfileupload">
-                                                                <input type="file" name="room_img" id="room_img" value="${room.room_img}" accept="image/*"/>   
-                                                                <img id="imagePreview" src="#" alt="Image Preview" style="display: none; width: 200px; margin-top: 10px;">
-                                                            </div>  
-                                                        </div>
-                                                    </div>
-
-                                                </div>
+                                    <div class="mb-2"><b>Set Hotel Image</b></div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div id="myfileupload">
+                                                <input type="file" id="room_img${room.room_id}" name="room_img" accept="image/*" onchange="previewImage(event, 'imagePreview${room.room_id}')">
+                                                <img id="imagePreview${room.room_id}" src="#" alt="Image Preview" style="display: none; width: 200px; margin-top: 10px;">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                                 <div class="col-12 col-sm-6 mb-3">
                                                     <div class="mb-2"><b>Set Room Status</b></div>
                                                     <div class="row">
@@ -427,7 +426,7 @@
                                                                             }
                                                                         }
                                                                         document.getElementById("btnSave").addEventListener("click", function () {
-                                                                            this.disabled = true;
+                                                                            document.getElementById('btnSave').disabled();    
                                                                             document.getElementById("myForm").submit();
                                                                         });
 
@@ -445,6 +444,19 @@
                                                                                 document.getElementById('imagePreview').style.display = 'none';
                                                                             }
                                                                         });
+                                                                        function previewImage(event, previewId) {
+                                                                            const file = event.target.files[0];
+                                                                            if (file) {
+                                                                                const reader = new FileReader();
+                                                                                reader.onload = function (e) {
+                                                                                    const previewImage = document.getElementById(previewId);
+                                                                                    previewImage.src = e.target.result;
+                                                                                    previewImage.style.display = 'block';
+                                                                                };
+                                                                                reader.readAsDataURL(file);
+                                                                            }
+                                                                        }
+
         </script>
     </body>
 </html>

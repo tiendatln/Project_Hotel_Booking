@@ -22,10 +22,17 @@
 
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+        <link rel="icon" href="<%= request.getContextPath()%>/imgs/icon.jpg">
         <title>hotel Detail</title>
-        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+        <!-- jQuery and Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     </head>
 
@@ -41,12 +48,12 @@
         %>
         <div class="container mt-4" >
             <h1 class="display-4"><%= h.getHotel_name()%></h1>
-            <p class="lead"><i class="fas fa-map-marker-alt"></i> <%= h.getHotel_address()%> – <a target="_blank" href="https://www.google.com/maps?q=<%= location %>">Great
+            <p class="lead"><i class="fas fa-map-marker-alt"></i> <%= h.getHotel_address()%> – <a target="_blank" href="https://www.google.com/maps?q=<%= location%>">Great
                     location - show map</a></p>
 
             <div class="row">
                 <div class=" col-9">
-                    <div id="carouselExampleIndicators " class="carousel slide" data-ride="carousel">
+                    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
                         <ol class="carousel-indicators" >
                             <c:forEach items="${roomImg}" varStatus="status">
                                 <li data-target="#carouselExampleIndicators" data-slide-to="${status.index}" class="${status.first ? 'active' : ''}"></li>
@@ -55,31 +62,32 @@
                         <div class="carousel-inner" >
                             <c:forEach items="${roomImg}" var="room" varStatus="status">
                                 <div class="carousel-item ${status.first ? 'active' : ''}" >
-                                    <img src="<%= request.getContextPath()%>/imgs/room/${room.room_img}" class="d-block w-100" alt="...">
+                                    <img src="<%= request.getContextPath() %>/imgs/room/${room.room_img}" class="d-block w-100" alt="...">
                                 </div>
                             </c:forEach>
                         </div>
-                        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                        <a class="carousel-control-prev" href="#carouselExampleIndicators " role="button" data-slide="prev">
                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                             <span class="sr-only">Previous</span>
                         </a>
-                        <a class="carousel-control-next " href="#carouselExampleIndicators" role="button" data-slide="next">
+                        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
                             <span class="carousel-control-next-icon" aria-hidden="true"></span>
                             <span class="sr-only">Next</span>
                         </a>
                     </div>
+
                 </div>
                 <div class="col-3" >
                     <h4 style="margin-bottom:  10px">Hotel Location</h4>
-                        <iframe 
-                            id="map"
-                            style="border:0; height: 12rem; "
-                            loading="lazy"
-                            allow-scripts="false"
-                            allowfullscreen
-                            referrerpolicy="no-referrer-when-downgrade " 
-                            src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCic3r4-oNwtB5j-5IVDuPe8k3vyaijOZQ&q=1600+<%= location %>">
-                        </iframe>
+                    <iframe 
+                        id="map"
+                        style="border:0; height: 12rem; "
+                        loading="lazy"
+                        allow-scripts="false"
+                        allowfullscreen
+                        referrerpolicy="no-referrer-when-downgrade " 
+                        src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCic3r4-oNwtB5j-5IVDuPe8k3vyaijOZQ&q=1600+<%= location%>">
+                    </iframe>
                 </div>
 
 
@@ -275,7 +283,7 @@
                                             <%
                                                 if (counter < 5) {
                                             %>
-                                            <li class="list-group-item pt-0"style="box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;"> 
+                                            <li class="list-group-item pt-0"style="border-radius: 50px ; margin: 8px; box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;"> 
                                                 <div class="d-flex align-items-center">
                                                     <div>
                                                         <svg style="width: 20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -318,9 +326,6 @@
             </script>
         </c:if>
 
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
         <script src="https://kit.fontawesome.com/a076d05399.js"></script>
         <script >
                 var Today = new Date().toISOString().split('T')[0];
@@ -425,55 +430,55 @@
 
 
         </script>
-        
+
     </body>
     <style>
-/*                #fun {
-                    
-                    display: inline-block;
-                    font-size: 50px;
-                    color: #f39c12;
-                    animation: ring 1s infinite;
-                }
-        
-                @keyframes ring {
-                    0% {
-                        filter: hue-rotate(0);
-                    }
-                    10% {
-                        filter: hue-rotate(90deg);
-                    }
-                    20% {
-                        filter: hue-rotate(-0.25turn);
-                    }
-                    30% {
-                        filter: hue-rotate(3.142rad);
-                    }
-                    40% {
-                        filter: hue-rotate(0);
-                    }
-                    50% {
-                        filter: hue-rotate(90deg);
-                    }
-                    60% {
-                        filter: hue-rotate(-0.25turn);
-                    }
-                    70% {
-                        filter: hue-rotate(3.142rad);
-                    }
-                    80% {
-                        filter: hue-rotate(0);
-                    }
-                    90% {
-                        filter: hue-rotate(90deg);
-                    }
-                    95% {
-                        filter: hue-rotate(-0.25turn);
-                    }
-                    100% {
-                        filter: hue-rotate(3.142rad);
-                    }
-                }*/
+        /*                #fun {
+                            
+                            display: inline-block;
+                            font-size: 50px;
+                            color: #f39c12;
+                            animation: ring 1s infinite;
+                        }
+                
+                        @keyframes ring {
+                            0% {
+                                filter: hue-rotate(0);
+                            }
+                            10% {
+                                filter: hue-rotate(90deg);
+                            }
+                            20% {
+                                filter: hue-rotate(-0.25turn);
+                            }
+                            30% {
+                                filter: hue-rotate(3.142rad);
+                            }
+                            40% {
+                                filter: hue-rotate(0);
+                            }
+                            50% {
+                                filter: hue-rotate(90deg);
+                            }
+                            60% {
+                                filter: hue-rotate(-0.25turn);
+                            }
+                            70% {
+                                filter: hue-rotate(3.142rad);
+                            }
+                            80% {
+                                filter: hue-rotate(0);
+                            }
+                            90% {
+                                filter: hue-rotate(90deg);
+                            }
+                            95% {
+                                filter: hue-rotate(-0.25turn);
+                            }
+                            100% {
+                                filter: hue-rotate(3.142rad);
+                            }
+                        }*/
 
 
         .card {

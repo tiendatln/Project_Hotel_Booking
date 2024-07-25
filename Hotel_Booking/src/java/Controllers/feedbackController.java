@@ -140,7 +140,7 @@ public class feedbackController extends HttpServlet {
             request.setAttribute("checkinDate", checkinDate);
             request.setAttribute("checkoutDate", checkoutDate);
             request.getRequestDispatcher("/customer/viewAllFeedBackCustomer.jsp").forward(request, response);
-        }else if(path.startsWith("/feedbackController/deleteFeedbackByAll")){
+        } else if (path.startsWith("/feedbackController/deleteFeedbackByAll")) {
             String[] s = path.split("/");
             int hotel_id = Integer.valueOf(s[s.length - 2]);
             int feedbackID = Integer.valueOf(s[s.length - 1]);
@@ -189,13 +189,13 @@ public class feedbackController extends HttpServlet {
             int hotel_id = Integer.valueOf(request.getParameter("hotel_id"));
             feedbackDAOs fDAO = new feedbackDAOs();
             hotel Hotel = new hotel(hotel_id);
-            account ac = new account(username);
+            account account = new account(username);
             feedback Feedback = new feedback(comment);
             roomDAOs rDAO = new roomDAOs();
             if (comment == "") {
                 request.setAttribute("errorFeedback", true);
             } else {
-                Feedback = fDAO.addNewFeedback(Feedback, ac, Hotel);
+                Feedback = fDAO.addNewFeedback(Feedback, account, Hotel);
             }
             if (Feedback == null) {
                 request.setAttribute("errorFeedback", true);
@@ -222,7 +222,7 @@ public class feedbackController extends HttpServlet {
                 List<feedback> feedback = fDAO.getFeedbackByHotelID(hotel_id);
                 accountDAOs aDao = new accountDAOs();
                 for (int i = 0; i < feedback.size(); i++) {
-                    ac = aDao.getAccount(feedback.get(i).getAccount().getUsername());
+                    account ac = aDao.getAccount(feedback.get(i).getAccount().getUsername());
                     feedback.get(i).setAccount(ac);
                 }
                 request.setAttribute("feedback", feedback);
@@ -230,29 +230,25 @@ public class feedbackController extends HttpServlet {
                 if (!reserve.isEmpty()) {
                     int i = 0;
                     boolean reserveExist = true;
-                    boolean status = false;
-                    int countStatus = 0;
-                    while (reserveExist) {
-                        room r = rDAO.getRoomByRoomID(reserve.get(i).getRoom().getRoom_id());
+                    while (reserveExist && i < reserve.size()) {
+                        int j = 0;
+                        int countStatus = 0;
+
+                        room r = rDAO.getRoomByRoomID(reserve.get(j).getRoom().getRoom_id());
                         hotel ht = hDAO.getHotelByRoomID(r.getRoom_id());
                         r.setHotel(ht);
                         reserve.get(i).setRoom(r);
-                        if (reserve.get(i).getRoom().getHotel().getHotel_id() == hotel_id) {
-                            reserveExist = false;
+                        if (reserve.get(j).getRoom().getHotel().getHotel_id() == hotel_id) {
                             if (reserve.get(i).getStatus() == 1) {
                                 countStatus++;
-                            }
-                            if (countStatus == reserve.size() - 1) {
-                                status = true;
+                                reserveExist = false;
                             }
                         }
                         i++;
                     }
-                    if (!reserveExist && status) {
-                        int count = fDAO.getFeedbackExistByUsername(value);
-                        if (count == 0 && count < 1) {
-                            request.setAttribute("canFeedback", true);
-                        }
+                    if (!reserveExist) {
+                        request.setAttribute("canFeedback", true);
+
                     }
                 }
                 List<reservation> re = rsDAO.getReservationAndRoomByLocalAndDate(checkInDate, checkOutDate, hotel_id);
