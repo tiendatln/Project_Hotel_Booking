@@ -149,10 +149,7 @@
                                                         <td class="text-center align-middle">
                                                             <div class="btn-group align-top">
                                                                 <button class="btn btn-outline-secondary badge" type="button" data-bs-toggle="modal" data-bs-target="#view-form-modal${reserve.id}"  style="background-color: #ffc107"><span style="color: #f8f8f8;">View details</span></button>&nbsp;&nbsp;&nbsp;        
-                                                                <c:if test="${reserve.status == 0}">
-                                                                    <button class="btn btn-outline-secondary badge" type="button" onclick="doConfirm('${reserve.id}')" style="background-color: #00CC00"><span style="color: #f8f8f8">Confirm</span></button>&nbsp;
-                                                                <button class="btn btn-outline-secondary badge" type="button" onclick="doReject('${reserve.id}')" style="background-color: orangered"><span style="color: #f8f8f8;">Reject</span></button>
-                                                                </c:if>                                                                
+
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -345,8 +342,12 @@
 
                                 </div>
                                 <div class="row">
-                                    <div class="col d-flex justify-content-end">                                                                                        
-                                        <a class="btn btn-cancel" data-bs-dismiss="modal" href="#" style="background-color: crimson; margin-left: 15px; color: white;">Close</a>
+                                    <div class="col d-flex justify-content-end">  
+                                        <c:if test="${reserve.status == 0}">
+                                            <a class="btn btn-confirm m-1" type="button" onclick="doConfirm('${reserve.id}')" style="background-color: #00CC00"><span style="color: #f8f8f8">Confirm</span></a>&nbsp;
+                                            <a class="btn btn-reject m-1" type="button" onclick="doReject('${reserve.id}')" style="background-color: orangered"><span style="color: #f8f8f8;">Reject</span></a>
+                                        </c:if>
+                                        <a class="btn btn-cancel m-1" data-bs-dismiss="modal" href="#" style="background-color: crimson; margin-left: 15px; color: white;">Close</a>
                                     </div>
                                 </div>
                                 </form>
@@ -369,16 +370,16 @@
 
     <!-- Custom JS -->  
     <script>
-                                                                    function doConfirm(id) {
-                                                                        if (confirm("Are you sure you want to confirm the booking request with ID = " + id)) {
-                                                                            window.location = "/reserveManagerController?action=confirm&id=" + id;
-                                                                        }
-                                                                    }
-                                                                    function doReject(id) {
-                                                                        if (confirm("Are you sure you want to reject the booking request with ID = " + id)) {
-                                                                            window.location = "/reserveManagerController?action=cancle&id=" + id;
-                                                                        }
-                                                                    }
+                                                function doConfirm(id) {
+                                                    if (confirm("Are you sure you want to confirm the booking request with ID = " + id)) {
+                                                        window.location = "/reserveManagerController?action=confirm&id=" + id;
+                                                    }
+                                                }
+                                                function doReject(id) {
+                                                    if (confirm("Are you sure you want to reject the booking request with ID = " + id)) {
+                                                        window.location = "/reserveManagerController?action=cancle&id=" + id;
+                                                    }
+                                                }
     </script>
 </body>
 </html>
