@@ -72,7 +72,7 @@ public class homeController extends HttpServlet {
             long ToDAY = toDay.getTime();
             long CHECKINDATE = checkInDate.getTime();
             long CHECKOUTDATE = checkOutDate.getTime();
-            if((ToDAY > CHECKINDATE || ToDAY > CHECKOUTDATE) && re.get(i).getStatus() == 0){
+            if( (ToDAY > CHECKINDATE || ToDAY > CHECKOUTDATE) && re.get(i).getStatus() == 0){
                 reDAO.setStatusBooking(re.get(i).getId(), 2);
             }
             i++;

@@ -90,6 +90,7 @@ public class Dashboard extends HttpServlet {
             int countTotalBooking = redb.CountBooking();
             int countConfirm = redb.CountConfirmBooking();
             int countCancel = redb.CountCancelBooking();
+            int countCustomerCancel = redb.CountCustomerCancelBooking();
             int countPending = redb.CountPendingBooking();
             double percent_Confirm = ((double) countConfirm / countTotalBooking) * 100;
             double percent_Cancel = ((double) countCancel / countTotalBooking) * 100;
@@ -101,6 +102,7 @@ public class Dashboard extends HttpServlet {
             request.setAttribute("total", countTotalBooking);
             request.setAttribute("confirm", countConfirm);
             request.setAttribute("cancel", countCancel);
+            request.setAttribute("customerCancel", countCustomerCancel);
             request.setAttribute("pending", countPending);
             request.setAttribute("perconfirm", percent_Confirm);
             request.setAttribute("percancel", percent_Cancel);

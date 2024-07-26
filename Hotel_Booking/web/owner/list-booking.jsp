@@ -111,7 +111,7 @@
                                                     <th>ID</th>
                                                     <th>Username</th>
                                                     <th>Booking Date</th>
-                                                    <th>Room ID</th>                                                        
+                                                    <th>Room Name</th>                                                        
                                                     <th class="max-width" style="max-width: 400px;">Hotel</th>
                                                     <th>Quantity</th>
                                                     <th class="max-width" style="max-width: 400px;">Price</th>                                                        
@@ -127,7 +127,7 @@
                                                         </td>
                                                         <td class="text-nowrap align-middle">${reserve.account.username}</td>
                                                         <td class="text-nowrap align-middle">${reserve.re_date}</td>
-                                                        <td class="text-nowrap align-middle">${reserve.room.room_id}</td>                                                            
+                                                        <td class="text-nowrap align-middle">${reserve.room.room_name}</td>                                                            
                                                         <td class="text-nowrap align-middle"'><span>${reserve.service.hotel.hotel_name}</span></td>
                                                         <td class="text-nowrap align-middle"'><span>${reserve.quantity}</span></td>
                                                         <td class="text-nowrap align-middle"'><span>${reserve.list_price}$</span></td>

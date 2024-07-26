@@ -33,7 +33,8 @@
                 const feedbackData = {
                     approved: ${requestScope.confirm},
                     pending: ${requestScope.pending},
-                    rejected: ${requestScope.cancel}
+                    rejected: ${requestScope.cancel},
+                    cancel: ${requestScope.customerCancel}
                 };
 
                 // Get context with jQuery - using jQuery's .get() method.
@@ -43,10 +44,10 @@
                 new Chart(ctx, {
                     type: 'pie',
                     data: {
-                        labels: ['Approved', 'Pending', 'Rejected'],
+                        labels: ['Approved', 'Pending', 'Rejected', 'Cancel'],
                         datasets: [{
-                                data: [feedbackData.approved, feedbackData.pending, feedbackData.rejected],
-                                backgroundColor: ['#4caf50', '#ffeb3b', '#f44336']
+                                data: [feedbackData.approved, feedbackData.pending, feedbackData.rejected, feedbackData.cancel],
+                                backgroundColor: ['#4caf50', '#007bff', '#f44336', '#ffd700']
                             }]
                     },
                     options: {
@@ -184,51 +185,13 @@
                         <div class="col-md-6">
                             <div class="widget-small info coloured-icon">
                                 <div class="info">
-                                    <h4>Feedback Review Status</h4>
+                                    <h4>Reservation Review Status</h4>
+                                    <a>Total Booking: ${requestScope.total}</a>
                                     <canvas id="feedbackStatusChart"></canvas>
                                 </div>
                             </div>
                         </div>
-<!--                         col-12 
-                        <div class="col-md-12">
-                            <div class="tile">
-                                <h3 class="tile-title">Đơn hàng hôm nay</h3>
-                                <div>
-                                    <table class="table table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>ID đơn hàng</th>
-                                                <th>Khách hàng</th>
-                                                <th>Số điện thoại</th>
-                                                <th>Địa chỉ</th>
-                                                <th>Ngày mua</th>
-                                                <th>Tổng tiền</th>
-                                                <th>Thanh Toán</th>
-                                                <th>Chức năng</th>
 
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <c:forEach items="${billbyday}" var="b">
-                                                <tr>
-                                                    <td>${b.bill_id}</td>
-                                                    <td>${b.user.user_name}</td>
-                                                    <td>(+84)${b.phone}</td>
-                                                    <td>${b.address}</td>
-                                                    <td>${b.date}</td>
-                                                    <td>${b.total}</td>
-                                                    <td><span class="badge bg-success">${b.payment}</span></td>                                  
-                                                    <td><a style=" color: rgb(245 157 57);background-color: rgb(251 226 197); padding: 5px;border-radius: 5px;" href="ordermanager?action=showdetail&bill_id=${b.bill_id}"><i class="fa"></i>Chi tiết đơn hàng</a></td>
-                                                </tr>
-                                            </c:forEach>
-
-                                        </tbody>
-                                    </table>
-                                </div>
-                                 / div trống
-                            </div>
-                        </div>
-                         / col-12 -->
                     </div>
                 </div>
             </div>

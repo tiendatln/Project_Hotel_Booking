@@ -231,16 +231,14 @@ public class feedbackController extends HttpServlet {
                     int i = 0;
                     boolean reserveExist = true;
                     while (reserveExist && i < reserve.size()) {
-                        int j = 0;
-                        int countStatus = 0;
 
-                        room r = rDAO.getRoomByRoomID(reserve.get(j).getRoom().getRoom_id());
+                        room r = rDAO.getRoomByRoomID(reserve.get(i).getRoom().getRoom_id());
                         hotel ht = hDAO.getHotelByRoomID(r.getRoom_id());
                         r.setHotel(ht);
                         reserve.get(i).setRoom(r);
-                        if (reserve.get(j).getRoom().getHotel().getHotel_id() == hotel_id) {
+                        if (reserve.get(i).getRoom().getHotel().getHotel_id() == hotel_id) {
                             if (reserve.get(i).getStatus() == 1) {
-                                countStatus++;
+
                                 reserveExist = false;
                             }
                         }

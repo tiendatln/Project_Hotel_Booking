@@ -178,33 +178,27 @@ public class reserveController extends HttpServlet {
                 request.setAttribute("feedback", feedback);
                 List<reservation> reserve = rsDAO.getReservationByUsername(value);
                 if (!reserve.isEmpty()) {
-                    int i = 0;
-                    boolean reserveExist = true;
-                    boolean status = false;
-                    int countStatus = 0;
-                    while (reserveExist) {
-                        room r = rDAO.getRoomByRoomID(reserve.get(i).getRoom().getRoom_id());
-                        hotel ht = hDAO.getHotelByRoomID(r.getRoom_id());
-                        r.setHotel(ht);
-                        reserve.get(i).setRoom(r);
-                        if (reserve.get(i).getRoom().getHotel().getHotel_id() == hotelID) {
+                int i = 0;
+                boolean reserveExist = true;
+                while (reserveExist && i < reserve.size()) {
+
+                    room r = rDAO.getRoomByRoomID(reserve.get(i).getRoom().getRoom_id());
+                    hotel ht = hDAO.getHotelByRoomID(r.getRoom_id());
+                    r.setHotel(ht);
+                    reserve.get(i).setRoom(r);
+                    if (reserve.get(i).getRoom().getHotel().getHotel_id() == hotelID) {
+                        if (reserve.get(i).getStatus() == 1) {
+                            
                             reserveExist = false;
-                            if (reserve.get(i).getStatus() == 1) {
-                                countStatus++;
-                            }
-                            if (countStatus == reserve.size() - 1) {
-                                status = true;
-                            }
-                        }
-                        i++;
-                    }
-                    if (!reserveExist && status) {
-                        int count = fDAO.getFeedbackExistByUsername(value);
-                        if (count == 0 && count < 1) {
-                            request.setAttribute("canFeedback", true);
                         }
                     }
+                    i++;
                 }
+                if (!reserveExist) {
+                    request.setAttribute("canFeedback", true);
+
+                }
+            }
                 List<reservation> re = rsDAO.getReservationAndRoomByLocalAndDate(CheckInDate, CheckOutDate, hotelID);
                 List<hotel> Listht = hDAO.getHotelListByHotelID(hotelID);
                 List<room> listRoom = rDAO.getAllRoomByHotelID(hotelID);
