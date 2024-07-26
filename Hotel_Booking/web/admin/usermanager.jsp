@@ -106,7 +106,7 @@
                                     <td>${u.phone}</td>
                                     <c:if test="${u.is_owner == 1}"> <td>Owner</td> </c:if>
                                     <c:if test="${u.is_owner!=1}"> <td>User</td> </c:if>
-                                    <c:if test="${u.ban_status==1}"><td>Lock</td></c:if>
+                                    <c:if test="${u.ban_status==1}"><td>Ban</td></c:if>
                                     <c:if test="${u.ban_status!=1}"> <td>Normal</td> </c:if> 
                                         <td>
                                             <button class="btn btn-primary btn-sm edit" type="button" title="Set role for account" id="show-emp" data-bs-toggle="modal" data-bs-target="#ModalUP${u.username}">

@@ -94,24 +94,33 @@ public class loginController extends HttpServlet {
                 if (pwd.equals("")) {
                     request.getSession().setAttribute("massagePassNull", "Please Enter Password!");
                 }
-                 request.getRequestDispatcher("/customer/login.jsp").forward(request, response);
+                request.getRequestDispatcher("/customer/login.jsp").forward(request, response);
             }
             if (!pwd.equals("") && !us.equals("")) {
                 if (!aDAO.checkPassword(us, pwd) || !aDAO.checkUser(us)) {
                     request.getSession().setAttribute("massageAllError", "Username or Password are incorrect!");
-                     request.getRequestDispatcher("/customer/login.jsp").forward(request, response);
+                    request.getRequestDispatcher("/customer/login.jsp").forward(request, response);
                 } else {
                     String setRole = aDAO.checkAccount(us);
-                    Cookie c = new Cookie(setRole, us);
-                    c.setMaxAge(3 * 24 * 60 * 60); //Thiet lap han su dung 3 ngay
-                    c.setPath("/");
-                    response.addCookie(c);
-                    if (setRole.equalsIgnoreCase("admin")) {
-                        response.sendRedirect("/Dashboard");
-                    } else if (setRole.equalsIgnoreCase("owner")) {
-                        response.sendRedirect("/homeController/HomeOwner");
+                    boolean status = aDAO.getStatusBanByUsername(us);
+
+                    if (!status) {
+                        Cookie c = new Cookie(setRole, us);
+                        c.setMaxAge(3 * 24 * 60 * 60); //Thiet lap han su dung 3 ngay
+                        c.setPath("/");
+                        response.addCookie(c);
+                        if (setRole.equalsIgnoreCase("admin")) {
+                            response.sendRedirect("/Dashboard");
+                        } else if (setRole.equalsIgnoreCase("owner")) {
+                            response.sendRedirect("/homeController/HomeOwner");
+                        } else {
+
+                            response.sendRedirect("/homeController/HomeCustomer");
+
+                        }
                     } else {
-                        response.sendRedirect("/homeController/HomeCustomer");
+                        request.getSession().setAttribute("massageUserNull", "Your account has been banned!");
+                        request.getRequestDispatcher("/customer/login.jsp").forward(request, response);
                     }
                 }
             }

@@ -105,7 +105,7 @@
                                         <td>${i.id}</td>
                                         <td>${i.hotel_name}</td>
                                         <td>${i.hotel_address}</td>
-                                        <td>${i.business_licens_img}</td>
+                                        <td><a><img src="/imgs/owner/${i.business_licens_img}" width="80" height="80" /></a> </td>
 
                                         <td>${i.account.username}</td>                                     
                                         <td>

@@ -4,12 +4,16 @@
  */
 package Controllers;
 
+import DAOs.reservationDAOs;
+import Model.reservation;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.sql.Date;
+import java.util.List;
 
 /**
  *
@@ -56,11 +60,29 @@ public class homeController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String path = request.getRequestURI();
+        reservationDAOs reDAO = new reservationDAOs();
+        List<reservation> re = reDAO.getAllReservationToCheck();
+        long millis = System.currentTimeMillis();
+        Date toDay = new Date(millis);
+
+        int i = 0;
+        while (i < re.size()) {
+            Date checkInDate = re.get(i).getCheck_in_date();
+            Date checkOutDate = re.get(i).getCheck_out_date();
+            long ToDAY = toDay.getTime();
+            long CHECKINDATE = checkInDate.getTime();
+            long CHECKOUTDATE = checkOutDate.getTime();
+            if(ToDAY > CHECKINDATE || ToDAY > CHECKOUTDATE){
+                reDAO.setStatusBooking(re.get(i).getId(), 2);
+            }
+            i++;
+        }
+        
         if (path.endsWith("/HomeCustomer")) {
             request.getRequestDispatcher("/customer/home.jsp").forward(request, response);
         } else if (path.endsWith("/HomeAdmin")) {
             response.sendRedirect("/Dashboard");
-        } else if (path.endsWith("/HomeOwner")) {            
+        } else if (path.endsWith("/HomeOwner")) {
             response.sendRedirect("/dashboardController");
         }
     }

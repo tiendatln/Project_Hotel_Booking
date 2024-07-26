@@ -127,7 +127,23 @@ public class accountDAOs {
         }
         return false;
     }
+ public List<account> getAllAccountNotAdmin() {
+        String sql = "select * from [dbo].[Account]\n"
+                + "where   is_admin != 1";
+        List<account> list = new ArrayList<>();
+        try {
+            PreparedStatement st = conn.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                list.add(new account(rs.getString(1), rs.getString(2), rs.getByte(3), rs.getByte(4), rs.getByte(5),
+                        rs.getByte(6), rs.getInt(7), rs.getString(8), rs.getString(9), rs.getInt(10), rs.getString(11), rs.getString(12)));
+            }
 
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return list;
+    }
     /**
      *
      * @param username
@@ -281,7 +297,20 @@ public class accountDAOs {
             System.out.println(e);
         }
     }
+ public void setBan_status(String user_id, String ban) {
+        String sql = "UPDATE [dbo].[Account]\n"
+                + "   SET [ban_status] = ?    \n"
+                + " WHERE  [username] = ?";
+        try {
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setString(1, ban);
+            st.setString(2, user_id);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
 
+    }
     public void setBan_status(String user_id, boolean ban) {
         String sql = "UPDATE [dbo].[Account]\n"
                 + "   SET [ban_status] = ?    \n"
@@ -364,4 +393,18 @@ public class accountDAOs {
             System.out.println(e);
         }
     }
+     public boolean getStatusBanByUsername(String username){
+         try {
+             PreparedStatement ps = conn.prepareStatement("select ban_status from Account where username = ?");
+             ps.setString(1, username);
+             ResultSet rs = ps.executeQuery();
+             if(rs.next()){
+                 if(rs.getInt(1) == 1){
+                     return true;
+                 }
+             }
+         } catch (Exception e) {
+         }
+         return false;
+     }
 }

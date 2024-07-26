@@ -48,18 +48,17 @@
                         </div>
                     </div>
                     <div class="row" >
-                        <div class="form-group col-md-5 align-items-start flex-column">
+                        <div class="form-group col-md-4 align-items-start flex-column">
                             <label for="checkin-date" class=" d-inline-flex font-weight-bold">Check-in</label>
                             <input type="date" class="form-control" id="checkin-date" name="checkin-date" onkeydown="return false" >
                         </div>
-                        <div class="form-group col-md-5 align-items-start flex-column">
+                        <div class="form-group col-md-4 align-items-start flex-column">
                             <label for="checkout-date" class=" d-inline-flex font-weight-bold">Check-out</label>
                             <input type="date" class="form-control" id="checkout-date" name="checkout-date" onkeydown="return false" >
                         </div>
 
-                        <div class="form-group col-md-2 align-items-start flex-column">
-                            <label for="quantity" class="d-inline-flex font-weight-bold">Guests</label>
-
+                        <div class="form-group col-md-4 align-items-start flex-column">
+                            <label for="quantity" class="d-inline-flex font-weight-bold"> Quantity</label>
                             <input type="number" class="form-control" id="quantity" name="txtQuantity" placeholder="Enter Quantity" min="1" max="30" list="defaultNumbers">
                             <datalist id="defaultNumbers">
                                 <option value="1"></option>
@@ -67,6 +66,7 @@
                                 <option value="3"></option>
                                 <option value="4"></option>
                                 <option value="5"></option>
+                                <option value="6"></option>
                                 <option value="7"></option>
                                 <option value="8"></option>
                                 <option value="9"></option>

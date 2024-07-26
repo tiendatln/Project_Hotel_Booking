@@ -1,4 +1,3 @@
-
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="DAOs.serviceDAOs"%>
 <%@page import="DAOs.roomDAOs"%>
@@ -18,6 +17,15 @@
         <!-- Bootstrap CSS -->
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="styles.css">
+        <!-- DataTables CSS -->
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+
+        <!-- jQuery -->
+        <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+        <!-- DataTables JS -->
+        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+
         <style>
             td{
                 font-size: large
@@ -46,7 +54,7 @@
         <div class="container-fluid mt-5">
             <h1 class="text-center mb-4">Reservation List</h1>
             <c:if test="${not empty reservation}">
-                <table class="table table-striped table-hover">
+                <table class="table table-striped table-hover" id="reservationTable">
                     <thead>
                         <tr>
                             <th scope="col">#</th>
@@ -66,10 +74,9 @@
                     <%
                         int count = 1;
                     %>
-                    <c:forEach items="${reservation}" var="reservation">
+                    <tbody>
+                        <c:forEach items="${reservation}" var="reservation">
 
-                        <tbody  >
-                            <!-- Example reservation data -->
                             <tr>
                                 <th scope="row"><%= count%></th>
                                 <td>${reservation.account.name}</td>
@@ -87,7 +94,6 @@
                                     </c:if>
                                     <c:if test="${reservation.status == 0}">
                                         <span style="color: #007bff">Pending</span>
-
                                     </c:if>
                                     <c:if test="${reservation.status == 2}">
                                         <span style="color: red">Denied</span>
@@ -97,72 +103,91 @@
                                     </c:if>
                                 </td>
                                 <c:if test="${reservation.status == 0}">
-                                    <td><a class="btn btn-danger button" onclick="showCustomAlert('/reservationController/Cancel/${reservation.id}')" >Cancel</a></td>
+                                    <td><a class="btn btn-danger button" onclick="showCustomAlert('/reservationController/Cancel/${reservation.id}')">Cancel</a></td>
                                 </c:if>
                                 <c:if test="${reservation.status == 1}">
-                                    <td><a class="btn btn-danger button" href="/searchController/HotelDetail/${reservation.check_in_date}/${reservation.check_out_date}/${reservation.service.hotel.hotel_id}" >Send FeedBack</a></td>
+                                    <td><a class="btn btn-danger button" href="/searchController/HotelDetail/${reservation.check_in_date}/${reservation.check_out_date}/${reservation.service.hotel.hotel_id}">Send Feedback</a></td>
                                 </c:if>
                                 <c:if test="${reservation.status > 1}">
                                     <td></td>
                                 </c:if>
                             </tr>
-                        </tbody>
-                        <%
-                            count++;
-                        %>
-                    </c:forEach>
 
+                            <%
+                                count++;
+                            %>
+                        </c:forEach>
+                    </tbody>
                 </table>
             </c:if>
             <c:if test="${empty reservation}">
                 <div class="text-center" style="margin-top: 6cm">
-                    <h2 style="font-optical-sizing: auto;  ">No Reservation Available</h2>
-                    <h4 style="font-style: oblique; font-optical-sizing: auto;">( you have not made any reservation )</h4>
+                    <h2 style="font-optical-sizing: auto;">No Reservation Available</h2>
+                    <h4 style="font-style: oblique; font-optical-sizing: auto;">(you have not made any reservation)</h4>
                 </div>
             </c:if>
         </div>
 
-
-
-        <script src=
-                "https://cdn.jsdelivr.net/npm/sweetalert2@11">
-        </script>
-
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
         <script>
-            function showCustomAlert(url) {
-                // Create a custom alert box with SweetAlert
-                Swal.fire({
-                    title: 'Cancel your reservation',
-                    text: 'This action cannot be roll back!',
-                    showCancelButton: true,
-                    confirmButtonText: 'Yes',
-                    cancelButtonText: 'No',
-                    customClass: {
-                        confirmButton: ' btn btn-danger custom-confirm-button ',
-                        cancelButton: 'btn btn-success custom-cancel-button'
-                    },
-                    buttonsStyling: false
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Redirect to the specified URL after user clicks Yes
-                        window.location.href = url;
-                    }
-                });
-            }
+                                        function showCustomAlert(url) {
+                                            Swal.fire({
+                                                title: 'Cancel your reservation',
+                                                text: 'This action cannot be rolled back!',
+                                                showCancelButton: true,
+                                                confirmButtonText: 'Yes',
+                                                cancelButtonText: 'No',
+                                                customClass: {
+                                                    confirmButton: 'btn btn-danger custom-confirm-button',
+                                                    cancelButton: 'btn btn-success custom-cancel-button'
+                                                },
+                                                buttonsStyling: false
+                                            }).then((result) => {
+                                                if (result.isConfirmed) {
+                                                    window.location.href = url;
+                                                }
+                                            });
+                                        }
         </script>
 
-        <!-- jQuery -->
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#reservationTable').DataTable({
+                    language: {
+                        "sEmptyTable": "No data available in table",
+                        "sInfo": "Showing _START_ to _END_ of _TOTAL_ entries",
+                        "sInfoEmpty": "Showing 0 to 0 of 0 entries",
+                        "sInfoFiltered": "(filtered from _MAX_ total entries)",
+                        "sInfoPostFix": "",
+                        "sInfoThousands": ",",
+                        "sLengthMenu": "Show _MENU_ entries",
+                        "sLoadingRecords": "Loading...",
+                        "sProcessing": "Processing...",
+                        "sSearch": "Search:",
+                        "sZeroRecords": "No matching records found",
+                        "oPaginate": {
+                            "sFirst": "First",
+                            "sLast": "Last",
+                            "sNext": "Next",
+                            "sPrevious": "Previous"
+                        },
+                        "oAria": {
+                            "sSortAscending": ": activate to sort column ascending",
+                            "sSortDescending": ": activate to sort column descending"
+                        }
+                    }
+                });
+            });
+        </script>
+
         <style>
-/*            <!-- HTML !-->
-            <button class="button-14" role="button">
-            <div class="button-14-top text">Button 14</div>
-            <div class="button-14-bottom"></div>
-            <div class="button-14-base"></div>
-            </button>*/
+            /*            <!-- HTML !-->
+                        <button class="button-14" role="button">
+                        <div class="button-14-top text">Button 14</div>
+                        <div class="button-14-bottom"></div>
+                        <div class="button-14-base"></div>
+                        </button>*/
 
             /* CSS */
             .button-14 {

@@ -104,7 +104,7 @@
                                 <input type="date" class="form-control" id="checkout-date" name="checkout-date" value="<%= checkoutDate%>">
                             </div>
                             <div class="form-group">
-                                <label for="quantity">Guest</label>
+                                <label for="quantity"> Quantity</label>
                                 <input type="number" class="form-control" id="quantity" name="txtQuantity" placeholder="Enter Quantity" min="1" max="30" list="defaultNumbers" value="${searchQuantity}">
                                 <datalist id="defaultNumbers">
                                     <option value="1"></option>
@@ -112,6 +112,7 @@
                                     <option value="3"></option>
                                     <option value="4"></option>
                                     <option value="5"></option>
+                                    <option value="6"></option>
                                     <option value="7"></option>
                                     <option value="8"></option>
                                     <option value="9"></option>
