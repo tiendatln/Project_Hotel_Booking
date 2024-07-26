@@ -66,7 +66,7 @@ public class ManageRole extends HttpServlet {
         response.setContentType("text/html; charset=UTF-8");
         updateRoleDAOs ud = new updateRoleDAOs();
         String user = request.getParameter("user");
-        String id_raw = request.getParameter("id");
+        String username_raw = request.getParameter("username");
         String action = request.getParameter("action");
 
         try {
@@ -120,17 +120,12 @@ public class ManageRole extends HttpServlet {
 
                     response.sendRedirect("setrole");
                 } else if (action.equalsIgnoreCase("deleteDon")) {
-                    account a = new account();
+
                     accountDAOs ad = new accountDAOs();
+                    account a = ad.getAccount(username_raw);
+                    ad.setStatusUpdateRole(username_raw, 2);
 
-                    int id = Integer.parseInt(id_raw);
-                    updateRoleDAOs updao = new updateRoleDAOs();
-                    List<updateRole> u = updao.getUpdateRoleById(id);
-
-                    for (int i = 0; i < u.size(); i++) {
-                        a = ad.getAccount(u.get(i).getAccount().getUsername());
-                    }
-                    String sendemail = "Dear " + a.getUsername() + ",\nThank you for your interest in registering to become Owner Hotel. After careful consideration, we regret to inform you that we cannot proceed with the registration at this time. Please contact us if you need further information.\n"
+                    String sendemail = "Dear " + username_raw + ",\nThank you for your interest in registering to become Owner Hotel. After careful consideration, we regret to inform you that we cannot proceed with the registration at this time. Please contact us if you need further information.\n"
                             + "\n"
                             + "Best regards,\n"
                             + "Website Admin\n"
@@ -163,8 +158,6 @@ public class ManageRole extends HttpServlet {
                     } catch (MessagingException e) {
                         throw new RuntimeException(e);
                     }
-
-                    ud.deleteUpdateRole(id);
                     response.sendRedirect("/setrole");
 
                 }

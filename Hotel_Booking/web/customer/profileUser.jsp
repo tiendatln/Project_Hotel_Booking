@@ -116,10 +116,6 @@
                                         <label for="id_number"><strong>ID Number:</strong></label>
                                         <input type="number" class="form-control" id="id_number" name="id_number" value="<%= ac.getId_number()%>">
                                     </div>
-                                    <div class="col-md-6 profile-info ">
-                                        <label for="report_count"><strong>Report Count:</strong></label>
-                                        <input type="number" class="form-control" id="report_count" name="report_count" value="<%= ac.getReport_count()%>" readonly>
-                                    </div>
                                 </div>
                                 <%
                                     String errorMessage = (String) request.getSession().getAttribute("errorMessage");
