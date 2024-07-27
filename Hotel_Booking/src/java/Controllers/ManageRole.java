@@ -120,7 +120,7 @@ public class ManageRole extends HttpServlet {
 
                     response.sendRedirect("setrole");
                 } else if (action.equalsIgnoreCase("deleteDon")) {
-
+                    
                     accountDAOs ad = new accountDAOs();
                     account a = ad.getAccount(username_raw);
                     ad.setStatusUpdateRole(username_raw, 2);

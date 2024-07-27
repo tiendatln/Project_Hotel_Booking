@@ -104,9 +104,7 @@ public class becomesOwnerController extends HttpServlet {
                     }
                 }
             }
-            String name = request.getParameter("name");
-            String email = request.getParameter("email");
-            String phone = request.getParameter("phone");
+            
             String hotel_name = request.getParameter("hotel");
             String address = request.getParameter("address");
             updateRoleDAOs urDAO = new updateRoleDAOs();

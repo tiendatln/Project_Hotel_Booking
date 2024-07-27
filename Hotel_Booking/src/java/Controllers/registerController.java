@@ -181,7 +181,7 @@ public class registerController extends HttpServlet {
             if (value == otp) {
                 accountDAOs aDAO = new accountDAOs();
                 String pass_md5 = accountDAOs.getMd5(password);
-                account newAccount = new account(username, pass_md5, (byte) 0, (byte) 0, (byte) 0, (byte) 0, 0, email, name, age, phone, id_number);
+                account newAccount = new account(username, pass_md5, (byte) 0, (byte) 0, (byte) 0, email, name, age, phone, id_number);
                 account a = aDAO.addNewCusAccount(newAccount);
                 if (a == null) {
                     response.sendRedirect("/registerController/Register");

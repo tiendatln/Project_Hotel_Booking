@@ -13,10 +13,10 @@ public class account {
     private String username;
     private String password;
     private byte is_owner;
-    private byte is_manager;
+    
     private byte is_adnmin;
     private byte ban_status;
-    private int report_count;
+  
     private String email;
     private String name;
     private int age;
@@ -56,14 +56,12 @@ public class account {
      * @param phone
      * @param id_number
      */
-    public account(String username, String password, byte is_owner, byte is_manager, byte is_adnmin, byte ban_status, int report_count, String email, String name, int age, String phone, String id_number) {
+    public account(String username, String password, byte is_owner,  byte is_adnmin, byte ban_status,  String email, String name, int age, String phone, String id_number) {
         this.username = username;
         this.password = password;
         this.is_owner = is_owner;
-        this.is_manager = is_manager;
         this.is_adnmin = is_adnmin;
         this.ban_status = ban_status;
-        this.report_count = report_count;
         this.email = email;
         this.name = name;
         this.age = age;
@@ -199,21 +197,7 @@ public class account {
         this.is_owner = is_owner;
     }
 
-    /**
-     *
-     * @return
-     */
-    public byte getIs_manager() {
-        return is_manager;
-    }
 
-    /**
-     *
-     * @param is_manager
-     */
-    public void setIs_manager(byte is_manager) {
-        this.is_manager = is_manager;
-    }
 
     /**
      *
@@ -247,20 +231,6 @@ public class account {
         this.ban_status = ban_status;
     }
 
-    /**
-     *
-     * @return
-     */
-    public int getReport_count() {
-        return report_count;
-    }
 
-    /**
-     *
-     * @param report_count
-     */
-    public void setReport_count(int report_count) {
-        this.report_count = report_count;
-    }
 
 }

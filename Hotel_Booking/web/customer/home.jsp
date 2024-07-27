@@ -19,6 +19,7 @@
     </head>
     <body style="">
         <header>
+            
             <%@include file="layout.jsp" %>
             <div class="bg-dark ">
                 <div class=" carousel slide">
@@ -98,9 +99,11 @@
                 boolean range = true;
                 int count = 0;
                 long millis = System.currentTimeMillis();
-                long tenDaysInMillis = 1L * 24 * 60 * 60 * 1000;
-                long checkoutMillis = millis + tenDaysInMillis;
-                Date checkinDate = new Date(millis);
+                long oneDaysInMillis = 1L * 24 * 60 * 60 * 1000;
+                long twoDaysInMillis = 2L * 24 * 60 * 60 * 1000;
+                long checkinMillis = millis + oneDaysInMillis;
+                long checkoutMillis = millis + twoDaysInMillis;
+                Date checkinDate = new Date(checkinMillis);
                 Date checkoutDate = new Date(checkoutMillis);
                 while (rs.next() && range) {
                     String location = rs.getString("hotel_name");
@@ -186,9 +189,16 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
         <script>
                 // Set the minimum check-in date to today
-                var today = new Date().toISOString().split('T')[0];
-                document.getElementById("checkin-date").setAttribute("min", today);
-                document.getElementById("checkout-date").setAttribute("min", today);
+                var Today = new Date().toISOString().split('T')[0];
+                var today = new Date();
+                today.setDate(today.getDate() + 1);
+                var tomorrow = today.toISOString().split('T')[0];
+                console.log(tomorrow);
+                today.setDate(today.getDate() + 1);
+                var day2 = today.toISOString().split('T')[0];
+                console.log(tomorrow);
+                document.getElementById("checkin-date").setAttribute("min", tomorrow);
+                document.getElementById("checkout-date").setAttribute("min", day2);
 
                 // Function to update the minimum check-out date based on check-in date
                 function validateForm() {
@@ -197,15 +207,15 @@
                     var quantity = document.getElementById('quantity').value;
 
                     if (!checkin) {
-                        var today = new Date().toISOString().split('T')[0];
-                        document.getElementById('checkin-date').value = today;
-                        checkin = today;
+                        
+                        document.getElementById('checkin-date').value = tomorrow;
+                        checkin = tomorrow;
                     }
 
                     if (!checkout) {
-                        var today = new Date().toISOString().split('T')[0];
-                        document.getElementById('checkout-date').value = today;
-                        checkout = today;
+                        
+                        document.getElementById('checkout-date').value = tomorrow;
+                        checkout = tomorrow;
                     }
 
                     if (!quantity) {

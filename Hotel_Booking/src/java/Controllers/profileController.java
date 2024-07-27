@@ -131,7 +131,7 @@ public class profileController extends HttpServlet {
                     request.getSession().setAttribute("errorMessage", "Please fill in all the information!");
                     response.sendRedirect("/profileController/ProfileUser");
                 } else {
-                    account newAccount = new account(value, "", (byte) 0, (byte) 0, (byte) 0, (byte) 0, 0, email, name, age, phone, id_number);
+                    account newAccount = new account(value, "", (byte) 0,  (byte) 0, (byte) 0, email, name, age, phone, id_number);
                     account a = aDAO.updateAccount(newAccount);
                     if (a == null) {
                         request.getSession().setAttribute("errorMessage", "Update Fail!");
@@ -160,7 +160,7 @@ public class profileController extends HttpServlet {
                             request.getRequestDispatcher("/customer/changePassword.jsp").forward(request, response);
                         }
                         String newPassMD5 = accountDAOs.getMd5(newPassword);
-                        account newPass = new account(value, newPassMD5, (byte) 0, (byte) 0, (byte) 0, (byte) 0, 0, "", "", 0, "", "");
+                        account newPass = new account(value, newPassMD5, (byte) 0,  (byte) 0, (byte) 0,  "", "", 0, "", "");
                         account a = aDAO.changePassword(newPass);
                         if (a == null) {
                             request.setAttribute("errorMessage", "Update Fail!");

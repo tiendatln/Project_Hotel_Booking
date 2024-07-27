@@ -11,7 +11,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Quản trị Admin</title>
+        <title>DashBoard</title>
         <!-- Main CSS-->
         <link rel="stylesheet" type="text/css" href="admin/css/main.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
@@ -90,7 +90,6 @@
         <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
         <aside class="app-sidebar">
 
-            <hr>
             <ul class="app-menu">
                 <li><a class="app-menu__item" href="/Dashboard" style="text-decoration: none;"><i class='app-menu__icon bx bx-tachometer'></i><span
                             class="app-menu__label">Dashboard</span></a></li>
@@ -115,6 +114,7 @@
                     <div class="row">
                         <!-- col-6 -->
                         <div class="col-md-6">
+                            <div >
                             <div class="widget-small primary coloured-icon"><i class='icon bx bxs-user-account fa-3x'></i>
                                 <div class="info">
                                     <h4>Total Customers</h4>
@@ -123,7 +123,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div >
                             <div class="widget-small primary coloured-icon"><i class='icon bx bxs-user-account fa-3x'></i>
                                 <div class="info">
                                     <h4>Total owners</h4>
@@ -133,7 +133,7 @@
                             </div>
                         </div>
                         <!-- col-6 -->
-                        <div class="col-md-6">
+                        <div >
                             <div class="widget-small info coloured-icon"><i class='icon bx bxs-building-house fa-3x'></i>
                                 <div class="info">
                                     <h4>Total Hotels</h4>
@@ -143,7 +143,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6">
+                        <div >
                             <div class="widget-small info coloured-icon"><i class='icon bx bxs-message-rounded-dots fa-3x'></i>
                                 <div class="info">
                                     <h4>Total Feedbacks</h4>
@@ -152,7 +152,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div >
                             <div class="widget-small info coloured-icon"><i class='icon bx bxs-home-alt-2 fa-3x'></i>
                                 <div class="info">
                                     <h4>Total Rooms</h4>
@@ -161,7 +161,7 @@
                                 </div>
                             </div>
                         </div>
-
+                        </div>
                         <!-- col-6 -->
 <!--                        <div class="col-md-6">
                             <div class="widget-small warning coloured-icon"><i class='icon bx bxs-shopping-bags fa-3x'></i>

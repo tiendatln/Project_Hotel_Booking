@@ -53,7 +53,7 @@
                                         <i  class="fa fa-share"></i> 
                                         View Hotel
                                     </a>
-                                    <a id="btn" class="btn btn-info  btn-round pull-right makeLoading" onclick="showCustomAlert('/feedbackController/deleteFeedbackByAll/${fb.hotel.hotel_id}/${fb.id}')">
+                                    <a id="btn" class="btn btn-info  btn-round pull-right makeLoading" onclick="showCustomAlert('/feedbackController/deleteFeedback/${fb.id}')">
                                         <i class="fa fa-trash" ></i>
                                     </a>
                                 </div>

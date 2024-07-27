@@ -140,9 +140,8 @@ public class feedbackController extends HttpServlet {
             request.setAttribute("checkinDate", checkinDate);
             request.setAttribute("checkoutDate", checkoutDate);
             request.getRequestDispatcher("/customer/viewAllFeedBackCustomer.jsp").forward(request, response);
-        } else if (path.startsWith("/feedbackController/deleteFeedbackByAll")) {
+        } else if (path.startsWith("/feedbackController/deleteFeedback")) {
             String[] s = path.split("/");
-            int hotel_id = Integer.valueOf(s[s.length - 2]);
             int feedbackID = Integer.valueOf(s[s.length - 1]);
             feedbackDAOs fDAO = new feedbackDAOs();
             if (fDAO.deleteFeedBack(feedbackID)) {

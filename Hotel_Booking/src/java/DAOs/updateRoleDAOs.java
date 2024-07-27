@@ -57,7 +57,9 @@ public class updateRoleDAOs {
             ps.setString(1, username);
             ResultSet rs = ps.executeQuery();
             if(rs.next()){
+                if(rs.getInt("status") != 1){
                 return true;
+                }
             }
         } catch (Exception e) {
         }

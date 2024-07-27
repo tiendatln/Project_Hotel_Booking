@@ -333,8 +333,11 @@
                 today.setDate(today.getDate() + 1);
                 var tomorrow = today.toISOString().split('T')[0];
                 console.log(tomorrow);
-                document.getElementById("checkInDate").setAttribute("min", Today);
-                document.getElementById("checkOutDate").setAttribute("min", tomorrow);
+                today.setDate(today.getDate() + 1);
+                var day2 = today.toISOString().split('T')[0];
+                console.log(tomorrow);
+                document.getElementById("checkInDate").setAttribute("min", tomorrow);
+                document.getElementById("checkOutDate").setAttribute("min", day2);
                 function submitForm(actionType) {
                     if (actionType === 'change') {
                         if (checkDatesChange()) {

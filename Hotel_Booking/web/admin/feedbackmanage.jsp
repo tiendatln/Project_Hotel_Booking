@@ -8,7 +8,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Danh sách nhân viên | Quản trị Admin</title>
+        <title>Feedback Manage | Admin</title>
         <!-- Main CSS-->
         <link rel="stylesheet" type="text/css" href="admin/css/main.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
@@ -46,7 +46,6 @@
         <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
         <aside class="app-sidebar">
 
-            <hr>
             <ul class="app-menu">
                 <li><a class="app-menu__item" href="/Dashboard" style="text-decoration: none;"><i class='app-menu__icon bx bx-tachometer'></i><span
                             class="app-menu__label">Dashboard</span></a></li>
@@ -54,11 +53,9 @@
                             class="app-menu__label">Manage User</span></a></li>
 
                 <li><a class="app-menu__item" href="/setrole" style="text-decoration: none;"><i class='app-menu__icon bx bx-task'></i><span
-                            class="app-menu__label"> Owner applications</span></a></li>
+                            class="app-menu__label">Owner Applications</span></a></li>
                 <li><a class="app-menu__item" href="/feedbackmanage" style="text-decoration: none;"><i class='app-menu__icon bx bx-task'></i><span
                             class="app-menu__label">Feedback Manage</span></a></li>
-
-
             </ul>
         </aside>
 
@@ -168,6 +165,7 @@
                                 if (willDelete) {
                                     window.location = "/feedbackmanage?action=deletefeedback&id=" + $(this).attr("value");
                                     swal("Delete Successful.", {
+                                        
                                     });
                                 }
                             });

@@ -11,10 +11,10 @@
 <!DOCTYPE html>
 <html>
     <head>
-        
+
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
-        
+
     </head>
     <body>
         <%
@@ -80,10 +80,10 @@
                             <% } %>
                         </a>
                         <div class="dropdown-menu " aria-labelledby="navbarDropdown" style="box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;">
-                            <% if (flagCustomer) { %>
+                            <% if (flagCustomer) {%>
 
                             <a class="dropdown-item" id="layout" href="/profileController/ProfileUser">Your Profile</a>
-                            <a class="dropdown-item" id="layout" href="/feedbackController/Review/<%= value %>">View FeedBack</a>
+                            <a class="dropdown-item" id="layout" href="/feedbackController/Review/<%= value%>">View FeedBack</a>
                             <a class="dropdown-item" id="layout" href="/logoutController/SignOut">Sign Out</a>
                             <% } else { %>
                             <a class="dropdown-item" id="layout" href="/loginController/login">Login</a>
@@ -93,6 +93,10 @@
                 </ul>
             </div>
         </nav>
+<!--        <audio id="background-audio" loop autoplay="">
+            <source src="/imgs/music.mp3" type="audio/mpeg">
+        </audio>-->
+
     </body>
     <style>
         #layout:hover{

@@ -135,8 +135,8 @@ public class accountDAOs {
             PreparedStatement st = conn.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                list.add(new account(rs.getString(1), rs.getString(2), rs.getByte(3), rs.getByte(4), rs.getByte(5),
-                        rs.getByte(6), rs.getInt(7), rs.getString(8), rs.getString(9), rs.getInt(10), rs.getString(11), rs.getString(12)));
+                list.add(new account(rs.getString(1), rs.getString(2), rs.getByte(3),  rs.getByte(4),
+                        rs.getByte(5),  rs.getString(6), rs.getString(7), rs.getInt(8), rs.getString(9), rs.getString(10)));
             }
 
         } catch (SQLException e) {
@@ -156,7 +156,7 @@ public class accountDAOs {
             ps.setString(1, username);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                ac = new account(rs.getString("username"), rs.getString("password"), rs.getByte("is_owner"), rs.getByte("is_manager"), rs.getByte("is_admin"), rs.getByte("ban_status"), rs.getInt("report_count"), rs.getString("email"), rs.getString("name"), rs.getInt("age"), rs.getString("phone"), rs.getString("id_number"));
+                ac = new account(rs.getString("username"), rs.getString("password"), rs.getByte("is_owner"),  rs.getByte("is_admin"), rs.getByte("ban_status"),  rs.getString("email"), rs.getString("name"), rs.getInt("age"), rs.getString("phone"), rs.getString("id_number"));
             }
         } catch (SQLException e) {
             Logger.getLogger(accountDAOs.class.getName()).log(Level.SEVERE, null, e);
@@ -275,8 +275,8 @@ public class accountDAOs {
             PreparedStatement st = conn.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                list.add(new account(rs.getString(1), rs.getString(2), rs.getByte(3), rs.getByte(4), rs.getByte(5),
-                        rs.getByte(6), rs.getInt(7), rs.getString(8), rs.getString(9), rs.getInt(10), rs.getString(11), rs.getString(12)));
+                list.add(new account(rs.getString(1), rs.getString(2), rs.getByte(3),  rs.getByte(4),
+                        rs.getByte(5),  rs.getString(6), rs.getString(7), rs.getInt(8), rs.getString(9), rs.getString(10)));
             }
         } catch (SQLException e) {
             System.out.println(e);
@@ -286,7 +286,7 @@ public class accountDAOs {
     
     public void setOwner(String user_id, String owner) {
         String sql = "UPDATE [dbo].[Account]\n"
-                + "   SET [is_owner] = ? ,[is_manager] = 0, [is_admin] = 0  \n"
+                + "   SET [is_owner] = ? , [is_admin] = 0  \n"
                 + " WHERE  [username] = ?";
         try {
             PreparedStatement st = conn.prepareStatement(sql);

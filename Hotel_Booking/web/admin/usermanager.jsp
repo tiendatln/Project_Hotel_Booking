@@ -8,7 +8,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Danh sách nhân viên | Quản trị Admin</title>
+        <title>Manage User  | Admin</title>
         <!-- Main CSS-->
         <link rel="stylesheet" type="text/css" href="admin/css/main.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
@@ -28,6 +28,7 @@
 
     </head>
     <body class="app sidebar-mini rtl">
+        <div>
         <!-- Navbar-->
         <header class="app-header">
             <!-- Sidebar toggle button--><a class="app-sidebar__toggle" href="#" data-toggle="sidebar"
@@ -46,7 +47,6 @@
         <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
         <aside class="app-sidebar">
 
-            <hr>
             <ul class="app-menu">
                 <li><a class="app-menu__item" href="/Dashboard" style="text-decoration: none;"><i class='app-menu__icon bx bx-tachometer'></i><span
                             class="app-menu__label">Dashboard</span></a></li>
@@ -176,6 +176,9 @@
                 </div>
             </div>
         </c:forEach>
+        </div>
+        
+        
         <!-- Essential javascripts for application to work-->
         <script src="admin/js/jquery-3.2.1.min.js"></script>
         <script src="admin/js/popper.min.js"></script>

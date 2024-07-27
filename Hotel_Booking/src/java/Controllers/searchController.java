@@ -104,7 +104,7 @@ public class searchController extends HttpServlet {
             feedbackDAOs fDAO = new feedbackDAOs();
             hotelDAOs hDAO = new hotelDAOs();
             reservationDAOs rsDAO = new reservationDAOs();
-            
+
             List<feedback> feedback = fDAO.getFeedbackByHotelID(hotel_id);
             accountDAOs aDao = new accountDAOs();
             for (int i = 0; i < feedback.size(); i++) {
@@ -124,7 +124,7 @@ public class searchController extends HttpServlet {
                     reserve.get(i).setRoom(r);
                     if (reserve.get(i).getRoom().getHotel().getHotel_id() == hotel_id) {
                         if (reserve.get(i).getStatus() == 1) {
-                            
+
                             reserveExist = false;
                         }
                     }
@@ -208,7 +208,7 @@ public class searchController extends HttpServlet {
             request.setAttribute("checkInDate", checkinDate);
             request.setAttribute("checkOutDate", checkoutDate);
             request.getRequestDispatcher("/customer/hotelDetail.jsp").forward(request, response);
-        }else if (path.startsWith("/searchController/Change")) {
+        } else if (path.startsWith("/searchController/Change")) {
             int hotel_id = Integer.valueOf(request.getParameter("HotelID"));
             try {
                 Date checkInDate = Date.valueOf(request.getParameter("checkInDate"));
@@ -300,7 +300,7 @@ public class searchController extends HttpServlet {
 
                                     }
                                     k++;
-                                    if (quantity >= roomCapacity ) {
+                                    if (quantity >= roomCapacity) {
                                         if (1 > countRoom) {
                                             countRoom++;
                                             quantity = 0;
@@ -535,20 +535,21 @@ public class searchController extends HttpServlet {
                         request.setAttribute("service", sv);
                         request.setAttribute("searchQuantity", searchQuantity);
                         request.getRequestDispatcher("/customer/listHotel.jsp").forward(request, response);
-                    } else {
-                        List<hotel> checkLocal = hDAO.getHotelByLocal(destination);
-                        if (checkLocal.isEmpty()) {
-                            request.setAttribute("searchError", true);
-                        }else{
-//                            request.setAttribute("searchError", true);
-                        }
-                        request.getRequestDispatcher("/customer/home.jsp").forward(request, response);
                     }
+                    List<hotel> checkLocal = hDAO.getHotelByLocal(destination);
+                    if (checkLocal.isEmpty()) {
+                        request.setAttribute("searchError", true);
+                   } 
+//                    else {
+//                        request.setAttribute("searchError", true);
+//                    }
+                    request.getRequestDispatcher("/customer/home.jsp").forward(request, response);
+
                 } catch (IOException e) {
 
                 }
             } else {
-//                request.setAttribute("search", true);
+                request.setAttribute("search", true);
                 request.getRequestDispatcher("/customer/home.jsp").forward(request, response);
             }
         }

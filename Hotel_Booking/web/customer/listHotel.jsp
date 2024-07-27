@@ -177,9 +177,16 @@
 
         <script>
             // Set the minimum check-in date to today
-            var today = new Date().toISOString().split('T')[0];
-            document.getElementById("checkin-date").setAttribute("min", today);
-            document.getElementById("checkout-date").setAttribute("min", today);
+            var Today = new Date().toISOString().split('T')[0];
+                var today = new Date();
+                today.setDate(today.getDate() + 1);
+                var tomorrow = today.toISOString().split('T')[0];
+                console.log(tomorrow);
+                today.setDate(today.getDate() + 1);
+                var day2 = today.toISOString().split('T')[0];
+                console.log(tomorrow);
+            document.getElementById("checkin-date").setAttribute("min", tomorrow);
+            document.getElementById("checkout-date").setAttribute("min", day2);
 
             // Function to update the minimum check-out date based on check-in date
             function validateForm() {
@@ -187,15 +194,15 @@
                 var checkout = document.getElementById('checkout-date').value;
 
                 if (!checkin) {
-                    var today = new Date().toISOString().split('T')[0];
-                    document.getElementById('checkin-date').value = today;
-                    checkin = today;
+                    
+                    document.getElementById('checkin-date').value = tomorrow;
+                    checkin = tomorrow;
                 }
 
                 if (!checkout) {
-                    var today = new Date().toISOString().split('T')[0];
-                    document.getElementById('checkout-date').value = today;
-                    checkout = today;
+                    
+                    document.getElementById('checkout-date').value = tomorrow;
+                    checkout = tomorrow;
                 }
 
                 var checkinDate = new Date(checkin);
